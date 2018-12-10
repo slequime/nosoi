@@ -1,0 +1,13 @@
+Package: nosoi
+Type: Package
+Title: An agent-based forward epidemic simulator
+Version: 0.1.0
+Authors@R: c(person("Sebastian", "Lequime", email = "sebastian.lequime@kuleuven.be",
+                  role = c("aut", "cre")),
+                  person("Simon", "Dellicour", email = "winston@rstudio.com", role = "aut"),
+                  person("Guy", "Baele", email = "winston@rstudio.com", role = "aut")))
+Maintainer: Sebastian Lequime <sebastian.lequime at kuleuven.be>
+Description: Nosoi (pronounced no.so.i) is a flexible agent-based stochastic epidemiological simulator in R, named after the daimones of plague, sickness and disease that escaped Pandora's jar in the Greek mythology. Nosoi is able to take into account the influence of multiple variable on the transmission process (e.g. dual-host systems (such as arboviruses), within-host viral dynamics, transportation, population structure), alone or taken together, to create complex but relatively intuitive epidemiological simulations.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
