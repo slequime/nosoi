@@ -46,7 +46,7 @@ rtnorm <- function(n, mean, sd, a = -Inf, b = Inf){
 
 # Transition matrix ---------------------------------------------------------------------------
 
-AirlineMatrix <- read_delim("data/AirlineMatrix.txt", 
+AirlineMatrix <- read_delim("data/AirlineMatrix.txt",
                             "\t", escape_double = FALSE, trim_ws = TRUE)
 AirlineData = melt(AirlineMatrix, id.variable="X1")
 colnames(AirlineData) = c("From", "To", "Seats")
@@ -55,16 +55,16 @@ countries=unique(AirlineData$From)
 
 AirlineData = merge(AirlineData,(AirlineData %>% group_by(From) %>% summarise(N=sum(Seats)))) %>% mutate(prob=Seats/N)
 
-countries_centroid <- read_delim("data/countries_centroid.csv", 
+countries_centroid <- read_delim("data/countries_centroid.csv",
                                  ";", escape_double = FALSE, trim_ws = TRUE)
 
 countries_centroid = subset(countries_centroid, Code2 %in% countries)
 
 countries_centroid = subset(countries_centroid, Country != "USA")
 
-#Mosquito suitability 
+#Mosquito suitability
 
-AedesSuitability <- read_delim("data/AedesSuitability.txt", 
+AedesSuitability <- read_delim("data/AedesSuitability.txt",
                                "\t", escape_double = FALSE, trim_ws = TRUE)
 #Suitability index will influence probability with which a human will get biten daily by an Aedes mosquito
 correc.factor = 10 #because value are quite low, i'll multiply by 10
@@ -123,9 +123,9 @@ for(i in 1:attempt){
   table1.vert$inf.date = as.numeric(rep(0,individuals))
   table1.vert$asymptomatic = sample(c(TRUE, FALSE), individuals, replace=TRUE, prob=c(Prob.asympto, 1-Prob.asympto))
   table1.vert$active = TRUE
-  
+
   table1.vert = table1.vert %>% group_by(hosts.ID) %>% mutate(Recov50=rtnorm(1,Recov,Recov.sd, a=IIP50+1, b=Inf))
-  
+
   table1.vert = tryCatch(table1.vert %>% group_by(hosts.ID) %>% mutate(End.date=uniroot(viremia2, Pmax=Pmax, IIP=IIP50, slopeIIP=slopeInfec, Recov=Recov50, slopeRecov=slopeRecov, dist=0.01, upper=Recov50*2, lower=Recov50, extendInt="yes", maxiter=100000)$root), error=function(e) "skip")
   if(is.data.frame(table1.vert)==TRUE){break}
 }
@@ -154,9 +154,9 @@ M.count=0
 sim.length = 400
 
 for (t in 1:sim.length){
-  
+
 #Step 1: Active hosts & dying mosquitoes ------------------------------------------------------------------------
-  
+
   if(length(table1.vect) > 0){
   #Mosquitoes dying
   surviving = sample(c(TRUE,FALSE),length(active.mosquitoes),replace=TRUE,prob=c(surv.rate.vector,1-surv.rate.vector))
@@ -165,10 +165,10 @@ for (t in 1:sim.length){
 
   active.mosquitoes = subset(table1.vect, alive==TRUE)$ID.vect #active mosquitoes
   }
-  
+
   #Active hosts at this time point
-  
-  active.hosts = subset(subset(table1.vert,active==TRUE), End.date+inf.date > t)$hosts.ID #active hosts  
+
+  active.hosts = subset(subset(table1.vert,active==TRUE), End.date+inf.date > t)$hosts.ID #active hosts
   table1.vert[!as.character(active.hosts),active:=FALSE]
 
 #if(length(active.hosts) == 0 & length(active.mosquitoes) == 0){break}
@@ -177,23 +177,23 @@ for (t in 1:sim.length){
 #Step 1: Active hosts may be moving ------------------------------------------------------------------------
 
   table1.mov=subset(table1.mov,hosts.ID %in% active.hosts)
-  
+
     for (j in active.hosts){
       setkey(table1.mov,hosts.ID)
       table1.mov[j,origin:=table1.mov[j,now]]
       moving=sample(c(TRUE,FALSE), 1, prob=c(Daily.travel.prob,1-Daily.travel.prob))#is individual moving?
-      
-      if(moving==TRUE){ 
+
+      if(moving==TRUE){
         table1.mov[j,origin]
-        
+
         going.to = sample(subset(AirlineData, From==table1.mov[j,origin])$To,1,replace=TRUE,prob=subset(AirlineData, From==table1.mov[j,origin])$prob)
-        
+
         table1.mov[j,now:=going.to]
-      }else{ 
+      }else{
         staying = table1.mov[j,origin]
         table1.mov[j,now:=staying]
       }
-    } 
+    }
 
 table1.mov$t = t
 mov.archiv = plyr::rbind.fill(mov.archiv,table1.mov)
@@ -202,7 +202,7 @@ mov.archiv = plyr::rbind.fill(mov.archiv,table1.mov)
 
 for (j in active.hosts){
   bitten=sample(c(TRUE,FALSE), 1, prob=c(subset(human.daily.biting.prob, Location==table1.mov[j,now])$prob,1-subset(human.daily.biting.prob, Location==table1.mov[j,now])$prob))#is mosquito biting
-  
+
   if(bitten == TRUE){
     #is bite infectious?
     x = t-table1.vert[j, inf.date]
@@ -211,22 +211,22 @@ for (j in active.hosts){
     a.slopeInfec =table1.vert[j, slopeInfec]
     a.Recov50 =table1.vert[j, Recov50]
     a.slopeRecov =table1.vert[j, slopeRecov]
-    
+
     Ptransmit.t.vert2 = viremia(x,
                                 a.Pmax,
                                 a.IIP50,
                                 a.slopeInfec ,
                                 a.Recov50,
                                 a.slopeRecov)
-    
+
     Ptransmit.t.vert = ifelse(Ptransmit.t.vert2 > 0, Ptransmit.t.vert2, 0)
     transmitVert2Vect=sample(c(TRUE,FALSE),1,prob=c(Ptransmit.t.vert, 1-Ptransmit.t.vert))
-    
+
     if(transmitVert2Vect==TRUE){ #mosquito gets infected
-      
+
       ID.vect = as.character(paste("M",table1.mov[j,now],M.count+1,sep="-"))
       M.count = M.count+1
-      
+
       table1.ongoing = data.frame(ID.vect)
       table1.ongoing$loc = table1.mov[j,now]
       table1.ongoing$dead.date=as.numeric(NA)
@@ -234,40 +234,40 @@ for (j in active.hosts){
       table1.ongoing$infected.date=as.numeric(t)
       table1.ongoing$Infec.pop = as.numeric(Ptransmit.t.vert)
       table1.ongoing$alive = TRUE
-      
+
         u = rbinom(1,1, Pmax.mos.putative)
         if(u == 1){
           result = rlogis(1, location = EIPmean, scale = 1/slopeMos)
         }else{result = Inf}
 
       result[result < 0] = 0
-      
+
       table1.ongoing$EIP50 = result
       table1.ongoing = as.data.table(table1.ongoing)
       table1.vect = rbind(table1.vect,table1.ongoing)
       setkey(table1.vect,ID.vect)
     }
-  } 
+  }
   t
-} 
+}
 
 #Step 3: Active mosquitoes may bite in their location ------------------------------------------------------------------------
 
 for (j in active.mosquitoes){
   bitting=sample(c(TRUE,FALSE), 1, prob=c(biting.rate.vector,1-biting.rate.vector))#is mosquito biting
-  
+
   if(bitting == TRUE){#is bite infectious?
-    
+
     x = t-table1.vect[j, infected.date]
     b.EIP50 = table1.vect[j, EIP50]
-    
+
     Ptransmit.t.vect = ifelse(x >= b.EIP50, 1, 0)
     transmitVect2Vert=sample(c(TRUE,FALSE),1,prob=c(Ptransmit.t.vect, 1-Ptransmit.t.vect))
-    
+
     if(transmitVect2Vert == TRUE){#New host is infected
-      
+
       #new host biology
-      
+
       ID.ongoing = paste("H",H.count+1,sep="-")
       H.count = H.count+1
       table1.vert.ongoing = data.frame(hosts.ID=ID.ongoing)
@@ -284,19 +284,19 @@ for (j in active.mosquitoes){
         table1.vert.ongoing$inf.date = t
         table1.vert.ongoing$asymptomatic = sample(c(TRUE, FALSE), 1, replace=TRUE, prob=c(Prob.asympto, 1-Prob.asympto))
         table1.vert.ongoing$active = TRUE
-          
+
         table1.vert.ongoing = table1.vert.ongoing %>% group_by(hosts.ID) %>% mutate(Recov50=rtnorm(1,Recov,Recov.sd, a=IIP50+1, b=Inf))
-        
+
         table1.vert.ongoing = tryCatch(table1.vert.ongoing %>% group_by(hosts.ID) %>% mutate(End.date=uniroot(viremia2, Pmax=Pmax, IIP=IIP50, slopeIIP=slopeInfec, Recov=Recov50, slopeRecov=slopeRecov, dist=0.01, upper=Recov50*2, lower=Recov50, extendInt="yes", maxiter=100000)$root), error=function(e) "skip")
         if(is.data.frame(table1.vert)==TRUE){break}
       }
       table1.vert.ongoing = as.data.table(table1.vert.ongoing)
 
-      
+
       table1.vert= rbind(table1.vert,table1.vert.ongoing)
       setkey(table1.vert, hosts.ID)
       #new host movement
-      
+
       ####Movement history####
       table1.mov.ongoing = data.table(hosts.ID=ID.ongoing,origin=table1.vect[j, loc],now=table1.vect[j, loc],t=t)
       table1.mov=rbind(table1.mov,table1.mov.ongoing)
@@ -304,6 +304,7 @@ for (j in active.mosquitoes){
   }
 }
 }
+
 nrow(table1.vert)
 
 ############
@@ -318,7 +319,7 @@ mov <- read_csv("humans-moves.csv")
 ############ Data
 
 countries_centroid
-worldmap <- borders("world", colour="gray50", fill="#efede1",t=1:182) 
+worldmap <- borders("world", colour="gray50", fill="#efede1",t=1:182)
 
 sim.length = 238
 
@@ -349,10 +350,10 @@ library(viridis)
 summed.mov = mov %>% group_by(t,now) %>% summarise(N=length(hosts.ID))
 data2 = merge(summed.mov, countries_centroid, by.x="now", by.y="Code2")
 
-ggplot() + 
+ggplot() +
   theme_dark() + worldmap2 +
 geom_point(data=data2,aes(x=Long,y=Lat,size=as.numeric(N)), show.legend = FALSE, color="orange1") +
-  scale_size_continuous(c(5,20)) + 
+  scale_size_continuous(c(5,20)) +
   #  geom_curve(data=data.airlines3, aes(x = LongFR, y = LatFR,
   #                                      xend = LongTO, yend = LatTO,
   #                                      alpha=Seats), curvature = -0.2) +
@@ -365,14 +366,14 @@ geom_point(data=data2,aes(x=Long,y=Lat,size=as.numeric(N)), show.legend = FALSE,
  labs(title = "Time: {current_frame}") +
   transition_manual(t)
 
-worldmap2 <- borders("world", colour="gray50", fill="black") 
+worldmap2 <- borders("world", colour="gray50", fill="black")
 
-ggplot() + 
+ggplot() +
   theme_dark() + worldmap2 +
    geom_curve(data=data.airlines3, aes(x = LongFR, y = LatFR,
                                         xend = LongTO, yend = LatTO,
                                         color=log10(Seats)), curvature = -0.2,alpha=0.4) +
-  scale_color_viridis(option="magma") + 
+  scale_color_viridis(option="magma") +
   coord_cartesian(xlim = c(min(data2$Long)-0.25,
                            -50),
                   ylim = c(min(data2$Lat)-0.25,
@@ -391,7 +392,7 @@ us_states_elec <- left_join(world, AedesSuitability2,by=c("region" = "Country"))
 ggplot(data = us_states_elec,
             mapping = aes(x = long, y = lat,
                           group = group,order=order,fill=Aedes)) + geom_polygon() +
-  scale_fill_viridis(option="magma") + 
+  scale_fill_viridis(option="magma") +
   coord_cartesian(xlim = c(min(data2$Long)-0.25,
                            -50),
                   ylim = c(min(data2$Lat)-0.25,
