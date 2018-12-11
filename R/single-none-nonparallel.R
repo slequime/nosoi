@@ -21,7 +21,9 @@ single_none_parallel <- function(length,
                                  p_exit,
                                  ...){
 
-#Function check-------------------------------------------------------------
+#Sanity check-------------------------------------------------------------
+  if (is.na(length) | length <= 1) message("You must specify a length (in time units) for your simulation.")
+  if (is.na(max.infected) | max.infected <= 1) message("You must specify a maximum number of infected hosts.")
 
   p_trans <- match.fun(p_trans)
   time_contact <- match.fun(time_contact)

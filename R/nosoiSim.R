@@ -10,10 +10,8 @@
 #' @export nosoiSim
 #' @import data.table
 
-nosoiSim <- function(length=NA, max.infected=NA,type="single",geo="none",parallel=FALSE,...){
+nosoiSim <- function(type="single",geo="none",parallel=FALSE,...){
   #Sanity checks -------------
-  if (is.na(length) | length <= 1) message("You must specify a length (in time units) for your simulation.")
-  if (is.na(max.infected) | max.infected <= 1) message("You must specify a maximum number of infected hosts.")
   if (! type %in% c("single","dual")) message("Type of transmission should be 'single' or 'dual'-host.")
   if (! geo %in% c("none","discrete","continuous")) message("Unrecognized parameters for location-explicit model")
   if (! parallel %in% c(TRUE,FALSE)) message("Parallel parameter should be TRUE or FALSE")
