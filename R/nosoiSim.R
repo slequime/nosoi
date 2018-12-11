@@ -1,5 +1,4 @@
 nosoiSim <- function(length=NA, max.infected=NA,type="single",geo="none",parallel=FALSE,...){
-  library(data.table)
   #Sanity checks -------------
   if (is.na(length) | length <= 1) message("You must specify a length (in time units) for your simulation.")
   if (is.na(max.infected) | max.infected <= 1) message("You must specify a maximum number of infected hosts.")
@@ -9,7 +8,7 @@ nosoiSim <- function(length=NA, max.infected=NA,type="single",geo="none",paralle
 
   #Loading correct script ------------------
   if(type=="single" & geo=="none" & parallel==FALSE) {
-    single_none_parallel(length=length,max.infected=max.infected,...)
+    output = single_none_parallel(length=length,max.infected=max.infected,...)
 }
   #To be implemented
   if(type=="single" & geo=="none" & parallel==TRUE) message("This version has not been implemented yet.")
@@ -23,4 +22,5 @@ nosoiSim <- function(length=NA, max.infected=NA,type="single",geo="none",paralle
   if(type=="dual" & geo=="discrete" & parallel==TRUE) message("This version has not been implemented yet.")
   if(type=="dual" & geo=="continuous" & parallel==FALSE) message("This version has not been implemented yet.")
   if(type=="dual" & geo=="continuous" & parallel==TRUE) message("This version has not been implemented yet.")
-}
+return(output)
+  }
