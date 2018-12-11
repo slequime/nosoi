@@ -1,5 +1,5 @@
 nosoiSim <- function(length=NA, max.infected=NA,type="single",geo="none",parallel=FALSE,...){
-
+library(data.table)
   #Sanity checks -------------
   if (is.na(length) | length <= 1) message("You must specify a length (in time units) for your simulation.")
   if (is.na(max.infected) | max.infected <= 1) message("You must specify a maximum number of infected hosts.")
