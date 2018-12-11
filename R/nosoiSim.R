@@ -1,3 +1,15 @@
+#' Top-level function to use Nosoi
+#'
+#' @param type specifies which type of pathogen we are interested in, either "single" or "dual"-host (e.g. arboviruses).
+#' @param geo specifies if Nosoi should be spatially explicit or not ("none"), and if yes, which type of geographic space ("continuous" or "discrete").
+#' @param parallel if simulation should be run in parallel or not.
+#' @param ... arguments to be passed on to the simulator (see below).
+#'
+#' @details This function determines which general settings the user wants to use for his simulation.
+#' @details All other arguments are passed down to the chosen simulator itself, such as \code{\link{single_none_parallel}}
+#' @export nosoiSim
+#' @import data.table
+
 nosoiSim <- function(length=NA, max.infected=NA,type="single",geo="none",parallel=FALSE,...){
   #Sanity checks -------------
   if (is.na(length) | length <= 1) message("You must specify a length (in time units) for your simulation.")

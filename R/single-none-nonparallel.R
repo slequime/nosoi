@@ -1,3 +1,18 @@
+#' Single-host, no spatial features and on a single core
+#'
+#' @param length specifies the length (in unit of time) over which the simulation should be run.
+#' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
+#' @param init.individuals if simulation should be run in parallel or not.
+#' @param time_contact function that gives the number of potential transmission events per unit of time.
+#' @param p_trans function that gives the probability of transmit a pathogen as a function of time since infection.
+#' @param p_exit probability to exit the simulation for an infected host (either moving out, dying, etc.).
+#' @param ... other arguments to be passed on to the simulator (see below).
+#'
+#' @details This function runs a single-host, without any spatial features, epidemiological simulation on a single core.
+#' @details Th simulation stops either at the end of given time (specified by length) or when the number of hosts infected threshold is passed.
+#' @export single_none_parallel
+#' @import data.table
+
 single_none_parallel <- function(length,
                                  max.infected,
                                  init.individuals,

@@ -10,6 +10,4 @@ Description: Nosoi (pronounced no.so.i) is a flexible agent-based stochastic epi
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-
-Depends:
-    data.table
+RoxygenNote: 6.1.1
