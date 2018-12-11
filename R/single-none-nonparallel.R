@@ -46,9 +46,11 @@ for (pres.time in 1:length){
   active.hosts = subset(table.hosts,active==1)$hosts.ID #active hosts
 
   if(length(active.hosts) > 0){
+    IDs = active.hosts[exiting]
+
     exiting <- sample(c(TRUE,FALSE),length(active.hosts),replace=TRUE,prob=c(p_exit,1-p_exit))
-    table.hosts[active.hosts[exiting],"out.time":=as.numeric(pres.time)]
-    table.hosts[active.hosts[exiting],active:=0]
+    table.hosts[IDs, `:=` (out.time = as.numeric(pres.time),
+                         active = 0)]
 
     active.hosts = subset(table.hosts, active==1)$hosts.ID #active hosts
   }
