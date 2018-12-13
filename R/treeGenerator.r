@@ -1,6 +1,6 @@
 treeGenerator = function(transmission_matrix, samples, sampling_times)
 	{
-		output_format="tree"; nberOfTraits = dim(transmission_matrix)[2]-3	; trait_names = c()
+		output_format = "tree"; nberOfTraits = dim(transmission_matrix)[2]-3; trait_names = c()
 		for (i in 4:dim(transmission_matrix)[2]) trait_names = c(trait_names, colnames(transmission_matrix)[i])
 		nodes = samples; times = sampling_times; clades = nodes
 		for (i in 1:length(nodes))
@@ -8,10 +8,10 @@ treeGenerator = function(transmission_matrix, samples, sampling_times)
 				clade = paste0(nodes[i],"[&ind=",nodes[i])
 				for (j in 1:nberOfTraits)
 					{
-						index = which(transmission_matrix[,"ind.ID"]==nodes[i])
+						index = which(transmission_matrix[,"hosts.ID"]==nodes[i])
 						clade = paste0(clade,",",trait_names[j],"=",transmission_matrix[index,trait_names[j]])
 					}
-				clades[i] = paste0(clade,"]")
+				clades[i] = paste0(as.character(clade),"]")
 			}
 		t0 = max(sampling_times)
 		for (t in t0:0)
@@ -20,8 +20,8 @@ treeGenerator = function(transmission_matrix, samples, sampling_times)
 				indices1 = rep(NA, length(nodes)); infDates = rep(NA, length(nodes)); ancestors = rep(NA, length(nodes))
 				for (i in 1:length(nodes))
 					{
-						indices1[i] = which(transmission_matrix[,"ind.ID"]==nodes[i])
-						infDates[i] = transmission_matrix[indices1[i], "inf.date"]
+						indices1[i] = which(transmission_matrix[,"hosts.ID"]==nodes[i])
+						infDates[i] = transmission_matrix[indices1[i], "inf.time"]
 						ancestors[i] = transmission_matrix[indices1[i], "inf.by"]
 					}
 				indices2 = which(infDates==t)
@@ -50,7 +50,7 @@ treeGenerator = function(transmission_matrix, samples, sampling_times)
 										traits = paste0("[&ind=",ancestor)
 										for (j in 1:nberOfTraits)
 											{
-												index = which(transmission_matrix[,"ind.ID"]==nodes[i])
+												index = which(transmission_matrix[,"hosts.ID"]==nodes[i])
 												traits = paste0(traits,",",trait_names[j],"=",transmission_matrix[index,trait_names[j]])
 											}
 										clade = paste0(clade,traits,"]")
@@ -65,7 +65,7 @@ treeGenerator = function(transmission_matrix, samples, sampling_times)
 									}
 							}
 					}
-				nodes = newNodes; times = newTimes; clades = newClades; # print(length(nodes))
+				nodes = newNodes; times = newTimes; clades = newClades; print(length(nodes))
 			}
 		if (output_format == "tree") tree = read.tree(text=paste0(clades[[1]],";"))
 		if (output_format == "text") tree = paste0(clades[[1]],";")
