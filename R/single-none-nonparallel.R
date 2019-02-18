@@ -1,4 +1,4 @@
-#' Single-host, no spatial features and on a single core
+#' Single-host without spatial features
 #'
 #' @param length specifies the length (in unit of time) over which the simulation should be run.
 #' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
@@ -13,7 +13,7 @@
 #' @export single_none_parallel
 #' @import data.table
 
-single_none_parallel <- function(length,
+single_none <- function(length,
                                  max.infected,
                                  init.individuals,
                                  time_contact,
