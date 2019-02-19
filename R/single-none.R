@@ -1,8 +1,8 @@
 #' Single-host without spatial features
 #'
-#' @param length specifies the length (in unit of time) over which the simulation should be run.
+#' @param length.sim specifies the length (in unit of time) over which the simulation should be run.
 #' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
-#' @param init.individuals if simulation should be run in parallel or not.
+#' @param init.individuals number of initially infected individuals.
 #' @param time_contact function that gives the number of potential transmission events per unit of time.
 #' @param p_trans function that gives the probability of transmit a pathogen as a function of time since infection.
 #' @param p_exit probability to exit the simulation for an infected host (either moving out, dying, etc.).
@@ -10,19 +10,19 @@
 #'
 #' @details This function runs a single-host, without any spatial features, epidemiological simulation on a single core.
 #' @details Th simulation stops either at the end of given time (specified by length) or when the number of hosts infected threshold is passed.
-#' @export single_none_parallel
+#' @export single_none
 #' @import data.table
 
-single_none <- function(length,
-                                 max.infected,
-                                 init.individuals,
-                                 time_contact,
-                                 p_trans,
-                                 p_exit,
-                                 ...){
+single_none <- function(length.sim,
+                        max.infected,
+                        init.individuals,
+                        time_contact,
+                        p_trans,
+                        p_exit,
+                        ...){
 
 #Sanity check-------------------------------------------------------------
-  if (is.na(length) | length <= 1) message("You must specify a length (in time units) for your simulation.")
+  if (is.na(length.sim) | length.sim <= 1) message("You must specify a length (in time units) for your simulation.")
   if (is.na(max.infected) | max.infected <= 1) message("You must specify a maximum number of infected hosts.")
 
   p_trans <- match.fun(p_trans)
@@ -54,9 +54,9 @@ single_none <- function(length,
 
 # Running the simulation ----------------------------------------
   packageStartupMessage(" running ...")
-  pb <- txtProgressBar(min = 0, max = length, style = 3,width=50)
+  pb <- txtProgressBar(min = 0, max = length.sim, style = 3,width=50)
 
-for (pres.time in 1:length){
+for (pres.time in 1:length.sim){
 
   #Step 0: Active hosts ----------------------------------------------------------
 

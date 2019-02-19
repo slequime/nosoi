@@ -4,15 +4,12 @@
 \alias{nosoiSim}
 \title{Top-level function to use Nosoi}
 \usage{
-nosoiSim(length = NA, max.infected = NA, type = "single",
-  geo = "none", parallel = FALSE, ...)
+nosoiSim(type = "single", geo = "none", ...)
 }
 \arguments{
 \item{type}{specifies which type of pathogen we are interested in, either "single" or "dual"-host (e.g. arboviruses).}
 
 \item{geo}{specifies if Nosoi should be spatially explicit or not ("none"), and if yes, which type of geographic space ("continuous" or "discrete").}
-
-\item{parallel}{if simulation should be run in parallel or not.}
 
 \item{...}{arguments to be passed on to the simulator (see below).}
 }
