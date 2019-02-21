@@ -86,27 +86,13 @@ for (pres.time in 1:length.sim){
 
     if(transmit==TRUE){ #new host gets infected
 
-      Host.count = Host.count+1
-      hosts.ID = as.character(paste(prefix.host,Host.count,sep="-"))
+      Host.count <- Host.count+1
+      hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
+      table.temp <- newLine(hosts.ID,j,pres.time,n.pTrans.param,pTrans.param)
 
-      table.temp <- data.frame(matrix(0, ncol = (5+n.pTrans.param), nrow = 1))
-      colnames(table.temp)=c("hosts.ID","inf.by","inf.time","out.time","active",pTrans.param)
-
-      table.temp[1,"hosts.ID"] <- as.character(paste(prefix.host,Host.count,sep="-"))
-      table.temp[1,"inf.by"] <- j
-      table.temp[1,"inf.time"] <- pres.time
-      table.temp[1,"out.time"] <- NA
-      table.temp[1,"active"] <- 1
-      for (i in pTrans.param){ table.temp[1,i] <- eval(parse(text = paste0(i,"(",1,")"))) }
-
-
-      table.temp <- data.table::as.data.table(table.temp)
- data.table::setkey(table.temp, hosts.ID)
-
-
- table.hosts <- data.table::rbindlist(list(table.hosts,table.temp))
- data.table::setkey(table.hosts,hosts.ID)
+      table.hosts <- data.table::rbindlist(list(table.hosts,table.temp))
+      data.table::setkey(table.hosts,hosts.ID)
 
   }
 setTxtProgressBar(pb, pres.time)}
