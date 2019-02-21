@@ -4,8 +4,8 @@
 \alias{single_none}
 \title{Single-host without spatial features}
 \usage{
-single_none(length.sim, max.infected, init.individuals, time_contact,
-  p_trans, p_exit, ...)
+single_none(length.sim, max.infected, init.individuals, timeContact,
+  pTrans, pExit, ...)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -14,11 +14,11 @@ single_none(length.sim, max.infected, init.individuals, time_contact,
 
 \item{init.individuals}{number of initially infected individuals.}
 
-\item{time_contact}{function that gives the number of potential transmission events per unit of time.}
+\item{timeContact}{function that gives the number of potential transmission events per unit of time.}
 
-\item{p_trans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
+\item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
 
-\item{p_exit}{probability to exit the simulation for an infected host (either moving out, dying, etc.).}
+\item{pExit}{probability to exit the simulation for an infected host (either moving out, dying, etc.).}
 
 \item{...}{other arguments to be passed on to the simulator (see below).}
 }

@@ -3,9 +3,9 @@
 #' @param length.sim specifies the length (in unit of time) over which the simulation should be run.
 #' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
 #' @param init.individuals number of initially infected individuals.
-#' @param time_contact function that gives the number of potential transmission events per unit of time.
-#' @param p_trans function that gives the probability of transmit a pathogen as a function of time since infection.
-#' @param p_exit probability to exit the simulation for an infected host (either moving out, dying, etc.).
+#' @param timeContact function that gives the number of potential transmission events per unit of time.
+#' @param pTrans function that gives the probability of transmit a pathogen as a function of time since infection.
+#' @param pExit probability to exit the simulation for an infected host (either moving out, dying, etc.).
 #' @param ... other arguments to be passed on to the simulator (see below).
 #'
 #' @details This function runs a single-host, without any spatial features, epidemiological simulation on a single core.
@@ -16,40 +16,27 @@
 single_none <- function(length.sim,
                         max.infected,
                         init.individuals,
-                        time_contact,
-                        p_trans,
-                        p_exit,
+                        timeContact,
+                        pTrans,
+                        pExit,
                         ...){
 
 #Sanity check-------------------------------------------------------------
   if (is.na(length.sim) | length.sim <= 1) message("You must specify a length (in time units) for your simulation.")
   if (is.na(max.infected) | max.infected <= 1) message("You must specify a maximum number of infected hosts.")
 
-  p_trans <- match.fun(p_trans)
-  time_contact <- match.fun(time_contact)
+  pTrans <- match.fun(pTrans)
+  timeContact <- match.fun(timeContact)
 
-  p_trans.param <- formalArgs(p_trans)[-1]
-  n.p_trans.param <- length(p_trans.param)
+  pTrans.param <- formalArgs(pTrans)[-1]
+  n.pTrans.param <- length(pTrans.param)
 
   message("Starting the simulation")
   packageStartupMessage("Initializing ...", appendLF = FALSE)
 
 #Creation of initial data ----------------------------------------------------------
-  table.hosts <- data.frame(matrix(0, ncol = (5+n.p_trans.param), nrow = init.individuals))
-  colnames(table.hosts)<-c("hosts.ID","inf.by","inf.time","out.time","active",p_trans.param)
 
-  for(indiv in 1:init.individuals){
-
-    table.hosts[indiv,"hosts.ID"] <- paste("H",indiv,sep="-")
-    table.hosts[indiv,"inf.by"] <- paste("unkown")
-    table.hosts[indiv,"inf.time"] <- 0
-    table.hosts[indiv,"out.time"] <- NA
-    table.hosts[indiv,"active"] <- 1
-  for (i in p_trans.param){ table.hosts[indiv,i] = eval(parse(text = paste0(i,"(",1,")"))) }
-  }
-
-  table.hosts <- data.table::as.data.table(table.hosts)
-  data.table::setkey(table.hosts, hosts.ID)
+  table.hosts <- iniTable(init.individuals,n.pTrans.param,pTrans.param)
   Host.count <- init.individuals
 
 # Running the simulation ----------------------------------------
@@ -63,7 +50,7 @@ for (pres.time in 1:length.sim){
   active.hosts = subset(table.hosts,active==1)$hosts.ID #active hosts
 
   if(length(active.hosts) > 0){
-    exiting <- sample(c(TRUE,FALSE),length(active.hosts),replace=TRUE,prob=c(p_exit,1-p_exit))
+    exiting <- sample(c(TRUE,FALSE),length(active.hosts),replace=TRUE,prob=c(pExit,1-pExit))
     IDs = active.hosts[exiting]
     table.hosts[IDs, `:=` (out.time = as.numeric(pres.time),
                          active = 0)]
@@ -76,7 +63,7 @@ for (pres.time in 1:length.sim){
   #Step 1: Meeting & transmission ----------------------------------------------------
 
   for (j in active.hosts){
-  number.contacts <- time_contact(1)
+  number.contacts <- timeContact(1)
 
   for(contacts in 1:number.contacts)
     #is transmission occuring?
@@ -85,14 +72,14 @@ for (pres.time in 1:length.sim){
 
   x2 <- NULL
 
-  for (i in p_trans.param){
+  for (i in pTrans.param){
     x1 <- paste0(i,"=",as.numeric(table.hosts[j, ..i]))
     x2 <- c(x2,x1)
   }
 
   option.trans <- paste0(c(x,x2),collapse = ",")
 
- Ptransmit <- eval(parse(text = paste("p_trans(", option.trans, ")")))
+ Ptransmit <- eval(parse(text = paste("pTrans(", option.trans, ")")))
 
  transmit<-sample(c(TRUE,FALSE),1,prob=c(Ptransmit, 1-Ptransmit))
 
@@ -102,15 +89,15 @@ for (pres.time in 1:length.sim){
       hosts.ID = as.character(paste("H",Host.count,sep="-"))
 
 
-      table.temp <- data.frame(matrix(0, ncol = (5+n.p_trans.param), nrow = 1))
-      colnames(table.temp)=c("hosts.ID","inf.by","inf.time","out.time","active",p_trans.param)
+      table.temp <- data.frame(matrix(0, ncol = (5+n.pTrans.param), nrow = 1))
+      colnames(table.temp)=c("hosts.ID","inf.by","inf.time","out.time","active",pTrans.param)
 
       table.temp[1,"hosts.ID"] <- as.character(paste("H",Host.count,sep="-"))
       table.temp[1,"inf.by"] <- j
       table.temp[1,"inf.time"] <- pres.time
       table.temp[1,"out.time"] <- NA
       table.temp[1,"active"] <- 1
-      for (i in p_trans.param){ table.temp[1,i] <- eval(parse(text = paste0(i,"(",1,")"))) }
+      for (i in pTrans.param){ table.temp[1,i] <- eval(parse(text = paste0(i,"(",1,")"))) }
 
 
       table.temp <- data.table::as.data.table(table.temp)
