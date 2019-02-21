@@ -5,7 +5,7 @@
 \title{Single-host without spatial features}
 \usage{
 single_none(length.sim, max.infected, init.individuals, timeContact,
-  pTrans, pExit, ...)
+  pTrans, pExit, prefix.host = "H", ...)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}

@@ -19,6 +19,7 @@ single_none <- function(length.sim,
                         timeContact,
                         pTrans,
                         pExit,
+                        prefix.host="H",
                         ...){
 
 #Sanity check-------------------------------------------------------------
@@ -36,7 +37,7 @@ single_none <- function(length.sim,
 
 #Creation of initial data ----------------------------------------------------------
 
-  table.hosts <- iniTable(init.individuals,n.pTrans.param,pTrans.param)
+  table.hosts <- iniTable(init.individuals,n.pTrans.param,pTrans.param,prefix.host)
   Host.count <- init.individuals
 
 # Running the simulation ----------------------------------------
@@ -86,13 +87,13 @@ for (pres.time in 1:length.sim){
     if(transmit==TRUE){ #new host gets infected
 
       Host.count = Host.count+1
-      hosts.ID = as.character(paste("H",Host.count,sep="-"))
+      hosts.ID = as.character(paste(prefix.host,Host.count,sep="-"))
 
 
       table.temp <- data.frame(matrix(0, ncol = (5+n.pTrans.param), nrow = 1))
       colnames(table.temp)=c("hosts.ID","inf.by","inf.time","out.time","active",pTrans.param)
 
-      table.temp[1,"hosts.ID"] <- as.character(paste("H",Host.count,sep="-"))
+      table.temp[1,"hosts.ID"] <- as.character(paste(prefix.host,Host.count,sep="-"))
       table.temp[1,"inf.by"] <- j
       table.temp[1,"inf.time"] <- pres.time
       table.temp[1,"out.time"] <- NA

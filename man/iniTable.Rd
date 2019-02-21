@@ -4,7 +4,7 @@
 \alias{iniTable}
 \title{Generates initial table to start the simulation (internal fonction)}
 \usage{
-iniTable(init.individuals, n.pTrans.param, pTrans.param)
+iniTable(init.individuals, n.pTrans.param, pTrans.param, prefix.host)
 }
 \arguments{
 \item{init.individuals}{number of initially infected individuals (i.e. number of lines at time 0).}
@@ -17,5 +17,5 @@ iniTable(init.individuals, n.pTrans.param, pTrans.param)
 Generates initial table to start the simulation (internal fonction)
 }
 \details{
-This function creates the initial table for the host, with 5+number of paramters of the transmission probability function paramters, and init.individuals row(s).
+This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s).
 }
