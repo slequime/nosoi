@@ -4,7 +4,7 @@
 \alias{iniTable}
 \title{Generates initial table to start the simulation (internal fonction)}
 \usage{
-iniTable(init.individuals, n.pTrans.param, pTrans.param, prefix.host)
+iniTable(init.individuals, prefix.host, n.pTrans.param, param.pTrans)
 }
 \arguments{
 \item{init.individuals}{number of initially infected individuals (i.e. number of lines at time 0).}

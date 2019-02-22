@@ -17,12 +17,12 @@ nosoiSim <- function(type="single",geo="none",...){
   #Loading correct script ------------------
   if(type=="single" & geo=="none") {
     output = single_none(...)
-}
+  }
   #To be implemented
   if(type=="single" & geo=="discrete") message("This version has not been implemented yet.")
   if(type=="single" & geo=="continuous") message("This version has not been implemented yet.")
   if(type=="dual" & geo=="none") message("This version has not been implemented yet.")
   if(type=="dual" & geo=="discrete") message("This version has not been implemented yet.")
   if(type=="dual" & geo=="continuous") message("This version has not been implemented yet.")
-return(output)
-  }
+  return(output)
+}

@@ -5,7 +5,7 @@
 \title{Single-host without spatial features}
 \usage{
 single_none(length.sim, max.infected, init.individuals, timeContact,
-  pTrans, pExit, prefix.host = "H", ...)
+  pTrans, param.pTrans, pExit, param.pExit, prefix.host = "H", ...)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -28,5 +28,5 @@ Single-host without spatial features
 \details{
 This function runs a single-host, without any spatial features, epidemiological simulation on a single core.
 
-Th simulation stops either at the end of given time (specified by length) or when the number of hosts infected threshold is passed.
+The simulation stops either at the end of given time (specified by length) or when the number of hosts infected threshold is passed.
 }
