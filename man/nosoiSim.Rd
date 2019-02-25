@@ -4,12 +4,12 @@
 \alias{nosoiSim}
 \title{Top-level function to use Nosoi}
 \usage{
-nosoiSim(type = "single", geo = "none", ...)
+nosoiSim(type = "single", structure = FALSE, ...)
 }
 \arguments{
 \item{type}{specifies which type of pathogen we are interested in, either "single" or "dual"-host (e.g. arboviruses).}
 
-\item{geo}{specifies if Nosoi should be spatially explicit or not ("none"), and if yes, which type of geographic space ("continuous" or "discrete").}
+\item{structure}{specifies if the population in which the transmission is to occur is structured (discrete variable).}
 
 \item{...}{arguments to be passed on to the simulator (see below).}
 }
@@ -19,5 +19,5 @@ Top-level function to use Nosoi
 \details{
 This function determines which general settings the user wants to use for his simulation.
 
-All other arguments are passed down to the chosen simulator itself, such as \code{\link{single_none_parallel}}
+All other arguments are passed down to the chosen simulator itself, such as \code{\link{SingleNone}}
 }

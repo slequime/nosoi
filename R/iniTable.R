@@ -1,19 +1,22 @@
 #' Generates initial table to start the simulation (internal fonction)
 #'
-#' @param init.individuals number of initially infected individuals (i.e. number of lines at time 0).
-#' @param n.pTrans.param number of parameters for transmission probability computation (impacts number of columns).
-#' @param pTrans.param transmission probability function parameters' name.
+#' @description This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s).
 #'
-#' @details This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s).
-#' @export iniTable
-#' @import data.table
+#' @param init.individuals number of initially infected individuals (i.e. number of lines at time 0).
+#' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
+#' @param n.pExit.param number of parameters for exit probability computation (impacts number of columns).
+#' @param param.pExit list of exit probability function(s).
+#' @param n.pTrans.param number of parameters for transmission probability computation (impacts number of columns).
+#' @param param.pTrans list of transmission probability function(s).
+#'
+#' @keywords internal
 
-iniTable <- function(init.individuals,prefix.host, n.pTrans.param, param.pTrans){
+iniTable <- function(init.individuals,prefix.host, n.pExit.param,param.pExit,n.pTrans.param, param.pTrans){
 
 #Creation of initial data ----------------------------------------------------------
 
-table.hosts <- data.frame(matrix(0, ncol = (5+n.pTrans.param), nrow = init.individuals))
-colnames(table.hosts)<-c("hosts.ID","inf.by","inf.time","out.time","active",names(param.pTrans))
+table.hosts <- data.frame(matrix(0, ncol = (5+n.pTrans.param+n.pExit.param), nrow = init.individuals))
+colnames(table.hosts)<-c("hosts.ID","inf.by","inf.time","out.time","active",names(param.pExit),names(param.pTrans))
 
 for(indiv in 1:init.individuals){
 
@@ -23,9 +26,13 @@ for(indiv in 1:init.individuals){
   table.hosts[indiv,"out.time"] <- NA
   table.hosts[indiv,"active"] <- 1
 
-  Sampled.param <- sapply(param.pTrans, function(x) sapply(1, x))
+  Sampled.param.pTrans <- sapply(param.pTrans, function(x) sapply(1, x))
 
-  for (i in names(param.pTrans)){ table.hosts[indiv,i] = Sampled.param[i] }
+  for (i in names(param.pTrans)){ table.hosts[indiv,i] = Sampled.param.pTrans[i] }
+  if(n.pExit.param > 0){
+    Sampled.param.pExit <- sapply(param.pExit, function(x) sapply(1, x))
+    for (j in names(param.pExit)){ table.hosts[indiv,j] = Sampled.param.pExit[j] }
+  }
 }
 
 table.hosts <- data.table::as.data.table(table.hosts)

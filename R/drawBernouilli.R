@@ -9,7 +9,7 @@
 #' leads to an infection.
 #'
 #' @return Boolean vector giving the newly infected individuals.
-#' @export drawBernouilli
+#' @keywords internal
 ##
 drawBernouilli <- function(p) {
   return(runif(length(p), 0, 1) < p)
