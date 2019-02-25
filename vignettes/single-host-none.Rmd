@@ -1,0 +1,58 @@
+---
+title: "Transmission chain simulation for a pathogen in a single, non structured, host population"
+author: "Sebastian Lequime"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{single-host-none}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Nosoi can accomodate a wide range of epidemiological transmission scenarios, but you need to properly set up the parameters to get it working. This tutorial aims to illustrate how to set up a Nosoi simulation for a "simple" case : a pathogen being transmitted among a single, non-structure, host population. To illustrate this case, I will base this tutorial on some empirical data accumulated for Ebola Virus 
+
+##Setting up the simulation
+
+The wrapper function `nosoiSim` takes all the arguments that will be passed down to the core function, in our case `singleNone` (for "single host, no structure"). We thus start by providing the options `type="single"` and `structure=FALSE` to set up the analysis.
+
+```{r setupA, eval = FALSE}
+SimulationA <- nosoiSim(type="single",structure=FALSE,...)
+```
+
+This simulation (`singleNone`) type takes several arguments or options to be able to run, namely:
+- `length.sim` 
+- `max.infected` 
+- `init.individuals` 
+- `timeContact` 
+- `pTrans` with `param.pTrans` 
+- `pExit` with `param.pExit` (optional) 
+- `prefix.host` 
+
+### General parameters
+
+`length.sim`, `max.infected` and `init.individuals` are general parameters that defines the simulation. `length.sim` is the maximum number of unit of times (days, months, years, or other) during which your simulation will be run, whereas `max.infected` is the threshold of number of individuals that can be infected in your simulation. The simulation will thus run until either the time limit or number of infected individuals is reached. `init.individuals` defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain (you will have as much transmission chains as initial individuals that "seed" the epidemic process).
+
+Here, we will run a simulation starting with 1 individual, for a maximum 100 infected individuals and 100 days.
+
+```{r setupB, eval = FALSE}
+SimulationA <- nosoiSim(type="single",structure=FALSE,
+                        length.sim=300, max.infected=1000, init.individuals=1...)
+```
+
+### timeContact
+
+#https://www.nature.com/articles/s41467-018-06215-z#Sec26
+#https://bmcmedicine.biomedcentral.com/articles/10.1186/s12916-014-0196-0
+#https://www.cdc.gov/mmwr/preview/mmwrhtml/su6303a1.htm
+#https://journals.plos.org/plosmedicine/article/figure?id=10.1371/journal.pmed.1001908.g003
+
+
+EBOV
+per contact transmission probability 0.03

@@ -1,4 +1,4 @@
-#' Single-host without spatial features
+#' Single-host without structured host population
 #'
 #' @description This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
 #' the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.
@@ -14,9 +14,9 @@
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
 #' @param ... other arguments to be passed on to the simulator (see below).
 #'
-#' @export SingleNone
+#' @export singleNone
 
-SingleNone <- function(length.sim,
+singleNone <- function(length.sim,
                         max.infected,
                         init.individuals,
                         timeContact,

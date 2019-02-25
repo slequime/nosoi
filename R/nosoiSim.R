@@ -5,7 +5,7 @@
 #' @param ... arguments to be passed on to the simulator (see below).
 #'
 #' @details This function determines which general settings the user wants to use for his simulation.
-#' @details All other arguments are passed down to the chosen simulator itself, such as \code{\link{SingleNone}}
+#' @details All other arguments are passed down to the chosen simulator itself, such as \code{\link{singleNone}}
 #' @export nosoiSim
 #' @import data.table
 #' @import utils
@@ -19,7 +19,7 @@ nosoiSim <- function(type="single",structure=FALSE,...){
 
   #Loading correct script ------------------
   if(type=="single" & structure==FALSE) {
-    output = SingleNone(...)
+    output = singleNone(...)
   }
   #To be implemented
   if(type=="single" & structure==TRUE) message("This version has not been implemented yet.")
