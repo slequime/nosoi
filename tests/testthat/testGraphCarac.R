@@ -4,7 +4,7 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   library(igraph)
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Exit_fct  <- function(x){0.08}
+  p_Exit_fct  <- function(x){rep(0.08,length(x))}
 
   proba <- function(t,p_max,t_incub){
     if(t <= t_incub){p=0}
@@ -30,7 +30,7 @@ test_that("Transmission is coherent with single introduction, constant pExit and
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
-  expect_equal(diameter(g, directed=F, weights=NA), 5)
+  expect_equal(diameter(g, directed=F, weights=NA), 6)
 
 })
 
@@ -107,7 +107,7 @@ test_that("Transmission is coherent with multiple introductions, constant pExit 
   library(igraph)
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Exit_fct  <- function(x){0.08}
+  p_Exit_fct  <- function(x){rep(0.08,length(x))}
 
   proba <- function(t,p_max,t_incub){
     if(t <= t_incub){p=0}

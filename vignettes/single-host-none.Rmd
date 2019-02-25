@@ -1,5 +1,5 @@
 ---
-title: "Transmission chain simulation for a pathogen in a single, non structured, host population"
+title: "Single host pathogen in a non-structured host population"
 author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -16,17 +16,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-Nosoi can accomodate a wide range of epidemiological transmission scenarios, but you need to properly set up the parameters to get it working. This tutorial aims to illustrate how to set up a Nosoi simulation for a "simple" case : a pathogen being transmitted among a single, non-structure, host population. To illustrate this case, I will base this tutorial on some empirical data accumulated for Ebola Virus 
+Nosoi can accomodate a wide range of epidemiological transmission scenarios, but you need to properly set up the parameters to get it working. This tutorial aims to illustrate how to set up a Nosoi simulation for a "simple" case : a pathogen being transmitted among a single, non-structure, host population.
 
 ##Setting up the simulation
 
 The wrapper function `nosoiSim` takes all the arguments that will be passed down to the core function, in our case `singleNone` (for "single host, no structure"). We thus start by providing the options `type="single"` and `structure=FALSE` to set up the analysis.
 
 ```{r setupA, eval = FALSE}
-SimulationA <- nosoiSim(type="single",structure=FALSE,...)
+SimulationA <- nosoiSim(type="single", structure=FALSE, ...)
 ```
 
 This simulation (`singleNone`) type takes several arguments or options to be able to run, namely:
+
 - `length.sim` 
 - `max.infected` 
 - `init.individuals` 
@@ -39,20 +40,148 @@ This simulation (`singleNone`) type takes several arguments or options to be abl
 
 `length.sim`, `max.infected` and `init.individuals` are general parameters that defines the simulation. `length.sim` is the maximum number of unit of times (days, months, years, or other) during which your simulation will be run, whereas `max.infected` is the threshold of number of individuals that can be infected in your simulation. The simulation will thus run until either the time limit or number of infected individuals is reached. `init.individuals` defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain (you will have as much transmission chains as initial individuals that "seed" the epidemic process).
 
-Here, we will run a simulation starting with 1 individual, for a maximum 100 infected individuals and 100 days.
+Here, we will run a simulation starting with 1 individual, for a maximum 1,000 infected individuals and 300 days.
 
 ```{r setupB, eval = FALSE}
-SimulationA <- nosoiSim(type="single",structure=FALSE,
-                        length.sim=300, max.infected=1000, init.individuals=1...)
+SimulationA <- nosoiSim(type="single", structure=FALSE,
+                        length.sim=300, max.infected=1000, init.individuals=1, ...)
 ```
 
 ### timeContact
 
-#https://www.nature.com/articles/s41467-018-06215-z#Sec26
-#https://bmcmedicine.biomedcentral.com/articles/10.1186/s12916-014-0196-0
-#https://www.cdc.gov/mmwr/preview/mmwrhtml/su6303a1.htm
-#https://journals.plos.org/plosmedicine/article/figure?id=10.1371/journal.pmed.1001908.g003
+`timeContact` represent the number of potentially infectious contacts an infected hosts has per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation (which will be the variable `x`). The number of contacts has to be an integer (or 0). As it may vary, it has to be expressed as a function of `x` (uniquely), but can take various forms:
 
+```{r timeContact, eval = FALSE}
+time_contact_fct = function(x){rep(2,x)} #to get a constant number of contacts for each hosts, here 2.
+time_contact_fct = function(x){sample(c(0,1,2,3),x,replace=TRUE,prob=c(0.4,0.3,0.2,0.1))} #to get a varying number of contacts for each hosts.
+time_contact_fct = function(x){round(rnorm(x, 3, 1), 0)} #another example of varying number of contacts for each hosts.
+```
 
-EBOV
-per contact transmission probability 0.03
+This thus gives us the following structure for Nosoi's wrapper function:
+```{r setupC, eval = FALSE}
+SimulationA <- nosoiSim(type="single", structure=FALSE,
+                        length.sim=300, max.infected=1000, init.individuals=1, 
+                        timeContact=time_contact_fct, ...)
+```
+### pTrans and param.pTrans
+
+`pTrans` is the heart of the transmission process and represents the probability of transmission over time (when a contact occures). This function (uniquely) gives back a probability (i.e. a value between 0 and 1) dependent of the time (`t`) since the host's infection. It is intended to work with a set of parameters (from 1 to much more) defined by `param.pTrans`, that will characterize the dynamics of the transmission probability over time, as well as introducing some stochasticity. Since each host is different (slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, hence probability of transmission over time. The parameters defined in `param.pTrans` are thus also functions that will sample parameter values (`param.pTrans` is a list of functions).
+
+As an example, let's consider the following function for `pTrans`, in the form of a threshold:
+
+```{r pTrans, eval = FALSE}
+proba <- function(t,p_max,t_incub){
+    if(t < t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+}
+```
+
+This function gives us a transmission probability `p` given the time since infection `t` and two parameters, `p_max`, the maximum transmission probability and `t_incub`, the length of the incubation period (the threshold). If `t` is bigger than `t_incub`, then the transmission probability is `p_max`; if not, it is equal to 0.
+
+`p_max` and `t_incub` need to be specified. If we fix the value, for example to 0.8 and 5 unit of time, respectively, we assume that each host will react the same to the infection, as if they were perfect clones. To be closer to reality, Nosoi forces you to sample the values of each parameters from a function, such as:
+
+```{r param.pTrans1, eval = FALSE}
+p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+```
+
+Here, `p_max` will be sampled from a beta law, with shape parameters 5 and 2, and `t_incub` will be sampled from a normal law, with mean 5 and standard deviation 1. `x`, as seen before for `timeContact` will be the number of draws to perform. If you want to fix the value of one or all parameters, you can use a sampling function that will always give you the same value, such as:
+```{r param.pTrans1bis, eval = FALSE}
+t_incub_fct <- function(x){rep(5,x)} #constant parameter value.
+```
+
+In any case, the functions for `pTrans` parameters have to be wrapped into a list, called `param.pTrans`. The name of each function in the list has to have the same name as the parameter it is sampling for `pTrans`. Here it will look like:
+
+```{r param.pTrans2, eval = FALSE}
+list(p_max=p_max_fct, t_incub=t_incub_fct)
+```
+
+At this point, the `nosoiSim` function should look like:
+
+```{r setupD, eval = FALSE}
+SimulationA <- nosoiSim(type="single", structure=FALSE,
+                        length.sim=300, max.infected=1000, init.individuals=1, 
+                        timeContact=time_contact_fct, 
+                        pTrans = proba,
+                        param.pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct),
+                        ...)
+```
+
+### pExit and param.pExit
+
+`pExit` is the last fundamental parameter and gives a daily probability for a host to leave the simulation (either curred, died, etc.). To accomodate several scenarios, it can be a constant, time dependant or even individually parameterized, to include some stochasticity at the individual host level. In the latter, you need to specify `param.pExit` as a list of functions. Here are some example of `pExit`:
+
+```{r pExit, eval = FALSE}
+p_Exit_fct  <- function(x){rep(0.08,length(x))} #as a constant
+p_Exit_fct  <- function(t){plogis(t,20,2)} #as a time dependant function
+
+p_Exit_fct  <- function(t,pExit.param1){plogis(t,pExit.param1,2)} #as an individually parameterized function
+p_exit_param1 <- function(x){rnorm(x,mean = 10,sd=2)} #sampling one parameter for each infected individual
+```
+
+In the case you want `pExit` to be constant over time, you have to specify it as as a function of `x`, with `length(x)` as it will be sampled multiple time for each active host during the time period. For the other scenarios, it should be a function of `t` (time since infection). 
+
+For a constant or time-dependant function, with no individual parameter, `param.pExit` is `NA`. In the case of an individually parameterized `pExit`, the functions for the parameters have to be wrapped into a list, called `param.pExit` (similar to `param.pTrans` above). The name of each function in the list has to have the same name as the parameter it is sampling for `pExit`. Here it will look like:
+
+```{r param.pExit1, eval = FALSE}
+param.pExit=NA
+param.pExit=list(pExit.param1=p_exit_param1)
+```
+
+At this point, the `nosoiSim` function should look like:
+
+```{r setupE, eval = FALSE}
+SimulationA <- nosoiSim(type="single", structure=FALSE,
+                        length.sim=300, max.infected=1000, init.individuals=1, 
+                        timeContact=time_contact_fct, 
+                        pTrans = proba,
+                        param.pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct),
+                        pExit = p_Exit_fct,
+                        param.pExit = list(pExit.param1=p_exit_param1),
+                        ...)
+```
+
+###Miscellaneous
+
+`prefix.host` allows you to define the first character(s) for the hosts' unique ID. It will be followed by an hyphen and a unique number. By default, `prefix.host` is "H" for "Host".
+
+##Running Nosoi
+
+Once nosoiSim is set up, you can run the simulation (here the "seed" ensure that you will get the same results as this tutorial).
+
+```{r setupF}
+devtools::load_all("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/nosoi/")
+#timeContact
+time_contact_fct = function(x){round(rnorm(x, 3, 1), 0)}
+
+#pTrans
+pTrans_fct <- function(t,p_max,t_incub){
+  if(t <= t_incub){p=0}
+  if(t >= t_incub){p=p_max}
+  return(p)
+}
+ 
+t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  
+#pExit
+p_Exit_fct  <- function(x){rep(0.08,length(x))}
+
+set.seed(805)
+SimulationA <- nosoiSim(type="single", structure=FALSE,
+                        length.sim=50, max.infected=100, init.individuals=1, 
+                        timeContact=time_contact_fct, 
+                        pTrans = pTrans_fct,
+                        param.pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct),
+                        pExit = p_Exit_fct,
+                        param.pExit = NA,
+                        prefix.host="H")
+```
+During the run, Nosoi will report a progress bar, that represent the ration of "current time point" over the `length.sim` parameter provided. It can stop before 100% is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (13), and the maximum number of infected hosts (125). Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected` threshold set at 100.
+
+##Nosoi output
+
+```{r output}
+head(SimulationA)
+```

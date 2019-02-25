@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transmission chain simulation for a pathogen in a single, non structured, host population • nosoi</title>
+<title>Single host pathogen in a non-structured host population • nosoi</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Transmission chain simulation for a pathogen in a single, non structured, host population">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Single host pathogen in a non-structured host population">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -53,7 +53,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/single-host-none.html">Transmission chain simulation for a pathogen in a single, non structured, host population</a>
+      <a href="../articles/single-host-none.html">Single host pathogen in a non-structured host population</a>
     </li>
   </ul>
 </li>
@@ -70,7 +70,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Transmission chain simulation for a pathogen in a single, non structured, host population</h1>
+      <h1>Single host pathogen in a non-structured host population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
             <h4 class="date">2019-02-25</h4>
@@ -87,219 +87,169 @@
 <h2 class="hasAnchor">
 <a href="#setting-up-the-simulation" class="anchor"></a>Setting up the simulation</h2>
 <p>The wrapper function <code>nosoiSim</code> takes all the arguments that will be passed down to the core function, in our case <code>singleNone</code> (for “single host, no structure”). We thus start by providing the options <code>type="single"</code> and <code>structure=FALSE</code> to set up the analysis.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>,<span class="dt">structure=</span><span class="ot">FALSE</span>,...)</code></pre></div>
-<p>This simulation (<code>singleNone</code>) type takes several arguments or options to be able to run, namely: - <code>length.sim</code> - <code>max.infected</code> - <code>init.individuals</code> - <code>timeContact</code> - <code>pTrans</code> with <code>param.pTrans</code> - <code>pExit</code> with <code>param.pExit</code> (optional) - <code>prefix.host</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>, ...)</code></pre></div>
+<p>This simulation (<code>singleNone</code>) type takes several arguments or options to be able to run, namely:</p>
+<ul>
+<li><code>length.sim</code></li>
+<li><code>max.infected</code></li>
+<li><code>init.individuals</code></li>
+<li><code>timeContact</code></li>
+<li>
+<code>pTrans</code> with <code>param.pTrans</code>
+</li>
+<li>
+<code>pExit</code> with <code>param.pExit</code> (optional)</li>
+<li><code>prefix.host</code></li>
+</ul>
 <div id="general-parameters" class="section level3">
 <h3 class="hasAnchor">
 <a href="#general-parameters" class="anchor"></a>General parameters</h3>
 <p><code>length.sim</code>, <code>max.infected</code> and <code>init.individuals</code> are general parameters that defines the simulation. <code>length.sim</code> is the maximum number of unit of times (days, months, years, or other) during which your simulation will be run, whereas <code>max.infected</code> is the threshold of number of individuals that can be infected in your simulation. The simulation will thus run until either the time limit or number of infected individuals is reached. <code>init.individuals</code> defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain (you will have as much transmission chains as initial individuals that “seed” the epidemic process).</p>
-<p>Here, we will run a simulation starting with 1 individual, for a maximum 100 infected individuals and 100 days.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>,<span class="dt">structure=</span><span class="ot">FALSE</span>,
-                        <span class="dt">length.sim=</span><span class="dv">100</span>, <span class="dt">max.infected=</span><span class="dv">100</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>...)</code></pre></div>
+<p>Here, we will run a simulation starting with 1 individual, for a maximum 1,000 infected individuals and 300 days.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
+                        <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, ...)</code></pre></div>
 </div>
 <div id="timecontact" class="section level3">
 <h3 class="hasAnchor">
 <a href="#timecontact" class="anchor"></a>timeContact</h3>
+<p><code>timeContact</code> represent the number of potentially infectious contacts an infected hosts has per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation (which will be the variable <code>x</code>). The number of contacts has to be an integer (or 0). As it may vary, it has to be expressed as a function of <code>x</code> (uniquely), but can take various forms:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">2</span>,x)} <span class="co">#to get a constant number of contacts for each hosts, here 2.</span>
+time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),x,<span class="dt">replace=</span><span class="ot">TRUE</span>,<span class="dt">prob=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.4</span>,<span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.1</span>))} <span class="co">#to get a varying number of contacts for each hosts.</span>
+time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>)} <span class="co">#another example of varying number of contacts for each hosts.</span></code></pre></div>
+<p>This thus gives us the following structure for Nosoi’s wrapper function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
+                        <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, 
+                        <span class="dt">timeContact=</span>time_contact_fct, ...)</code></pre></div>
+</div>
+<div id="ptrans-and-param-ptrans" class="section level3">
+<h3 class="hasAnchor">
+<a href="#ptrans-and-param-ptrans" class="anchor"></a>pTrans and param.pTrans</h3>
+<p><code>pTrans</code> is the heart of the transmission process and represents the probability of transmission over time (when a contact occures). This function (uniquely) gives back a probability (i.e. a value between 0 and 1) dependent of the time (<code>t</code>) since the host’s infection. It is intended to work with a set of parameters (from 1 to much more) defined by <code>param.pTrans</code>, that will characterize the dynamics of the transmission probability over time, as well as introducing some stochasticity. Since each host is different (slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, hence probability of transmission over time. The parameters defined in <code>param.pTrans</code> are thus also functions that will sample parameter values (<code>param.pTrans</code> is a list of functions).</p>
+<p>As an example, let’s consider the following function for <code>pTrans</code>, in the form of a threshold:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">proba &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){
+    <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}
+    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)
+}</code></pre></div>
+<p>This function gives us a transmission probability <code>p</code> given the time since infection <code>t</code> and two parameters, <code>p_max</code>, the maximum transmission probability and <code>t_incub</code>, the length of the incubation period (the threshold). If <code>t</code> is bigger than <code>t_incub</code>, then the transmission probability is <code>p_max</code>; if not, it is equal to 0.</p>
+<p><code>p_max</code> and <code>t_incub</code> need to be specified. If we fix the value, for example to 0.8 and 5 unit of time, respectively, we assume that each host will react the same to the infection, as if they were perfect clones. To be closer to reality, Nosoi forces you to sample the values of each parameters from a function, such as:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}
+t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</code></pre></div>
+<p>Here, <code>p_max</code> will be sampled from a beta law, with shape parameters 5 and 2, and <code>t_incub</code> will be sampled from a normal law, with mean 5 and standard deviation 1. <code>x</code>, as seen before for <code>timeContact</code> will be the number of draws to perform. If you want to fix the value of one or all parameters, you can use a sampling function that will always give you the same value, such as:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">5</span>,x)} <span class="co">#constant parameter value.</span></code></pre></div>
+<p>In any case, the functions for <code>pTrans</code> parameters have to be wrapped into a list, called <code>param.pTrans</code>. The name of each function in the list has to have the same name as the parameter it is sampling for <code>pTrans</code>. Here it will look like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct, <span class="dt">t_incub=</span>t_incub_fct)</code></pre></div>
+<p>At this point, the <code>nosoiSim</code> function should look like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
+                        <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, 
+                        <span class="dt">timeContact=</span>time_contact_fct, 
+                        <span class="dt">pTrans =</span> proba,
+                        <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct),
+                        ...)</code></pre></div>
+</div>
+<div id="pexit-and-param-pexit" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pexit-and-param-pexit" class="anchor"></a>pExit and param.pExit</h3>
+<p><code>pExit</code> is the last fundamental parameter and gives a daily probability for a host to leave the simulation (either curred, died, etc.). To accomodate several scenarios, it can be a constant, time dependant or even individually parameterized, to include some stochasticity at the individual host level. In the latter, you need to specify <code>param.pExit</code> as a list of functions. Here are some example of <code>pExit</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.08</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(x))} <span class="co">#as a constant</span>
+p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,<span class="dv">20</span>,<span class="dv">2</span>)} <span class="co">#as a time dependant function</span>
+
+p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t,pExit.param1){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,pExit.param1,<span class="dv">2</span>)} <span class="co">#as an individually parameterized function</span>
+p_exit_param1 &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">10</span>,<span class="dt">sd=</span><span class="dv">2</span>)} <span class="co">#sampling one parameter for each infected individual</span></code></pre></div>
+<p>In the case you want <code>pExit</code> to be constant over time, you have to specify it as as a function of <code>x</code>, with <code><a href="https://www.rdocumentation.org/packages/base/topics/length">length(x)</a></code> as it will be sampled multiple time for each active host during the time period. For the other scenarios, it should be a function of <code>t</code> (time since infection).</p>
+<p>For a constant or time-dependant function, with no individual parameter, <code>param.pExit</code> is <code>NA</code>. In the case of an individually parameterized <code>pExit</code>, the functions for the parameters have to be wrapped into a list, called <code>param.pExit</code> (similar to <code>param.pTrans</code> above). The name of each function in the list has to have the same name as the parameter it is sampling for <code>pExit</code>. Here it will look like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">param.pExit=<span class="ot">NA</span>
+param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pExit.param1=</span>p_exit_param1)</code></pre></div>
+<p>At this point, the <code>nosoiSim</code> function should look like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
+                        <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, 
+                        <span class="dt">timeContact=</span>time_contact_fct, 
+                        <span class="dt">pTrans =</span> proba,
+                        <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct),
+                        <span class="dt">pExit =</span> p_Exit_fct,
+                        <span class="dt">param.pExit =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pExit.param1=</span>p_exit_param1),
+                        ...)</code></pre></div>
+</div>
+<div id="miscellaneous" class="section level3">
+<h3 class="hasAnchor">
+<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
+<p><code>prefix.host</code> allows you to define the first character(s) for the hosts’ unique ID. It will be followed by an hyphen and a unique number. By default, <code>prefix.host</code> is “H” for “Host”.</p>
 </div>
 </div>
-<div id="vignette-info" class="section level2">
+<div id="running-nosoi" class="section level2">
 <h2 class="hasAnchor">
-<a href="#vignette-info" class="anchor"></a>Vignette Info</h2>
-<p>Note the various macros within the <code>vignette</code> section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the <code>title</code> field and the <code>\VignetteIndexEntry</code> to match the title of your vignette.</p>
-</div>
-<div id="styles" class="section level2">
-<h2 class="hasAnchor">
-<a href="#styles" class="anchor"></a>Styles</h2>
-<p>The <code>html_vignette</code> template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:</p>
-<pre><code>output: 
-  rmarkdown::html_vignette:
-    css: mystyles.css</code></pre>
-</div>
-<div id="figures" class="section level2">
-<h2 class="hasAnchor">
-<a href="#figures" class="anchor"></a>Figures</h2>
-<p>The figure sizes have been customised so that you can easily put two images side-by-side.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(<span class="dv">10</span><span class="op">:</span><span class="dv">1</span>)</code></pre></div>
-<p><img src="single-host-none_files/figure-html/unnamed-chunk-1-1.png" width="700"><img src="single-host-none_files/figure-html/unnamed-chunk-1-2.png" width="700"></p>
-<p>You can enable figure captions by <code>fig_caption: yes</code> in YAML:</p>
-<pre><code>output:
-  rmarkdown::html_vignette:
-    fig_caption: yes</code></pre>
-<p>Then you can use the chunk option <code>fig.cap = "Your figure caption."</code> in <strong>knitr</strong>.</p>
-</div>
-<div id="more-examples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#more-examples" class="anchor"></a>More Examples</h2>
-<p>You can write math expressions, e.g. <span class="math inline">\(Y = X\beta + \epsilon\)</span>, footnotes<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, and tables, e.g. using <code><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">knitr::kable()</a></code>.</p>
-<table class="table">
-<thead><tr class="header">
-<th></th>
-<th align="right">mpg</th>
-<th align="right">cyl</th>
-<th align="right">disp</th>
-<th align="right">hp</th>
-<th align="right">drat</th>
-<th align="right">wt</th>
-<th align="right">qsec</th>
-<th align="right">vs</th>
-<th align="right">am</th>
-<th align="right">gear</th>
-<th align="right">carb</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Mazda RX4</td>
-<td align="right">21.0</td>
-<td align="right">6</td>
-<td align="right">160.0</td>
-<td align="right">110</td>
-<td align="right">3.90</td>
-<td align="right">2.620</td>
-<td align="right">16.46</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-<tr class="even">
-<td>Mazda RX4 Wag</td>
-<td align="right">21.0</td>
-<td align="right">6</td>
-<td align="right">160.0</td>
-<td align="right">110</td>
-<td align="right">3.90</td>
-<td align="right">2.875</td>
-<td align="right">17.02</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-<tr class="odd">
-<td>Datsun 710</td>
-<td align="right">22.8</td>
-<td align="right">4</td>
-<td align="right">108.0</td>
-<td align="right">93</td>
-<td align="right">3.85</td>
-<td align="right">2.320</td>
-<td align="right">18.61</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td>Hornet 4 Drive</td>
-<td align="right">21.4</td>
-<td align="right">6</td>
-<td align="right">258.0</td>
-<td align="right">110</td>
-<td align="right">3.08</td>
-<td align="right">3.215</td>
-<td align="right">19.44</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td>Hornet Sportabout</td>
-<td align="right">18.7</td>
-<td align="right">8</td>
-<td align="right">360.0</td>
-<td align="right">175</td>
-<td align="right">3.15</td>
-<td align="right">3.440</td>
-<td align="right">17.02</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td>Valiant</td>
-<td align="right">18.1</td>
-<td align="right">6</td>
-<td align="right">225.0</td>
-<td align="right">105</td>
-<td align="right">2.76</td>
-<td align="right">3.460</td>
-<td align="right">20.22</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td>Duster 360</td>
-<td align="right">14.3</td>
-<td align="right">8</td>
-<td align="right">360.0</td>
-<td align="right">245</td>
-<td align="right">3.21</td>
-<td align="right">3.570</td>
-<td align="right">15.84</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">4</td>
-</tr>
-<tr class="even">
-<td>Merc 240D</td>
-<td align="right">24.4</td>
-<td align="right">4</td>
-<td align="right">146.7</td>
-<td align="right">62</td>
-<td align="right">3.69</td>
-<td align="right">3.190</td>
-<td align="right">20.00</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td>Merc 230</td>
-<td align="right">22.8</td>
-<td align="right">4</td>
-<td align="right">140.8</td>
-<td align="right">95</td>
-<td align="right">3.92</td>
-<td align="right">3.150</td>
-<td align="right">22.90</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td>Merc 280</td>
-<td align="right">19.2</td>
-<td align="right">6</td>
-<td align="right">167.6</td>
-<td align="right">123</td>
-<td align="right">3.92</td>
-<td align="right">3.440</td>
-<td align="right">18.30</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-</tbody>
-</table>
-<p>Also a quote using <code>&gt;</code>:</p>
-<blockquote>
-<p>“He who gives up [code] safety for [code] speed deserves neither.” (<a href="https://twitter.com/hadleywickham/status/504368538874703872">via</a>)</p>
-</blockquote>
-</div>
-<div class="footnotes">
-<hr>
-<ol>
-<li id="fn1"><p>A footnote here.<a href="#fnref1">↩</a></p></li>
-</ol>
+<a href="#running-nosoi" class="anchor"></a>Running Nosoi</h2>
+<p>Once nosoiSim is set up, you can run the simulation (here the “seed” ensure that you will get the same results as this tutorial).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/load_all">load_all</a></span>(<span class="st">"~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/nosoi/"</span>)
+<span class="co">#&gt; Loading nosoi</span>
+<span class="co">#&gt; Loading required package: data.table</span>
+<span class="co">#timeContact</span>
+time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>)}
+
+<span class="co">#pTrans</span>
+pTrans_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){
+  <span class="cf">if</span>(t <span class="op">&lt;=</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}
+  <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)
+}
+ 
+t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}
+p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}
+  
+<span class="co">#pExit</span>
+p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.08</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(x))}
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">805</span>)
+SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
+                        <span class="dt">length.sim=</span><span class="dv">50</span>, <span class="dt">max.infected=</span><span class="dv">100</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, 
+                        <span class="dt">timeContact=</span>time_contact_fct, 
+                        <span class="dt">pTrans =</span> pTrans_fct,
+                        <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct),
+                        <span class="dt">pExit =</span> p_Exit_fct,
+                        <span class="dt">param.pExit =</span> <span class="ot">NA</span>,
+                        <span class="dt">prefix.host=</span><span class="st">"H"</span>)
+<span class="co">#&gt; Starting the simulation</span>
+<span class="co">#&gt; Initializing ... running ...</span>
+<span class="co">#&gt; </span>
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|</span><span class="st">                                                  </span><span class="er">|</span><span class="st">   </span><span class="dv">0</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|=</span><span class="st">                                                 </span><span class="er">|</span><span class="st">   </span><span class="dv">2</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|==</span><span class="st">                                                </span><span class="er">|</span><span class="st">   </span><span class="dv">4</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|===</span><span class="st">                                               </span><span class="er">|</span><span class="st">   </span><span class="dv">6</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|====</span><span class="st">                                              </span><span class="er">|</span><span class="st">   </span><span class="dv">8</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|=====</span><span class="st">                                             </span><span class="er">|</span><span class="st">  </span><span class="dv">10</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|======</span><span class="st">                                            </span><span class="er">|</span><span class="st">  </span><span class="dv">12</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|=======</span><span class="st">                                           </span><span class="er">|</span><span class="st">  </span><span class="dv">14</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|========</span><span class="st">                                          </span><span class="er">|</span><span class="st">  </span><span class="dv">16</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|=========</span><span class="st">                                         </span><span class="er">|</span><span class="st">  </span><span class="dv">18</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|==========</span><span class="st">                                        </span><span class="er">|</span><span class="st">  </span><span class="dv">20</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|===========</span><span class="st">                                       </span><span class="er">|</span><span class="st">  </span><span class="dv">22</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|============</span><span class="st">                                      </span><span class="er">|</span><span class="st">  </span><span class="dv">24</span>%
+  <span class="op">|</span><span class="st">                                                        </span>
+<span class="st">  </span><span class="er">|=============</span><span class="st">                                     </span><span class="er">|</span><span class="st">  </span><span class="dv">26</span>%
+<span class="co">#&gt;  done.</span>
+<span class="co">#&gt; The simulation has run for 13 units of time and a total of 125 hosts have been infected.</span></code></pre></div>
+<p>During the run, Nosoi will report a progress bar, that represent the ration of “current time point” over the <code>length.sim</code> parameter provided. It can stop before 100% is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (13), and the maximum number of infected hosts (125). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(SimulationA)
+<span class="co">#&gt;    hosts.ID   inf.by inf.time out.time active     p_max  t_incub</span>
+<span class="co">#&gt; 1:      H-1 unkown-1        0       NA      1 0.6820110 3.867392</span>
+<span class="co">#&gt; 2:     H-10      H-1        6       NA      1 0.7827491 5.587668</span>
+<span class="co">#&gt; 3:    H-100     H-15       13       NA      1 0.9245164 3.756832</span>
+<span class="co">#&gt; 4:    H-101     H-15       13       NA      1 0.5747940 6.286960</span>
+<span class="co">#&gt; 5:    H-102     H-15       13       NA      1 0.8565546 4.697113</span>
+<span class="co">#&gt; 6:    H-103      H-2       13       NA      1 0.7879873 3.679020</span></code></pre></div>
 </div>
   </div>
 
@@ -309,10 +259,7 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#setting-up-the-simulation">Setting up the simulation</a></li>
-      <li><a href="#vignette-info">Vignette Info</a></li>
-      <li><a href="#styles">Styles</a></li>
-      <li><a href="#figures">Figures</a></li>
-      <li><a href="#more-examples">More Examples</a></li>
+      <li><a href="#running-nosoi">Running Nosoi</a></li>
       </ul>
 </div>
       </div>
