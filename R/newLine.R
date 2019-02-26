@@ -12,8 +12,8 @@
 #'
 #' @keywords internal
 
-newLine <- function(hosts.ID,infected.by,time.is,n.pExit.param,param.pExit,n.pTrans.param,param.pTrans){
-  #new host gets infected
+newLine <- function(hosts.ID,infected.by,time.is,n.pExit.param,param.pExit,n.pTrans.param,param.pTrans) {
+
   table.temp <- data.frame(matrix(0, ncol = (5+n.pTrans.param+n.pExit.param), nrow = 1))
   colnames(table.temp)<-c("hosts.ID","inf.by","inf.time","out.time","active",names(param.pExit),names(param.pTrans))
 
@@ -25,16 +25,16 @@ newLine <- function(hosts.ID,infected.by,time.is,n.pExit.param,param.pExit,n.pTr
 
   Sampled.param <- sapply(param.pTrans, function(x) sapply(1, x))
 
-  for (i in names(param.pTrans)){ table.temp[1,i] <- Sampled.param[i] }
-  if(n.pExit.param > 0){
+  for (i in names(param.pTrans)) { table.temp[1,i] <- Sampled.param[i] }
+
+  if (n.pExit.param > 0) {
     Sampled.param.pExit <- sapply(param.pExit, function(x) sapply(1, x))
-    for (j in names(param.pExit)){ table.temp[1,j] = Sampled.param.pExit[j] }
+    for (j in names(param.pExit)) { table.temp[1,j] = Sampled.param.pExit[j] }
   }
 
   table.temp <- data.table::as.data.table(table.temp)
-  data.table::setkey(table.temp, hosts.ID)
 
-return(table.temp)
+  return(table.temp)
 }
 
 
