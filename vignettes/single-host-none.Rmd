@@ -172,7 +172,7 @@ p_Exit_fct  <- function(x){rep(0.08,length(x))}
 
 set.seed(805)
 SimulationA <- nosoiSim(type="single", structure=FALSE,
-                        length.sim=50, max.infected=100, init.individuals=1, 
+                        length.sim=100, max.infected=100, init.individuals=1, 
                         timeContact=time_contact_fct, 
                         pTrans = pTrans_fct,
                         param.pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct),
@@ -180,8 +180,10 @@ SimulationA <- nosoiSim(type="single", structure=FALSE,
                         param.pExit = NA,
                         prefix.host="H",
                         progress.bar=FALSE)
+
+as.data.frame(SimulationA)
 ```
-The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111). Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected` threshold set at 100.
+The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (52), and the maximum number of infected hosts (107). Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected` threshold set at 100.
 
 ##Nosoi output
 

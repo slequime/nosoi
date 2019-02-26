@@ -183,10 +183,6 @@ param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/ba
 <p>Once nosoiSim is set up, you can run the simulation (here the “seed” ensure that you will get the same results as this tutorial).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)
 <span class="co">#&gt; Loading required package: data.table</span>
-<span class="co">#&gt; Warning: replacing previous import 'igraph::decompose' by</span>
-<span class="co">#&gt; 'stats::decompose' when loading 'nosoi'</span>
-<span class="co">#&gt; Warning: replacing previous import 'igraph::spectrum' by 'stats::spectrum'</span>
-<span class="co">#&gt; when loading 'nosoi'</span>
 <span class="co">#timeContact</span>
 time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}
 
@@ -205,7 +201,7 @@ p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(x){<s
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">805</span>)
 SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
-                        <span class="dt">length.sim=</span><span class="dv">50</span>, <span class="dt">max.infected=</span><span class="dv">100</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, 
+                        <span class="dt">length.sim=</span><span class="dv">100</span>, <span class="dt">max.infected=</span><span class="dv">100</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, 
                         <span class="dt">timeContact=</span>time_contact_fct, 
                         <span class="dt">pTrans =</span> pTrans_fct,
                         <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct),
@@ -216,8 +212,118 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="co">#&gt; Starting the simulation</span>
 <span class="co">#&gt; Initializing ... running ...</span>
 <span class="co">#&gt;  done.</span>
-<span class="co">#&gt; The simulation has run for 40 units of time and a total of 111 hosts have been infected.</span></code></pre></div>
-<p>The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
+<span class="co">#&gt; The simulation has run for 52 units of time and a total of 107 hosts have been infected.</span>
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.data.frame">as.data.frame</a></span>(SimulationA)
+<span class="co">#&gt;     hosts.ID inf.by inf.time out.time active     p_max  t_incub</span>
+<span class="co">#&gt; 1        H-1   NA-1        0       15      0 0.6820110 5.867392</span>
+<span class="co">#&gt; 2       H-10    H-6       22       28      0 0.8280310 7.404940</span>
+<span class="co">#&gt; 3      H-100   H-31       52       NA      1 0.7137238 4.704842</span>
+<span class="co">#&gt; 4      H-101   H-35       52       NA      1 0.6802556 6.983838</span>
+<span class="co">#&gt; 5      H-102   H-39       52       NA      1 0.8902839 7.147764</span>
+<span class="co">#&gt; 6      H-103   H-40       52       NA      1 0.7908749 6.953566</span>
+<span class="co">#&gt; 7      H-104   H-44       52       NA      1 0.3586648 5.348197</span>
+<span class="co">#&gt; 8      H-105   H-51       52       NA      1 0.8248545 7.752634</span>
+<span class="co">#&gt; 9      H-106   H-55       52       NA      1 0.7898260 7.198435</span>
+<span class="co">#&gt; 10     H-107    H-8       52       NA      1 0.8419258 8.248329</span>
+<span class="co">#&gt; 11      H-11    H-5       25       32      0 0.8145372 8.570363</span>
+<span class="co">#&gt; 12      H-12    H-8       31       49      0 0.6826684 6.988244</span>
+<span class="co">#&gt; 13      H-13    H-9       31       45      0 0.8125483 5.612282</span>
+<span class="co">#&gt; 14      H-14    H-9       31       NA      1 0.4300821 7.653334</span>
+<span class="co">#&gt; 15      H-15    H-8       32       47      0 0.7928069 6.824843</span>
+<span class="co">#&gt; 16      H-16    H-9       32       39      0 0.9107720 5.608627</span>
+<span class="co">#&gt; 17      H-17    H-8       34       37      0 0.9516142 7.019421</span>
+<span class="co">#&gt; 18      H-18   H-12       39       NA      1 0.7284649 7.484439</span>
+<span class="co">#&gt; 19      H-19   H-13       39       NA      1 0.7528397 6.920769</span>
+<span class="co">#&gt; 20       H-2    H-1        7       15      0 0.6773838 6.626385</span>
+<span class="co">#&gt; 21      H-20   H-14       39       49      0 0.7430748 5.256753</span>
+<span class="co">#&gt; 22      H-21   H-14       39       40      0 0.6067350 6.440196</span>
+<span class="co">#&gt; 23      H-22   H-15       39       44      0 0.8082829 6.495874</span>
+<span class="co">#&gt; 24      H-23   H-15       39       47      0 0.3424426 7.323467</span>
+<span class="co">#&gt; 25      H-24    H-8       39       46      0 0.3537340 7.008503</span>
+<span class="co">#&gt; 26      H-25   H-12       41       NA      1 0.5241408 7.921641</span>
+<span class="co">#&gt; 27      H-26   H-12       41       43      0 0.4662323 7.482333</span>
+<span class="co">#&gt; 28      H-27   H-13       41       44      0 0.7013940 4.645816</span>
+<span class="co">#&gt; 29      H-28   H-13       41       NA      1 0.4499078 6.758067</span>
+<span class="co">#&gt; 30      H-29   H-13       41       42      0 0.7672077 5.799356</span>
+<span class="co">#&gt; 31       H-3    H-1       10       17      0 0.5762399 7.074281</span>
+<span class="co">#&gt; 32      H-30   H-14       41       NA      1 0.8317716 5.260864</span>
+<span class="co">#&gt; 33      H-31   H-14       41       NA      1 0.3084969 5.848691</span>
+<span class="co">#&gt; 34      H-32   H-14       41       46      0 0.3675913 8.456417</span>
+<span class="co">#&gt; 35      H-33   H-15       41       49      0 0.6978450 5.828977</span>
+<span class="co">#&gt; 36      H-34   H-15       41       47      0 0.6709791 7.084399</span>
+<span class="co">#&gt; 37      H-35   H-15       41       NA      1 0.7248008 7.723246</span>
+<span class="co">#&gt; 38      H-36    H-8       41       42      0 0.5688286 7.709232</span>
+<span class="co">#&gt; 39      H-37    H-8       41       50      0 0.8532331 7.129600</span>
+<span class="co">#&gt; 40      H-38    H-8       41       42      0 0.5842901 6.728813</span>
+<span class="co">#&gt; 41      H-39   H-12       42       NA      1 0.9237394 6.215117</span>
+<span class="co">#&gt; 42       H-4    H-1       10       20      0 0.7453480 5.634375</span>
+<span class="co">#&gt; 43      H-40   H-13       42       NA      1 0.7485208 7.303432</span>
+<span class="co">#&gt; 44      H-41    H-8       42       43      0 0.5933796 6.984878</span>
+<span class="co">#&gt; 45      H-42   H-12       43       46      0 0.7812005 6.250273</span>
+<span class="co">#&gt; 46      H-43   H-13       43       45      0 0.4182937 8.933527</span>
+<span class="co">#&gt; 47      H-44   H-14       43       NA      1 0.8782398 5.299384</span>
+<span class="co">#&gt; 48      H-45    H-8       43       49      0 0.4728412 6.493092</span>
+<span class="co">#&gt; 49      H-46   H-12       45       46      0 0.6227421 6.440160</span>
+<span class="co">#&gt; 50      H-47   H-15       45       48      0 0.9080895 7.325931</span>
+<span class="co">#&gt; 51      H-48   H-20       45       48      0 0.5220788 8.160523</span>
+<span class="co">#&gt; 52      H-49    H-8       45       49      0 0.6406490 7.189641</span>
+<span class="co">#&gt; 53       H-5    H-1       14       28      0 0.9132615 7.138149</span>
+<span class="co">#&gt; 54      H-50   H-14       46       NA      1 0.8302405 8.601445</span>
+<span class="co">#&gt; 55      H-51   H-15       46       NA      1 0.8528528 5.787885</span>
+<span class="co">#&gt; 56      H-52   H-19       46       NA      1 0.4033159 7.001509</span>
+<span class="co">#&gt; 57      H-53   H-20       46       49      0 0.8815117 8.455181</span>
+<span class="co">#&gt; 58      H-54   H-20       46       48      0 0.7444442 6.503174</span>
+<span class="co">#&gt; 59      H-55    H-8       46       NA      1 0.7000994 5.996000</span>
+<span class="co">#&gt; 60      H-56   H-12       47       50      0 0.7574313 6.674331</span>
+<span class="co">#&gt; 61      H-57   H-18       47       NA      1 0.7442536 6.471431</span>
+<span class="co">#&gt; 62      H-58   H-20       47       NA      1 0.7307497 6.360442</span>
+<span class="co">#&gt; 63      H-59   H-30       47       NA      1 0.6971650 7.494408</span>
+<span class="co">#&gt; 64       H-6    H-2       14       23      0 0.7560063 6.117422</span>
+<span class="co">#&gt; 65      H-60   H-33       47       NA      1 0.7876475 7.419829</span>
+<span class="co">#&gt; 66      H-61   H-12       48       NA      1 0.7115658 7.073748</span>
+<span class="co">#&gt; 67      H-62   H-12       48       NA      1 0.5099568 6.735575</span>
+<span class="co">#&gt; 68      H-63   H-18       48       52      0 0.8107485 7.524326</span>
+<span class="co">#&gt; 69      H-64   H-19       48       NA      1 0.8674594 6.384764</span>
+<span class="co">#&gt; 70      H-65   H-20       48       NA      1 0.6632275 8.507966</span>
+<span class="co">#&gt; 71      H-66   H-20       48       NA      1 0.9603046 6.476579</span>
+<span class="co">#&gt; 72      H-67   H-28       48       52      0 0.8277923 8.040442</span>
+<span class="co">#&gt; 73      H-68   H-33       48       NA      1 0.8010801 7.209942</span>
+<span class="co">#&gt; 74      H-69   H-33       48       NA      1 0.6953814 6.291387</span>
+<span class="co">#&gt; 75       H-7    H-4       19       22      0 0.4623409 5.817440</span>
+<span class="co">#&gt; 76      H-70    H-8       48       NA      1 0.6524729 7.791940</span>
+<span class="co">#&gt; 77      H-71    H-8       48       52      0 0.7024732 5.671932</span>
+<span class="co">#&gt; 78      H-72   H-14       49       NA      1 0.9152841 6.454106</span>
+<span class="co">#&gt; 79      H-73   H-18       49       NA      1 0.9774132 8.589844</span>
+<span class="co">#&gt; 80      H-74   H-25       49       NA      1 0.7616463 6.227385</span>
+<span class="co">#&gt; 81      H-75   H-30       49       50      0 0.6154093 8.067825</span>
+<span class="co">#&gt; 82      H-76   H-35       49       NA      1 0.6980301 6.522385</span>
+<span class="co">#&gt; 83      H-77   H-37       49       NA      1 0.8459345 7.261328</span>
+<span class="co">#&gt; 84      H-78   H-39       49       NA      1 0.6042059 7.525309</span>
+<span class="co">#&gt; 85      H-79   H-44       49       NA      1 0.4178192 8.095751</span>
+<span class="co">#&gt; 86       H-8    H-6       21       NA      1 0.7828185 6.926328</span>
+<span class="co">#&gt; 87      H-80    H-8       49       NA      1 0.8174004 7.203072</span>
+<span class="co">#&gt; 88      H-81   H-14       50       52      0 0.7834866 7.275748</span>
+<span class="co">#&gt; 89      H-82   H-18       50       NA      1 0.6388115 6.912072</span>
+<span class="co">#&gt; 90      H-83   H-25       50       NA      1 0.5015493 7.734041</span>
+<span class="co">#&gt; 91      H-84   H-30       50       NA      1 0.5098326 7.021084</span>
+<span class="co">#&gt; 92      H-85   H-31       50       NA      1 0.5915437 8.437593</span>
+<span class="co">#&gt; 93      H-86   H-39       50       51      0 0.6142708 7.454909</span>
+<span class="co">#&gt; 94      H-87   H-40       50       NA      1 0.9092976 6.250582</span>
+<span class="co">#&gt; 95      H-88   H-44       50       NA      1 0.6736362 5.617803</span>
+<span class="co">#&gt; 96      H-89   H-14       51       NA      1 0.6689268 6.589764</span>
+<span class="co">#&gt; 97       H-9    H-5       22       39      0 0.8278674 6.414565</span>
+<span class="co">#&gt; 98      H-90   H-18       51       NA      1 0.6226700 6.540524</span>
+<span class="co">#&gt; 99      H-91   H-19       51       NA      1 0.7177536 6.281066</span>
+<span class="co">#&gt; 100     H-92   H-25       51       NA      1 0.4973862 7.957429</span>
+<span class="co">#&gt; 101     H-93   H-30       51       NA      1 0.8995523 6.368612</span>
+<span class="co">#&gt; 102     H-94   H-35       51       NA      1 0.8409255 6.191554</span>
+<span class="co">#&gt; 103     H-95   H-39       51       52      0 0.5626469 5.139099</span>
+<span class="co">#&gt; 104     H-96   H-40       51       NA      1 0.6338660 7.781122</span>
+<span class="co">#&gt; 105     H-97   H-44       51       NA      1 0.7102687 6.199274</span>
+<span class="co">#&gt; 106     H-98    H-8       51       52      0 0.2595104 6.687203</span>
+<span class="co">#&gt; 107     H-99   H-28       52       NA      1 0.6163492 8.211672</span></code></pre></div>
+<p>The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (52), and the maximum number of infected hosts (107). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
 </div>
 <div id="nosoi-output" class="section level2">
 <h2 class="hasAnchor">
@@ -225,12 +331,12 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <p>Nosoi gives as an ouput a <code>data.table</code> (a more efficient version of a <code>data.frame</code>) with the following structure:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(SimulationA)
 <span class="co">#&gt;    hosts.ID inf.by inf.time out.time active     p_max  t_incub</span>
-<span class="co">#&gt; 1:      H-1   NA-1        0       23      0 0.6820110 5.867392</span>
-<span class="co">#&gt; 2:     H-10    H-2       16       19      0 0.8026548 6.414165</span>
-<span class="co">#&gt; 3:    H-100   H-21       40       NA      1 0.6622235 7.816477</span>
-<span class="co">#&gt; 4:    H-101   H-35       40       NA      1 0.6288499 7.395426</span>
-<span class="co">#&gt; 5:    H-102   H-39       40       NA      1 0.7714096 6.556226</span>
-<span class="co">#&gt; 6:    H-103    H-5       40       NA      1 0.8403010 6.555480</span></code></pre></div>
+<span class="co">#&gt; 1:      H-1   NA-1        0       15      0 0.6820110 5.867392</span>
+<span class="co">#&gt; 2:     H-10    H-6       22       28      0 0.8280310 7.404940</span>
+<span class="co">#&gt; 3:    H-100   H-31       52       NA      1 0.7137238 4.704842</span>
+<span class="co">#&gt; 4:    H-101   H-35       52       NA      1 0.6802556 6.983838</span>
+<span class="co">#&gt; 5:    H-102   H-39       52       NA      1 0.8902839 7.147764</span>
+<span class="co">#&gt; 6:    H-103   H-40       52       NA      1 0.7908749 6.953566</span></code></pre></div>
 <p>Each individual host that has or is infected during the course of the simulation is a line in the data.table. <code>hosts.ID</code> is the unique identifier of the host, while <code>inf.by</code> indicate which host infected it. As you can see, host <code>H-1</code> has been infected by <code>NA</code>; <code>H-1</code> is the individual that started the transmission chain. <code>inf.time</code> is the time (in simulation units of time) when the host has been infected, and <code>out.time</code> is the time (in simulation units of time) when it left the simulation. Here in the top 6 lines, no host has left the simulation (it ran only for 13 units of time). <code>active</code> indicates if the host is still active in the simulation. <code>p_max</code> and <code>t_incub</code> are the individually sampled parameter for <code>pTrans</code>.</p>
 <div id="visualisation" class="section level3">
 <h3 class="hasAnchor">
