@@ -73,7 +73,7 @@
       <h1>Single host pathogen in a non-structured host population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-02-25</h4>
+            <h4 class="date">2019-02-26</h4>
       
       
       <div class="hidden name"><code>single-host-none.Rmd</code></div>
@@ -82,7 +82,7 @@
 
     
     
-<p>Nosoi can accomodate a wide range of epidemiological transmission scenarios, but you need to properly set up the parameters to get it working. This tutorial aims to illustrate how to set up a Nosoi simulation for a “simple” case : a pathogen being transmitted among a single, non-structure, host population.</p>
+<p>Nosoi can accomodate a wide range of epidemiological transmission scenarios, but you need to properly set up the parameters to get it working. This tutorial aims to illustrate how to set up a Nosoi simulation for a “simple” case: a pathogen being transmitted among a single, non-structure, host population.</p>
 <div id="setting-up-the-simulation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setting-up-the-simulation" class="anchor"></a>Setting up the simulation</h2>
@@ -174,6 +174,7 @@ param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/ba
 <h3 class="hasAnchor">
 <a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
 <p><code>prefix.host</code> allows you to define the first character(s) for the hosts’ unique ID. It will be followed by an hyphen and a unique number. By default, <code>prefix.host</code> is “H” for “Host”.</p>
+<p><code>progress.bar</code> allows you to display a progress bar that represent the ration of “current time point” over the <code>length.sim</code> parameter provided. By default, the <code>progress.bar</code> is activated, but you may want to desactivate it by providing <code>progress.bar == FALSE</code></p>
 </div>
 </div>
 <div id="running-nosoi" class="section level2">
@@ -184,7 +185,7 @@ param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/ba
 <span class="co">#&gt; Loading nosoi</span>
 <span class="co">#&gt; Loading required package: data.table</span>
 <span class="co">#timeContact</span>
-time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>)}
+time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}
 
 <span class="co">#pTrans</span>
 pTrans_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){
@@ -193,7 +194,7 @@ pTrans_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_ma
   <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)
 }
  
-t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}
+t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}
 p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}
   
 <span class="co">#pExit</span>
@@ -207,49 +208,48 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
                         <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct),
                         <span class="dt">pExit =</span> p_Exit_fct,
                         <span class="dt">param.pExit =</span> <span class="ot">NA</span>,
-                        <span class="dt">prefix.host=</span><span class="st">"H"</span>)
+                        <span class="dt">prefix.host=</span><span class="st">"H"</span>,
+                        <span class="dt">progress.bar=</span><span class="ot">FALSE</span>)
 <span class="co">#&gt; Starting the simulation</span>
 <span class="co">#&gt; Initializing ... running ...</span>
-<span class="co">#&gt; </span>
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|</span><span class="st">                                                  </span><span class="er">|</span><span class="st">   </span><span class="dv">0</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|=</span><span class="st">                                                 </span><span class="er">|</span><span class="st">   </span><span class="dv">2</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|==</span><span class="st">                                                </span><span class="er">|</span><span class="st">   </span><span class="dv">4</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|===</span><span class="st">                                               </span><span class="er">|</span><span class="st">   </span><span class="dv">6</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|====</span><span class="st">                                              </span><span class="er">|</span><span class="st">   </span><span class="dv">8</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|=====</span><span class="st">                                             </span><span class="er">|</span><span class="st">  </span><span class="dv">10</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|======</span><span class="st">                                            </span><span class="er">|</span><span class="st">  </span><span class="dv">12</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|=======</span><span class="st">                                           </span><span class="er">|</span><span class="st">  </span><span class="dv">14</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|========</span><span class="st">                                          </span><span class="er">|</span><span class="st">  </span><span class="dv">16</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|=========</span><span class="st">                                         </span><span class="er">|</span><span class="st">  </span><span class="dv">18</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|==========</span><span class="st">                                        </span><span class="er">|</span><span class="st">  </span><span class="dv">20</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|===========</span><span class="st">                                       </span><span class="er">|</span><span class="st">  </span><span class="dv">22</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|============</span><span class="st">                                      </span><span class="er">|</span><span class="st">  </span><span class="dv">24</span>%
-  <span class="op">|</span><span class="st">                                                        </span>
-<span class="st">  </span><span class="er">|=============</span><span class="st">                                     </span><span class="er">|</span><span class="st">  </span><span class="dv">26</span>%
 <span class="co">#&gt;  done.</span>
-<span class="co">#&gt; The simulation has run for 13 units of time and a total of 125 hosts have been infected.</span></code></pre></div>
-<p>During the run, Nosoi will report a progress bar, that represent the ration of “current time point” over the <code>length.sim</code> parameter provided. It can stop before 100% is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (13), and the maximum number of infected hosts (125). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
+<span class="co">#&gt; The simulation has run for 40 units of time and a total of 111 hosts have been infected.</span></code></pre></div>
+<p>During the run, Nosoi will report a progress bar, that represent the ration of “current time point” over the <code>length.sim</code> parameter provided. It can stop before 100% is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
+</div>
+<div id="nosoi-output" class="section level2">
+<h2 class="hasAnchor">
+<a href="#nosoi-output" class="anchor"></a>Nosoi output</h2>
+<p>Nosoi gives as an ouput a <code>data.table</code> (a more efficient version of a <code>data.frame</code>) with the following structure:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(SimulationA)
-<span class="co">#&gt;    hosts.ID   inf.by inf.time out.time active     p_max  t_incub</span>
-<span class="co">#&gt; 1:      H-1 unkown-1        0       NA      1 0.6820110 3.867392</span>
-<span class="co">#&gt; 2:     H-10      H-1        6       NA      1 0.7827491 5.587668</span>
-<span class="co">#&gt; 3:    H-100     H-15       13       NA      1 0.9245164 3.756832</span>
-<span class="co">#&gt; 4:    H-101     H-15       13       NA      1 0.5747940 6.286960</span>
-<span class="co">#&gt; 5:    H-102     H-15       13       NA      1 0.8565546 4.697113</span>
-<span class="co">#&gt; 6:    H-103      H-2       13       NA      1 0.7879873 3.679020</span></code></pre></div>
+<span class="co">#&gt;    hosts.ID inf.by inf.time out.time active     p_max  t_incub</span>
+<span class="co">#&gt; 1:      H-1   &lt;NA&gt;        0       23      0 0.6820110 5.867392</span>
+<span class="co">#&gt; 2:     H-10    H-2       16       19      0 0.8026548 6.414165</span>
+<span class="co">#&gt; 3:    H-100   H-21       40       NA      1 0.6622235 7.816477</span>
+<span class="co">#&gt; 4:    H-101   H-35       40       NA      1 0.6288499 7.395426</span>
+<span class="co">#&gt; 5:    H-102   H-39       40       NA      1 0.7714096 6.556226</span>
+<span class="co">#&gt; 6:    H-103    H-5       40       NA      1 0.8403010 6.555480</span></code></pre></div>
+<p>Each individual host that has or is infected during the course of the simulation is a line in the data.table. <code>hosts.ID</code> is the unique identifier of the host, while <code>inf.by</code> indicate which host infected it. As you can see, host <code>H-1</code> has been infected by <code>NA</code>; <code>H-1</code> is the individual that started the transmission chain. <code>inf.time</code> is the time (in simulation units of time) when the host has been infected, and <code>out.time</code> is the time (in simulation units of time) when it left the simulation. Here in the top 6 lines, no host has left the simulation (it ran only for 13 units of time). <code>active</code> indicates if the host is still active in the simulation. <code>p_max</code> and <code>t_incub</code> are the individually sampled parameter for <code>pTrans</code>.</p>
+<div id="visualisation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#visualisation" class="anchor"></a>Visualisation</h3>
+<p>The transmission chain can be visualized using some of the packages dealing with networks in R. I usally use <code>igraph</code> with <code>ggnetwork</code>, but its really up to you. Keep in mind that the more nodes (i.e. infected hosts) you have the more messy the visualisation will be.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(viridis)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(igraph)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggnetwork)
+
+<span class="co">#To show the graph, we need to invert column 1 and 2, and discard the first line (i.e. the first host, because it shows "NA"). We then provide Nosoi output as elements for the vertices (nodes)</span>
+graph.simA &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/graph_from_data_frame">graph.data.frame</a></span>(SimulationA[<span class="op">-</span><span class="dv">1</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">1</span>)],<span class="dt">directed=</span>T,<span class="dt">vertices =</span> SimulationA)
+
+graph.simA.network =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/ggnetwork">ggnetwork</a></span>(graph.simA, <span class="dt">layout =</span> <span class="st">"fruchtermanreingold"</span>, <span class="dt">cell.jitter =</span> <span class="fl">0.75</span>) <span class="co">#using ggnetwork to provide the layout</span>
+
+<span class="co">#plotting the network</span>
+<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(graph.simA.network, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">xend =</span> xend, <span class="dt">yend =</span> yend)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/geom_edges">geom_edges</a></span>(<span class="dt">color =</span> <span class="st">"grey70"</span>,<span class="dt">arrow =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/reexports.html">arrow</a></span>(<span class="dt">length =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/reexports.html">unit</a></span>(<span class="fl">0.3</span>, <span class="st">"lines"</span>), <span class="dt">type =</span> <span class="st">"open"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/geom_nodes">geom_nodes</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>inf.time)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/viridis/topics/scale_viridis">scale_color_viridis</a></span>(<span class="dt">name=</span><span class="st">"Time of infection"</span>,<span class="dt">option =</span> <span class="st">"plasma"</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/theme_blank">theme_blank</a></span>()</code></pre></div>
+<p><img src="single-host-none_files/figure-html/visualisation-1.png" width="700"></p>
+</div>
 </div>
   </div>
 
@@ -260,6 +260,7 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#setting-up-the-simulation">Setting up the simulation</a></li>
       <li><a href="#running-nosoi">Running Nosoi</a></li>
+      <li><a href="#nosoi-output">Nosoi output</a></li>
       </ul>
 </div>
       </div>

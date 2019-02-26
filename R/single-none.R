@@ -17,15 +17,16 @@
 #' @export singleNone
 
 singleNone <- function(length.sim,
-                        max.infected,
-                        init.individuals,
-                        timeContact,
-                        pTrans,
-                        param.pTrans,
-                        pExit,
-                        param.pExit,
-                        prefix.host="H",
-                        ...){
+                       max.infected,
+                       init.individuals,
+                       timeContact,
+                       pTrans,
+                       param.pTrans,
+                       pExit,
+                       param.pExit,
+                       prefix.host="H",
+                       progress.bar=TRUE,
+                       ...){
 
 #Sanity check---------------------------------------------------------------------------------------------------------------------------
   #This section checks if the arguments of the function are in a correct format for the function to run properly
@@ -72,7 +73,7 @@ singleNone <- function(length.sim,
 
 # Running the simulation ----------------------------------------
   packageStartupMessage(" running ...")
-  pb <- txtProgressBar(min = 0, max = length.sim, style = 3, width=50)
+if( progress.bar==TRUE){pb <- txtProgressBar(min = 0, max = length.sim, style = 3, width=50)}
 
 for (pres.time in 1:length.sim){
 
@@ -151,7 +152,7 @@ for (pres.time in 1:length.sim){
   }}}}
 
 
-setTxtProgressBar(pb, pres.time)
+if( progress.bar==TRUE){setTxtProgressBar(pb, pres.time)}
   if(Host.count > max.infected){break}
 }
   packageStartupMessage(" done.")

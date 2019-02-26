@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Nosoi can accomodate a wide range of epidemiological transmission scenarios, but you need to properly set up the parameters to get it working. This tutorial aims to illustrate how to set up a Nosoi simulation for a "simple" case : a pathogen being transmitted among a single, non-structure, host population.
+Nosoi can accomodate a wide range of epidemiological transmission scenarios, but you need to properly set up the parameters to get it working. This tutorial aims to illustrate how to set up a Nosoi simulation for a "simple" case: a pathogen being transmitted among a single, non-structure, host population.
 
 ##Setting up the simulation
 
@@ -146,14 +146,16 @@ SimulationA <- nosoiSim(type="single", structure=FALSE,
 
 `prefix.host` allows you to define the first character(s) for the hosts' unique ID. It will be followed by an hyphen and a unique number. By default, `prefix.host` is "H" for "Host".
 
+`progress.bar` allows you to display a progress bar that represent the ration of "current time point" over the `length.sim` parameter provided. By default, the `progress.bar` is activated, but you may want to desactivate it by providing `progress.bar == FALSE`
+
 ##Running Nosoi
 
 Once nosoiSim is set up, you can run the simulation (here the "seed" ensure that you will get the same results as this tutorial).
 
 ```{r setupF}
-devtools::load_all("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/nosoi/")
+library(nosoi)
 #timeContact
-time_contact_fct = function(x){round(rnorm(x, 3, 1), 0)}
+time_contact_fct = function(x){abs(round(rnorm(x, 0.5, 1), 0))}
 
 #pTrans
 pTrans_fct <- function(t,p_max,t_incub){
@@ -162,7 +164,7 @@ pTrans_fct <- function(t,p_max,t_incub){
   return(p)
 }
  
-t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+t_incub_fct <- function(x){rnorm(x,mean = 7,sd=1)}
 p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   
 #pExit
@@ -176,12 +178,41 @@ SimulationA <- nosoiSim(type="single", structure=FALSE,
                         param.pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct),
                         pExit = p_Exit_fct,
                         param.pExit = NA,
-                        prefix.host="H")
+                        prefix.host="H",
+                        progress.bar=FALSE)
 ```
-During the run, Nosoi will report a progress bar, that represent the ration of "current time point" over the `length.sim` parameter provided. It can stop before 100% is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (13), and the maximum number of infected hosts (125). Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected` threshold set at 100.
+The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111). Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected` threshold set at 100.
 
 ##Nosoi output
+
+Nosoi gives as an ouput a `data.table` (a more efficient version of a `data.frame`) with the following structure:
 
 ```{r output}
 head(SimulationA)
 ```
+
+Each individual host that has or is infected during the course of the simulation is a line in the data.table. `hosts.ID` is the unique identifier of the host, while `inf.by` indicate which host infected it. As you can see, host `H-1` has been infected by `NA`; `H-1` is the individual that started the transmission chain. `inf.time` is the time (in simulation units of time) when the host has been infected, and `out.time` is the time (in simulation units of time) when it left the simulation. Here in the top 6 lines, no host has left the simulation (it ran only for 13 units of time). `active` indicates if the host is still active in the simulation. `p_max` and `t_incub` are the individually sampled parameter for `pTrans`.
+
+###Visualisation
+
+The transmission chain can be visualized using some of the packages dealing with networks in R. I usally use `igraph` with `ggnetwork`, but its really up to you. Keep in mind that the more nodes (i.e. infected hosts) you have the more messy the visualisation will be.
+
+```{r visualisation, message=FALSE}
+library(ggplot2)
+library(viridis)
+library(igraph)
+library(ggnetwork)
+
+# To show the graph, we need to invert column 1 and 2, and discard the first line (i.e. the first host, 
+# because it shows "NA" as infecting host). We then provide Nosoi output as elements for the vertices (nodes).
+graph.simA <- graph.data.frame(SimulationA[-1,c(2,1)],directed=T,vertices = SimulationA)
+
+graph.simA.network = ggnetwork(graph.simA, layout = "fruchtermanreingold", cell.jitter = 0.75) #using ggnetwork to provide the layout
+
+#plotting the network
+ggplot(graph.simA.network, aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_edges(color = "grey70",arrow = arrow(length = unit(0.3, "lines"), type = "open")) +
+  geom_nodes(aes(color=inf.time)) + scale_color_viridis(name="Time of infection",option = "plasma") + 
+  theme_blank()
+```
+

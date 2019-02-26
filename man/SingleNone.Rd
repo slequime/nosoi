@@ -5,7 +5,8 @@
 \title{Single-host without structured host population}
 \usage{
 singleNone(length.sim, max.infected, init.individuals, timeContact, pTrans,
-  param.pTrans, pExit, param.pExit, prefix.host = "H", ...)
+  param.pTrans, pExit, param.pExit, prefix.host = "H",
+  progress.bar = TRUE, ...)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}

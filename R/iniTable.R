@@ -21,7 +21,7 @@ colnames(table.hosts)<-c("hosts.ID","inf.by","inf.time","out.time","active",name
 for(indiv in 1:init.individuals){
 
   table.hosts[indiv,"hosts.ID"] <- paste(prefix.host,indiv,sep="-")
-  table.hosts[indiv,"inf.by"] <- paste("unkown",indiv,sep="-")
+  table.hosts[indiv,"inf.by"] <- NA
   table.hosts[indiv,"inf.time"] <- 0
   table.hosts[indiv,"out.time"] <- NA
   table.hosts[indiv,"active"] <- 1
