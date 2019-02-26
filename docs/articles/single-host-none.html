@@ -181,8 +181,7 @@ param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/ba
 <h2 class="hasAnchor">
 <a href="#running-nosoi" class="anchor"></a>Running Nosoi</h2>
 <p>Once nosoiSim is set up, you can run the simulation (here the “seed” ensure that you will get the same results as this tutorial).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/load_all">load_all</a></span>(<span class="st">"~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/nosoi/"</span>)
-<span class="co">#&gt; Loading nosoi</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)
 <span class="co">#&gt; Loading required package: data.table</span>
 <span class="co">#timeContact</span>
 time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}
@@ -214,7 +213,7 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="co">#&gt; Initializing ... running ...</span>
 <span class="co">#&gt;  done.</span>
 <span class="co">#&gt; The simulation has run for 40 units of time and a total of 111 hosts have been infected.</span></code></pre></div>
-<p>During the run, Nosoi will report a progress bar, that represent the ration of “current time point” over the <code>length.sim</code> parameter provided. It can stop before 100% is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
+<p>The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
 </div>
 <div id="nosoi-output" class="section level2">
 <h2 class="hasAnchor">
@@ -238,7 +237,8 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(igraph)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggnetwork)
 
-<span class="co">#To show the graph, we need to invert column 1 and 2, and discard the first line (i.e. the first host, because it shows "NA"). We then provide Nosoi output as elements for the vertices (nodes)</span>
+<span class="co"># To show the graph, we need to invert column 1 and 2, and discard the first line (i.e. the first host, </span>
+<span class="co"># because it shows "NA" as infecting host). We then provide Nosoi output as elements for the vertices (nodes).</span>
 graph.simA &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/graph_from_data_frame">graph.data.frame</a></span>(SimulationA[<span class="op">-</span><span class="dv">1</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">1</span>)],<span class="dt">directed=</span>T,<span class="dt">vertices =</span> SimulationA)
 
 graph.simA.network =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/ggnetwork">ggnetwork</a></span>(graph.simA, <span class="dt">layout =</span> <span class="st">"fruchtermanreingold"</span>, <span class="dt">cell.jitter =</span> <span class="fl">0.75</span>) <span class="co">#using ggnetwork to provide the layout</span>

@@ -20,7 +20,7 @@ nosoiSummary <- function(nosoi.output){
   nosoiSum[["n.inactive"]] = nrow(Inactive)
 
   #estimating R0 (mean number of secondary cases)
-  Sec.cases1 = nosoi.output %>% subset(! is.na(inf.by)) %>% subset(inf.by %in% Inactive$hosts.ID) %>% group_by(inf.by) %>% summarise(Secondary.cases=length(hosts.ID))
+  Sec.cases1 = nosoi.output %>% subset(! str_detect(inf.by,"NA")) %>% subset(inf.by %in% Inactive$hosts.ID) %>% group_by(inf.by) %>% summarise(Secondary.cases=length(hosts.ID))
   Sec.cases2 = tibble(inf.by=Inactive$hosts.ID[!Inactive$hosts.ID %in% Sec.cases1$inf.by],Secondary.cases=0)
 
   Sec.cases = rbind(Sec.cases,Sec.cases2)
