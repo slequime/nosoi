@@ -28,5 +28,3 @@ nosoiSummary <- function(nosoi.output){
   nosoiSum[["R.node"]] = mean(Sec.cases$Secondary.cases)
   return(nosoiSum)
 }
-
-nosoiSummary(SimulationA)
