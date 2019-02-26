@@ -7,8 +7,10 @@
 #' @details All elements are provided in a list.
 #'
 #' @export nosoiSummary
-#' @import tidyverse
-#' @import igraph
+#' @import stringr
+#' @import magrittr
+#' @importFrom dplyr group_by
+#' @importFrom dplyr summarise
 
 nosoiSummary <- function(nosoi.output){
   nosoiSum = list()
@@ -16,12 +18,12 @@ nosoiSummary <- function(nosoi.output){
   nosoiSum[["n.infected"]] = nrow(nosoi.output)
 
   #number of hosts inactive (have done their full cycle)
-  Inactive = nosoi.output %>% subset(active == 0)
+  Inactive = nosoi.output[nosoi.output[["active"]] == 0]
   nosoiSum[["n.inactive"]] = nrow(Inactive)
 
   #estimating R0 (mean number of secondary cases)
-  Sec.cases1 = nosoi.output %>% subset(! str_detect(inf.by,"NA")) %>% subset(inf.by %in% Inactive$hosts.ID) %>% group_by(inf.by) %>% summarise(Secondary.cases=length(hosts.ID))
-  Sec.cases2 = tibble(inf.by=Inactive$hosts.ID[!Inactive$hosts.ID %in% Sec.cases1$inf.by],Secondary.cases=0)
+  Sec.cases1 = nosoi.output[!str_detect(nosoi.output[["inf.by"]],"NA") & nosoi.output[["inf.by"]] %in% Inactive[["hosts.ID"]]] %>% group_by(inf.by) %>% summarise(Secondary.cases=length(hosts.ID))
+  Sec.cases2 = data.frame(inf.by=Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by],Secondary.cases=0)
 
   Sec.cases = rbind(Sec.cases,Sec.cases2)
 

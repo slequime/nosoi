@@ -183,6 +183,10 @@ param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/ba
 <p>Once nosoiSim is set up, you can run the simulation (here the “seed” ensure that you will get the same results as this tutorial).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)
 <span class="co">#&gt; Loading required package: data.table</span>
+<span class="co">#&gt; Warning: replacing previous import 'igraph::decompose' by</span>
+<span class="co">#&gt; 'stats::decompose' when loading 'nosoi'</span>
+<span class="co">#&gt; Warning: replacing previous import 'igraph::spectrum' by 'stats::spectrum'</span>
+<span class="co">#&gt; when loading 'nosoi'</span>
 <span class="co">#timeContact</span>
 time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}
 
@@ -221,7 +225,7 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <p>Nosoi gives as an ouput a <code>data.table</code> (a more efficient version of a <code>data.frame</code>) with the following structure:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(SimulationA)
 <span class="co">#&gt;    hosts.ID inf.by inf.time out.time active     p_max  t_incub</span>
-<span class="co">#&gt; 1:      H-1   &lt;NA&gt;        0       23      0 0.6820110 5.867392</span>
+<span class="co">#&gt; 1:      H-1   NA-1        0       23      0 0.6820110 5.867392</span>
 <span class="co">#&gt; 2:     H-10    H-2       16       19      0 0.8026548 6.414165</span>
 <span class="co">#&gt; 3:    H-100   H-21       40       NA      1 0.6622235 7.816477</span>
 <span class="co">#&gt; 4:    H-101   H-35       40       NA      1 0.6288499 7.395426</span>

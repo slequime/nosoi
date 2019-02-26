@@ -15,15 +15,22 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Suggests: 
-    testthat (>= 2.1.0),
-    knitr,
-    rmarkdown
 Depends: 
     data.table (>= 1.12.0),
     R (>= 3.5.0)
 Imports:
-    methods (>= 3.5.2),
     utils (>= 3.5.2),
-    stats (>= 3.5.2)
+    stats (>= 3.5.2),
+    methods (>= 3.5.2),
+    dplyr (>= 0.8.0),
+    magrittr (>= 1.5),
+    stringr (>= 1.4.0)
+Suggests:
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown,
+    igraph,
+    ggplot2,
+    ggnetwork,
+    viridis
 VignetteBuilder: knitr

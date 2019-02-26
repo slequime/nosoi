@@ -64,7 +64,7 @@ test_that("Transmission is coherent with single introduction, simple pExit and p
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
-  expect_equal(diameter(g, directed=F, weights=NA), 6)
+  expect_equal(diameter(g, directed=F, weights=NA), 5)
 })
 
 test_that("Transmission is coherent with single introduction, complex pExit and pTrans", {
@@ -75,6 +75,7 @@ test_that("Transmission is coherent with single introduction, complex pExit and 
   p_exit_param1 <- function(x){rnorm(x,mean = 10,sd=2)}
 
   p_Exit_fct  <- function(t,pExit.param1){plogis(t,pExit.param1,2)}
+  # p_exit_bis <- function(x){p_Exit_fct(t=x[1], pExit.param1=x[2])}
 
   proba <- function(t,p_max,t_incub){
     if(t <= t_incub){p=0}
@@ -100,7 +101,7 @@ test_that("Transmission is coherent with single introduction, complex pExit and 
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
-  expect_equal(diameter(g, directed=F, weights=NA), 6)
+  expect_equal(diameter(g, directed=F, weights=NA), 7)
 })
 
 test_that("Transmission is coherent with multiple introductions, constant pExit and pTrans", {
@@ -129,11 +130,12 @@ test_that("Transmission is coherent with multiple introductions, constant pExit 
                           pExit=p_Exit_fct,
                           param.pExit=NA
   )
+
   g <- graph.data.frame(test.nosoiA[,c(1,2)],directed=F)
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 3)
-  expect_equal(diameter(g, directed=F, weights=NA), 4)
+  expect_equal(diameter(g, directed=F, weights=NA), 6)
 
 })
 

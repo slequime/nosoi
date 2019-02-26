@@ -12,6 +12,7 @@
 #' @param pExit function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).
 #' @param param.pExit parameter names (list of functions) for the pExit.
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
+#' @param progress.bar if TRUE, displays a progress bar (current time/length.sim).
 #' @param ... other arguments to be passed on to the simulator (see below).
 #'
 #' @export singleNone
@@ -53,13 +54,13 @@ singleNone <- function(length.sim,
 
   if(length(formalArgs(pExit)) == 1){pExit.type <- "simple"
   n.pExit.param <- 0}
-  if(length(formalArgs(pExit)) > 1){pExit.type <- "complex"
+  if(length(formalArgs(pExit)) > 1){
+    pExit.type <- "complex"
 
-  if (! is.na(param.pExit)){
-    pExit.param <- formalArgs(pExit)[-1]
-    if(! all(names(param.pExit) %in% pExit.param)) stop("Parameter name in param.pExit should match the name used in pExit.")
-    n.pExit.param <- length(pExit.param)
-    pExit.constant <- FALSE
+    if (! is.na(param.pExit)){
+      pExit.param <- formalArgs(pExit)[-1]
+      if(! all(names(param.pExit) %in% pExit.param)) stop("Parameter name in param.pExit should match the name used in pExit.")
+      n.pExit.param <- length(pExit.param)
     }else(stop("There is a probleme with your exit probability function: you should provide a parameter list."))
   }
 
@@ -79,8 +80,8 @@ for (pres.time in 1:length.sim){
 
   #Step 0: Active hosts ----------------------------------------------------------
 
-  active.hosts = subset(table.hosts,active==1)$hosts.ID #active hosts
-  if(length(active.hosts) > 0){
+  active.hosts = table.hosts[table.hosts[["active"]]==1][, "hosts.ID"] #active hosts
+  if(nrow(active.hosts) > 0){
 
     if(pExit.type == "simple"){
       p.exit.values = pExit(pres.time-table.hosts[active.hosts]$inf.time)
@@ -88,14 +89,24 @@ for (pres.time in 1:length.sim){
     }
 
     if(pExit.type == "complex"){
-      p.exit.values = NULL
-      for(j in active.hosts){
-        x2 <- NULL
-        for (i in names(param.pExit)){x2 <- c(x2,paste0(i,"=",as.numeric(table.hosts[j, ..i])))}
+
+      fun <- function(j){
+        x2 <- sapply(names(param.pExit), function(i) return(paste0(i,"=",as.numeric(table.hosts[j, ..i]))))
+        # x2 <- NULL
+        # for (i in names(param.pExit)){x2 <- c(x2,paste0(i,"=",as.numeric(table.hosts[j, ..i])))}
 
         option.trans <- paste0(c(paste0("t=",pres.time-table.hosts[j, "inf.time"]),x2),collapse = ",")
-        p.exit.values = c(p.exit.values,eval(parse(text = paste("pExit(", option.trans, ")"))))
+        eval(parse(text = paste("pExit(", option.trans, ")")))
       }
+      p.exit.values = apply(active.hosts, 1, fun)
+      # p.exit.values = NULL
+      # for(j in active.hosts$hosts.ID){
+      #   x2 <- NULL
+      #   for (i in names(param.pExit)){x2 <- c(x2,paste0(i,"=",as.numeric(table.hosts[j, ..i])))}
+      #
+      #   option.trans <- paste0(c(paste0("t=",pres.time-table.hosts[j, "inf.time"]),x2),collapse = ",")
+      #   p.exit.values = c(p.exit.values,eval(parse(text = paste("pExit(", option.trans, ")"))))
+      # }
 
       exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
     }
@@ -105,39 +116,51 @@ for (pres.time in 1:length.sim){
   table.hosts[IDs, `:=` (out.time = as.numeric(pres.time),
                          active = 0)]
 
-  active.hosts = subset(table.hosts, active==1)$hosts.ID #active hosts
-  if(length(active.hosts) == 0){break}
+  active.hosts = table.hosts[table.hosts[["active"]]==1][, "hosts.ID"] #active hosts
+  if(nrow(active.hosts) == 0){break}
   #Step 1: Meeting & transmission ----------------------------------------------------
 
   number.contacts <- timeContact(length(active.hosts))
 
-  df.meetTransmit = data.table(active.hosts,number.contacts)
+  df.meetTransmit <- data.table(active.hosts,number.contacts)
+  colnames(df.meetTransmit) <- c("active.hosts","number.contacts")
+
   data.table::setkey(df.meetTransmit,active.hosts)
 
   df.meetTransmit = subset(df.meetTransmit, number.contacts > 0)
 
   if(nrow(df.meetTransmit) >0){
 
+    # active.hosts = df.meetTransmit[, "active.hosts"] #active hosts
+
+    # fun2 <- function(j){
+    #   x2 <- sapply(names(param.pTrans), function(i) return(paste0(i,"=",as.numeric(table.hosts[j, ..i]))))
+    #
+    #   option.trans <- paste0(c(paste0("t=",pres.time-table.hosts[j, "inf.time"]),x2),collapse = ",")
+    #   eval(parse(text = paste("pTrans(", option.trans, ")")))
+    # }
+    # results.Ptransmit = apply(active.hosts, 1, fun2)
+
   results.Ptransmit=NULL
-    for(j in df.meetTransmit$active.hosts){
+  for(j in df.meetTransmit$active.hosts){
 
-      x2 <- NULL
-      for (i in names(param.pTrans)){x2 <- c(x2,paste0(i,"=",as.numeric(table.hosts[j, ..i])))}
+    x2 <- NULL
+    for (i in names(param.pTrans)){x2 <- c(x2,paste0(i,"=",as.numeric(table.hosts[j, ..i])))}
+    option.trans <- paste0(c(paste0("t=",pres.time-table.hosts[j, "inf.time"]),x2),collapse = ",")
+    results.Ptransmit = c(results.Ptransmit,eval(parse(text = paste("pTrans(", option.trans, ")"))))
+  }
 
-      option.trans <- paste0(c(paste0("t=",pres.time-table.hosts[j, "inf.time"]),x2),collapse = ",")
-      results.Ptransmit = c(results.Ptransmit,eval(parse(text = paste("pTrans(", option.trans, ")"))))
-    }
 
-  df.meetTransmit$Ptransmit = results.Ptransmit #adds transmission probability to events
-  df.meetTransmit <- subset(df.meetTransmit, Ptransmit > 0) #discards event with probability 0
+  df.meetTransmit[,"Ptransmit"] = results.Ptransmit #adds transmission probability to events
+  df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Ptransmit"]] > 0] #discards event with probability 0
 
   if(nrow(df.meetTransmit) >0){
 
   df.meetTransmit <- df.meetTransmit[rep(seq(1, nrow(df.meetTransmit)), df.meetTransmit$number.contacts)]
 
-  df.meetTransmit$Trans <- drawBernouilli(df.meetTransmit$Ptransmit) #Draws K bernouillis with various probability (see function for more detail)
+  df.meetTransmit[,"Trans"] <- drawBernouilli(df.meetTransmit[["Ptransmit"]]) #Draws K bernouillis with various probability (see function for more detail)
 
-  df.meetTransmit = subset(df.meetTransmit, Trans == TRUE) #Discards events with no realisation
+  df.meetTransmit = df.meetTransmit[df.meetTransmit[["Trans"]] == TRUE] #Discards events with no realisation
 
   if(nrow(df.meetTransmit) >0){
   for(i in 1:nrow(df.meetTransmit)){

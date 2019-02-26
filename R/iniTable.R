@@ -36,6 +36,6 @@ for(indiv in 1:init.individuals){
 }
 
 table.hosts <- data.table::as.data.table(table.hosts)
-data.table::setkey(table.hosts, hosts.ID)
+data.table::setkey(table.hosts, "hosts.ID")
 return(table.hosts)
 }

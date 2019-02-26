@@ -27,6 +27,8 @@ singleNone(length.sim, max.infected, init.individuals, timeContact, pTrans,
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
+\item{progress.bar}{if TRUE, displays a progress bar (current time/length.sim).}
+
 \item{...}{other arguments to be passed on to the simulator (see below).}
 }
 \description{
