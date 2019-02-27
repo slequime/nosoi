@@ -154,7 +154,6 @@ singleNone <- function(length.sim,
     if (!any(active.hosts)) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
-    # browser()
     df.meetTransmit <- table.hosts[active.hosts, "hosts.ID"]
     df.meetTransmit[, active.hosts:=hosts.ID]
     df.meetTransmit$number.contacts <- timeContact(sum(active.hosts))
