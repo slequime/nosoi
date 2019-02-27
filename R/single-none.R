@@ -58,9 +58,16 @@ singleNone <- function(length.sim,
     do.call(pTrans,c(list(t=t),x))
   }
 
+  pTrans_vect <- function(prestime, parameters) {
+    do.call(pTrans_eval, c(list(prestime = prestime), parameters))
+  }
+
+
   pTrans_eval_args = c(formalArgs(pTrans_eval),formalArgs(pTrans)[-1])
 
   pTrans_eval_args = subset(pTrans_eval_args, pTrans_eval_args != "...")
+
+  pTrans_vect_args = pTrans_eval_args[-1]
 
 
   #Parsing pExit
@@ -85,9 +92,15 @@ singleNone <- function(length.sim,
         do.call(pExit,c(list(t=t),x))
       }
 
+      pExit_vect <- function(prestime, parameters) {
+        do.call(pExit_eval, c(list(prestime = prestime), parameters))
+      }
+
       pExit_eval_args = c(formalArgs(pExit_eval),formalArgs(pExit)[-1])
 
       pExit_eval_args = subset(pExit_eval_args, pExit_eval_args != "...")
+
+      pExit_vect_args = pExit_eval_args[-1]
 
     }else(stop("There is a probleme with your exit probability function: you should provide a parameter list."))
   }
@@ -107,9 +120,8 @@ singleNone <- function(length.sim,
   for (pres.time in 1:length.sim) {
 
     #Step 0: Active hosts ----------------------------------------------------------
-
-    active.hosts = table.hosts[table.hosts[["active"]]==1][, "hosts.ID"] #active hosts
-    if(nrow(active.hosts) > 0){
+    active.hosts <- table.hosts[["active"]] == 1 #active hosts (boolean vector)
+    if(any(active.hosts)){
 
       if(pExit.type == "simple"){
         p.exit.values <- pExit(pres.time-table.hosts[active.hosts]$inf.time)
@@ -117,42 +129,60 @@ singleNone <- function(length.sim,
       }
 
       if(pExit.type == "complex"){
-        p.exit.values <- NULL
-        for (j in active.hosts$hosts.ID) {
-          p.exit.values <- c(p.exit.values,do.call(pExit_eval, c(as.list(table.hosts[j]), list(prestime = pres.time))[pExit_eval_args]))
+        fun <- function(z) {
+          pExit_vect(prestime = pres.time, z[, pExit_vect_args, with = FALSE])
         }
+        p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+        # p.exit.values <- NULL
+        # for (j in active.hosts$hosts.ID) {
+        #   p.exit.values <- c(p.exit.values,do.call(pExit_eval, c(as.list(table.hosts[j]), list(prestime = pres.time))[pExit_eval_args]))
+        # }
 
         exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
       }
     }
 
-    IDs = active.hosts[exiting]
-    table.hosts[IDs, `:=` (out.time = as.numeric(pres.time),
-                           active = 0)]
+    exiting.full <- active.hosts
+    exiting.full[exiting.full] <- exiting
 
-    active.hosts <- table.hosts[table.hosts[["active"]]==1][, "hosts.ID"] #active hosts
-    if (nrow(active.hosts) == 0) {break}
+    # IDs = table.hosts[active.hosts][exiting, "hosts.ID"]
+    table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
+                                    active = 0)]
+
+    active.hosts[active.hosts] <- !exiting # Update active hosts
+    # active.hosts <- table.hosts[table.hosts[["active"]]==1, "hosts.ID"] #active hosts
+    if (!any(active.hosts)) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
+    # browser()
+    df.meetTransmit <- table.hosts[active.hosts, "hosts.ID"]
+    df.meetTransmit[, active.hosts:=hosts.ID]
+    df.meetTransmit$number.contacts <- timeContact(sum(active.hosts))
 
-    number.contacts <- timeContact(nrow(active.hosts))
+    # number.contacts <- timeContact(sum(active.hosts))
+    #
+    # df.meetTransmit <- data.table(active.hosts,number.contacts)
+    # colnames(df.meetTransmit) <- c("active.hosts","number.contacts")
 
-    df.meetTransmit <- data.table(active.hosts,number.contacts)
-    colnames(df.meetTransmit) <- c("active.hosts","number.contacts")
+    # data.table::setkey(df.meetTransmit,active.hosts)
 
-    data.table::setkey(df.meetTransmit,active.hosts)
-
-    df.meetTransmit <- df.meetTransmit[df.meetTransmit[["number.contacts"]] > 0]
+    haveContact <- df.meetTransmit[["number.contacts"]] > 0
+    df.meetTransmit <- df.meetTransmit[haveContact]
+    active.hosts[active.hosts] <- haveContact # Update active hosts
 
     if (nrow(df.meetTransmit) > 0) {
 
-      results.Ptransmit=NULL
-
-      for (j in df.meetTransmit$active.hosts) {
-        results.Ptransmit <- c(results.Ptransmit,do.call(pTrans_eval, c(as.list(table.hosts[j]), list(prestime = pres.time))[pTrans_eval_args]))
+      fun <- function(z) {
+        pTrans_vect(prestime = pres.time, z[, pTrans_vect_args, with = FALSE])
       }
 
-      df.meetTransmit[,"Ptransmit"] <- results.Ptransmit #adds transmission probability to events
+      # results.Ptransmit = NULL
+      # for (j in df.meetTransmit$active.hosts) {
+      #   results.Ptransmit <- c(results.Ptransmit,do.call(pTrans_eval, c(as.list(table.hosts[j]), list(prestime = pres.time))[pTrans_eval_args]))
+      # }
+      # df.meetTransmit[["Ptransmit"]] <- results.Ptransmit
+
+      df.meetTransmit[, "Ptransmit"] <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"] #adds transmission probability to events
       df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Ptransmit"]] > 0] #discards event with probability 0
 
       if (nrow(df.meetTransmit) > 0) {
@@ -161,19 +191,23 @@ singleNone <- function(length.sim,
 
         df.meetTransmit[,"Trans"] <- drawBernouilli(df.meetTransmit[["Ptransmit"]]) #Draws K bernouillis with various probability (see function for more detail)
 
-        df.meetTransmit = df.meetTransmit[df.meetTransmit[["Trans"]] == TRUE] #Discards events with no realisation
+        df.meetTransmit = df.meetTransmit[df.meetTransmit[["Trans"]]] #Discards events with no realisation
 
         if (nrow(df.meetTransmit) >0) {
+          table.temp <- vector("list", nrow(df.meetTransmit))
           for (i in 1:nrow(df.meetTransmit)) {
 
             Host.count <- Host.count+1
             hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
-            table.temp <- newLine(hosts.ID,as.character(df.meetTransmit[i,]$active.hosts),pres.time,n.pExit.param,param.pExit,n.pTrans.param,param.pTrans)
+            table.temp[[i]] <- newLine(hosts.ID,as.character(df.meetTransmit[i,]$active.hosts),pres.time,n.pExit.param,param.pExit,n.pTrans.param,param.pTrans)
+          }
 
-            table.hosts <- data.table::rbindlist(list(table.hosts,table.temp))
-            data.table::setkey(table.hosts,hosts.ID)
-          }}}}
+          table.hosts <- data.table::rbindlist(c(list(table.hosts),table.temp))
+          data.table::setkey(table.hosts,hosts.ID)
+        }
+      }
+    }
 
     if (progress.bar == TRUE) {setTxtProgressBar(pb, pres.time)}
     if (Host.count > max.infected) {break}
