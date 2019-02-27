@@ -64,7 +64,7 @@ test_that("Transmission is coherent with single introduction, simple pExit and p
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
-  expect_equal(diameter(g, directed=F, weights=NA), 5)
+  expect_equal(diameter(g, directed=F, weights=NA), 6)
 })
 
 test_that("Transmission is coherent with single introduction, complex pExit and pTrans", {
@@ -101,7 +101,7 @@ test_that("Transmission is coherent with single introduction, complex pExit and 
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
-  expect_equal(diameter(g, directed=F, weights=NA), 7)
+  expect_equal(diameter(g, directed=F, weights=NA), 6)
 })
 
 test_that("Transmission is coherent with multiple introductions, constant pExit and pTrans", {

@@ -135,7 +135,7 @@ singleNone <- function(length.sim,
 
     #Step 1: Meeting & transmission ----------------------------------------------------
 
-    number.contacts <- timeContact(length(active.hosts))
+    number.contacts <- timeContact(nrow(active.hosts))
 
     df.meetTransmit <- data.table(active.hosts,number.contacts)
     colnames(df.meetTransmit) <- c("active.hosts","number.contacts")
