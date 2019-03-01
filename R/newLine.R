@@ -1,6 +1,10 @@
-#' Creates a new line to be added to the table when new host is infected (internal fonction)
+#' @title Creates a new line to be added to the table when new host is infected (internal fonction)
 #'
-#' @description This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s).
+#' @description
+#' This function creates a new line for the table,
+#' with 5+number of parameters of the transmission probability function paramters,
+#' and init.individuals row(s).
+#' The lines are to be bounded with \code{\link{data.table::rbindlist}}.
 #'
 #' @param hosts.ID unique ID for the new host
 #' @param infected.by unique ID of host that transmits to the new one
@@ -10,20 +14,21 @@
 #' @param n.pTrans.param number of parameters for transmission probability computation (impacts number of columns).
 #' @param param.pTrans list of transmission probability function(s).
 #'
+#' @return a list with the new line to add.
+#'
 #' @keywords internal
 
 newLine <- function(hosts.ID,infected.by,time.is,n.pExit.param,param.pExit,n.pTrans.param,param.pTrans) {
   if (is.na(param.pExit)) param.pExit <- NULL
-  return(data.table::as.data.table(c(hosts.ID = hosts.ID,
-                                     inf.by = infected.by,
-                                     inf.time = time.is,
-                                     out.time = NA_real_,
-                                     active = 1,
-                                     as.list(sapply(param.pTrans, function(x) sapply(1, x))),
-                                     as.list(sapply(param.pExit, function(x) sapply(1, x)))
-                                     )
-                                   )
-         )
+  return(c(hosts.ID = hosts.ID,
+           inf.by = infected.by,
+           inf.time = time.is,
+           out.time = NA_real_,
+           active = 1,
+           as.list(sapply(param.pTrans, function(x) x(1))),
+           as.list(sapply(param.pExit, function(x) x(1)))
+  )
+  )
 
   # table.temp <- data.frame(matrix(0, ncol = (5+n.pTrans.param+n.pExit.param), nrow = 1))
   # colnames(table.temp)<-c("hosts.ID","inf.by","inf.time","out.time","active",names(param.pExit),names(param.pTrans))
