@@ -106,7 +106,7 @@ singleNone <- function(length.sim,
   }
 
   message("Starting the simulation")
-  packageStartupMessage("Initializing ...", appendLF = FALSE)
+  message("Initializing ...", appendLF = FALSE)
 
   #Creation of initial data ----------------------------------------------------------
 
@@ -114,7 +114,7 @@ singleNone <- function(length.sim,
   Host.count <- init.individuals
 
   # Running the simulation ----------------------------------------
-  packageStartupMessage(" running ...")
+  message(" running ...")
   if (progress.bar==TRUE) {pb <- txtProgressBar(min = 0, max = length.sim, style = 3, width=50)}
 
   for (pres.time in 1:length.sim) {
@@ -211,8 +211,8 @@ singleNone <- function(length.sim,
     if (progress.bar == TRUE) {setTxtProgressBar(pb, pres.time)}
     if (Host.count > max.infected) {break}
   }
-  packageStartupMessage(" done.")
-  packageStartupMessage("The simulation has run for ",pres.time," units of time and a total of ",Host.count," hosts have been infected.")
+  message(" done.")
+  message("The simulation has run for ",pres.time," units of time and a total of ",Host.count," hosts have been infected.")
 
   return(table.hosts)
 
