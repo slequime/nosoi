@@ -44,73 +44,18 @@ singleNone <- function(length.sim,
   timeContact <- match.fun(timeContact)
 
   #Parsing pTrans
-  pTrans <- match.fun(pTrans)
-
-  if (is.list(param.pTrans)) {
-    pTrans.param <- formalArgs(pTrans)[-1]
-    if(! all(names(param.pTrans) %in% pTrans.param)) stop("Parameter name in param.pTrans should match the name used in pTrans.")
-    n.pTrans.param <- length(pTrans.param)
-  }
-
-  pTrans_eval <- function(prestime,inf.time,...) {
-    t = pres.time-inf.time
-    x <- list(...)
-    do.call(pTrans,c(list(t=t),x))
-  }
-
-  pTrans_vect <- function(prestime, parameters) {
-    do.call(pTrans_eval, c(list(prestime = prestime), parameters))
-  }
-
-
-  pTrans_eval_args = c(formalArgs(pTrans_eval),formalArgs(pTrans)[-1])
-
-  pTrans_eval_args = subset(pTrans_eval_args, pTrans_eval_args != "...")
-
-  pTrans_vect_args = pTrans_eval_args[-1]
-
+  pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)))
 
   #Parsing pExit
-  pExit <- match.fun(pExit)
+  pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)))
 
-  if(length(formalArgs(pExit)) == 1) {
-    pExit.type <- "simple"
-    n.pExit.param <- 0
-  }
-
-  if (length(formalArgs(pExit)) > 1){
-    pExit.type <- "complex"
-
-    if (! is.na(param.pExit)) {
-      pExit.param <- formalArgs(pExit)[-1]
-      if(! all(names(param.pExit) %in% pExit.param)) stop("Parameter name in param.pExit should match the name used in pExit.")
-      n.pExit.param <- length(pExit.param)
-
-      pExit_eval <- function(prestime,inf.time,...) {
-        t = pres.time-inf.time
-        x <- list(...)
-        do.call(pExit,c(list(t=t),x))
-      }
-
-      pExit_vect <- function(prestime, parameters) {
-        do.call(pExit_eval, c(list(prestime = prestime), parameters))
-      }
-
-      pExit_eval_args = c(formalArgs(pExit_eval),formalArgs(pExit)[-1])
-
-      pExit_eval_args = subset(pExit_eval_args, pExit_eval_args != "...")
-
-      pExit_vect_args = pExit_eval_args[-1]
-
-    }else(stop("There is a probleme with your exit probability function: you should provide a parameter list."))
-  }
-
+  # Init
   message("Starting the simulation")
   message("Initializing ...", appendLF = FALSE)
 
   #Creation of initial data ----------------------------------------------------------
 
-  table.hosts <- iniTable(init.individuals,prefix.host,n.pExit.param,param.pExit, n.pTrans.param, param.pTrans,...)
+  table.hosts <- iniTable(init.individuals, prefix.host, pExitParsed$nArgs, param.pExit, pTransParsed$nArgs, param.pTrans, ...)
   Host.count <- init.individuals
 
   # Running the simulation ----------------------------------------
@@ -121,16 +66,16 @@ singleNone <- function(length.sim,
 
     #Step 0: Active hosts ----------------------------------------------------------
     active.hosts <- table.hosts[["active"]] == 1 #active hosts (boolean vector)
-    if(any(active.hosts)){
+    if (any(active.hosts)){
 
-      if(pExit.type == "simple"){
-        p.exit.values <- pExit(pres.time-table.hosts[active.hosts]$inf.time)
-        exiting = drawBernouilli(p.exit.values)
+      if (pExitParsed$type == "simple"){
+        p.exit.values <- pExit(pres.time - table.hosts[active.hosts]$inf.time)
+        exiting <- drawBernouilli(p.exit.values)
       }
 
-      if(pExit.type == "complex"){
+      if (pExitParsed$type == "complex"){
         fun <- function(z) {
-          pExit_vect(prestime = pres.time, z[, pExit_vect_args, with = FALSE])
+          pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
         }
         p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
         # p.exit.values <- NULL
@@ -172,7 +117,7 @@ singleNone <- function(length.sim,
     if (nrow(df.meetTransmit) > 0) {
 
       fun <- function(z) {
-        pTrans_vect(prestime = pres.time, z[, pTrans_vect_args, with = FALSE])
+        pTransParsed$vect(prestime = pres.time, z[, pTransParsed$vectArgs, with = FALSE])
       }
 
       # results.Ptransmit = NULL
@@ -199,7 +144,7 @@ singleNone <- function(length.sim,
             Host.count <- Host.count+1
             hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
-            table.temp[[i]] <- newLine(hosts.ID,as.character(df.meetTransmit[i,]$active.hosts),pres.time,n.pExit.param,param.pExit,n.pTrans.param,param.pTrans)
+            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts), pres.time, pExitParsed$nArgs, param.pExit, pTransParsed$nArgs, param.pTrans)
           }
 
           table.hosts <- data.table::rbindlist(c(list(table.hosts),table.temp))
