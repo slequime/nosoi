@@ -55,7 +55,7 @@ singleNone <- function(length.sim,
 
   #Creation of initial data ----------------------------------------------------------
 
-  table.hosts <- iniTable(init.individuals, prefix.host, pExitParsed$nArgs, param.pExit, pTransParsed$nArgs, param.pTrans, ...)
+  table.hosts <- iniTable(init.individuals, NA, prefix.host, param.pExit, param.pMove = NA, param.pTrans, ...)
   Host.count <- init.individuals
 
   # Running the simulation ----------------------------------------
@@ -78,10 +78,6 @@ singleNone <- function(length.sim,
           pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
         }
         p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
-        # p.exit.values <- NULL
-        # for (j in active.hosts$hosts.ID) {
-        #   p.exit.values <- c(p.exit.values,do.call(pExit_eval, c(as.list(table.hosts[j]), list(prestime = pres.time))[pExit_eval_args]))
-        # }
 
         exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
       }
@@ -103,13 +99,6 @@ singleNone <- function(length.sim,
     df.meetTransmit[, active.hosts:=hosts.ID]
     df.meetTransmit$number.contacts <- timeContact(sum(active.hosts))
 
-    # number.contacts <- timeContact(sum(active.hosts))
-    #
-    # df.meetTransmit <- data.table(active.hosts,number.contacts)
-    # colnames(df.meetTransmit) <- c("active.hosts","number.contacts")
-
-    # data.table::setkey(df.meetTransmit,active.hosts)
-
     haveContact <- df.meetTransmit[["number.contacts"]] > 0
     df.meetTransmit <- df.meetTransmit[haveContact]
     active.hosts[active.hosts] <- haveContact # Update active hosts
@@ -119,12 +108,6 @@ singleNone <- function(length.sim,
       fun <- function(z) {
         pTransParsed$vect(prestime = pres.time, z[, pTransParsed$vectArgs, with = FALSE])
       }
-
-      # results.Ptransmit = NULL
-      # for (j in df.meetTransmit$active.hosts) {
-      #   results.Ptransmit <- c(results.Ptransmit,do.call(pTrans_eval, c(as.list(table.hosts[j]), list(prestime = pres.time))[pTrans_eval_args]))
-      # }
-      # df.meetTransmit[["Ptransmit"]] <- results.Ptransmit
 
       df.meetTransmit[, "Ptransmit"] <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"] #adds transmission probability to events
       df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Ptransmit"]] > 0] #discards event with probability 0
@@ -144,7 +127,7 @@ singleNone <- function(length.sim,
             Host.count <- Host.count+1
             hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
-            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts), pres.time, pExitParsed$nArgs, param.pExit, pTransParsed$nArgs, param.pTrans)
+            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts), NA, pres.time, param.pExit, param.pMove=NA, param.pTrans)
           }
 
           table.hosts <- data.table::rbindlist(c(list(table.hosts),table.temp))
@@ -160,5 +143,4 @@ singleNone <- function(length.sim,
   message("The simulation has run for ",pres.time," units of time and a total of ",Host.count," hosts have been infected.")
 
   return(table.hosts)
-
 }
