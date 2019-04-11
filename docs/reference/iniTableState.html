@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Single-host without structured host population — singleNone • nosoi</title>
+<title>Generates initial movement table to start the simulation (internal fonction) — iniTableState • nosoi</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Single-host without structured host population — singleNone" />
+<meta property="og:title" content="Generates initial movement table to start the simulation (internal fonction) — iniTableState" />
 
-<meta property="og:description" content="This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed." />
+<meta property="og:description" content="This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,72 +109,33 @@ the end of given time (specified by length.sim) or when the number of hosts infe
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Single-host without structured host population</h1>
+    <h1>Generates initial movement table to start the simulation (internal fonction)</h1>
     
-    <div class="hidden name"><code>singleNone.Rd</code></div>
+    <div class="hidden name"><code>iniTableState.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.</p>
+    <p>This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>singleNone</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>, <span class='no'>timeContact</span>,
-  <span class='no'>param.timeContact</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
-  <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>iniTableState</span>(<span class='no'>init.individuals</span>, <span class='no'>init.structure</span>, <span class='no'>prefix.host</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>length.sim</th>
-      <td><p>specifies the length (in unit of time) over which the simulation should be run.</p></td>
-    </tr>
-    <tr>
-      <th>max.infected</th>
-      <td><p>specifies the maximum number of hosts that can be infected in the simulation.</p></td>
-    </tr>
-    <tr>
       <th>init.individuals</th>
-      <td><p>number of initially infected individuals.</p></td>
+      <td><p>number of initially infected individuals (i.e. number of lines at time 0).</p></td>
     </tr>
     <tr>
-      <th>timeContact</th>
-      <td><p>function that gives the number of potential transmission events per unit of time.</p></td>
-    </tr>
-    <tr>
-      <th>param.timeContact</th>
-      <td><p>parameter names (list of functions) for param.timeContact.</p></td>
-    </tr>
-    <tr>
-      <th>pTrans</th>
-      <td><p>function that gives the probability of transmit a pathogen as a function of time since infection.</p></td>
-    </tr>
-    <tr>
-      <th>param.pTrans</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
-    </tr>
-    <tr>
-      <th>pExit</th>
-      <td><p>function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).</p></td>
-    </tr>
-    <tr>
-      <th>param.pExit</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
+      <th>init.structure</th>
+      <td><p>State of the initially infected individuals.</p></td>
     </tr>
     <tr>
       <th>prefix.host</th>
       <td><p>character(s) to be used as a prefix for the hosts identification number.</p></td>
-    </tr>
-    <tr>
-      <th>progress.bar</th>
-      <td><p>if TRUE, displays a progress bar (current time/length.sim).</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>other arguments to be passed on to the simulator (see below).</p></td>
     </tr>
     </table>
     

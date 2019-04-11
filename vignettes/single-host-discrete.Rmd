@@ -1,0 +1,102 @@
+---
+title: "Single host pathogen in a structured host population"
+author: "Sebastian Lequime"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{single-host-discrete}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+*Nosoi* can accommodate a wide range of epidemiological transmission scenarios, including structured host populations (in discrete states), such as for example geography (locatio nA, location B, etc.), and allows for parameters values to change according to the host current location. This tutorial will focus on setting up a *Nosoi* simulation for a single-host pathogen whose host population is structured between different locations. This tutorial builds on the ["simple" case scenario presented before](single-host-none.html); I thus highly recommand reading this one first.
+
+## Structure of the population
+
+We will consider here a population of hosts that are in three different locations called "A", "B" and "C". Hosts can move (if they undergo a movement event) between these locations with a certain probability you can set or derive from other data. Here, the transition matrix, called here after `structure.matrix` is:
+```{r setupMatrix2, echo=FALSE}
+matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+```
+
+Which can graphically be represented:
+
+```{r setupMatrix, echo=FALSE, message=FALSE,warning=FALSE}
+library(ggplot2)
+library(viridis)
+library(igraph)
+library(ggnetwork)
+
+transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+
+melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
+
+melted.transition.matrix = subset(melted.transition.matrix, prob!=0)
+
+graph.Matrix <- graph.data.frame(melted.transition.matrix,directed=T)
+
+graph.simA.network = ggnetwork(graph.Matrix, layout = "circle",arrow.gap=0.18) #using ggnetwork to provide the layout
+
+#plotting the network
+ggplot(graph.simA.network, aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_edges(color = "grey70",arrow = arrow(length = unit(1, "lines"), type = "closed"),curvature = 0.2) + geom_nodes(aes(color =vertex.names) , size = 30) +
+  geom_nodetext(aes(label = vertex.names),color="white", fontface = "bold",size=15) + scale_color_viridis(guide=FALSE,discrete=TRUE) +
+  theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2) +
+  geom_text(data=graph.simA.network,aes(x=(x+xend)/2,y=(y+yend)/2,label = prob,color=vertex.names), size = 6)
+```
+
+For `structure.matrix` to be adequate, a few rules have to be followed:
+
+- `structure.matrix` should be of class `matrix`;
+- `structure.matrix` should have the same number of rows and columns, and they should have the same names;
+- `structure.matrix` rows represents departure state and columns arrival states, the value is the probability from going from departure state to arrival state if movement is undergone, and should thus sum up to 1.
+
+##Setting up the simulation
+
+As we have seen before, the wrapper function `nosoiSim` takes all the arguments that will be passed down to the core function, in the case of this tutorial: `singleDiscrete` (for "single host, discrete population structure"). We thus start by providing the options `type="single"` and `structure=TRUE` to set up the analysis:
+
+```{r setupA, eval = FALSE}
+SimulationB <- nosoiSim(type="single", structure=TRUE, ...)
+```
+
+This simulation (`singleNone`) type takes several arguments or options to be able to run, namely:
+
+- `length.sim` 
+- `max.infected` 
+- `init.individuals` 
+- `init.structure`
+- `structure.matrix`
+- `pExit` with `param.pExit` and `diff.pExit`
+- `pMove` with `param.pMove` and `diff.pMove`
+- `timeContact` with `param.timeContact` and `diff.timeContact`
+- `pTrans` with `param.pTrans` and `diff.pTrans`
+- `prefix.host`
+
+All the `param` elements provide individual-level parameters to be taken into account; the `diff` elements informs the simulator if there is a differential probability according to the state the host is currently in.
+
+### General parameters
+
+`length.sim` and `max.infected` are general parameters that define the simulation: `length.sim` is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run, whereas `max.infected` is the maximum number of individuals that can be infected during the simulation. The simulation will thus run until either the time limit or the maximum number of infected individuals is reached.
+
+`init.individuals` and `init.structure` are the "seeding parameters". `init.individuals` defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain and `init.structure` their original location in the structured population (has to be the same original location for all starting individuals). Keep in mind that you will have as many transmission chains as initial individuals, which is equivalent as launching two independant *Nosoi* simulations. The location provided in `init.structure` should of course be present in the `structure.matrix`.
+
+Here, we will run a simulation starting with 1 individual in state "A", for a maximum of 1.000 infected individuals and a maximum time of 300 days.
+
+```{r setupB, eval = FALSE}
+SimulationA <- nosoiSim(type="single", structure=TRUE,
+                        length.sim=300, max.infected=1000, init.individuals=1, init.structure="A", ...)
+```
+
+### pExit
+
+### pMove
+
+### timeContact
+
+### pTrans

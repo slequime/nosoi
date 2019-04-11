@@ -53,6 +53,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/single-host-discrete.html">Single host pathogen in a structured host population</a>
+    </li>
+    <li>
       <a href="../articles/single-host-none.html">Single host pathogen in a non-structured host population</a>
     </li>
   </ul>
@@ -73,7 +76,7 @@
       <h1>Single host pathogen in a non-structured host population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-02-26</h4>
+            <h4 class="date">2019-04-11</h4>
       
       
       <div class="hidden name"><code>single-host-none.Rmd</code></div>
@@ -82,18 +85,19 @@
 
     
     
-<p>Nosoi can accomodate a wide range of epidemiological transmission scenarios, but you need to properly set up the parameters to get it working. This tutorial aims to illustrate how to set up a Nosoi simulation for a “simple” case: a pathogen being transmitted among a single, non-structure, host population.</p>
+<p><em>Nosoi</em> can accommodate a wide range of epidemiological transmission scenarios, and doing so requires providing the proper parameter values. This tutorial aims to illustrate how to set up a <em>Nosoi</em> simulation for a “simple” case: a pathogen being transmitted among a single-host population without structure.</p>
 <div id="setting-up-the-simulation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setting-up-the-simulation" class="anchor"></a>Setting up the simulation</h2>
-<p>The wrapper function <code>nosoiSim</code> takes all the arguments that will be passed down to the core function, in our case <code>singleNone</code> (for “single host, no structure”). We thus start by providing the options <code>type="single"</code> and <code>structure=FALSE</code> to set up the analysis.</p>
+<p>The wrapper function <code>nosoiSim</code> takes all the arguments that will be passed down to the core function, in the case of this tutorial: <code>singleNone</code> (for “single host, no structure”). We thus start by providing the options <code>type="single"</code> and <code>structure=FALSE</code> to set up the analysis:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>, ...)</code></pre></div>
 <p>This simulation (<code>singleNone</code>) type takes several arguments or options to be able to run, namely:</p>
 <ul>
 <li><code>length.sim</code></li>
 <li><code>max.infected</code></li>
 <li><code>init.individuals</code></li>
-<li><code>timeContact</code></li>
+<li>
+<code>timeContact</code> with <code>param.timeContact</code> (optional)</li>
 <li>
 <code>pTrans</code> with <code>param.pTrans</code>
 </li>
@@ -104,19 +108,19 @@
 <div id="general-parameters" class="section level3">
 <h3 class="hasAnchor">
 <a href="#general-parameters" class="anchor"></a>General parameters</h3>
-<p><code>length.sim</code>, <code>max.infected</code> and <code>init.individuals</code> are general parameters that defines the simulation. <code>length.sim</code> is the maximum number of unit of times (days, months, years, or other) during which your simulation will be run, whereas <code>max.infected</code> is the threshold of number of individuals that can be infected in your simulation. The simulation will thus run until either the time limit or number of infected individuals is reached. <code>init.individuals</code> defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain (you will have as much transmission chains as initial individuals that “seed” the epidemic process).</p>
-<p>Here, we will run a simulation starting with 1 individual, for a maximum 1,000 infected individuals and 300 days.</p>
+<p><code>length.sim</code>, <code>max.infected</code> and <code>init.individuals</code> are general parameters that define the simulation. <code>length.sim</code> is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run, whereas <code>max.infected</code> is the maximum number of individuals that can be infected during the simulation. The simulation will thus run until either the time limit or the maximum number of infected individuals is reached. <code>init.individuals</code> defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain (you will have as many transmission chains as initial individuals that “seed” the epidemic process).</p>
+<p>Here, we will run a simulation starting with 1 individual, for a maximum of 1.000 infected individuals and a maximum time of 300 days.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
                         <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, ...)</code></pre></div>
 </div>
 <div id="timecontact" class="section level3">
 <h3 class="hasAnchor">
 <a href="#timecontact" class="anchor"></a>timeContact</h3>
-<p><code>timeContact</code> represent the number of potentially infectious contacts an infected hosts has per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation (which will be the variable <code>x</code>). The number of contacts has to be an integer (or 0). As it may vary, it has to be expressed as a function of <code>x</code> (uniquely), but can take various forms:</p>
+<p><code>timeContact</code> represents the number of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation (which will be stored in the variable <code>x</code>). The number of contacts has to be an integer and can be set to zero. As this number might vary, it has to be expressed as a function of <code>x</code> (uniquely), but it can take various forms:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">2</span>,x)} <span class="co">#to get a constant number of contacts for each hosts, here 2.</span>
 time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),x,<span class="dt">replace=</span><span class="ot">TRUE</span>,<span class="dt">prob=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.4</span>,<span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.1</span>))} <span class="co">#to get a varying number of contacts for each hosts.</span>
 time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>)} <span class="co">#another example of varying number of contacts for each hosts.</span></code></pre></div>
-<p>This thus gives us the following structure for Nosoi’s wrapper function:</p>
+<p>This thus gives us the following structure for <em>Nosoi</em>’s wrapper function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
                         <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, 
                         <span class="dt">timeContact=</span>time_contact_fct, ...)</code></pre></div>
@@ -124,20 +128,20 @@ time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<
 <div id="ptrans-and-param-ptrans" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ptrans-and-param-ptrans" class="anchor"></a>pTrans and param.pTrans</h3>
-<p><code>pTrans</code> is the heart of the transmission process and represents the probability of transmission over time (when a contact occures). This function (uniquely) gives back a probability (i.e. a value between 0 and 1) dependent of the time (<code>t</code>) since the host’s infection. It is intended to work with a set of parameters (from 1 to much more) defined by <code>param.pTrans</code>, that will characterize the dynamics of the transmission probability over time, as well as introducing some stochasticity. Since each host is different (slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, hence probability of transmission over time. The parameters defined in <code>param.pTrans</code> are thus also functions that will sample parameter values (<code>param.pTrans</code> is a list of functions).</p>
-<p>As an example, let’s consider the following function for <code>pTrans</code>, in the form of a threshold:</p>
+<p>The <code>pTrans</code> function is the heart of the transmission process and represents the probability of transmission over time (when a contact occurs). This function (uniquely) returns the probability (i.e. a value between 0 and 1) dependent on the time (<code>t</code>) since the host’s infection. It is intended to work with a set of parameters (at least 1) defined by <code>param.pTrans</code>, that will characterize the dynamics of the transmission probability over time, as well as introducing some stochasticity. Since each host is different (because of slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, and hence probability of transmission over time. The parameters defined in <code>param.pTrans</code> are hence also functions that will sample parameter values (<code>param.pTrans</code> is a list of functions).</p>
+<p>As an example, let’s consider the following function for <code>pTrans</code>, in the form of a threshold function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">proba &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){
     <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}
     <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}
     <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)
 }</code></pre></div>
-<p>This function gives us a transmission probability <code>p</code> given the time since infection <code>t</code> and two parameters, <code>p_max</code>, the maximum transmission probability and <code>t_incub</code>, the length of the incubation period (the threshold). If <code>t</code> is bigger than <code>t_incub</code>, then the transmission probability is <code>p_max</code>; if not, it is equal to 0.</p>
-<p><code>p_max</code> and <code>t_incub</code> need to be specified. If we fix the value, for example to 0.8 and 5 unit of time, respectively, we assume that each host will react the same to the infection, as if they were perfect clones. To be closer to reality, Nosoi forces you to sample the values of each parameters from a function, such as:</p>
+<p>This function returns a transmission probability <code>p</code> given the time since infection <code>t</code> and two parameters, <code>p_max</code>, the maximum transmission probability and <code>t_incub</code>, the length of the incubation period (the threshold). If <code>t</code> is bigger than <code>t_incub</code>, then the transmission probability is <code>p_max</code>; if not, it is equal to 0.</p>
+<p><code>p_max</code> and <code>t_incub</code> need to be specified. If we fix the values, for example to 0.8 and 5 units of time respectively, we assume that each host will react the same to the infection, as if they were perfect clones. To more accurately match reality, <em>Nosoi</em> forces you to sample the values of each parameters from a function, such as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}
 t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</code></pre></div>
-<p>Here, <code>p_max</code> will be sampled from a beta law, with shape parameters 5 and 2, and <code>t_incub</code> will be sampled from a normal law, with mean 5 and standard deviation 1. <code>x</code>, as seen before for <code>timeContact</code> will be the number of draws to perform. If you want to fix the value of one or all parameters, you can use a sampling function that will always give you the same value, such as:</p>
+<p>Here, <code>p_max</code> will be sampled from a beta distribution, with shape parameters 5 and 2, and <code>t_incub</code> will be sampled from a Gaussian distribution, with mean 5 and standard deviation 1. <code>x</code>, as seen before for <code>timeContact</code> will be the number of draws to perform. If you want to fix the value of one or all parameters, you can use a sampling function that will always give you the same value, such as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">5</span>,x)} <span class="co">#constant parameter value.</span></code></pre></div>
-<p>In any case, the functions for <code>pTrans</code> parameters have to be wrapped into a list, called <code>param.pTrans</code>. The name of each function in the list has to have the same name as the parameter it is sampling for <code>pTrans</code>. Here it will look like:</p>
+<p>In any case, the functions for <code>pTrans</code> parameters have to be wrapped into a list, called <code>param.pTrans</code>. The name of each function in the list has to have the same name as the parameter it is sampling for <code>pTrans</code>. Here, it will look like:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct, <span class="dt">t_incub=</span>t_incub_fct)</code></pre></div>
 <p>At this point, the <code>nosoiSim</code> function should look like:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
@@ -150,14 +154,14 @@ t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<s
 <div id="pexit-and-param-pexit" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pexit-and-param-pexit" class="anchor"></a>pExit and param.pExit</h3>
-<p><code>pExit</code> is the last fundamental parameter and gives a daily probability for a host to leave the simulation (either curred, died, etc.). To accomodate several scenarios, it can be a constant, time dependant or even individually parameterized, to include some stochasticity at the individual host level. In the latter, you need to specify <code>param.pExit</code> as a list of functions. Here are some example of <code>pExit</code>:</p>
+<p><code>pExit</code> is the last required fundamental parameter and provides a daily probability for a host to leave the simulation (either cured, died, etc.). To accommodate several scenarios, it can be a constant, time dependent or even individually parameterized, to include some stochasticity at the individual host level. In the latter case, you need to specify <code>param.pExit</code> as a list of functions. Here are some possible functions for <code>pExit</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.08</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(x))} <span class="co">#as a constant</span>
 p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,<span class="dv">20</span>,<span class="dv">2</span>)} <span class="co">#as a time dependant function</span>
 
 p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t,pExit.param1){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,pExit.param1,<span class="dv">2</span>)} <span class="co">#as an individually parameterized function</span>
 p_exit_param1 &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">10</span>,<span class="dt">sd=</span><span class="dv">2</span>)} <span class="co">#sampling one parameter for each infected individual</span></code></pre></div>
 <p>In the case you want <code>pExit</code> to be constant over time, you have to specify it as as a function of <code>x</code>, with <code><a href="https://www.rdocumentation.org/packages/base/topics/length">length(x)</a></code> as it will be sampled multiple time for each active host during the time period. For the other scenarios, it should be a function of <code>t</code> (time since infection).</p>
-<p>For a constant or time-dependant function, with no individual parameter, <code>param.pExit</code> is <code>NA</code>. In the case of an individually parameterized <code>pExit</code>, the functions for the parameters have to be wrapped into a list, called <code>param.pExit</code> (similar to <code>param.pTrans</code> above). The name of each function in the list has to have the same name as the parameter it is sampling for <code>pExit</code>. Here it will look like:</p>
+<p>For a constant or time-dependent function, with no individual parameter, <code>param.pExit</code> is <code>NA</code>. In the case of an individually parameterized <code>pExit</code>, the functions for the parameters have to be wrapped into a list, called <code>param.pExit</code> (similar to <code>param.pTrans</code> above). The name of each function in the list has to have the same name as the parameter it is sampling for <code>pExit</code>. Here it will look like:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">param.pExit=<span class="ot">NA</span>
 param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pExit.param1=</span>p_exit_param1)</code></pre></div>
 <p>At this point, the <code>nosoiSim</code> function should look like:</p>
@@ -173,14 +177,14 @@ param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/ba
 <div id="miscellaneous" class="section level3">
 <h3 class="hasAnchor">
 <a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
-<p><code>prefix.host</code> allows you to define the first character(s) for the hosts’ unique ID. It will be followed by an hyphen and a unique number. By default, <code>prefix.host</code> is “H” for “Host”.</p>
-<p><code>progress.bar</code> allows you to display a progress bar that represent the ration of “current time point” over the <code>length.sim</code> parameter provided. By default, the <code>progress.bar</code> is activated, but you may want to desactivate it by providing <code>progress.bar == FALSE</code></p>
+<p><code>prefix.host</code> allows you to define the first character(s) for the hosts’ unique ID. It will be followed by a hyphen and a unique number. By default, <code>prefix.host</code> is “H” for “Host”.</p>
+<p><code>progress.bar</code> allows you to display a progress bar that represent the ration of “current time point” over the <code>length.sim</code> parameter provided. By default, the <code>progress.bar</code> is activated, but you may want to deactivate it by providing <code>progress.bar == FALSE</code></p>
 </div>
 </div>
 <div id="running-nosoi" class="section level2">
 <h2 class="hasAnchor">
 <a href="#running-nosoi" class="anchor"></a>Running Nosoi</h2>
-<p>Once nosoiSim is set up, you can run the simulation (here the “seed” ensure that you will get the same results as this tutorial).</p>
+<p>Once nosoiSim is set up, you can run the simulation (here the “seed” ensures that you will get the same results as in this tutorial).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)
 <span class="co">#&gt; Loading required package: data.table</span>
 <span class="co">#timeContact</span>
@@ -203,6 +207,7 @@ p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(x){<s
 SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
                         <span class="dt">length.sim=</span><span class="dv">100</span>, <span class="dt">max.infected=</span><span class="dv">100</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, 
                         <span class="dt">timeContact=</span>time_contact_fct, 
+                        <span class="dt">param.timeContact=</span><span class="ot">NA</span>,
                         <span class="dt">pTrans =</span> pTrans_fct,
                         <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct),
                         <span class="dt">pExit =</span> p_Exit_fct,
@@ -212,41 +217,41 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="co">#&gt; Starting the simulation</span>
 <span class="co">#&gt; Initializing ... running ...</span>
 <span class="co">#&gt;  done.</span>
-<span class="co">#&gt; The simulation has run for 52 units of time and a total of 107 hosts have been infected.</span></code></pre></div>
-<p>The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts is met. Once the simulation is finished, it reports the number of time units for which the simulation has run (52), and the maximum number of infected hosts (107). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
+<span class="co">#&gt; The simulation has run for 40 units of time and a total of 111 hosts have been infected.</span></code></pre></div>
+<p>The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts has been reached. Once the simulation is finished, it reports the number of time units for which the simulation has run (52), and the maximum number of infected hosts (107). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
 </div>
 <div id="nosoi-output" class="section level2">
 <h2 class="hasAnchor">
 <a href="#nosoi-output" class="anchor"></a>Nosoi output</h2>
-<p>Nosoi gives as an ouput a <code>data.table</code> (a more efficient version of a <code>data.frame</code>) with the following structure:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(SimulationA)
+<p><em>Nosoi</em> gives as its output a list contaning a <code>data.table</code> (a more efficient version of a <code>data.frame</code>) called <code>table.hosts</code> with the following structure:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(SimulationA<span class="op">$</span>table.hosts)
 <span class="co">#&gt;    hosts.ID inf.by inf.time out.time active     p_max  t_incub</span>
-<span class="co">#&gt; 1:      H-1   NA-1        0       15      0 0.6820110 5.867392</span>
-<span class="co">#&gt; 2:     H-10    H-6       22       28      0 0.8280310 7.404940</span>
-<span class="co">#&gt; 3:    H-100   H-31       52       NA      1 0.7137238 4.704842</span>
-<span class="co">#&gt; 4:    H-101   H-35       52       NA      1 0.6802556 6.983838</span>
-<span class="co">#&gt; 5:    H-102   H-39       52       NA      1 0.8902839 7.147764</span>
-<span class="co">#&gt; 6:    H-103   H-40       52       NA      1 0.7908749 6.953566</span></code></pre></div>
-<p>Each individual host that has or is infected during the course of the simulation is a line in the data.table. <code>hosts.ID</code> is the unique identifier of the host, while <code>inf.by</code> indicate which host infected it. As you can see, host <code>H-1</code> has been infected by <code>NA</code>; <code>H-1</code> is the individual that started the transmission chain. <code>inf.time</code> is the time (in simulation units of time) when the host has been infected, and <code>out.time</code> is the time (in simulation units of time) when it left the simulation. Here in the top 6 lines, no host has left the simulation (it ran only for 13 units of time). <code>active</code> indicates if the host is still active in the simulation. <code>p_max</code> and <code>t_incub</code> are the individually sampled parameter for <code>pTrans</code>.</p>
+<span class="co">#&gt; 1:      H-1   NA-1        0       23      0 0.6820110 5.867392</span>
+<span class="co">#&gt; 2:     H-10    H-2       16       19      0 0.8026548 6.414165</span>
+<span class="co">#&gt; 3:    H-100   H-21       40       NA      1 0.6622235 7.816477</span>
+<span class="co">#&gt; 4:    H-101   H-35       40       NA      1 0.6288499 7.395426</span>
+<span class="co">#&gt; 5:    H-102   H-39       40       NA      1 0.7714096 6.556226</span>
+<span class="co">#&gt; 6:    H-103    H-5       40       NA      1 0.8403010 6.555480</span></code></pre></div>
+<p>Each individual host that was or is infected during the course of the simulation is a line in the data.table. <code>hosts.ID</code> is the unique identifier of the host, while <code>inf.by</code> indicate which host infected it. As you can see, host <code>H-1</code> has been infected by <code>NA</code>; <code>H-1</code> is the individual that started the transmission chain. <code>inf.time</code> is the time (in simulation units of time) when the host has been infected, and <code>out.time</code> is the time (in simulation units of time) when it left the simulation. Here in the top 6 lines, no host has left the simulation (it ran only for 13 units of time). <code>active</code> indicates if the host is still active in the simulation. <code>p_max</code> and <code>t_incub</code> are the individually sampled parameters for <code>pTrans</code>.</p>
 <div id="visualisation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualisation" class="anchor"></a>Visualisation</h3>
-<p>The transmission chain can be visualized using some of the packages dealing with networks in R. I usally use <code>igraph</code> with <code>ggnetwork</code>, but its really up to you. Keep in mind that the more nodes (i.e. infected hosts) you have the more messy the visualisation will be.</p>
+<p>The transmission chain can be visualized using some of the packages dealing with networks in R. I typically use <code>igraph</code> with <code>ggnetwork</code>, but this is really up to you. Keep in mind that the more nodes (i.e. infected hosts) you have, the more messy (or difficult) the visualisation will be.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(viridis)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(igraph)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggnetwork)
 
 <span class="co"># To show the graph, we need to invert column 1 and 2, and discard the first line (i.e. the first host, </span>
-<span class="co"># because it shows "NA" as infecting host). We then provide Nosoi output as elements for the vertices (nodes).</span>
-graph.simA &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/graph_from_data_frame">graph.data.frame</a></span>(SimulationA[<span class="op">-</span><span class="dv">1</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">1</span>)],<span class="dt">directed=</span>T,<span class="dt">vertices =</span> SimulationA)
+<span class="co"># because it shows "NA" as infecting host). We then provide *Nosoi* output as elements for the vertices (nodes).</span>
+graph.simA &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/graph_from_data_frame">graph.data.frame</a></span>(SimulationA<span class="op">$</span>table.hosts[<span class="op">-</span><span class="dv">1</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">1</span>)],<span class="dt">directed=</span>T,<span class="dt">vertices =</span> SimulationA<span class="op">$</span>table.hosts)
 
 graph.simA.network =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/ggnetwork">ggnetwork</a></span>(graph.simA, <span class="dt">layout =</span> <span class="st">"fruchtermanreingold"</span>, <span class="dt">cell.jitter =</span> <span class="fl">0.75</span>) <span class="co">#using ggnetwork to provide the layout</span>
 
 <span class="co">#plotting the network</span>
-<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(graph.simA.network, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">xend =</span> xend, <span class="dt">yend =</span> yend)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/geom_edges">geom_edges</a></span>(<span class="dt">color =</span> <span class="st">"grey70"</span>,<span class="dt">arrow =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/reexports.html">arrow</a></span>(<span class="dt">length =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/reexports.html">unit</a></span>(<span class="fl">0.3</span>, <span class="st">"lines"</span>), <span class="dt">type =</span> <span class="st">"open"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/geom_nodes">geom_nodes</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>inf.time)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/viridis/topics/scale_viridis">scale_color_viridis</a></span>(<span class="dt">name=</span><span class="st">"Time of infection"</span>,<span class="dt">option =</span> <span class="st">"plasma"</span>) <span class="op">+</span><span class="st"> </span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(graph.simA.network, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">xend =</span> xend, <span class="dt">yend =</span> yend)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/geom_edges">geom_edges</a></span>(<span class="dt">color =</span> <span class="st">"grey70"</span>,<span class="dt">arrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/reexports">arrow</a></span>(<span class="dt">length =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/reexports">unit</a></span>(<span class="fl">0.3</span>, <span class="st">"lines"</span>), <span class="dt">type =</span> <span class="st">"open"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/geom_nodes">geom_nodes</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">color=</span>inf.time)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/viridis/topics/scale_viridis">scale_color_viridis</a></span>(<span class="dt">name=</span><span class="st">"Time of infection"</span>,<span class="dt">option =</span> <span class="st">"plasma"</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/theme_blank">theme_blank</a></span>()</code></pre></div>
 <p><img src="single-host-none_files/figure-html/visualisation-1.png" width="700"></p>
 </div>

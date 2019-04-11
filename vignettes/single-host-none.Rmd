@@ -33,7 +33,7 @@ This simulation (`singleNone`) type takes several arguments or options to be abl
 - `length.sim` 
 - `max.infected` 
 - `init.individuals` 
-- `timeContact` 
+- `timeContact` with `param.timeContact` (optional) 
 - `pTrans` with `param.pTrans` 
 - `pExit` with `param.pExit` (optional) 
 - `prefix.host` 

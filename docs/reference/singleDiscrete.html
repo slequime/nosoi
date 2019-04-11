@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Single-host without structured host population — singleNone • nosoi</title>
+<title>Single-host with structured host population — singleDiscrete • nosoi</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,11 @@
 
 
 
-<meta property="og:title" content="Single-host without structured host population — singleNone" />
+<meta property="og:title" content="Single-host with structured host population — singleDiscrete" />
 
-<meta property="og:description" content="This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed." />
+<meta property="og:description" content="This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
+The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
+is passed." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,25 +111,36 @@ the end of given time (specified by length.sim) or when the number of hosts infe
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Single-host without structured host population</h1>
+    <h1>Single-host with structured host population</h1>
     
-    <div class="hidden name"><code>singleNone.Rd</code></div>
+    <div class="hidden name"><code>singleDiscrete.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.</p>
+    <p>This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
+The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
+is passed.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>singleNone</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>, <span class='no'>timeContact</span>,
-  <span class='no'>param.timeContact</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
-  <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>singleDiscrete</span>(<span class='no'>type</span>, <span class='no'>structure</span>, <span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>,
+  <span class='no'>init.structure</span>, <span class='no'>structure.matrix</span>, <span class='kw'>diff.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>,
+  <span class='no'>param.pMove</span>, <span class='kw'>diff.timeContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>timeContact</span>, <span class='no'>param.timeContact</span>,
+  <span class='kw'>diff.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='kw'>diff.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>,
+  <span class='no'>param.pExit</span>, <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>type</th>
+      <td><p>single host or dual host</p></td>
+    </tr>
+    <tr>
+      <th>structure</th>
+      <td><p>is there any discrete structure in the host population to be accounted for (such as spatial features)</p></td>
+    </tr>
     <tr>
       <th>length.sim</th>
       <td><p>specifies the length (in unit of time) over which the simulation should be run.</p></td>
@@ -142,12 +154,40 @@ the end of given time (specified by length.sim) or when the number of hosts infe
       <td><p>number of initially infected individuals.</p></td>
     </tr>
     <tr>
+      <th>init.structure</th>
+      <td><p>which state (i.e. location) the initially infected individuals are located.</p></td>
+    </tr>
+    <tr>
+      <th>structure.matrix</th>
+      <td><p>transition matrix (probabilities) to go from location A (row) to B (column)</p></td>
+    </tr>
+    <tr>
+      <th>diff.pMove</th>
+      <td><p>is pMove different between states of the structured population (TRUE/FALSE)</p></td>
+    </tr>
+    <tr>
+      <th>pMove</th>
+      <td><p>function that gives the probability of a host moving as a function of time.</p></td>
+    </tr>
+    <tr>
+      <th>param.pMove</th>
+      <td><p>parameter names (list of functions) for the pMove.</p></td>
+    </tr>
+    <tr>
+      <th>diff.timeContact</th>
+      <td><p>is timeContact different between states of the structured population (TRUE/FALSE)</p></td>
+    </tr>
+    <tr>
       <th>timeContact</th>
       <td><p>function that gives the number of potential transmission events per unit of time.</p></td>
     </tr>
     <tr>
       <th>param.timeContact</th>
-      <td><p>parameter names (list of functions) for param.timeContact.</p></td>
+      <td><p>parameter names (list of functions) for timeContact.</p></td>
+    </tr>
+    <tr>
+      <th>diff.pTrans</th>
+      <td><p>is pTrans different between states of the structured population (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>pTrans</th>
@@ -155,7 +195,11 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     </tr>
     <tr>
       <th>param.pTrans</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
+      <td><p>parameter names (list of functions) for the pTrans.</p></td>
+    </tr>
+    <tr>
+      <th>diff.pExit</th>
+      <td><p>is pExit different between states of the structured population (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>pExit</th>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Single-host without structured host population — singleNone • nosoi</title>
+<title>Parse function for later use — parseFunction • nosoi</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Single-host without structured host population — singleNone" />
+<meta property="og:title" content="Parse function for later use — parseFunction" />
 
-<meta property="og:description" content="This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed." />
+<meta property="og:description" content="Parse a user-provided function to get the vectorized version." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,74 +109,45 @@ the end of given time (specified by length.sim) or when the number of hosts infe
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Single-host without structured host population</h1>
+    <h1>Parse function for later use</h1>
     
-    <div class="hidden name"><code>singleNone.Rd</code></div>
+    <div class="hidden name"><code>parseFunction.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.</p>
+    <p>Parse a user-provided function to get the vectorized version.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>singleNone</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>, <span class='no'>timeContact</span>,
-  <span class='no'>param.timeContact</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
-  <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>parseFunction</span>(<span class='no'>pFunc</span>, <span class='no'>param.pFunc</span>, <span class='no'>name</span>, <span class='kw'>diff</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>length.sim</th>
-      <td><p>specifies the length (in unit of time) over which the simulation should be run.</p></td>
+      <th>pFunc</th>
+      <td><p>a function</p></td>
     </tr>
     <tr>
-      <th>max.infected</th>
-      <td><p>specifies the maximum number of hosts that can be infected in the simulation.</p></td>
+      <th>param.pFunc</th>
+      <td><p>a named list of arguments</p></td>
     </tr>
     <tr>
-      <th>init.individuals</th>
-      <td><p>number of initially infected individuals.</p></td>
-    </tr>
-    <tr>
-      <th>timeContact</th>
-      <td><p>function that gives the number of potential transmission events per unit of time.</p></td>
-    </tr>
-    <tr>
-      <th>param.timeContact</th>
-      <td><p>parameter names (list of functions) for param.timeContact.</p></td>
-    </tr>
-    <tr>
-      <th>pTrans</th>
-      <td><p>function that gives the probability of transmit a pathogen as a function of time since infection.</p></td>
-    </tr>
-    <tr>
-      <th>param.pTrans</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
-    </tr>
-    <tr>
-      <th>pExit</th>
-      <td><p>function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).</p></td>
-    </tr>
-    <tr>
-      <th>param.pExit</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
-    </tr>
-    <tr>
-      <th>prefix.host</th>
-      <td><p>character(s) to be used as a prefix for the hosts identification number.</p></td>
-    </tr>
-    <tr>
-      <th>progress.bar</th>
-      <td><p>if TRUE, displays a progress bar (current time/length.sim).</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>other arguments to be passed on to the simulator (see below).</p></td>
+      <th>name</th>
+      <td><p>the name of the function</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>list of parsed quantities:</p><ul>
+<li><p>"type"A string, "simple" of "complex": are there several arguments to the function ?</p></li>
+<li><p>"nArgs"Number of arguments (besides time).</p></li>
+<li><p>"vect"Vectorized version of the function.</p></li>
+<li><p>"vectArgs"Vector of arguments for the vectorized function.</p></li>
+</ul>
+
     
 
   </div>
@@ -185,7 +155,9 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

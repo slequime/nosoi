@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Creates a new line to be added to the table when new host is infected (internal fonction) — newLine" />
 
-<meta property="og:description" content="This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s)." />
+<meta property="og:description" content="This function creates a new line for the table.
+The lines are to be bounded with rbindlist." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -86,6 +87,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/single-host-discrete.html">Single host pathogen in a structured host population</a>
+    </li>
+    <li>
       <a href="../articles/single-host-none.html">Single host pathogen in a non-structured host population</a>
     </li>
   </ul>
@@ -113,12 +117,13 @@
 
     <div class="ref-description">
     
-    <p>This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s).</p>
+    <p>This function creates a new line for the table.
+The lines are to be bounded with <code><a href='https://www.rdocumentation.org/packages/data.table/topics/rbindlist'>rbindlist</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>newLine</span>(<span class='no'>hosts.ID</span>, <span class='no'>infected.by</span>, <span class='no'>time.is</span>, <span class='no'>n.pExit.param</span>, <span class='no'>param.pExit</span>,
-  <span class='no'>n.pTrans.param</span>, <span class='no'>param.pTrans</span>)</pre>
+    <pre class="usage"><span class='fu'>newLine</span>(<span class='no'>hosts.ID</span>, <span class='no'>infected.by</span>, <span class='no'>infected.in</span>, <span class='no'>current.in</span>, <span class='no'>time.is</span>,
+  <span class='no'>param.pExit</span>, <span class='no'>param.pMove</span>, <span class='no'>param.timeContact</span>, <span class='no'>param.pTrans</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,20 +137,24 @@
       <td><p>unique ID of host that transmits to the new one</p></td>
     </tr>
     <tr>
-      <th>time.is</th>
-      <td><p>time in the simulation, when the infection takes place</p></td>
+      <th>infected.in</th>
+      <td><p>state in which the host was infected</p></td>
     </tr>
     <tr>
-      <th>n.pExit.param</th>
-      <td><p>number of parameters for exit probability computation (impacts number of columns).</p></td>
+      <th>current.in</th>
+      <td><p>state in which the host currently is</p></td>
+    </tr>
+    <tr>
+      <th>time.is</th>
+      <td><p>time in the simulation, when the infection takes place</p></td>
     </tr>
     <tr>
       <th>param.pExit</th>
       <td><p>list of exit probability function(s).</p></td>
     </tr>
     <tr>
-      <th>n.pTrans.param</th>
-      <td><p>number of parameters for transmission probability computation (impacts number of columns).</p></td>
+      <th>param.pMove</th>
+      <td><p>list of movement probability function(s).</p></td>
     </tr>
     <tr>
       <th>param.pTrans</th>
@@ -153,13 +162,19 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a list with the new line to add.</p>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>
