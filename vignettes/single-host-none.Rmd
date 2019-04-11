@@ -203,6 +203,7 @@ set.seed(805)
 SimulationA <- nosoiSim(type="single", structure=FALSE,
                         length.sim=100, max.infected=100, init.individuals=1, 
                         timeContact=time_contact_fct, 
+                        param.timeContact=NA,
                         pTrans = pTrans_fct,
                         param.pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct),
                         pExit = p_Exit_fct,

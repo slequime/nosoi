@@ -7,6 +7,7 @@
 #' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
 #' @param init.individuals number of initially infected individuals.
 #' @param timeContact function that gives the number of potential transmission events per unit of time.
+#' @param param.timeContact parameter names (list of functions) for param.timeContact.
 #' @param pTrans function that gives the probability of transmit a pathogen as a function of time since infection.
 #' @param param.pTrans parameter names (list of functions) for the pExit.
 #' @param pExit function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).
@@ -21,6 +22,7 @@ singleNone <- function(length.sim,
                        max.infected,
                        init.individuals,
                        timeContact,
+                       param.timeContact,
                        pTrans,
                        param.pTrans,
                        pExit,
@@ -46,6 +48,9 @@ singleNone <- function(length.sim,
   #Parsing pTrans
   pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)))
 
+  #Parsing timeContact
+  pExitParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(pExit)))
+
   #Parsing pExit
   pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)))
 
@@ -55,7 +60,7 @@ singleNone <- function(length.sim,
 
   #Creation of initial data ----------------------------------------------------------
 
-  table.hosts <- iniTable(init.individuals, NA, prefix.host, param.pExit, param.pMove = NA, param.pTrans, ...)
+  table.hosts <- iniTable(init.individuals, NA, prefix.host, param.pExit, param.pMove = NA, param.timeContact, param.pTrans)
   Host.count <- init.individuals
 
   # Running the simulation ----------------------------------------
@@ -127,7 +132,7 @@ singleNone <- function(length.sim,
             Host.count <- Host.count+1
             hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
-            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts), NA, pres.time, param.pExit, param.pMove=NA, param.pTrans)
+            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts), NA, NA, pres.time, param.pExit, param.pMove=NA,param.timeContact, param.pTrans)
           }
 
           table.hosts <- data.table::rbindlist(c(list(table.hosts),table.temp))

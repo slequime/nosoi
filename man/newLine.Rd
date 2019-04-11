@@ -4,25 +4,31 @@
 \alias{newLine}
 \title{Creates a new line to be added to the table when new host is infected (internal fonction)}
 \usage{
-newLine(hosts.ID, infected.by, time.is, n.pExit.param, param.pExit,
-  n.pTrans.param, param.pTrans)
+newLine(hosts.ID, infected.by, infected.in, current.in, time.is,
+  param.pExit, param.pMove, param.timeContact, param.pTrans)
 }
 \arguments{
 \item{hosts.ID}{unique ID for the new host}
 
 \item{infected.by}{unique ID of host that transmits to the new one}
 
-\item{time.is}{time in the simulation, when the infection takes place}
+\item{infected.in}{state in which the host was infected}
 
-\item{n.pExit.param}{number of parameters for exit probability computation (impacts number of columns).}
+\item{current.in}{state in which the host currently is}
+
+\item{time.is}{time in the simulation, when the infection takes place}
 
 \item{param.pExit}{list of exit probability function(s).}
 
-\item{n.pTrans.param}{number of parameters for transmission probability computation (impacts number of columns).}
+\item{param.pMove}{list of movement probability function(s).}
 
 \item{param.pTrans}{list of transmission probability function(s).}
 }
+\value{
+a list with the new line to add.
+}
 \description{
-This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s).
+This function creates a new line for the table.
+The lines are to be bounded with \code{\link[data.table]{rbindlist}}.
 }
 \keyword{internal}

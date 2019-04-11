@@ -2,6 +2,7 @@
 
 export(nosoiSim)
 export(nosoiSummary)
+export(singleDiscrete)
 export(singleNone)
 import(data.table)
 import(magrittr)

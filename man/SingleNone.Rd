@@ -4,9 +4,9 @@
 \alias{singleNone}
 \title{Single-host without structured host population}
 \usage{
-singleNone(length.sim, max.infected, init.individuals, timeContact, pTrans,
-  param.pTrans, pExit, param.pExit, prefix.host = "H",
-  progress.bar = TRUE, ...)
+singleNone(length.sim, max.infected, init.individuals, timeContact,
+  param.timeContact, pTrans, param.pTrans, pExit, param.pExit,
+  prefix.host = "H", progress.bar = TRUE, ...)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -16,6 +16,8 @@ singleNone(length.sim, max.infected, init.individuals, timeContact, pTrans,
 \item{init.individuals}{number of initially infected individuals.}
 
 \item{timeContact}{function that gives the number of potential transmission events per unit of time.}
+
+\item{param.timeContact}{parameter names (list of functions) for param.timeContact.}
 
 \item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
 

@@ -1,0 +1,22 @@
+#' @title Creates a new line to be added to the movement table when hosts moves (internal fonction)
+#'
+#' @description
+#' This function creates a new line for the table,
+#' The lines are to be bounded with \code{\link[data.table]{rbindlist}}.
+#'
+#' @param hosts.ID unique ID for the new host
+#' @param state.pres state in which host currently is
+#' @param time.is time in the simulation, when the infection takes place
+#'
+#' @return a list with the new line to add.
+#'
+#' @keywords internal
+
+newLineState <- function(hosts.ID,state.pres,time.is) {
+  return(list(hosts.ID = hosts.ID,
+           state = state.pres,
+           time.from = time.is,
+           time.to = NA_real_
+  )
+  )
+}

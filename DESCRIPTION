@@ -24,7 +24,8 @@ Imports:
     methods (>= 3.5.2),
     dplyr (>= 0.8.0),
     magrittr (>= 1.5),
-    stringr (>= 1.4.0)
+    stringr (>= 1.4.0),
+    reshape2 (>= 1.4.0)
 Suggests:
     testthat (>= 2.1.0),
     knitr,

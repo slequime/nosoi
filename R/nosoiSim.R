@@ -14,16 +14,18 @@
 
 nosoiSim <- function(type="single",structure=FALSE,...){
   #Sanity checks -------------
-  if (! type %in% c("single","dual")) message("Type of transmission should be 'single' or 'dual'-host.")
-  if (! structure %in% c(TRUE,FALSE)) message("Unrecognized parameters for population structure, should be TRUE or FALSE.")
+  if (! type %in% c("single","dual")) stop("Type of transmission should be 'single' or 'dual'-host.")
+  if (! structure %in% c(TRUE,FALSE)) stop("Unrecognized parameters for population structure, should be TRUE or FALSE.")
 
   #Loading correct script ------------------
   if(type=="single" & structure==FALSE) {
     output = singleNone(...)
   }
+  if(type=="single" & structure==TRUE)  {
+    output = singleDiscrete(...)
+  }
   #To be implemented
-  if(type=="single" & structure==TRUE) message("This version has not been implemented yet.")
-  if(type=="dual" & structure==FALSE) message("This version has not been implemented yet.")
-  if(type=="dual" & structure==TRUE) message("This version has not been implemented yet.")
+  if(type=="dual" & structure==FALSE) stop("This version has not been implemented yet.")
+  if(type=="dual" & structure==TRUE) stop("This version has not been implemented yet.")
   return(output)
 }
