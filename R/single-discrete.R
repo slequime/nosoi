@@ -52,7 +52,7 @@ singleDiscrete <- function(type,
                            progress.bar=TRUE,
                            ...){
 
-  #Sanity check---------------------------------------------------------------------------------------------------------------------------
+  #Sanity checks---------------------------------------------------------------------------------------------------------------------------
   #This section checks if the arguments of the function are in a correct format for the function to run properly
 
   if (is.na(length.sim) | length.sim <= 1) stop("You must specify a length (in time units) for your simulation (bigger than 1).")
@@ -66,6 +66,7 @@ singleDiscrete <- function(type,
   }
 
   if (diff.timeContact == TRUE) {
+    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("timeContact should have a realisation for each possible state. diff.timeContact == TRUE.")
     timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=TRUE)
   }
 
@@ -77,6 +78,7 @@ singleDiscrete <- function(type,
 
   if (diff.pTrans == TRUE) {
     if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
+    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pTrans should have a realisation for each possible state. diff.pTrans == TRUE.")
     pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=TRUE)
   }
 
@@ -87,18 +89,19 @@ singleDiscrete <- function(type,
   }
 
   if (diff.pExit == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pExit should have a realisation for each possible state. diff.pExit == TRUE.")
     pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=TRUE)
   }
 
-  #Parsing Discrete states
-  #check if structure.matrix is a matrix
-  melted.structure.matrix = reshape2::melt(structure.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE)
+  #Discrete states sanity checks -------------------------------------------------------------------------------------------------------------------
 
-  #check if init.structure is in names of loc
-  #get number & name of loc, get sure that sums up to 1
-  #make sure, if diff.timeContact == TRUE that there is the same name and number of loc
-  #make sure, if diff.pTrans == TRUE that there is the same name and number of loc
-  #make sure, if diff.pExit == TRUE that there is the same name and number of loc
+  if (!is.matrix(structure.matrix)) stop("structure.matrix should be a matrix.")
+  if (ncol(structure.matrix)!=nrow(structure.matrix)) stop("structure.matrix should have the same number of rows and columns.")
+  if (!identical(colnames(structure.matrix),rownames(structure.matrix))) stop("structure.matrix rows and columns should have the same names.")
+  if (any(rowSums(structure.matrix) != 1)) stop("structure.matrix rows should sum up to 1.")
+  if (!init.structure %in% rownames(structure.matrix)) stop("init.structure should be a state present in structure.matrix.")
+
+  melted.structure.matrix <- reshape2::melt(structure.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
 
   #Parse pMove (same as pExit !!attention if diff)
   if (diff.pMove == FALSE) {
@@ -106,9 +109,11 @@ singleDiscrete <- function(type,
   }
 
   if (diff.pMove == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pMove should have a realisation for each possible state. diff.pMove is TRUE.")
     pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=TRUE)
-    #make sure, if diff.pMove == TRUE that there is the same name and number of loc
   }
+
+  #START OF THE SIMULATION --------------------------------------------------------------------------------------------------------
 
   # Init
   message("Starting the simulation")
@@ -150,23 +155,20 @@ singleDiscrete <- function(type,
     exiting.full <- active.hosts
     exiting.full[exiting.full] <- exiting
 
-    # IDs = table.hosts[active.hosts][exiting, "hosts.ID"]
     table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                     active = 0)]
 
-    exiting.ID = table.hosts[active.hosts][as.vector(exiting), "hosts.ID"]$hosts.ID
-
-    # state.archive[hosts.ID %in% exiting.ID & is.na(time.to), `:=` (time.to = as.numeric(pres.time))]
+    exiting.ID <- table.hosts[active.hosts][as.vector(exiting), "hosts.ID"]$hosts.ID
 
     state.archive[state.archive[["hosts.ID"]] %in% exiting.ID & is.na(state.archive[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
 
     active.hosts[active.hosts] <- !exiting # Update active hosts
 
-    if (!any(active.hosts)) {break}
+    if (!any(active.hosts)) {break} #if no more active hosts, then end simulation
 
     #Step 1: Moving ----------------------------------------------------
 
-    #step 1.1 which ones are moving (proba based on their loc (if diff.pMove=TRUE))
+      #step 1.1 which hosts are moving
 
     if (pMoveParsed$type == "simple"){
       p.move.values <- pMove(pres.time - table.hosts[active.hosts]$inf.time)
@@ -184,7 +186,7 @@ singleDiscrete <- function(type,
     moving.full <- active.hosts
     moving.full[moving.full] <- moving
 
-    #step 1.2 when moving, where are they going
+      #step 1.2 if moving, where are they going?
 
     Move.ID <- table.hosts[moving.full,][["hosts.ID"]]
 
@@ -198,10 +200,10 @@ singleDiscrete <- function(type,
 
       for (i in 1:length(Move.ID)) {
 
-        current.move.pos = melted.structure.matrix[which(melted.structure.matrix$from==as.character(table.hosts[Move.ID[i],"current.in"])),]
+        current.move.pos <- melted.structure.matrix[which(melted.structure.matrix$from==as.character(table.hosts[Move.ID[i],"current.in"])),]
 
-        going.to = sample(current.move.pos$to, 1, replace = FALSE, prob = current.move.pos$prob)
-        table.state.temp[[i]] = newLineState(Move.ID[i],going.to,pres.time)
+        going.to <- sample(current.move.pos$to, 1, replace = FALSE, prob = current.move.pos$prob)
+        table.state.temp[[i]] <- newLineState(Move.ID[i],going.to,pres.time)
         table.hosts[Move.ID[i], `:=` (current.in = going.to)]
 
       }
@@ -210,7 +212,8 @@ singleDiscrete <- function(type,
       data.table::setkey(state.archive, "hosts.ID")
     }
 
-    #Step 2: Meeting & transmission ----------------------------------------------------
+    #Step 2: Hosts Meet & Transmist ----------------------------------------------------
+
     df.meetTransmit <- table.hosts[active.hosts, c("hosts.ID","current.in")]
     df.meetTransmit[, active.hosts:=hosts.ID]
 
@@ -246,7 +249,7 @@ singleDiscrete <- function(type,
 
         df.meetTransmit[,"Trans"] <- drawBernouilli(df.meetTransmit[["Ptransmit"]]) #Draws K bernouillis with various probability (see function for more detail)
 
-        df.meetTransmit = df.meetTransmit[df.meetTransmit[["Trans"]]] #Discards events with no realisation
+        df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Trans"]]] #Discards events with no realisation
 
         if (nrow(df.meetTransmit) >0) {
           table.temp <- vector("list", nrow(df.meetTransmit))
@@ -274,10 +277,12 @@ singleDiscrete <- function(type,
   message(" done.")
   message("The simulation has run for ",pres.time," units of time and a total of ",Host.count," hosts have been infected.")
 
-  nosoi.output = list()
+  nosoi.output <- list()
 
-  nosoi.output[["table.hosts"]] = table.hosts
-  nosoi.output[["table.state"]] = state.archive
+  nosoi.output[["total.time"]] <- pres.time
+  nosoi.output[["N.infected"]] <- Host.count
+  nosoi.output[["table.hosts"]] <- table.hosts
+  nosoi.output[["table.state"]] <- state.archive
 
   return(nosoi.output)
 }

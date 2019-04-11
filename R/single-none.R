@@ -123,7 +123,7 @@ singleNone <- function(length.sim,
 
         df.meetTransmit[,"Trans"] <- drawBernouilli(df.meetTransmit[["Ptransmit"]]) #Draws K bernouillis with various probability (see function for more detail)
 
-        df.meetTransmit = df.meetTransmit[df.meetTransmit[["Trans"]]] #Discards events with no realisation
+        df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Trans"]]] #Discards events with no realisation
 
         if (nrow(df.meetTransmit) >0) {
           table.temp <- vector("list", nrow(df.meetTransmit))
@@ -147,5 +147,11 @@ singleNone <- function(length.sim,
   message(" done.")
   message("The simulation has run for ",pres.time," units of time and a total of ",Host.count," hosts have been infected.")
 
-  return(table.hosts)
+  nosoi.output <- list()
+
+  nosoi.output[["total.time"]] <- pres.time
+  nosoi.output[["N.infected"]] <- Host.count
+  nosoi.output[["table.hosts"]] <- table.hosts
+
+  return(nosoi.output)
 }
