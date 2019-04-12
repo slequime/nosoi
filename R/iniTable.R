@@ -20,7 +20,6 @@ iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,par
       list.init[[indiv]] <- newLine(hosts.ID = paste(prefix.host,indiv,sep="-"),
                                     infected.by = paste(NA,indiv,sep="-"),
                                     infected.in = init.structure,
-                                    current.in = init.structure,
                                     time.is = 0,
                                     param.pExit = param.pExit,
                                     param.pMove = param.pMove,

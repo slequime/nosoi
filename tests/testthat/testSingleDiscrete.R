@@ -4,7 +4,7 @@ test_that("Error message pops out when missing state in diff functions", {
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Move_fct  <- function(x){rep(0.1,length(x))}
+  p_Move_fct  <- function(t){return(0.1)}
 
   p_Exit_fct  <- function(t,current.in){
     if(current.in=="A"){return(0)}
@@ -16,7 +16,7 @@ test_that("Error message pops out when missing state in diff functions", {
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
@@ -41,7 +41,7 @@ test_that("Error message pops out when missing state in diff functions", {
   "pExit should have a realisation for each possible state. diff.pExit == TRUE."
   )
 
-  p_Exit_fct  <- function(x){rep(0.08,length(x))}
+  p_Exit_fct  <- function(x){return(0.08)}
 
   time_contact <- function(t,current.in){
     if(current.in=="A"){
@@ -113,7 +113,7 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
 library(igraph)
 t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-p_Move_fct  <- function(x){rep(0.1,length(x))}
+p_Move_fct  <- function(t){return(0.1)}
 
 p_Exit_fct  <- function(t,current.in){
   if(current.in=="A"){return(0)}
@@ -126,7 +126,7 @@ proba <- function(t,p_max,t_incub){
   return(p)
 }
 
-time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
 transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
@@ -171,9 +171,9 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Move_fct  <- function(x){rep(0.1,length(x))}
+  p_Move_fct  <- function(t){return(0.1)}
 
-  p_Exit_fct  <- function(x){rep(0.08,length(x))}
+  p_Exit_fct  <- function(t){return(0.08)}
 
   proba <- function(t,current.in,p_max,t_incub){
     if(current.in=="A"){
@@ -190,7 +190,7 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
       return(p)}
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
@@ -235,9 +235,9 @@ test_that("Movement is coherent with single introduction, constant pMove, diff t
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Move_fct  <- function(x){rep(0.1,length(x))}
+  p_Move_fct  <- function(t){return(0.1)}
 
-  p_Exit_fct  <- function(x){rep(0.08,length(x))}
+  p_Exit_fct  <- function(t){return(0.08)}
 
   proba <- function(t,p_max,t_incub){
     if(t <= t_incub){p=0}
@@ -252,7 +252,6 @@ test_that("Movement is coherent with single introduction, constant pMove, diff t
     if(current.in=="C"){
       return(round(rnorm(1, 6, 1), 0))}
   }
-
 
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 

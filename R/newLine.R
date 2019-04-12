@@ -17,14 +17,13 @@
 #'
 #' @keywords internal
 
-newLine <- function(hosts.ID,infected.by,infected.in,current.in,time.is,param.pExit,param.pMove,param.timeContact,param.pTrans) {
+newLine <- function(hosts.ID,infected.by,infected.in,time.is,param.pExit,param.pMove,param.timeContact,param.pTrans) {
   if (is.na(param.pExit)) param.pExit <- NULL
   if (is.na(param.pMove)) param.pMove <- NULL
   if (is.na(param.timeContact)) param.timeContact <- NULL
 
   if (length(infected.in) == 1){
     if (is.na(infected.in)) infected.in <- NULL
-    if (is.na(current.in)) current.in <- NULL
   return(c(hosts.ID = hosts.ID,
            inf.by = infected.by,
            inf.in = infected.in,

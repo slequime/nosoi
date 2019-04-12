@@ -137,12 +137,12 @@ singleDiscrete <- function(type,
     active.hosts <- table.hosts[["active"]] == 1 #active hosts (boolean vector)
     if (any(active.hosts)){
 
-      if (pExitParsed$type == "simple"){
-        p.exit.values <- pExit(pres.time - table.hosts[active.hosts]$inf.time)
-        exiting <- drawBernouilli(p.exit.values)
-      }
+      # if (pExitParsed$type == "simple"){
+      #   p.exit.values <- pExit(pres.time - table.hosts[active.hosts]$inf.time)
+      #   exiting <- drawBernouilli(p.exit.values)
+      # }
 
-      if (pExitParsed$type == "complex"){
+      # if (pExitParsed$type == "complex"){
         fun <- function(z) {
           pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
         }
@@ -150,7 +150,7 @@ singleDiscrete <- function(type,
 
         exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
       }
-    }
+    # }
 
     exiting.full <- active.hosts
     exiting.full[exiting.full] <- exiting
@@ -170,18 +170,18 @@ singleDiscrete <- function(type,
 
       #step 1.1 which hosts are moving
 
-    if (pMoveParsed$type == "simple"){
-      p.move.values <- pMove(pres.time - table.hosts[active.hosts]$inf.time)
-      moving <- drawBernouilli(p.move.values)
-    }
+    # if (pMoveParsed$type == "simple"){
+    #   p.move.values <- pMove(pres.time - table.hosts[active.hosts]$inf.time)
+    #   moving <- drawBernouilli(p.move.values)
+    # }
 
-    if (pMoveParsed$type == "complex"){
+    # if (pMoveParsed$type == "complex"){
       fun <- function(z) {
         pMoveParsed$vect(prestime = pres.time, z[, pMoveParsed$vectArgs, with = FALSE])
       }
       p.move.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
       moving <- drawBernouilli(p.move.values) #Draws K bernouillis with various probability (see function for more detail)
-    }
+    # }
 
     moving.full <- active.hosts
     moving.full[moving.full] <- moving
@@ -217,16 +217,16 @@ singleDiscrete <- function(type,
     df.meetTransmit <- table.hosts[active.hosts, c("hosts.ID","current.in")]
     df.meetTransmit[, active.hosts:=hosts.ID]
 
-    if (timeContactParsed$type == "simple"){
-      timeContact.values <- timeContact(sum(active.hosts))
-    }
+    # if (timeContactParsed$type == "simple"){
+    #   timeContact.values <- timeContact(sum(active.hosts))
+    # }
 
-    if (timeContactParsed$type == "complex"){
+    # if (timeContactParsed$type == "complex"){
       fun <- function(z) {
         timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
       }
       timeContact.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
-    }
+    # }
 
     df.meetTransmit$number.contacts <- timeContact.values
 
@@ -259,7 +259,7 @@ singleDiscrete <- function(type,
             Host.count <- Host.count+1
             hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
-            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),as.character(df.meetTransmit[i,]$current.in),as.character(df.meetTransmit[i,]$current.in), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans)
+            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),as.character(df.meetTransmit[i,]$current.in), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans)
             table.state.temp[[i]] <- newLineState(hosts.ID,as.character(df.meetTransmit[i,]$current.in),pres.time)
           }
 
