@@ -72,48 +72,35 @@ singleNone <- function(length.sim,
 
     #Step 0: Active hosts ----------------------------------------------------------
     active.hosts <- table.hosts[["active"]] == 1 #active hosts (boolean vector)
-    if (any(active.hosts)){
+    if (any(active.hosts)) {
 
-      # if (pExitParsed$type == "simple"){
-      #   p.exit.values <- pExit(pres.time - table.hosts[active.hosts]$inf.time)
-      #   exiting <- drawBernouilli(p.exit.values)
-      # }
-
-      # if (pExitParsed$type == "complex"){
-        fun <- function(z) {
-          pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
-        }
-        p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
-
-        exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
+      fun <- function(z) {
+        pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
       }
+      p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+
+      exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
+    }
     # }
 
     exiting.full <- active.hosts
     exiting.full[exiting.full] <- exiting
 
-    # IDs = table.hosts[active.hosts][exiting, "hosts.ID"]
     table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                     active = 0)]
 
     active.hosts[active.hosts] <- !exiting # Update active hosts
-    # active.hosts <- table.hosts[table.hosts[["active"]]==1, "hosts.ID"] #active hosts
+
     if (!any(active.hosts)) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
     df.meetTransmit <- table.hosts[active.hosts, c("hosts.ID")]
     df.meetTransmit[, active.hosts:=hosts.ID]
 
-    # if (timeContactParsed$type == "simple"){
-    #   timeContact.values <- timeContact(sum(active.hosts))
-    # }
-
-    # if (timeContactParsed$type == "complex"){
-      fun <- function(z) {
-        timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
-      }
-      timeContact.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
-    # }
+    fun <- function(z) {
+      timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
+    }
+    timeContact.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
 
     df.meetTransmit$number.contacts <- timeContact.values
 

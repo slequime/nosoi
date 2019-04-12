@@ -135,22 +135,16 @@ singleDiscrete <- function(type,
 
     #Step 0: Active hosts ----------------------------------------------------------
     active.hosts <- table.hosts[["active"]] == 1 #active hosts (boolean vector)
-    if (any(active.hosts)){
 
-      # if (pExitParsed$type == "simple"){
-      #   p.exit.values <- pExit(pres.time - table.hosts[active.hosts]$inf.time)
-      #   exiting <- drawBernouilli(p.exit.values)
-      # }
+    if (any(active.hosts)) {
 
-      # if (pExitParsed$type == "complex"){
-        fun <- function(z) {
-          pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
-        }
-        p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
-
-        exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
+      fun <- function(z) {
+        pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
       }
-    # }
+      p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+
+      exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
+    }
 
     exiting.full <- active.hosts
     exiting.full[exiting.full] <- exiting
@@ -168,31 +162,24 @@ singleDiscrete <- function(type,
 
     #Step 1: Moving ----------------------------------------------------
 
-      #step 1.1 which hosts are moving
+    #step 1.1 which hosts are moving
 
-    # if (pMoveParsed$type == "simple"){
-    #   p.move.values <- pMove(pres.time - table.hosts[active.hosts]$inf.time)
-    #   moving <- drawBernouilli(p.move.values)
-    # }
-
-    # if (pMoveParsed$type == "complex"){
-      fun <- function(z) {
-        pMoveParsed$vect(prestime = pres.time, z[, pMoveParsed$vectArgs, with = FALSE])
-      }
-      p.move.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
-      moving <- drawBernouilli(p.move.values) #Draws K bernouillis with various probability (see function for more detail)
+    fun <- function(z) {
+      pMoveParsed$vect(prestime = pres.time, z[, pMoveParsed$vectArgs, with = FALSE])
+    }
+    p.move.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+    moving <- drawBernouilli(p.move.values) #Draws K bernouillis with various probability (see function for more detail)
     # }
 
     moving.full <- active.hosts
     moving.full[moving.full] <- moving
 
-      #step 1.2 if moving, where are they going?
+    #step 1.2 if moving, where are they going?
 
     Move.ID <- table.hosts[moving.full,][["hosts.ID"]]
 
     if (length(Move.ID) > 0){
       #Updating state archive for moving individuals:
-      # state.archive[hosts.ID %in% Move.ID & is.na(time.to), `:=` (time.to = as.numeric(pres.time))]
 
       state.archive[state.archive[["hosts.ID"]] %in% Move.ID & is.na(state.archive[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
 
@@ -217,16 +204,10 @@ singleDiscrete <- function(type,
     df.meetTransmit <- table.hosts[active.hosts, c("hosts.ID","current.in")]
     df.meetTransmit[, active.hosts:=hosts.ID]
 
-    # if (timeContactParsed$type == "simple"){
-    #   timeContact.values <- timeContact(sum(active.hosts))
-    # }
-
-    # if (timeContactParsed$type == "complex"){
-      fun <- function(z) {
-        timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
-      }
-      timeContact.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
-    # }
+    fun <- function(z) {
+      timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
+    }
+    timeContact.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
 
     df.meetTransmit$number.contacts <- timeContact.values
 
