@@ -19,21 +19,11 @@
 ##
 
 parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
+  pFunc <- match.fun(pFunc)
 
-  if (diff == FALSE){
-    pFunc <- match.fun(pFunc)
+  pFunc.type <- "complex"
 
-    if (length(formalArgs(pFunc)) == 1) {
-      pFunc.type <- "simple"
-      n.pFunc.param <- 0
-      return(list(type = "simple",
-                  nArgs = 0,
-                  vect = NA,
-                  vectArgs = NA))
-    }
-
-    pFunc.type <- "complex"
-
+  if ((diff == FALSE & length(formalArgs(pFunc)) > 1)|(diff == TRUE & length(formalArgs(pFunc)) > 2)) {
     if (!is.list(is.na(param.pFunc)) && is.na(param.pFunc)) {
       stop("There is a probleme with your function ", name, ": you should provide a parameter list named param.", name, ".")
     }
@@ -42,6 +32,16 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
       pFunc.param <- formalArgs(pFunc)[-1]
       if(! all(names(param.pFunc) %in% pFunc.param)) stop(paste0("Parameter name in param.", name, " should match the name used in ", name, "."))
       n.pFunc.param <- length(pFunc.param)
+    }
+  }
+
+  if (diff == FALSE & length(formalArgs(pFunc)) == 1) {
+    n.pFunc.param <- 0
+    pFunc.type <- "simple"
+  }
+
+    if (diff == TRUE & length(formalArgs(pFunc)) == 2) {
+      n.pFunc.param <- 0
     }
 
     pFunc_eval <- function(prestime, inf.time,...) {
@@ -54,7 +54,6 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
       do.call(pFunc_eval, c(list(prestime = prestime), parameters))
     }
 
-
     pFunc_eval_args = c(formalArgs(pFunc_eval),formalArgs(pFunc)[-1])
 
     pFunc_eval_args = subset(pFunc_eval_args, pFunc_eval_args != "...")
@@ -66,70 +65,3 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
                 vect = pFunc_vect,
                 vectArgs = pFunc_vect_args))
   }
-
-  if (diff == TRUE){
-    pFunc <- match.fun(pFunc)
-
-    if (length(formalArgs(pFunc)) == 2) {
-      pFunc.type <- "simple-Diff"
-      n.pFunc.param <- 0
-
-      pFunc_eval <- function(prestime, inf.time,...) {
-        t = prestime - inf.time
-        x <- list(...)
-        do.call(pFunc, c(list(t = t), x))
-      }
-
-      pFunc_vect <- function(prestime, parameters) {
-        do.call(pFunc_eval, c(list(prestime = prestime), parameters))
-      }
-
-      pFunc_eval_args = c(formalArgs(pFunc_eval),formalArgs(pFunc)[-1])
-
-      pFunc_eval_args = subset(pFunc_eval_args, pFunc_eval_args != "...")
-
-      pFunc_vect_args = pFunc_eval_args[-1]
-
-      return(list(type = "simple-Diff",
-                  nArgs = 0,
-                  vect = pFunc_vect,
-                  vectArgs = pFunc_vect_args))
-    }
-
-    pFunc.type <- "complex"
-
-    if (!is.list(is.na(param.pFunc)) && is.na(param.pFunc)) {
-      stop("There is a probleme with your function ", name, ": you should provide a parameter list named param.", name, ".")
-    }
-
-    if (is.list(param.pFunc)) {
-      pFunc.param <- formalArgs(pFunc)[-1]
-      if(! all(names(param.pFunc) %in% pFunc.param)) stop(paste0("Parameter name in param.", name, " should match the name used in ", name, "."))
-      n.pFunc.param <- length(pFunc.param)
-    }
-
-    pFunc_eval <- function(prestime, inf.time,...) {
-      t = prestime - inf.time
-      x <- list(...)
-      do.call(pFunc, c(list(t = t), x))
-    }
-
-    pFunc_vect <- function(prestime, parameters) {
-      do.call(pFunc_eval, c(list(prestime = prestime), parameters))
-    }
-
-
-    pFunc_eval_args = c(formalArgs(pFunc_eval),formalArgs(pFunc)[-1])
-
-    pFunc_eval_args = subset(pFunc_eval_args, pFunc_eval_args != "...")
-
-    pFunc_vect_args = pFunc_eval_args[-1]
-
-    return(list(type = pFunc.type,
-                nArgs = n.pFunc.param,
-                vect = pFunc_vect,
-                vectArgs = pFunc_vect_args))
-  }
-
-
-}

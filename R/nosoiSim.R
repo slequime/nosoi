@@ -2,6 +2,7 @@
 #'
 #' @param type specifies which type of pathogen we are interested in, either "single" or "dual"-host (e.g. arboviruses).
 #' @param structure specifies if the population in which the transmission is to occur is structured (discrete variable).
+#' @param continuous specifies if the population in which the transmission is to occur is structured (discrete variable).
 #' @param ... arguments to be passed on to the simulator (see below).
 #'
 #' @details This function determines which general settings the user wants to use for his simulation.
@@ -12,7 +13,7 @@
 #' @import methods
 #' @import stats
 
-nosoiSim <- function(type="single",structure=FALSE,...){
+nosoiSim <- function(type="single",structure=FALSE, continuous=FALSE, ...){
   #Sanity checks -------------
   if (! type %in% c("single","dual")) stop("Type of transmission should be 'single' or 'dual'-host.")
   if (! structure %in% c(TRUE,FALSE)) stop("Unrecognized parameters for population structure, should be TRUE or FALSE.")
@@ -23,6 +24,9 @@ nosoiSim <- function(type="single",structure=FALSE,...){
   }
   if(type=="single" & structure==TRUE)  {
     output = singleDiscrete(...)
+  }
+  if(type=="single" & structure==TRUE & continuous == TRUE)  {
+    output = singleDiscreteContinuous(...)
   }
   #To be implemented
   if(type=="dual" & structure==FALSE) stop("This version has not been implemented yet.")

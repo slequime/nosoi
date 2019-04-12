@@ -142,7 +142,7 @@ singleDiscrete <- function(type,
         exiting <- drawBernouilli(p.exit.values)
       }
 
-      if (pExitParsed$type == "complex" | pExitParsed$type == "simple-Diff"){
+      if (pExitParsed$type == "complex"){
         fun <- function(z) {
           pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
         }
@@ -175,7 +175,7 @@ singleDiscrete <- function(type,
       moving <- drawBernouilli(p.move.values)
     }
 
-    if (pMoveParsed$type == "complex" | pMoveParsed$type == "simple-Diff"){
+    if (pMoveParsed$type == "complex"){
       fun <- function(z) {
         pMoveParsed$vect(prestime = pres.time, z[, pMoveParsed$vectArgs, with = FALSE])
       }
@@ -221,7 +221,7 @@ singleDiscrete <- function(type,
       timeContact.values <- timeContact(sum(active.hosts))
     }
 
-    if (timeContactParsed$type == "complex" | timeContactParsed$type == "simple-Diff"){
+    if (timeContactParsed$type == "complex"){
       fun <- function(z) {
         timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
       }
