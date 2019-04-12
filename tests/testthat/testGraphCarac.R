@@ -4,7 +4,7 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   library(igraph)
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Exit_fct  <- function(x){rep(0.08,length(x))}
+  p_Exit_fct  <- function(t){return(0.08)}
 
   proba <- function(t,p_max,t_incub){
     if(t <= t_incub){p=0}
@@ -12,7 +12,7 @@ test_that("Transmission is coherent with single introduction, constant pExit and
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
   test.nosoiA <- nosoiSim(type="single",structure=FALSE,
@@ -47,7 +47,7 @@ test_that("Transmission is coherent with single introduction, simple pExit and p
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
   test.nosoiB <- nosoiSim(type="single",structure=FALSE,
@@ -85,7 +85,7 @@ test_that("Transmission is coherent with single introduction, complex pExit and 
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
   test.nosoiC <- nosoiSim(type="single",structure=FALSE,
@@ -111,7 +111,9 @@ test_that("Transmission is coherent with multiple introductions, constant pExit 
   library(igraph)
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Exit_fct  <- function(x){rep(0.08,length(x))}
+  # p_Exit_fct  <- function(x){rep(0.08,length(x))}
+  p_Exit_fct  <- function(t){return(0.08)}
+
 
   proba <- function(t,p_max,t_incub){
     if(t <= t_incub){p=0}
@@ -119,7 +121,7 @@ test_that("Transmission is coherent with multiple introductions, constant pExit 
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
   test.nosoiA <- nosoiSim(type="single",structure=FALSE,
@@ -155,7 +157,7 @@ test_that("Transmission is coherent with multiple introductions, simple pExit an
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
   test.nosoiB <- nosoiSim(type="single",structure=FALSE,
@@ -192,7 +194,7 @@ test_that("Transmission is coherent with multiple introductions, complex pExit a
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
   test.nosoiC <- nosoiSim(type="single",structure=FALSE,

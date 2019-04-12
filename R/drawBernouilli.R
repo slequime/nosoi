@@ -12,5 +12,6 @@
 #' @keywords internal
 ##
 drawBernouilli <- function(p) {
-  return(runif(length(p), 0, 1) < p)
+  if(is.data.table(p)) return(runif(nrow(p), 0, 1) < p)
+  if(!is.data.table(p)) return(runif(length(p), 0, 1) < p)
 }

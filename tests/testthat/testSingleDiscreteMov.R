@@ -3,8 +3,8 @@ context("Checking the movement in discrete structure")
 test_that("Error message pops up when structure.matrix or init.structure is badly formed", {
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Exit_fct  <- function(x){rep(0.08,length(x))}
-  p_Move_fct  <- function(x){rep(0.1,length(x))}
+  p_Exit_fct  <- function(t){return(0.08)}
+  p_Move_fct  <- function(t){return(0.1)}
 
   proba <- function(t,p_max,t_incub){
     if(t <= t_incub){p=0}
@@ -12,7 +12,7 @@ test_that("Error message pops up when structure.matrix or init.structure is badl
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   # transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
   transition.matrix = c("A","B")
@@ -127,18 +127,12 @@ test_that("Error message pops up when structure.matrix or init.structure is badl
 
 })
 
-
-
-
-
-
-
 test_that("Movement is coherent with single introduction, constant pMove", {
 library(igraph)
 t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-p_Exit_fct  <- function(x){rep(0.08,length(x))}
-p_Move_fct  <- function(x){rep(0.1,length(x))}
+p_Exit_fct  <- function(t){return(0.08)}
+p_Move_fct  <- function(t){return(0.1)}
 
 proba <- function(t,p_max,t_incub){
   if(t <= t_incub){p=0}
@@ -146,7 +140,7 @@ proba <- function(t,p_max,t_incub){
   return(p)
 }
 
-time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
 transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
@@ -192,7 +186,7 @@ library(igraph)
 
 t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-p_Exit_fct  <- function(x){rep(0.08,length(x))}
+p_Exit_fct  <- function(t){return(0.08)}
 p_Move_param1_fct <- function(x){rnorm(x,mean = 10,sd=2)}
 
 p_Move_fct  <- function(t,pMove.param1){plogis(t,pMove.param1,2)}
@@ -203,7 +197,7 @@ proba <- function(t,p_max,t_incub){
   return(p)
 }
 
-time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
 transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
@@ -229,17 +223,17 @@ test.nosoiA <- nosoiSim(type="single",structure=TRUE,
 g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
 expect_equal(transitivity(g, type="global"), 0)
 expect_equal(clusters(g, "weak")$no, 1)
-expect_equal(diameter(g, directed=F, weights=NA), 5)
+expect_equal(diameter(g, directed=F, weights=NA), 6)
 
 #Movement
-expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),5)
-expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","B","A","C","B"))
+expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),11)
+expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C","A","C","A","B","C","B","C","A","C"))
 
 Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
-expect_equal(subset(Where.at.end, current.in == "A")$N,24)
-expect_equal(subset(Where.at.end, current.in == "B")$N,2)
-expect_equal(subset(Where.at.end, current.in == "C")$N,11)
+expect_equal(subset(Where.at.end, current.in == "A")$N,83)
+expect_equal(subset(Where.at.end, current.in == "B")$N,19)
+expect_equal(subset(Where.at.end, current.in == "C")$N,16)
 })
 
 test_that("Movement is coherent with single introduction, constant but different pMove, 1 loc (C) is sink. Ce tombeau sera votre tombeau !", {
@@ -247,7 +241,7 @@ test_that("Movement is coherent with single introduction, constant but different
 library(igraph)
 t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-p_Exit_fct  <- function(x){rep(0.08,length(x))}
+p_Exit_fct  <- function(t){return(0.08)}
 
 p_Move_fct  <- function(t,current.in){
   if(current.in=="A"){return(0.1)}
@@ -271,7 +265,7 @@ proba <- function(t,p_max,t_incub){
   return(p)
 }
 
-time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
 transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
@@ -298,20 +292,20 @@ test.nosoiA <- nosoiSim(type="single",structure=TRUE,
 g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
 expect_equal(transitivity(g, type="global"), 0)
 expect_equal(clusters(g, "weak")$no, 1)
-expect_equal(diameter(g, directed=F, weights=NA), 5)
+expect_equal(diameter(g, directed=F, weights=NA), 6)
 
 #Movement
 expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),2)
 expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C"))
 
 Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
-expect_equal(subset(Where.at.end, current.in == "C")$N,56)
+expect_equal(subset(Where.at.end, current.in == "C")$N,138)
 })
 
 test_that("Error message pops up if different pMove poorly formated", {
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Exit_fct  <- function(x){rep(0.08,length(x))}
+  p_Exit_fct  <- function(t){return(0.08)}
 
 
   p_Move_fct  <- function(t,current.in){
@@ -324,7 +318,7 @@ test_that("Error message pops up if different pMove poorly formated", {
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
@@ -356,7 +350,7 @@ test_that("Movement is coherent with single introduction, complex and different 
   library(igraph)
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Exit_fct  <- function(x){rep(0.08,length(x))}
+  p_Exit_fct  <- function(t){return(0.08)}
 
   p_Move_param1_fct <- function(x){rnorm(x,mean = 10,sd=2)}
   p_Move_fct  <- function(t,current.in,pMove.param1){
@@ -371,7 +365,7 @@ test_that("Movement is coherent with single introduction, complex and different 
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
@@ -398,12 +392,12 @@ test_that("Movement is coherent with single introduction, complex and different 
   g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
-  expect_equal(diameter(g, directed=F, weights=NA), 5)
+  expect_equal(diameter(g, directed=F, weights=NA), 6)
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),4)
-  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","B","A","C"))
+  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),2)
+  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C"))
 
   Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
-  expect_equal(subset(Where.at.end, current.in == "C")$N,23)
+  expect_equal(subset(Where.at.end, current.in == "C")$N,52)
 })

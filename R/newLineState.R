@@ -13,10 +13,23 @@
 #' @keywords internal
 
 newLineState <- function(hosts.ID,state.pres,time.is) {
+
+  if (length(state.pres) == 1){
+    return(list(hosts.ID = hosts.ID,
+                state = state.pres,
+                time.from = time.is,
+                time.to = NA_real_
+    )
+    )
+  }
+
+  if (length(state.pres) == 2){
   return(list(hosts.ID = hosts.ID,
-           state = state.pres,
+           state.x = state.pres[1],
+           state.y = state.pres[2],
            time.from = time.is,
            time.to = NA_real_
   )
   )
+}
 }

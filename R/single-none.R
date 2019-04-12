@@ -44,6 +44,7 @@ singleNone <- function(length.sim,
 
   #Parsing timeContact
   timeContact <- match.fun(timeContact)
+  timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)))
 
   #Parsing pTrans
   pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)))
@@ -73,12 +74,12 @@ singleNone <- function(length.sim,
     active.hosts <- table.hosts[["active"]] == 1 #active hosts (boolean vector)
     if (any(active.hosts)){
 
-      if (pExitParsed$type == "simple"){
-        p.exit.values <- pExit(pres.time - table.hosts[active.hosts]$inf.time)
-        exiting <- drawBernouilli(p.exit.values)
-      }
+      # if (pExitParsed$type == "simple"){
+      #   p.exit.values <- pExit(pres.time - table.hosts[active.hosts]$inf.time)
+      #   exiting <- drawBernouilli(p.exit.values)
+      # }
 
-      if (pExitParsed$type == "complex"){
+      # if (pExitParsed$type == "complex"){
         fun <- function(z) {
           pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
         }
@@ -86,7 +87,7 @@ singleNone <- function(length.sim,
 
         exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
       }
-    }
+    # }
 
     exiting.full <- active.hosts
     exiting.full[exiting.full] <- exiting
@@ -100,9 +101,21 @@ singleNone <- function(length.sim,
     if (!any(active.hosts)) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
-    df.meetTransmit <- table.hosts[active.hosts, "hosts.ID"]
+    df.meetTransmit <- table.hosts[active.hosts, c("hosts.ID")]
     df.meetTransmit[, active.hosts:=hosts.ID]
-    df.meetTransmit$number.contacts <- timeContact(sum(active.hosts))
+
+    # if (timeContactParsed$type == "simple"){
+    #   timeContact.values <- timeContact(sum(active.hosts))
+    # }
+
+    # if (timeContactParsed$type == "complex"){
+      fun <- function(z) {
+        timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
+      }
+      timeContact.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+    # }
+
+    df.meetTransmit$number.contacts <- timeContact.values
 
     haveContact <- df.meetTransmit[["number.contacts"]] > 0
     df.meetTransmit <- df.meetTransmit[haveContact]
@@ -132,7 +145,7 @@ singleNone <- function(length.sim,
             Host.count <- Host.count+1
             hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
-            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts), NA, NA, pres.time, param.pExit, param.pMove=NA,param.timeContact, param.pTrans)
+            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts), NA, pres.time, param.pExit, param.pMove=NA,param.timeContact, param.pTrans)
           }
 
           table.hosts <- data.table::rbindlist(c(list(table.hosts),table.temp))
