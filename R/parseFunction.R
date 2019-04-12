@@ -31,18 +31,12 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
     if (is.list(param.pFunc)) {
       pFunc.param <- formalArgs(pFunc)[-1]
       if(! all(names(param.pFunc) %in% pFunc.param)) stop(paste0("Parameter name in param.", name, " should match the name used in ", name, "."))
-      n.pFunc.param <- length(pFunc.param)
     }
   }
 
   if (diff == FALSE & length(formalArgs(pFunc)) == 1) {
-    n.pFunc.param <- 0
     pFunc.type <- "simple"
   }
-
-    if (diff == TRUE & length(formalArgs(pFunc)) == 2) {
-      n.pFunc.param <- 0
-    }
 
     pFunc_eval <- function(prestime, inf.time,...) {
       t = prestime - inf.time
@@ -61,7 +55,6 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
     pFunc_vect_args = pFunc_eval_args[-1]
 
     return(list(type = pFunc.type,
-                nArgs = n.pFunc.param,
                 vect = pFunc_vect,
                 vectArgs = pFunc_vect_args))
   }

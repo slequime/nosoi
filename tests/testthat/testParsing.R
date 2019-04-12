@@ -90,12 +90,10 @@ test_that("Actual parsing", {
 
   parsedProba <- parseFunction(proba, list(p_max = p_max_fct, t_incub = t_incub_fct), "blabla")
   expect_equal(parsedProba$type, "complex")
-  expect_equal(parsedProba$nArgs, 2)
   expect_equal(parsedProba$vectArgs, c("inf.time", "p_max", "t_incub"))
 
   parsedProba <- parseFunction(p_Exit_fct, NA, "blabla")
   expect_equal(parsedProba$type, "simple")
-  expect_equal(parsedProba$nArgs, 0)
   expect_equal(parsedProba$vectArgs, "inf.time")
 
 })

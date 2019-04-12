@@ -44,6 +44,7 @@ singleNone <- function(length.sim,
 
   #Parsing timeContact
   timeContact <- match.fun(timeContact)
+  timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)))
 
   #Parsing pTrans
   pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)))
@@ -100,9 +101,21 @@ singleNone <- function(length.sim,
     if (!any(active.hosts)) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
-    df.meetTransmit <- table.hosts[active.hosts, "hosts.ID"]
+    df.meetTransmit <- table.hosts[active.hosts, c("hosts.ID")]
     df.meetTransmit[, active.hosts:=hosts.ID]
-    df.meetTransmit$number.contacts <- timeContact(sum(active.hosts))
+
+    if (timeContactParsed$type == "simple"){
+      timeContact.values <- timeContact(sum(active.hosts))
+    }
+
+    if (timeContactParsed$type == "complex"){
+      fun <- function(z) {
+        timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
+      }
+      timeContact.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+    }
+
+    df.meetTransmit$number.contacts <- timeContact.values
 
     haveContact <- df.meetTransmit[["number.contacts"]] > 0
     df.meetTransmit <- df.meetTransmit[haveContact]
