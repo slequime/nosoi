@@ -223,17 +223,17 @@ test.nosoiA <- nosoiSim(type="single",structure=TRUE,
 g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
 expect_equal(transitivity(g, type="global"), 0)
 expect_equal(clusters(g, "weak")$no, 1)
-expect_equal(diameter(g, directed=F, weights=NA), 5)
+expect_equal(diameter(g, directed=F, weights=NA), 6)
 
 #Movement
-expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),5)
-expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","B","A","C","B"))
+expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),11)
+expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C","A","C","A","B","C","B","C","A","C"))
 
 Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
-expect_equal(subset(Where.at.end, current.in == "A")$N,24)
-expect_equal(subset(Where.at.end, current.in == "B")$N,2)
-expect_equal(subset(Where.at.end, current.in == "C")$N,11)
+expect_equal(subset(Where.at.end, current.in == "A")$N,83)
+expect_equal(subset(Where.at.end, current.in == "B")$N,19)
+expect_equal(subset(Where.at.end, current.in == "C")$N,16)
 })
 
 test_that("Movement is coherent with single introduction, constant but different pMove, 1 loc (C) is sink. Ce tombeau sera votre tombeau !", {
@@ -292,14 +292,14 @@ test.nosoiA <- nosoiSim(type="single",structure=TRUE,
 g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
 expect_equal(transitivity(g, type="global"), 0)
 expect_equal(clusters(g, "weak")$no, 1)
-expect_equal(diameter(g, directed=F, weights=NA), 5)
+expect_equal(diameter(g, directed=F, weights=NA), 6)
 
 #Movement
 expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),2)
 expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C"))
 
 Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
-expect_equal(subset(Where.at.end, current.in == "C")$N,56)
+expect_equal(subset(Where.at.end, current.in == "C")$N,138)
 })
 
 test_that("Error message pops up if different pMove poorly formated", {
@@ -392,12 +392,12 @@ test_that("Movement is coherent with single introduction, complex and different 
   g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
-  expect_equal(diameter(g, directed=F, weights=NA), 5)
+  expect_equal(diameter(g, directed=F, weights=NA), 6)
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),4)
-  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","B","A","C"))
+  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),2)
+  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C"))
 
   Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
-  expect_equal(subset(Where.at.end, current.in == "C")$N,23)
+  expect_equal(subset(Where.at.end, current.in == "C")$N,52)
 })

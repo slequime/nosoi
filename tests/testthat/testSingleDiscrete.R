@@ -153,7 +153,7 @@ test.nosoiA <- nosoiSim(type="single",structure=TRUE,
 g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
 expect_equal(transitivity(g, type="global"), 0)
 expect_equal(clusters(g, "weak")$no, 1)
-expect_equal(diameter(g, directed=F, weights=NA), 6)
+expect_equal(diameter(g, directed=F, weights=NA), 7)
 
 #Movement
 expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-3")),2)
@@ -162,8 +162,8 @@ expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-3")$state,c("A","C")
 Where.when.exit = subset(test.nosoiA$table.hosts,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
 expect_equal(subset(Where.when.exit, current.in == "A")$N,integer(0))
-expect_equal(subset(Where.when.exit, current.in == "B")$N,32)
-expect_equal(subset(Where.when.exit, current.in == "C")$N,43)
+expect_equal(subset(Where.when.exit, current.in == "B")$N,44)
+expect_equal(subset(Where.when.exit, current.in == "C")$N,34)
 })
 
 test_that("Movement is coherent with single introduction, constant pMove, diff pTrans ", {
@@ -368,18 +368,18 @@ test_that("Movement is coherent with single introduction, all parameters are dif
   g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
-  expect_equal(diameter(g, directed=F, weights=NA), 6)
+  expect_equal(diameter(g, directed=F, weights=NA), 12)
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-3")),4)
-  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-3")$state,c("C","A","C","D"))
+  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),3)
+  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C","A"))
 
   Where.when.infected = test.nosoiA$table.hosts %>% group_by(inf.in) %>% summarise(N=length(hosts.ID))
   expect_equal(subset(Where.when.infected, inf.in == "B")$N,integer(0))
   expect_equal(subset(Where.when.infected, inf.in == "A")$N,1)
-  expect_equal(subset(Where.when.infected, inf.in == "C")$N,117)
+  expect_equal(subset(Where.when.infected, inf.in == "C")$N,968)
 
   Where.when.died = subset(test.nosoiA$table.hosts,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
   expect_equal(subset(Where.when.died, current.in == "C")$N,integer(0))
-  expect_equal(subset(Where.when.died, current.in == "D")$N,55)
+  expect_equal(subset(Where.when.died, current.in == "D")$N,207)
 })
