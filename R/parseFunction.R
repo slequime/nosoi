@@ -21,8 +21,6 @@
 parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
   pFunc <- match.fun(pFunc)
 
-  pFunc.type <- "complex"
-
   if ((diff == FALSE & length(formalArgs(pFunc)) > 1)|(diff == TRUE & length(formalArgs(pFunc)) > 2)) {
     if (!is.list(is.na(param.pFunc)) && is.na(param.pFunc)) {
       stop("There is a probleme with your function ", name, ": you should provide a parameter list named param.", name, ".")
@@ -32,10 +30,6 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
       pFunc.param <- formalArgs(pFunc)[-1]
       if(! all(names(param.pFunc) %in% pFunc.param)) stop(paste0("Parameter name in param.", name, " should match the name used in ", name, "."))
     }
-  }
-
-  if (diff == FALSE & length(formalArgs(pFunc)) == 1) {
-    pFunc.type <- "simple"
   }
 
     pFunc_eval <- function(prestime, inf.time,...) {
@@ -54,7 +48,6 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
 
     pFunc_vect_args = pFunc_eval_args[-1]
 
-    return(list(type = pFunc.type,
-                vect = pFunc_vect,
+    return(list(vect = pFunc_vect,
                 vectArgs = pFunc_vect_args))
   }
