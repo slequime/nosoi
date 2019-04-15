@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-*Nosoi* can accommodate a wide range of epidemiological transmission scenarios, including structured host populations (in discrete states), such as for example geography (locatio nA, location B, etc.), and allows for parameters values to change according to the host current location. This tutorial will focus on setting up a *Nosoi* simulation for a single-host pathogen whose host population is structured between different locations. This tutorial builds on the ["simple" case scenario presented before](single-host-none.html); I thus highly recommand reading this one first.
+*Nosoi* can accommodate a wide range of epidemiological transmission scenarios, including structured host populations (in discrete states), such as for example geography (location A, location B, etc.), and allows parameter values to change according to the host's current location. This tutorial will focus on setting up a *Nosoi* simulation for a single-host pathogen whose host population is structured between different locations. This tutorial builds on the ["simple" case scenario presented before](single-host-none.html); I thus highly recommend reading this tutorial before attempting this one.
 
 ## Structure of the population
 
