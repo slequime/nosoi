@@ -12,7 +12,7 @@
 #'
 #' @keywords internal
 
-iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,param.pMove,param.timeContact,param.pTrans){
+iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,param.pMove,param.timeContact,param.pTrans, current.environmental.value=NA){
 
   list.init <- vector("list", init.individuals)
 
@@ -24,7 +24,8 @@ iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,par
                                     param.pExit = param.pExit,
                                     param.pMove = param.pMove,
                                     param.timeContact = param.timeContact,
-                                    param.pTrans = param.pTrans)
+                                    param.pTrans = param.pTrans,
+                                    current.environmental.value=current.environmental.value)
   }
 
   table.hosts <- data.table::rbindlist(list.init)

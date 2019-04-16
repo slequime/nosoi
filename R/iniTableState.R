@@ -8,14 +8,15 @@
 #'
 #' @keywords internal
 
-iniTableState <- function(init.individuals,init.structure,prefix.host){
+iniTableState <- function(init.individuals,init.structure,prefix.host,current.environmental.value=NA){
 
   list.init <- vector("list", init.individuals)
 
   for (indiv in 1:init.individuals) {
       list.init[[indiv]] <- newLineState(hosts.ID = paste(prefix.host,indiv,sep="-"),
                                     state.pres = init.structure,
-                                    time.is = 0)
+                                    time.is = 0,
+                                    current.environmental.value=current.environmental.value)
   }
 
    table.mov <- data.table::rbindlist(list.init)

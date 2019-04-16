@@ -12,7 +12,7 @@
 #'
 #' @keywords internal
 
-newLineState <- function(hosts.ID,state.pres,time.is) {
+newLineState <- function(hosts.ID,state.pres,time.is,current.environmental.value=NA) {
 
   if (length(state.pres) == 1){
     return(list(hosts.ID = hosts.ID,
@@ -27,6 +27,7 @@ newLineState <- function(hosts.ID,state.pres,time.is) {
   return(list(hosts.ID = hosts.ID,
            state.x = state.pres[1],
            state.y = state.pres[2],
+           current.env.value = current.environmental.value,
            time.from = time.is,
            time.to = NA_real_
   )

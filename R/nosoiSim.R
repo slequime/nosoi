@@ -22,11 +22,11 @@ nosoiSim <- function(type="single",structure=FALSE, continuous=FALSE, ...){
   if(type=="single" & structure==FALSE) {
     output = singleNone(...)
   }
-  if(type=="single" & structure==TRUE)  {
+  if(type=="single" & structure==TRUE & continuous == FALSE)  {
     output = singleDiscrete(...)
   }
   if(type=="single" & structure==TRUE & continuous == TRUE)  {
-    output = singleDiscreteContinuous(...)
+    output = singleContinuous(...)
   }
   #To be implemented
   if(type=="dual" & structure==FALSE) stop("This version has not been implemented yet.")
