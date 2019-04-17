@@ -13,7 +13,7 @@
 #'
 #' @keywords internal
 
-iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,param.pMove,param.timeContact,param.pTrans, current.environmental.value=NA){
+iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,param.pMove,param.timeContact,param.pTrans,param.moveDist, current.environmental.value=NA){
 
   list.init <- vector("list", init.individuals)
 
@@ -26,6 +26,7 @@ iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,par
                                     param.pMove = param.pMove,
                                     param.timeContact = param.timeContact,
                                     param.pTrans = param.pTrans,
+                                    param.moveDist=param.moveDist,
                                     current.environmental.value=current.environmental.value)
   }
 

@@ -121,7 +121,7 @@ singleDiscrete <- function(type,
 
   #Creation of initial data ----------------------------------------------------------
 
-  table.hosts <- iniTable(init.individuals, init.structure, prefix.host, param.pExit, param.pMove,param.timeContact, param.pTrans)
+  table.hosts <- iniTable(init.individuals, init.structure, prefix.host, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist=NA)
 
   state.archive <- iniTableState(init.individuals, init.structure, prefix.host)
 
@@ -240,7 +240,7 @@ singleDiscrete <- function(type,
             Host.count <- Host.count+1
             hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
-            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),as.character(df.meetTransmit[i,]$current.in), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans)
+            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),as.character(df.meetTransmit[i,]$current.in), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist=NA)
             table.state.temp[[i]] <- newLineState(hosts.ID,as.character(df.meetTransmit[i,]$current.in),pres.time)
           }
 

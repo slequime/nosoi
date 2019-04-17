@@ -145,7 +145,7 @@ singleContinuous <- function(type,
 
   #Creation of initial data ----------------------------------------------------------
 
-  table.hosts <- iniTable(init.individuals, init.structure, prefix.host, param.pExit, param.pMove,param.timeContact, param.pTrans,current.environmental.value=start.env)
+  table.hosts <- iniTable(init.individuals, init.structure, prefix.host, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist,current.environmental.value=start.env)
 
   state.archive <- iniTableState(init.individuals, init.structure, prefix.host,current.environmental.value=start.env)
 
@@ -318,7 +318,7 @@ singleContinuous <- function(type,
             Host.count <- Host.count+1
             hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
-            table.temp[[1]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),c(df.meetTransmit[i,]$current.in.x,df.meetTransmit[i,]$current.in.y), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans,current.environmental.value=df.meetTransmit[i,]$current.env.value)
+            table.temp[[1]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),c(df.meetTransmit[i,]$current.in.x,df.meetTransmit[i,]$current.in.y), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist,current.environmental.value=df.meetTransmit[i,]$current.env.value)
             table.state.temp[[i]] <- newLineState(hosts.ID,c(df.meetTransmit[i,]$current.in.x,df.meetTransmit[i,]$current.in.y),pres.time,current.environmental.value=df.meetTransmit[i,]$current.env.value)
           }
 

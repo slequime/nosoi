@@ -23,10 +23,13 @@ singleNone <- function(length.sim,
                        init.individuals,
                        timeContact,
                        param.timeContact,
+                       timeDep.timeContact=FALSE,
                        pTrans,
                        param.pTrans,
+                       timeDep.pTrans=FALSE,
                        pExit,
                        param.pExit,
+                       timeDep.pExit=FALSE,
                        prefix.host="H",
                        progress.bar=TRUE,
                        ...){
@@ -61,7 +64,7 @@ singleNone <- function(length.sim,
 
   #Creation of initial data ----------------------------------------------------------
 
-  table.hosts <- iniTable(init.individuals, NA, prefix.host, param.pExit, param.pMove = NA, param.timeContact, param.pTrans)
+  table.hosts <- iniTable(init.individuals, NA, prefix.host, param.pExit, param.pMove = NA, param.timeContact, param.pTrans, param.moveDist=NA)
   Host.count <- init.individuals
 
   # Running the simulation ----------------------------------------
@@ -132,7 +135,7 @@ singleNone <- function(length.sim,
             Host.count <- Host.count+1
             hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
-            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts), NA, pres.time, param.pExit, param.pMove=NA,param.timeContact, param.pTrans)
+            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts), NA, pres.time, param.pExit, param.pMove=NA,param.timeContact, param.pTrans,param.moveDist=NA)
           }
 
           table.hosts <- data.table::rbindlist(c(list(table.hosts),table.temp))
