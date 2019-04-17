@@ -94,3 +94,7 @@ SimulationA <- nosoiSim(type="single", structure=TRUE,
 ```
 
 ## WORK IN PROGRESS
+
+[see pExit](single-host-none.html#pexit-param-pexit-and-timedep-pexit) 
+[see timeContact](single-host-none.html#timecontact-param-timecontact-and-timedep-timecontact)
+[see pTrans](single-host-none.html#ptrans-param-ptrans-and-timedep-ptrans)

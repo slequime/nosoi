@@ -133,10 +133,11 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     
     </div>
 
-    <pre class="usage"><span class='fu'>singleNone</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>, <span class='no'>timeContact</span>,
-  <span class='no'>param.timeContact</span>, <span class='kw'>timeDep.timeContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>,
-  <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>, <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>singleNone</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
+  <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>timeContact</span>, <span class='no'>param.timeContact</span>,
+  <span class='kw'>timeDep.timeContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>,
+  <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,6 +153,18 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <tr>
       <th>init.individuals</th>
       <td><p>number of initially infected individuals.</p></td>
+    </tr>
+    <tr>
+      <th>pExit</th>
+      <td><p>function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).</p></td>
+    </tr>
+    <tr>
+      <th>param.pExit</th>
+      <td><p>parameter names (list of functions) for the pExit.</p></td>
+    </tr>
+    <tr>
+      <th>timeDep.pExit</th>
+      <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>timeContact</th>
@@ -176,18 +189,6 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <tr>
       <th>timeDep.pTrans</th>
       <td><p>is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
-    </tr>
-    <tr>
-      <th>pExit</th>
-      <td><p>function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).</p></td>
-    </tr>
-    <tr>
-      <th>param.pExit</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
-    </tr>
-    <tr>
-      <th>timeDep.pExit</th>
-      <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>prefix.host</th>

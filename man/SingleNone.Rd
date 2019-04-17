@@ -4,10 +4,11 @@
 \alias{singleNone}
 \title{Single-host without structured host population}
 \usage{
-singleNone(length.sim, max.infected, init.individuals, timeContact,
-  param.timeContact, timeDep.timeContact = FALSE, pTrans, param.pTrans,
-  timeDep.pTrans = FALSE, pExit, param.pExit, timeDep.pExit = FALSE,
-  prefix.host = "H", progress.bar = TRUE, print.step = 10, ...)
+singleNone(length.sim, max.infected, init.individuals, pExit, param.pExit,
+  timeDep.pExit = FALSE, timeContact, param.timeContact,
+  timeDep.timeContact = FALSE, pTrans, param.pTrans,
+  timeDep.pTrans = FALSE, prefix.host = "H", progress.bar = TRUE,
+  print.step = 10, ...)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -15,6 +16,12 @@ singleNone(length.sim, max.infected, init.individuals, timeContact,
 \item{max.infected}{specifies the maximum number of hosts that can be infected in the simulation.}
 
 \item{init.individuals}{number of initially infected individuals.}
+
+\item{pExit}{function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).}
+
+\item{param.pExit}{parameter names (list of functions) for the pExit.}
+
+\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)}
 
 \item{timeContact}{function that gives the number of potential transmission events per unit of time.}
 
@@ -27,12 +34,6 @@ singleNone(length.sim, max.infected, init.individuals, timeContact,
 \item{param.pTrans}{parameter names (list of functions) for the pExit.}
 
 \item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)}
-
-\item{pExit}{function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).}
-
-\item{param.pExit}{parameter names (list of functions) for the pExit.}
-
-\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)}
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
