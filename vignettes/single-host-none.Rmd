@@ -16,8 +16,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-*Nosoi* can accommodate a wide range of epidemiological transmission scenarios, and doing so requires providing the proper parameter values.
-This tutorial aims to illustrate how to set up a *Nosoi* simulation for a "simple" case: a pathogen being transmitted among a single-host population without structure.
+`nosoi` can accommodate a wide range of epidemiological transmission scenarios, and doing so requires providing the proper parameter values.
+This tutorial aims to illustrate how to set up a `nosoi` simulation for a "simple" case: a pathogen being transmitted among a single-host population without structure.
 
 ##Setting up the simulation
 

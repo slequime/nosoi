@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1 - Single host pathogen in a non-structured host population • nosoi</title>
+<title>1 - Single-host pathogen in a non-structured host population • nosoi</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="1 - Single host pathogen in a non-structured host population">
+<script src="../pkgdown.js"></script><meta property="og:title" content="1 - Single-host pathogen in a non-structured host population">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -56,13 +56,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/single-host-continuous.html">3 - Single host pathogen in a structured (continuous) host population</a>
+      <a href="../articles/single-host-continuous.html">3 - Single-host pathogen in a structured (continuous) host population</a>
     </li>
     <li>
-      <a href="../articles/single-host-discrete.html">2 - Single host pathogen in a structured (discrete) host population</a>
+      <a href="../articles/single-host-discrete.html">2 - Single-host pathogen in a structured (discrete) host population</a>
     </li>
     <li>
-      <a href="../articles/single-host-none.html">1 - Single host pathogen in a non-structured host population</a>
+      <a href="../articles/single-host-none.html">1 - Single-host pathogen in a non-structured host population</a>
     </li>
   </ul>
 </li>
@@ -86,7 +86,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>1 - Single host pathogen in a non-structured host population</h1>
+      <h1>1 - Single-host pathogen in a non-structured host population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
             <h4 class="date">2019-04-17</h4>
@@ -98,7 +98,7 @@
 
     
     
-<p><em>Nosoi</em> can accommodate a wide range of epidemiological transmission scenarios, and doing so requires providing the proper parameter values. This tutorial aims to illustrate how to set up a <em>Nosoi</em> simulation for a “simple” case: a pathogen being transmitted among a single-host population without structure.</p>
+<p><code>nosoi</code> can accommodate a wide range of epidemiological transmission scenarios, and doing so requires providing the proper parameter values. This tutorial aims to illustrate how to set up a <code>nosoi</code> simulation for a “simple” case: a pathogen being transmitted among a single-host population without structure.</p>
 <div id="setting-up-the-simulation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setting-up-the-simulation" class="anchor"></a>Setting up the simulation</h2>
@@ -152,7 +152,7 @@ time_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<
 <p><code>p_max</code> and <code>t_incub</code> need to be specified. If we fix the values, for example to 0.8 and 5 units of time respectively, we assume that each host will react the same to the infection, as if they were perfect clones. To more accurately match reality, <em>Nosoi</em> forces you to sample the values of each parameters from a function, such as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}
 t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</code></pre></div>
-<p>Here, <code>p_max</code> will be sampled from a beta distribution, with shape parameters 5 and 2, and <code>t_incub</code> will be sampled from a Gaussian distribution, with mean 5 and standard deviation 1. <code>x</code>, as seen before for <code>timeContact</code> will be the number of draws to perform. If you want to fix the value of one or all parameters, you can use a sampling function that will always give you the same value, such as:</p>
+<p>Here, <code>p_max</code> will be sampled from a beta distribution, with shape parameters 5 and 2, and <code>t_incub</code> will be sampled from a Gaussian distribution, with mean 5 and standard deviation 1. <code>x</code> will be the number of draws to perform. If you want to fix the value of one or all parameters, you can use a sampling function that will always give you the same value, such as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">5</span>,x)} <span class="co">#constant parameter value.</span></code></pre></div>
 <p>In any case, the functions for <code>pTrans</code> parameters have to be wrapped into a list, called <code>param.pTrans</code>. The name of each function in the list has to have the same name as the parameter it is sampling for <code>pTrans</code>. Here, it will look like:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct, <span class="dt">t_incub=</span>t_incub_fct)</code></pre></div>

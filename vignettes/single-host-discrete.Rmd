@@ -93,10 +93,4 @@ SimulationA <- nosoiSim(type="single", structure=TRUE,
                         length.sim=300, max.infected=1000, init.individuals=1, init.structure="A", ...)
 ```
 
-### pExit
-
-### pMove
-
-### timeContact
-
-### pTrans
+## WORK IN PROGRESS
