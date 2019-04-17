@@ -61,7 +61,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/slequime/nosoi">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -76,9 +83,9 @@
       <h1>Single host pathogen in a non-structured host population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-04-11</h4>
+            <h4 class="date">2019-04-17</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/single-host-none.Rmd"><code>vignettes/single-host-none.Rmd</code></a></small>
       <div class="hidden name"><code>single-host-none.Rmd</code></div>
 
     </div>
@@ -108,7 +115,7 @@
 <div id="general-parameters" class="section level3">
 <h3 class="hasAnchor">
 <a href="#general-parameters" class="anchor"></a>General parameters</h3>
-<p><code>length.sim</code>, <code>max.infected</code> and <code>init.individuals</code> are general parameters that define the simulation. <code>length.sim</code> is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run, whereas <code>max.infected</code> is the maximum number of individuals that can be infected during the simulation. The simulation will thus run until either the time limit or the maximum number of infected individuals is reached. <code>init.individuals</code> defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain (you will have as many transmission chains as initial individuals that “seed” the epidemic process).</p>
+<p><code>length.sim</code>, <code>max.infected</code> and <code>init.individuals</code> are general parameters that define the simulation. <code>length.sim</code> is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run, whereas <code>max.infected</code> is the maximum number of individuals that can be infected during the simulation. Both values need to be provided, and the simulation will thus run until either the time limit or the maximum number of infected individuals is reached. <code>init.individuals</code> defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain (you will have as many transmission chains as initial individuals that “seed” the epidemic process).</p>
 <p>Here, we will run a simulation starting with 1 individual, for a maximum of 1.000 infected individuals and a maximum time of 300 days.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
                         <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, ...)</code></pre></div>
@@ -156,7 +163,7 @@ t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<s
 <a href="#pexit-and-param-pexit" class="anchor"></a>pExit and param.pExit</h3>
 <p><code>pExit</code> is the last required fundamental parameter and provides a daily probability for a host to leave the simulation (either cured, died, etc.). To accommodate several scenarios, it can be a constant, time dependent or even individually parameterized, to include some stochasticity at the individual host level. In the latter case, you need to specify <code>param.pExit</code> as a list of functions. Here are some possible functions for <code>pExit</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.08</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(x))} <span class="co">#as a constant</span>
-p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,<span class="dv">20</span>,<span class="dv">2</span>)} <span class="co">#as a time dependant function</span>
+p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,<span class="dv">20</span>,<span class="dv">2</span>)} <span class="co">#as a time dependent function</span>
 
 p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t,pExit.param1){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,pExit.param1,<span class="dv">2</span>)} <span class="co">#as an individually parameterized function</span>
 p_exit_param1 &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">10</span>,<span class="dt">sd=</span><span class="dv">2</span>)} <span class="co">#sampling one parameter for each infected individual</span></code></pre></div>
@@ -188,7 +195,7 @@ param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/ba
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)
 <span class="co">#&gt; Loading required package: data.table</span>
 <span class="co">#timeContact</span>
-time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}
+time_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}
 
 <span class="co">#pTrans</span>
 pTrans_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){
@@ -201,7 +208,7 @@ t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<s
 p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}
   
 <span class="co">#pExit</span>
-p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.08</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(x))}
+p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.08</span>)}
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">805</span>)
 SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
@@ -217,7 +224,7 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="co">#&gt; Starting the simulation</span>
 <span class="co">#&gt; Initializing ... running ...</span>
 <span class="co">#&gt;  done.</span>
-<span class="co">#&gt; The simulation has run for 40 units of time and a total of 111 hosts have been infected.</span></code></pre></div>
+<span class="co">#&gt; The simulation has run for 24 units of time and a total of 57 hosts have been infected.</span></code></pre></div>
 <p>The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts has been reached. Once the simulation is finished, it reports the number of time units for which the simulation has run (52), and the maximum number of infected hosts (107). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
 </div>
 <div id="nosoi-output" class="section level2">
@@ -226,12 +233,12 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <p><em>Nosoi</em> gives as its output a list contaning a <code>data.table</code> (a more efficient version of a <code>data.frame</code>) called <code>table.hosts</code> with the following structure:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(SimulationA<span class="op">$</span>table.hosts)
 <span class="co">#&gt;    hosts.ID inf.by inf.time out.time active     p_max  t_incub</span>
-<span class="co">#&gt; 1:      H-1   NA-1        0       23      0 0.6820110 5.867392</span>
-<span class="co">#&gt; 2:     H-10    H-2       16       19      0 0.8026548 6.414165</span>
-<span class="co">#&gt; 3:    H-100   H-21       40       NA      1 0.6622235 7.816477</span>
-<span class="co">#&gt; 4:    H-101   H-35       40       NA      1 0.6288499 7.395426</span>
-<span class="co">#&gt; 5:    H-102   H-39       40       NA      1 0.7714096 6.556226</span>
-<span class="co">#&gt; 6:    H-103    H-5       40       NA      1 0.8403010 6.555480</span></code></pre></div>
+<span class="co">#&gt; 1:      H-1   NA-1        0       24      0 0.6820110 5.867392</span>
+<span class="co">#&gt; 2:     H-10    H-2       14       24      0 0.9552022 7.809769</span>
+<span class="co">#&gt; 3:     H-11    H-1       17       24      0 0.8676932 6.771355</span>
+<span class="co">#&gt; 4:     H-12    H-3       17       24      0 0.6714091 5.864994</span>
+<span class="co">#&gt; 5:     H-13    H-5       17       24      0 0.8659929 8.313040</span>
+<span class="co">#&gt; 6:     H-14    H-6       17       24      0 0.6241947 8.028895</span></code></pre></div>
 <p>Each individual host that was or is infected during the course of the simulation is a line in the data.table. <code>hosts.ID</code> is the unique identifier of the host, while <code>inf.by</code> indicate which host infected it. As you can see, host <code>H-1</code> has been infected by <code>NA</code>; <code>H-1</code> is the individual that started the transmission chain. <code>inf.time</code> is the time (in simulation units of time) when the host has been infected, and <code>out.time</code> is the time (in simulation units of time) when it left the simulation. Here in the top 6 lines, no host has left the simulation (it ran only for 13 units of time). <code>active</code> indicates if the host is still active in the simulation. <code>p_max</code> and <code>t_incub</code> are the individually sampled parameters for <code>pTrans</code>.</p>
 <div id="visualisation" class="section level3">
 <h3 class="hasAnchor">

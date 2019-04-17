@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Number of Infected units at time t (BGW) — numberInfectedBGW • nosoi</title>
+<title>Rotates movement in 2D space — moveRotateContinuous • nosoi</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,9 @@
 
 
 
-<meta property="og:title" content="Number of Infected units at time t (BGW) — numberInfectedBGW" />
+<meta property="og:title" content="Rotates movement in 2D space — moveRotateContinuous" />
 
-<meta property="og:description" content="For a given time t, this function returns the number of infected active units.
-The difference with numberInfected is that it counts an &quot;out&quot;
-individual as still there, but with no children.
-This is for comparision with the BGW process, should be internal only." />
+<meta property="og:description" content="Rotates movement in 2D space" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -117,42 +114,39 @@ This is for comparision with the BGW process, should be internal only." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Number of Infected units at time t (BGW)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/utilityFunctions.R'><code>R/utilityFunctions.R</code></a></small>
-    <div class="hidden name"><code>numberInfectedBGW.Rd</code></div>
+    <h1>Rotates movement in 2D space</h1>
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/moveRotateContinuous.R'><code>R/moveRotateContinuous.R</code></a></small>
+    <div class="hidden name"><code>moveRotateContinuous.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>For a given time t, this function returns the number of infected active units.
-The difference with <code><a href='numberInfected.html'>numberInfected</a></code> is that it counts an "out"
-individual as still there, but with no children.
-This is for comparision with the BGW process, should be internal only.</p>
+    <p>Rotates movement in 2D space</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>numberInfectedBGW</span>(<span class='no'>table.nosoi</span>, <span class='no'>t</span>)</pre>
+    <pre class="usage"><span class='fu'>moveRotateContinuous</span>(<span class='no'>pt1</span>, <span class='no'>dX</span>, <span class='no'>dY</span>, <span class='no'>angle</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>table.nosoi</th>
-      <td><p>result of function <code><a href='nosoiSim.html'>nosoiSim</a></code></p></td>
+      <th>pt1</th>
+      <td><p>current position (x,y)</p></td>
     </tr>
     <tr>
-      <th>t</th>
-      <td><p>time (integer)</p></td>
+      <th>dX</th>
+      <td><p>movement in X dim</p></td>
+    </tr>
+    <tr>
+      <th>dY</th>
+      <td><p>movement in Y space</p></td>
+    </tr>
+    <tr>
+      <th>angle</th>
+      <td><p>angle</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Number of infected units at time t</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='nosoiSim.html'>nosoiSim</a></code></p></div>
     
 
   </div>
@@ -160,11 +154,7 @@ This is for comparision with the BGW process, should be internal only.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

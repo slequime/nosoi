@@ -96,7 +96,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/slequime/nosoi">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -110,7 +115,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Parse function for later use</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/parseFunction.R'><code>R/parseFunction.R</code></a></small>
     <div class="hidden name"><code>parseFunction.Rd</code></div>
     </div>
 
@@ -120,7 +125,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>parseFunction</span>(<span class='no'>pFunc</span>, <span class='no'>param.pFunc</span>, <span class='no'>name</span>, <span class='kw'>diff</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>parseFunction</span>(<span class='no'>pFunc</span>, <span class='no'>param.pFunc</span>, <span class='no'>name</span>, <span class='kw'>diff</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -136,6 +141,10 @@
     <tr>
       <th>name</th>
       <td><p>the name of the function</p></td>
+    </tr>
+    <tr>
+      <th>diff</th>
+      <td><p>is the function differential according to state/env.variable? (TRUE/FALSE)</p></td>
     </tr>
     </table>
     

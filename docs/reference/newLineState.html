@@ -97,7 +97,12 @@ The lines are to be bounded with rbindlist." />
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/slequime/nosoi">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -111,7 +116,7 @@ The lines are to be bounded with rbindlist." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Creates a new line to be added to the movement table when hosts moves (internal fonction)</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/newLineState.R'><code>R/newLineState.R</code></a></small>
     <div class="hidden name"><code>newLineState.Rd</code></div>
     </div>
 
@@ -122,7 +127,8 @@ The lines are to be bounded with <code><a href='https://www.rdocumentation.org/p
     
     </div>
 
-    <pre class="usage"><span class='fu'>newLineState</span>(<span class='no'>hosts.ID</span>, <span class='no'>state.pres</span>, <span class='no'>time.is</span>)</pre>
+    <pre class="usage"><span class='fu'>newLineState</span>(<span class='no'>hosts.ID</span>, <span class='no'>state.pres</span>, <span class='no'>time.is</span>,
+  <span class='kw'>current.environmental.value</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,6 +144,10 @@ The lines are to be bounded with <code><a href='https://www.rdocumentation.org/p
     <tr>
       <th>time.is</th>
       <td><p>time in the simulation, when the infection takes place</p></td>
+    </tr>
+    <tr>
+      <th>current.environmental.value</th>
+      <td><p>current value of environemental variable (from raster) according to coordinates in current.in.</p></td>
     </tr>
     </table>
     

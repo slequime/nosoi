@@ -96,7 +96,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/slequime/nosoi">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -110,7 +115,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generates initial table to start the simulation (internal fonction)</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/iniTable.R'><code>R/iniTable.R</code></a></small>
     <div class="hidden name"><code>iniTable.Rd</code></div>
     </div>
 
@@ -121,7 +126,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>iniTable</span>(<span class='no'>init.individuals</span>, <span class='no'>init.structure</span>, <span class='no'>prefix.host</span>, <span class='no'>param.pExit</span>,
-  <span class='no'>param.pMove</span>, <span class='no'>param.timeContact</span>, <span class='no'>param.pTrans</span>)</pre>
+  <span class='no'>param.pMove</span>, <span class='no'>param.timeContact</span>, <span class='no'>param.pTrans</span>, <span class='no'>param.moveDist</span>,
+  <span class='kw'>current.environmental.value</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,7 +138,7 @@
     </tr>
     <tr>
       <th>init.structure</th>
-      <td><p>State of the initially infected individuals.</p></td>
+      <td><p>State (or coordinates) of the initially infected individuals.</p></td>
     </tr>
     <tr>
       <th>prefix.host</th>
@@ -153,6 +159,10 @@
     <tr>
       <th>param.pTrans</th>
       <td><p>list of transmission probability function(s).</p></td>
+    </tr>
+    <tr>
+      <th>current.environmental.value</th>
+      <td><p>current value of the environemental variable provided by the raster according to its position in init.structure.</p></td>
     </tr>
     </table>
     
