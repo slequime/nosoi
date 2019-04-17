@@ -54,6 +54,7 @@ singleDiscrete <- function(type,
                            param.pExit,
                            prefix.host="H",
                            progress.bar=TRUE,
+                           print.step=10,
                            ...){
 
   #Sanity checks---------------------------------------------------------------------------------------------------------------------------
@@ -183,7 +184,6 @@ singleDiscrete <- function(type,
 
   # Running the simulation ----------------------------------------
   message(" running ...")
-  if (progress.bar==TRUE) {pb <- txtProgressBar(min = 0, max = length.sim, style = 3, width=50)}
 
   for (pres.time in 1:length.sim) {
 
@@ -306,7 +306,7 @@ singleDiscrete <- function(type,
       }
     }
 
-    if (progress.bar == TRUE) {setTxtProgressBar(pb, pres.time)}
+    if (progress.bar == TRUE & pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: ", Host.count," (",round((Host.count/max.infected)*100,digits=0),"% of maximum infected hosts).")}
     if (Host.count > max.infected) {break}
   }
   message(" done.")

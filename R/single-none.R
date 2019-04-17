@@ -32,6 +32,7 @@ singleNone <- function(length.sim,
                        timeDep.pExit=FALSE,
                        prefix.host="H",
                        progress.bar=TRUE,
+                       print.step=10,
                        ...){
 
   #Sanity check---------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +90,6 @@ singleNone <- function(length.sim,
 
   # Running the simulation ----------------------------------------
   message(" running ...")
-  if (progress.bar==TRUE) {pb <- txtProgressBar(min = 0, max = length.sim, style = 3, width=50)}
 
   for (pres.time in 1:length.sim) {
 
@@ -164,7 +164,7 @@ singleNone <- function(length.sim,
       }
     }
 
-    if (progress.bar == TRUE) {setTxtProgressBar(pb, pres.time)}
+    if (progress.bar == TRUE & pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: ", Host.count," (",round((Host.count/max.infected)*100,digits=0),"% of maximum infected hosts).")}
     if (Host.count > max.infected) {break}
   }
   message(" done.")
