@@ -4,12 +4,14 @@
 \alias{nosoiSim}
 \title{Top-level function to use Nosoi}
 \usage{
-nosoiSim(type = "single", structure = FALSE, ...)
+nosoiSim(type = "single", structure = FALSE, continuous = FALSE, ...)
 }
 \arguments{
 \item{type}{specifies which type of pathogen we are interested in, either "single" or "dual"-host (e.g. arboviruses).}
 
 \item{structure}{specifies if the population in which the transmission is to occur is structured (discrete variable).}
+
+\item{continuous}{specifies if the spread is to occur in a continuous space (continuous diffusion).}
 
 \item{...}{arguments to be passed on to the simulator (see below).}
 }

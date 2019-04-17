@@ -6,6 +6,7 @@
 #' @param pFunc a function
 #' @param param.pFunc a named list of arguments
 #' @param name the name of the function
+#' @param diff is the function differential according to state/env.variable? (TRUE/FALSE)
 #'
 #' @return list of parsed quantities:
 #' \itemize{
@@ -18,10 +19,10 @@
 #' @keywords internal
 ##
 
-parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
+parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE) {
   pFunc <- match.fun(pFunc)
 
-  if ((diff == FALSE & length(formalArgs(pFunc)) > 1)|(diff == TRUE & length(formalArgs(pFunc)) > 2)) {
+  if ((diff == FALSE & timeDep == FALSE & length(formalArgs(pFunc)) > 1)|(diff == TRUE & timeDep == FALSE & length(formalArgs(pFunc)) > 2)|(diff == FALSE & timeDep == TRUE & length(formalArgs(pFunc)) > 2)|(diff == TRUE & timeDep==TRUE & length(formalArgs(pFunc)) > 3)) {
     if (!is.list(is.na(param.pFunc)) && is.na(param.pFunc)) {
       stop("There is a probleme with your function ", name, ": you should provide a parameter list named param.", name, ".")
     }
@@ -32,21 +33,33 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE) {
     }
   }
 
+  if (timeDep == FALSE){
     pFunc_eval <- function(prestime, inf.time,...) {
       t = prestime - inf.time
       x <- list(...)
-      do.call(pFunc, c(list(t = t), x))
-    }
-
-    pFunc_vect <- function(prestime, parameters) {
-      do.call(pFunc_eval, c(list(prestime = prestime), parameters))
+       do.call(pFunc, c(list(t = t), x))
     }
 
     pFunc_eval_args = c(formalArgs(pFunc_eval),formalArgs(pFunc)[-1])
+  }
 
-    pFunc_eval_args = subset(pFunc_eval_args, pFunc_eval_args != "...")
+  if (timeDep == TRUE){
+    pFunc_eval <- function(prestime, inf.time,...) {
+      t = prestime - inf.time
+      x <- list(...)
+      do.call(pFunc, c(list(t = t),list(prestime=prestime), x))
 
-    pFunc_vect_args = pFunc_eval_args[-1]
+    }
+    pFunc_eval_args = c(formalArgs(pFunc_eval),formalArgs(pFunc)[c(-1,-2)])
+  }
+
+  pFunc_eval_args = subset(pFunc_eval_args, pFunc_eval_args != "...")
+
+  pFunc_vect_args = pFunc_eval_args[-1]
+
+  pFunc_vect <- function(prestime, parameters) {
+    do.call(pFunc_eval, c(list(prestime = prestime), parameters))
+  }
 
     return(list(vect = pFunc_vect,
                 vectArgs = pFunc_vect_args))

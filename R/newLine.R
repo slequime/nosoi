@@ -17,10 +17,12 @@
 #'
 #' @keywords internal
 
-newLine <- function(hosts.ID,infected.by,infected.in,time.is,param.pExit,param.pMove,param.timeContact,param.pTrans) {
+newLine <- function(hosts.ID,infected.by,infected.in,time.is,param.pExit,param.pMove,param.timeContact,param.pTrans,param.moveDist,current.environmental.value=NA) {
   if (is.na(param.pExit)) param.pExit <- NULL
   if (is.na(param.pMove)) param.pMove <- NULL
   if (is.na(param.timeContact)) param.timeContact <- NULL
+  if (is.na(param.moveDist)) param.moveDist <- NULL
+  if (is.na(current.environmental.value)) current.environmental.value <- NULL
 
   if (length(infected.in) == 1){
     if (is.na(infected.in)) infected.in <- NULL
@@ -46,6 +48,7 @@ newLine <- function(hosts.ID,infected.by,infected.in,time.is,param.pExit,param.p
              inf.in.y = infected.in[2],
              current.in.x = infected.in[1],
              current.in.y = infected.in[2],
+             current.env.value = current.environmental.value,
              inf.time = time.is,
              out.time = NA_real_,
              active = 1,

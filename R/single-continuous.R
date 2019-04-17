@@ -10,10 +10,14 @@
 #' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
 #' @param init.individuals number of initially infected individuals.
 #' @param init.structure which state (i.e. location) the initially infected individuals are located.
-#' @param structure.matrix transition matrix (probabilities) to go from location A (row) to B (column)
+#' @param structure.raster raster object defining the environmental variable.
 #' @param diff.pMove is pMove different between states of the structured population (TRUE/FALSE)
 #' @param pMove function that gives the probability of a host moving as a function of time.
 #' @param param.pMove parameter names (list of functions) for the pMove.
+#' @param diff.moveDist is moveDist dependant on the environmental value.
+#' @param moveDist function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.
+#' @param param.moveDist parameter names (list of functions) for moveDist.
+#' @param attracted.by.raster should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)
 #' @param diff.timeContact is timeContact different between states of the structured population (TRUE/FALSE)
 #' @param timeContact function that gives the number of potential transmission events per unit of time.
 #' @param param.timeContact parameter names (list of functions) for timeContact.
@@ -27,19 +31,24 @@
 #' @param progress.bar if TRUE, displays a progress bar (current time/length.sim).
 #' @param ... other arguments to be passed on to the simulator (see below).
 #'
-#' @export singleDiscrete
+#' @export singleContinuous
 
-singleDiscrete <- function(type,
+singleContinuous <- function(type,
                            structure,
                            length.sim,
                            max.infected,
                            init.individuals,
                            init.structure,
-                           structure.matrix,
+                           structure.raster,
                            diff.pMove=FALSE,
                            timeDep.pMove=FALSE,
                            pMove,
                            param.pMove,
+                           diff.moveDist=FALSE,
+                           timeDep.moveDist=FALSE,
+                           moveDist,
+                           param.moveDist,
+                           attracted.by.raster=FALSE,
                            diff.timeContact=FALSE,
                            timeDep.timeContact=FALSE,
                            timeContact,
@@ -65,12 +74,12 @@ singleDiscrete <- function(type,
 
   #Parsing timeContact
   if (diff.timeContact == FALSE & timeDep.timeContact == FALSE) {
+    if (! is.function(timeContact)) stop("Contact probability should be a function of time.")
     timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)))
   }
 
   if (diff.timeContact == TRUE & timeDep.timeContact == FALSE) {
-    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'current.in'))==FALSE) stop("timeContact should have 'current.in' as a variable. diff.timeContact == TRUE.")
-    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("timeContact should have a realisation for each possible state. diff.timeContact is TRUE.")
+    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'current.env.value'))==FALSE) stop("timeContact should have 'current.env.value' as a variable. diff.timeContact == TRUE.")
     timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=TRUE)
   }
 
@@ -80,44 +89,67 @@ singleDiscrete <- function(type,
   }
 
   if (diff.timeContact == TRUE & timeDep.timeContact == TRUE) {
-    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'current.in'))==FALSE) stop("timeContact should have 'current.in' as a variable. diff.timeContact == TRUE.")
-    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("timeContact should have a realisation for each possible state. diff.timeContact is TRUE.")
+    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'current.env.value'))==FALSE) stop("timeContact should have 'current.env.value' as a variable. diff.timeContact == TRUE.")
     if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'prestime'))==FALSE) stop("timeContact should have 'prestime' as a variable. timeDep.timeContact == TRUE.")
     timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=TRUE,timeDep=TRUE)
   }
 
+  #Parsing moveDist
+  if (diff.moveDist == FALSE) {
+    if (! is.function(moveDist)) stop("Contact probability should be a function of time.")
+    moveDistParsed <- parseFunction(moveDist, param.moveDist, as.character(quote(moveDist)))
+  }
+
+  if (diff.moveDist == TRUE) {
+    if (any(str_detect(paste0(as.character(body(moveDist)),collapse=" "),'current.env.value'))==FALSE) stop("moveDist should have 'current.env.value' as a variable. diff.moveDist == TRUE.")
+    moveDistParsed <- parseFunction(moveDist, param.moveDist, as.character(quote(moveDist)),diff=TRUE)
+  }
+
+  if (diff.moveDist == FALSE & timeDep.moveDist == TRUE) {
+    if (any(str_detect(paste0(as.character(body(moveDist)),collapse=" "),'prestime'))==FALSE) stop("moveDist should have 'prestime' as a variable. timeDep.moveDist == TRUE.")
+    moveDistParsed <- parseFunction(moveDist, param.moveDist, as.character(quote(moveDist)),diff=FALSE,timeDep=TRUE)
+  }
+
+  if (diff.moveDist == TRUE & timeDep.moveDist == TRUE) {
+    if (any(str_detect(paste0(as.character(body(moveDist)),collapse=" "),'current.env.value'))==FALSE) stop("moveDist should have 'current.env.value' as a variable. diff.moveDist == TRUE.")
+    if (any(str_detect(paste0(as.character(body(moveDist)),collapse=" "),'prestime'))==FALSE) stop("moveDist should have 'prestime' as a variable. timeDep.moveDist == TRUE.")
+    moveDistParsed <- parseFunction(moveDist, param.moveDist, as.character(quote(moveDist)),diff=TRUE,timeDep=TRUE)
+  }
+
   #Parsing pTrans
   if (diff.pTrans == FALSE & timeDep.pTrans == FALSE) {
+    if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
     pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)))
   }
 
   if (diff.pTrans == TRUE & timeDep.pTrans == FALSE) {
-    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'current.in'))==FALSE) stop("pTrans should have 'current.in' as a variable. diff.pTrans == TRUE.")
-    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pTrans should have a realisation for each possible state. diff.pTrans is TRUE.")
+    if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
+
+    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'current.env.value'))==FALSE) stop("pTrans should have 'current.env.value' as a variable. diff.pTrans == TRUE.")
     pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=TRUE)
   }
 
   if (diff.pTrans == FALSE & timeDep.pTrans == TRUE) {
+    if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
     if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'prestime'))==FALSE) stop("pTrans should have 'prestime' as a variable. timeDep.pTrans == TRUE.")
     pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=FALSE,timeDep=TRUE)
   }
 
   if (diff.pTrans == TRUE & timeDep.pTrans == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'current.in'))==FALSE) stop("pTrans should have 'current.in' as a variable. diff.pTrans == TRUE.")
-    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pTrans should have a realisation for each possible state. diff.pTrans is TRUE.")
+    if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
+    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'current.env.value'))==FALSE) stop("pTrans should have 'current.env.value' as a variable. diff.pTrans == TRUE.")
     if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'prestime'))==FALSE) stop("pTrans should have 'prestime' as a variable. timeDep.pTrans == TRUE.")
     pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=TRUE,timeDep=TRUE)
   }
 
   #Parsing pExit
 
-  if (diff.pExit == FALSE & timeDep.pExit == FALSE) {
+  if (diff.pExit == FALSE) {
     pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)))
   }
 
-  if (diff.pExit == TRUE & timeDep.pExit == FALSE) {
-    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'current.in'))==FALSE) stop("pExit should have 'current.in' as a variable. diff.pExit == TRUE.")
-    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pExit should have a realisation for each possible state. diff.pExit is TRUE.")
+  if (diff.pExit == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'current.env.value'))==FALSE) stop("pExit should have 'current.env.value' as a variable. diff.pExit == TRUE.")
     pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=TRUE)
   }
 
@@ -127,31 +159,32 @@ singleDiscrete <- function(type,
   }
 
   if (diff.pExit == TRUE & timeDep.pExit == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'current.in'))==FALSE) stop("pExit should have 'current.in' as a variable. diff.pExit == TRUE.")
-    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pExit should have a realisation for each possible state. diff.pExit is TRUE.")
+    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'current.env.value'))==FALSE) stop("pExit should have 'current.env.value' as a variable. diff.pExit == TRUE.")
     if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'prestime'))==FALSE) stop("pExit should have 'prestime' as a variable. timeDep.pExit == TRUE.")
     pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=TRUE,timeDep=TRUE)
   }
 
   #Discrete states sanity checks -------------------------------------------------------------------------------------------------------------------
 
-  if (!is.matrix(structure.matrix)) stop("structure.matrix should be a matrix.")
-  if (ncol(structure.matrix)!=nrow(structure.matrix)) stop("structure.matrix should have the same number of rows and columns.")
-  if (!identical(colnames(structure.matrix),rownames(structure.matrix))) stop("structure.matrix rows and columns should have the same names.")
-  if (any(rowSums(structure.matrix) != 1)) stop("structure.matrix rows should sum up to 1.")
-  if (!init.structure %in% rownames(structure.matrix)) stop("init.structure should be a state present in structure.matrix.")
+  # if (!is.matrix(structure.matrix)) stop("structure.matrix should be a matrix.")
+  # if (ncol(structure.matrix)!=nrow(structure.matrix)) stop("structure.matrix should have the same number of rows and columns.")
+  # if (!identical(colnames(structure.matrix),rownames(structure.matrix))) stop("structure.matrix rows and columns should have the same names.")
+  # if (any(rowSums(structure.matrix) != 1)) stop("structure.matrix rows should sum up to 1.")
+  # if (!init.structure %in% rownames(structure.matrix)) stop("init.structure should be a state present in structure.matrix.")
+  #
+  # melted.structure.matrix <- reshape2::melt(structure.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
 
-  melted.structure.matrix <- reshape2::melt(structure.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
+  #Extract environmental value at origin:
+  start.env <- raster::extract(structure.raster,cbind(init.structure[1],init.structure[2]))
+  max.raster <- max(structure.raster[], na.rm=T)
 
   #Parse pMove (same as pExit !!attention if diff)
-
   if (diff.pMove == FALSE & timeDep.pMove == FALSE) {
     pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)))
   }
 
   if (diff.pMove == TRUE & timeDep.pMove == FALSE) {
-    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'current.in'))==FALSE) stop("pMove should have 'current.in' as a variable. diff.pMove == TRUE.")
-    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pMove should have a realisation for each possible state. diff.pMove is TRUE.")
+    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'current.env.value'))==FALSE) stop("pMove should have 'current.env.value' as a variable. diff.pMove == TRUE.")
     pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=TRUE)
   }
 
@@ -161,8 +194,7 @@ singleDiscrete <- function(type,
   }
 
   if (diff.pMove == TRUE & timeDep.pMove == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'current.in'))==FALSE) stop("pMove should have 'current.in' as a variable. diff.pMove == TRUE.")
-    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pMove should have a realisation for each possible state. diff.pMove is TRUE.")
+    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'current.env.value'))==FALSE) stop("pMove should have 'current.env.value' as a variable. diff.pMove == TRUE.")
     if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'prestime'))==FALSE) stop("pMove should have 'prestime' as a variable. timeDep.pMove == TRUE.")
     pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=TRUE,timeDep=TRUE)
   }
@@ -175,9 +207,9 @@ singleDiscrete <- function(type,
 
   #Creation of initial data ----------------------------------------------------------
 
-  table.hosts <- iniTable(init.individuals, init.structure, prefix.host, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist=NA)
+  table.hosts <- iniTable(init.individuals, init.structure, prefix.host, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist,current.environmental.value=start.env)
 
-  state.archive <- iniTableState(init.individuals, init.structure, prefix.host)
+  state.archive <- iniTableState(init.individuals, init.structure, prefix.host,current.environmental.value=start.env)
 
   Host.count <- init.individuals
 
@@ -189,8 +221,7 @@ singleDiscrete <- function(type,
 
     #Step 0: Active hosts ----------------------------------------------------------
     active.hosts <- table.hosts[["active"]] == 1 #active hosts (boolean vector)
-
-    if (any(active.hosts)) {
+    if (any(active.hosts)){
 
       fun <- function(z) {
         pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
@@ -216,7 +247,7 @@ singleDiscrete <- function(type,
 
     #Step 1: Moving ----------------------------------------------------
 
-    #step 1.1 which hosts are moving
+      #step 1.1 which hosts are moving
 
     fun <- function(z) {
       pMoveParsed$vect(prestime = pres.time, z[, pMoveParsed$vectArgs, with = FALSE])
@@ -228,25 +259,80 @@ singleDiscrete <- function(type,
     moving.full <- active.hosts
     moving.full[moving.full] <- moving
 
-    #step 1.2 if moving, where are they going?
+      #step 1.2 if moving, where are they going?
 
     Move.ID <- table.hosts[moving.full,][["hosts.ID"]]
 
     if (length(Move.ID) > 0){
       #Updating state archive for moving individuals:
+      # state.archive[hosts.ID %in% Move.ID & is.na(time.to), `:=` (time.to = as.numeric(pres.time))]
 
       state.archive[state.archive[["hosts.ID"]] %in% Move.ID & is.na(state.archive[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
 
       table.state.temp <- vector("list", length(Move.ID))
 
+      fun <- function(z) {
+        moveDistParsed$vect(prestime = pres.time, z[, moveDistParsed$vectArgs, with = FALSE])
+      }
+
+      moveDist.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+
       for (i in 1:length(Move.ID)) {
 
-        current.move.pos <- melted.structure.matrix[which(melted.structure.matrix$from==as.character(table.hosts[Move.ID[i],"current.in"])),]
+        current.move.pos.x = table.hosts[Move.ID[i],"current.in.x"]
+        current.move.pos.y = table.hosts[Move.ID[i],"current.in.y"]
+        current.env.value = table.hosts[Move.ID[i],"current.env.value"]
+        current.moveDist.value = as.numeric(moveDist.values[i])
 
-        going.to <- sample(current.move.pos$to, 1, replace = FALSE, prob = current.move.pos$prob)
-        table.state.temp[[i]] <- newLineState(Move.ID[i],going.to,pres.time)
-        table.hosts[Move.ID[i], `:=` (current.in = going.to)]
+        positionFound1 = FALSE
+        while (positionFound1 == FALSE)
+        {
+          counter = 0
+          dX = rnorm(1, 0, current.moveDist.value)
+          dY = rnorm(1, 0, current.moveDist.value)
+          positionFound2 = FALSE
+          while (positionFound2 == FALSE)
+          {
+            angle = (2*base::pi)*runif(1)
+            newP = moveRotateContinuous(c(as.numeric(current.move.pos.x),as.numeric(current.move.pos.y)), dX, dY,angle)
 
+            temp.env.value = raster::extract(structure.raster,cbind(newP[1],newP[2]))
+
+            if (!is.na(temp.env.value)){
+
+              if (attracted.by.raster==FALSE) {
+                table.hosts[Move.ID[i], `:=` (current.in.x = newP[1])]
+                table.hosts[Move.ID[i], `:=` (current.in.y = newP[2])]
+                table.hosts[Move.ID[i], `:=` (current.env.value = temp.env.value)]
+
+                table.state.temp[[i]] <- newLineState(Move.ID[i],newP,pres.time,current.environmental.value=temp.env.value)
+
+                positionFound2 = TRUE
+                positionFound1 = TRUE
+              }
+
+              if (attracted.by.raster==TRUE) {
+                counter = counter+1
+                v2 = temp.env.value/max.raster
+                if (runif(1,0,1) < v2)
+                {
+                  table.hosts[Move.ID[i], `:=` (current.in.x = newP[1])]
+                  table.hosts[Move.ID[i], `:=` (current.in.y = newP[2])]
+                  table.hosts[Move.ID[i], `:=` (current.env.value = temp.env.value)]
+
+                  table.state.temp[[i]] <- newLineState(Move.ID[i],newP,pres.time,current.environmental.value=temp.env.value)
+
+                  positionFound2 = TRUE
+                  positionFound1 = TRUE
+                  if (counter == 30) {
+                    positionFound1 = TRUE
+                    positionFound2 = TRUE
+                  }
+                }
+              }
+            }
+          }
+        }
       }
 
       state.archive <- data.table::rbindlist(c(list(state.archive),table.state.temp))
@@ -255,7 +341,7 @@ singleDiscrete <- function(type,
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
-    df.meetTransmit <- table.hosts[active.hosts, c("hosts.ID","current.in")]
+    df.meetTransmit <- table.hosts[active.hosts, c("hosts.ID","current.in.x","current.in.y","current.env.value")]
     df.meetTransmit[, active.hosts:=hosts.ID]
 
     fun <- function(z) {
@@ -294,8 +380,8 @@ singleDiscrete <- function(type,
             Host.count <- Host.count+1
             hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
 
-            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),as.character(df.meetTransmit[i,]$current.in), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist=NA)
-            table.state.temp[[i]] <- newLineState(hosts.ID,as.character(df.meetTransmit[i,]$current.in),pres.time)
+            table.temp[[1]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),c(df.meetTransmit[i,]$current.in.x,df.meetTransmit[i,]$current.in.y), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist,current.environmental.value=df.meetTransmit[i,]$current.env.value)
+            table.state.temp[[i]] <- newLineState(hosts.ID,c(df.meetTransmit[i,]$current.in.x,df.meetTransmit[i,]$current.in.y),pres.time,current.environmental.value=df.meetTransmit[i,]$current.env.value)
           }
 
           table.hosts <- data.table::rbindlist(c(list(table.hosts),table.temp))

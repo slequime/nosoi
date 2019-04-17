@@ -4,7 +4,8 @@
 \alias{newLineState}
 \title{Creates a new line to be added to the movement table when hosts moves (internal fonction)}
 \usage{
-newLineState(hosts.ID, state.pres, time.is)
+newLineState(hosts.ID, state.pres, time.is,
+  current.environmental.value = NA)
 }
 \arguments{
 \item{hosts.ID}{unique ID for the new host}
@@ -12,6 +13,8 @@ newLineState(hosts.ID, state.pres, time.is)
 \item{state.pres}{state in which host currently is}
 
 \item{time.is}{time in the simulation, when the infection takes place}
+
+\item{current.environmental.value}{current value of environemental variable (from raster) according to coordinates in current.in.}
 }
 \value{
 a list with the new line to add.

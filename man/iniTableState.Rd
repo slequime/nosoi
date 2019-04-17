@@ -4,7 +4,8 @@
 \alias{iniTableState}
 \title{Generates initial movement table to start the simulation (internal fonction)}
 \usage{
-iniTableState(init.individuals, init.structure, prefix.host)
+iniTableState(init.individuals, init.structure, prefix.host,
+  current.environmental.value = NA)
 }
 \arguments{
 \item{init.individuals}{number of initially infected individuals (i.e. number of lines at time 0).}
@@ -12,6 +13,8 @@ iniTableState(init.individuals, init.structure, prefix.host)
 \item{init.structure}{State of the initially infected individuals.}
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
+
+\item{current.environmental.value}{current value of the environemental variable provided by the raster according to its position in init.structure.}
 }
 \description{
 This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s).

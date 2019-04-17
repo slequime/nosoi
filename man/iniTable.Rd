@@ -5,12 +5,13 @@
 \title{Generates initial table to start the simulation (internal fonction)}
 \usage{
 iniTable(init.individuals, init.structure, prefix.host, param.pExit,
-  param.pMove, param.timeContact, param.pTrans)
+  param.pMove, param.timeContact, param.pTrans,
+  current.environmental.value = NA)
 }
 \arguments{
 \item{init.individuals}{number of initially infected individuals (i.e. number of lines at time 0).}
 
-\item{init.structure}{State of the initially infected individuals.}
+\item{init.structure}{State (or coordinates) of the initially infected individuals.}
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
@@ -21,6 +22,8 @@ iniTable(init.individuals, init.structure, prefix.host, param.pExit,
 \item{param.timeContact}{list of contact probability function(s).}
 
 \item{param.pTrans}{list of transmission probability function(s).}
+
+\item{current.environmental.value}{current value of the environemental variable provided by the raster according to its position in init.structure.}
 }
 \description{
 This function creates the initial table for the host.

@@ -3,16 +3,17 @@
 #' @description This function creates the initial table for the host.
 #'
 #' @param init.individuals number of initially infected individuals (i.e. number of lines at time 0).
-#' @param init.structure State of the initially infected individuals.
+#' @param init.structure State (or coordinates) of the initially infected individuals.
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
 #' @param param.pExit list of exit probability function(s).
 #' @param param.pMove list of movement probability function(s).
 #' @param param.timeContact list of contact probability function(s).
 #' @param param.pTrans list of transmission probability function(s).
+#' @param current.environmental.value current value of the environemental variable provided by the raster according to its position in init.structure.
 #'
 #' @keywords internal
 
-iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,param.pMove,param.timeContact,param.pTrans){
+iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,param.pMove,param.timeContact,param.pTrans,param.moveDist, current.environmental.value=NA){
 
   list.init <- vector("list", init.individuals)
 
@@ -24,7 +25,9 @@ iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,par
                                     param.pExit = param.pExit,
                                     param.pMove = param.pMove,
                                     param.timeContact = param.timeContact,
-                                    param.pTrans = param.pTrans)
+                                    param.pTrans = param.pTrans,
+                                    param.moveDist=param.moveDist,
+                                    current.environmental.value=current.environmental.value)
   }
 
   table.hosts <- data.table::rbindlist(list.init)
