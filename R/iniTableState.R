@@ -5,6 +5,7 @@
 #' @param init.individuals number of initially infected individuals (i.e. number of lines at time 0).
 #' @param init.structure State of the initially infected individuals.
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
+#' @param current.environmental.value current value of the environemental variable provided by the raster according to its position in init.structure.
 #'
 #' @keywords internal
 

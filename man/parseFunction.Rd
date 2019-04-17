@@ -12,6 +12,8 @@ parseFunction(pFunc, param.pFunc, name, diff = FALSE)
 \item{param.pFunc}{a named list of arguments}
 
 \item{name}{the name of the function}
+
+\item{diff}{is the function differential according to state/env.variable? (TRUE/FALSE)}
 }
 \value{
 list of parsed quantities:

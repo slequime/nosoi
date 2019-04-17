@@ -6,6 +6,7 @@
 #' @param pFunc a function
 #' @param param.pFunc a named list of arguments
 #' @param name the name of the function
+#' @param diff is the function differential according to state/env.variable? (TRUE/FALSE)
 #'
 #' @return list of parsed quantities:
 #' \itemize{

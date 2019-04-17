@@ -2,7 +2,7 @@
 #'
 #' @param type specifies which type of pathogen we are interested in, either "single" or "dual"-host (e.g. arboviruses).
 #' @param structure specifies if the population in which the transmission is to occur is structured (discrete variable).
-#' @param continuous specifies if the population in which the transmission is to occur is structured (discrete variable).
+#' @param continuous specifies if the spread is to occur in a continuous space (continuous diffusion).
 #' @param ... arguments to be passed on to the simulator (see below).
 #'
 #' @details This function determines which general settings the user wants to use for his simulation.

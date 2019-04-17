@@ -7,6 +7,7 @@
 #' @param hosts.ID unique ID for the new host
 #' @param state.pres state in which host currently is
 #' @param time.is time in the simulation, when the infection takes place
+#' @param current.environmental.value current value of environemental variable (from raster) according to coordinates in current.in.
 #'
 #' @return a list with the new line to add.
 #'
