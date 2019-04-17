@@ -47,16 +47,36 @@ singleNone <- function(length.sim,
 
   #Parsing timeContact
   timeContact <- match.fun(timeContact)
-  timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)))
+
+  if (timeDep.timeContact == FALSE) {
+    timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=FALSE,timeDep=FALSE)
+  }
+
+  if (timeDep.timeContact == TRUE) {
+    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'prestime'))==FALSE) stop("timeContact should have 'prestime' as a variable. timeDep.timeContact == TRUE.")
+    timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=FALSE,timeDep=TRUE)
+  }
 
   #Parsing pTrans
-  pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)))
 
-  #Parsing timeContact
-  pExitParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(pExit)))
+  if (timeDep.pTrans == FALSE) {
+    pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=FALSE,timeDep=FALSE)
+  }
+
+  if (timeDep.pTrans == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'prestime'))==FALSE) stop("pTrans should have 'prestime' as a variable. timeDep.pTrans == TRUE.")
+    pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=FALSE,timeDep=TRUE)
+  }
 
   #Parsing pExit
-  pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)))
+  if (timeDep.pExit == FALSE) {
+    pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=FALSE,timeDep=FALSE)
+  }
+
+  if (timeDep.pExit == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'prestime'))==FALSE) stop("pExit should have 'prestime' as a variable. timeDep.pExit == TRUE.")
+    pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=FALSE,timeDep=TRUE)
+  }
 
   # Init
   message("Starting the simulation")

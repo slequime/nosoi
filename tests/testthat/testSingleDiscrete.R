@@ -38,7 +38,7 @@ test_that("Error message pops out when missing state in diff functions", {
                           pExit=p_Exit_fct,
                           param.pExit=NA
   ),
-  "pExit should have a realisation for each possible state. diff.pExit == TRUE."
+  "pExit should have a realisation for each possible state. diff.pExit is TRUE."
   )
 
   p_Exit_fct  <- function(x){return(0.08)}
@@ -69,7 +69,7 @@ test_that("Error message pops out when missing state in diff functions", {
                             pExit=p_Exit_fct,
                             param.pExit=NA
     ),
-    "timeContact should have a realisation for each possible state. diff.timeContact == TRUE."
+    "timeContact should have a realisation for each possible state. diff.timeContact is TRUE."
   )
 
   time_contact = function(x){round(rnorm(x, 3, 1), 0)}
@@ -103,7 +103,7 @@ test_that("Error message pops out when missing state in diff functions", {
                             pExit=p_Exit_fct,
                             param.pExit=NA
     ),
-    "pTrans should have a realisation for each possible state. diff.pTrans == TRUE."
+    "pTrans should have a realisation for each possible state. diff.pTrans is TRUE."
   )
 
 })

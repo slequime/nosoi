@@ -37,15 +37,19 @@ singleDiscrete <- function(type,
                            init.structure,
                            structure.matrix,
                            diff.pMove=FALSE,
+                           timeDep.pMove=FALSE,
                            pMove,
                            param.pMove,
                            diff.timeContact=FALSE,
+                           timeDep.timeContact=FALSE,
                            timeContact,
                            param.timeContact,
                            diff.pTrans=FALSE,
+                           timeDep.pTrans=FALSE,
                            pTrans,
                            param.pTrans,
                            diff.pExit=FALSE,
+                           timeDep.pExit=FALSE,
                            pExit,
                            param.pExit,
                            prefix.host="H",
@@ -60,37 +64,73 @@ singleDiscrete <- function(type,
   if (is.na(init.individuals) | init.individuals < 1 | !init.individuals%%1==0) stop("The transmission chain should be started by 1 or more (integer) individuals")
 
   #Parsing timeContact
-  if (diff.timeContact == FALSE) {
-    if (! is.function(timeContact)) stop("Contact probability should be a function of time.")
+  if (diff.timeContact == FALSE & timeDep.timeContact == FALSE) {
     timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)))
   }
 
-  if (diff.timeContact == TRUE) {
-    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("timeContact should have a realisation for each possible state. diff.timeContact == TRUE.")
+  if (diff.timeContact == TRUE & timeDep.timeContact == FALSE) {
+    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'current.in'))==FALSE) stop("timeContact should have 'current.in' as a variable. diff.timeContact == TRUE.")
+    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("timeContact should have a realisation for each possible state. diff.timeContact is TRUE.")
     timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=TRUE)
   }
 
+  if (diff.timeContact == FALSE & timeDep.timeContact == TRUE) {
+    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'prestime'))==FALSE) stop("timeContact should have 'prestime' as a variable. timeDep.timeContact == TRUE.")
+    timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=FALSE,timeDep=TRUE)
+  }
+
+  if (diff.timeContact == TRUE & timeDep.timeContact == TRUE) {
+    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'current.in'))==FALSE) stop("timeContact should have 'current.in' as a variable. diff.timeContact == TRUE.")
+    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("timeContact should have a realisation for each possible state. diff.timeContact is TRUE.")
+    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'prestime'))==FALSE) stop("timeContact should have 'prestime' as a variable. timeDep.timeContact == TRUE.")
+    timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=TRUE,timeDep=TRUE)
+  }
+
   #Parsing pTrans
-  if (diff.pTrans == FALSE) {
-    if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
+  if (diff.pTrans == FALSE & timeDep.pTrans == FALSE) {
     pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)))
   }
 
-  if (diff.pTrans == TRUE) {
-    if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
-    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pTrans should have a realisation for each possible state. diff.pTrans == TRUE.")
+  if (diff.pTrans == TRUE & timeDep.pTrans == FALSE) {
+    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'current.in'))==FALSE) stop("pTrans should have 'current.in' as a variable. diff.pTrans == TRUE.")
+    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pTrans should have a realisation for each possible state. diff.pTrans is TRUE.")
     pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=TRUE)
+  }
+
+  if (diff.pTrans == FALSE & timeDep.pTrans == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'prestime'))==FALSE) stop("pTrans should have 'prestime' as a variable. timeDep.pTrans == TRUE.")
+    pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=FALSE,timeDep=TRUE)
+  }
+
+  if (diff.pTrans == TRUE & timeDep.pTrans == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'current.in'))==FALSE) stop("pTrans should have 'current.in' as a variable. diff.pTrans == TRUE.")
+    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pTrans should have a realisation for each possible state. diff.pTrans is TRUE.")
+    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'prestime'))==FALSE) stop("pTrans should have 'prestime' as a variable. timeDep.pTrans == TRUE.")
+    pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=TRUE,timeDep=TRUE)
   }
 
   #Parsing pExit
 
-  if (diff.pExit == FALSE) {
+  if (diff.pExit == FALSE & timeDep.pExit == FALSE) {
     pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)))
   }
 
-  if (diff.pExit == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pExit should have a realisation for each possible state. diff.pExit == TRUE.")
+  if (diff.pExit == TRUE & timeDep.pExit == FALSE) {
+    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'current.in'))==FALSE) stop("pExit should have 'current.in' as a variable. diff.pExit == TRUE.")
+    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pExit should have a realisation for each possible state. diff.pExit is TRUE.")
     pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=TRUE)
+  }
+
+  if (diff.pExit == FALSE & timeDep.pExit == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'prestime'))==FALSE) stop("pExit should have 'prestime' as a variable. timeDep.pExit == TRUE.")
+    pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=FALSE,timeDep=TRUE)
+  }
+
+  if (diff.pExit == TRUE & timeDep.pExit == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'current.in'))==FALSE) stop("pExit should have 'current.in' as a variable. diff.pExit == TRUE.")
+    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pExit should have a realisation for each possible state. diff.pExit is TRUE.")
+    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'prestime'))==FALSE) stop("pExit should have 'prestime' as a variable. timeDep.pExit == TRUE.")
+    pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=TRUE,timeDep=TRUE)
   }
 
   #Discrete states sanity checks -------------------------------------------------------------------------------------------------------------------
@@ -104,13 +144,27 @@ singleDiscrete <- function(type,
   melted.structure.matrix <- reshape2::melt(structure.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
 
   #Parse pMove (same as pExit !!attention if diff)
-  if (diff.pMove == FALSE) {
+
+  if (diff.pMove == FALSE & timeDep.pMove == FALSE) {
     pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)))
   }
 
-  if (diff.pMove == TRUE) {
+  if (diff.pMove == TRUE & timeDep.pMove == FALSE) {
+    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'current.in'))==FALSE) stop("pMove should have 'current.in' as a variable. diff.pMove == TRUE.")
     if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pMove should have a realisation for each possible state. diff.pMove is TRUE.")
     pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=TRUE)
+  }
+
+  if (diff.pMove == FALSE & timeDep.pMove == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'prestime'))==FALSE) stop("pMove should have 'prestime' as a variable. timeDep.pMove == TRUE.")
+    pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=FALSE,timeDep=TRUE)
+  }
+
+  if (diff.pMove == TRUE & timeDep.pMove == TRUE) {
+    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'current.in'))==FALSE) stop("pMove should have 'current.in' as a variable. diff.pMove == TRUE.")
+    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),paste0('current.in == "',colnames(structure.matrix),'"'))==FALSE)) stop("pMove should have a realisation for each possible state. diff.pMove is TRUE.")
+    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'prestime'))==FALSE) stop("pMove should have 'prestime' as a variable. timeDep.pMove == TRUE.")
+    pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=TRUE,timeDep=TRUE)
   }
 
   #START OF THE SIMULATION --------------------------------------------------------------------------------------------------------
