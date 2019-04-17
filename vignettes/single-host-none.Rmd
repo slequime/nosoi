@@ -229,7 +229,7 @@ SimulationA <- nosoiSim(type="single", structure=FALSE,
                         progress.bar=FALSE)
 ```
 The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts has been reached.
-Once the simulation is finished, it reports the number of time units for which the simulation has run (52), and the maximum number of infected hosts (107).
+Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111).
 Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected` threshold set at 100.
 
 ## Nosoi output

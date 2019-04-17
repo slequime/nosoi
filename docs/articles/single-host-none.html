@@ -6,11 +6,18 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>1 - Single-host pathogen in a non-structured host population • nosoi</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="1 - Single-host pathogen in a non-structured host population">
 <meta property="og:description" content="">
+<meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -245,8 +252,8 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="co">#&gt; Starting the simulation</span>
 <span class="co">#&gt; Initializing ... running ...</span>
 <span class="co">#&gt;  done.</span>
-<span class="co">#&gt; The simulation has run for 24 units of time and a total of 57 hosts have been infected.</span></code></pre></div>
-<p>The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts has been reached. Once the simulation is finished, it reports the number of time units for which the simulation has run (52), and the maximum number of infected hosts (107). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
+<span class="co">#&gt; The simulation has run for 40 units of time and a total of 111 hosts have been infected.</span></code></pre></div>
+<p>The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts has been reached. Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
 </div>
 <div id="nosoi-output" class="section level2">
 <h2 class="hasAnchor">
@@ -254,12 +261,12 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <p><em>Nosoi</em> gives as its output a list contaning a <code>data.table</code> (a more efficient version of a <code>data.frame</code>) called <code>table.hosts</code> with the following structure:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(SimulationA<span class="op">$</span>table.hosts)
 <span class="co">#&gt;    hosts.ID inf.by inf.time out.time active     p_max  t_incub</span>
-<span class="co">#&gt; 1:      H-1   NA-1        0       24      0 0.6820110 5.867392</span>
-<span class="co">#&gt; 2:     H-10    H-2       14       24      0 0.9552022 7.809769</span>
-<span class="co">#&gt; 3:     H-11    H-1       17       24      0 0.8676932 6.771355</span>
-<span class="co">#&gt; 4:     H-12    H-3       17       24      0 0.6714091 5.864994</span>
-<span class="co">#&gt; 5:     H-13    H-5       17       24      0 0.8659929 8.313040</span>
-<span class="co">#&gt; 6:     H-14    H-6       17       24      0 0.6241947 8.028895</span></code></pre></div>
+<span class="co">#&gt; 1:      H-1   NA-1        0       23      0 0.6820110 5.867392</span>
+<span class="co">#&gt; 2:     H-10    H-2       16       19      0 0.8026548 6.414165</span>
+<span class="co">#&gt; 3:    H-100   H-21       40       NA      1 0.6622235 7.816477</span>
+<span class="co">#&gt; 4:    H-101   H-35       40       NA      1 0.6288499 7.395426</span>
+<span class="co">#&gt; 5:    H-102   H-39       40       NA      1 0.7714096 6.556226</span>
+<span class="co">#&gt; 6:    H-103    H-5       40       NA      1 0.8403010 6.555480</span></code></pre></div>
 <p>Each individual host that was or is infected during the course of the simulation is a line in the data.table. <code>hosts.ID</code> is the unique identifier of the host, while <code>inf.by</code> indicate which host infected it. As you can see, host <code>H-1</code> has been infected by <code>NA</code>; <code>H-1</code> is the individual that started the transmission chain. <code>inf.time</code> is the time (in simulation units of time) when the host has been infected, and <code>out.time</code> is the time (in simulation units of time) when it left the simulation. Here in the top 6 lines, no host has left the simulation (it ran only for 13 units of time). <code>active</code> indicates if the host is still active in the simulation. <code>p_max</code> and <code>t_incub</code> are the individually sampled parameters for <code>pTrans</code>.</p>
 <div id="visualisation" class="section level3">
 <h3 class="hasAnchor">
