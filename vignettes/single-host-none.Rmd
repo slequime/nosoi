@@ -1,5 +1,5 @@
 ---
-title: "Single host pathogen in a non-structured host population"
+title: "1 - Single-host pathogen in a non-structured host population"
 author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -54,16 +54,13 @@ SimulationA <- nosoiSim(type="single", structure=FALSE,
 
 ### timeContact
 
-`timeContact` represents the number of potentially infectious contacts an infected hosts can encounter per unit of time.
-At each time point, a number of contacts will be determined for each active host in the simulation (which will be stored in the variable `x`).
-The number of contacts has to be an integer and can be set to zero.
-As this number might vary, it has to be expressed as a function of `x` (uniquely), but it can take various forms:
+`timeContact` represents the number of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation.
+The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero. As this number might vary, it has to be expressed as a function of `t` (uniquely), but it can take various forms:
 
 ```{r timeContact, eval = FALSE}
-time_contact_fct = function(x){rep(2,x)} #to get a constant number of contacts for each hosts, here 2.
-time_contact_fct = function(x){sample(c(0,1,2,3),x,replace=TRUE,prob=c(0.4,0.3,0.2,0.1))} #to get a varying number of contacts for each hosts.
-time_contact_fct = function(x){round(rnorm(x, 3, 1), 0)} #another example of varying number of contacts for each hosts.
-
+time_contact_fct = function(t){return(2)} #to get a constant number of contacts for each hosts, here 2.
+time_contact_fct = function(t){sample(c(0,1,2,3),1,replace=TRUE,prob=c(0.4,0.3,0.2,0.1))} #to get a varying number of contacts for each hosts.
+time_contact_fct = function(t){round(rnorm(1, 3, 1), 0)} #another example of varying number of contacts for each hosts.
 ```
 
 This thus gives us the following structure for *Nosoi*'s wrapper function:
@@ -103,7 +100,7 @@ t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 ```
 
 Here, `p_max` will be sampled from a beta distribution, with shape parameters 5 and 2, and `t_incub` will be sampled from a Gaussian distribution, with mean 5 and standard deviation 1.
-`x`, as seen before for `timeContact` will be the number of draws to perform.
+`x` will be the number of draws to perform.
 If you want to fix the value of one or all parameters, you can use a sampling function that will always give you the same value, such as:
 ```{r param.pTrans1bis, eval = FALSE}
 t_incub_fct <- function(x){rep(5,x)} #constant parameter value.
@@ -136,15 +133,12 @@ In the latter case, you need to specify `param.pExit` as a list of functions.
 Here are some possible functions for `pExit`:
 
 ```{r pExit, eval = FALSE}
-p_Exit_fct  <- function(x){rep(0.08,length(x))} #as a constant
+p_Exit_fct  <- function(t){return(0.08)} #as a constant
 p_Exit_fct  <- function(t){plogis(t,20,2)} #as a time dependent function
 
 p_Exit_fct  <- function(t,pExit.param1){plogis(t,pExit.param1,2)} #as an individually parameterized function
 p_exit_param1 <- function(x){rnorm(x,mean = 10,sd=2)} #sampling one parameter for each infected individual
 ```
-
-In the case you want `pExit` to be constant over time, you have to specify it as as a function of `x`, with `length(x)` as it will be sampled multiple time for each active host during the time period.
-For the other scenarios, it should be a function of `t` (time since infection).
 
 For a constant or time-dependent function, with no individual parameter, `param.pExit` is `NA`.
 In the case of an individually parameterized `pExit`, the functions for the parameters have to be wrapped into a list, called `param.pExit` (similar to `param.pTrans` above).
@@ -175,8 +169,7 @@ SimulationA <- nosoiSim(type="single", structure=FALSE,
 It will be followed by a hyphen and a unique number.
 By default, `prefix.host` is "H" for "Host".
 
-`progress.bar` allows you to display a progress bar that represent the ration of "current time point" over the `length.sim` parameter provided.
-By default, the `progress.bar` is activated, but you may want to deactivate it by providing `progress.bar == FALSE`
+`progress.bar` allows you to get some information printed on the screen about the simulation while running. It will print something every `print.step`. By default, `progress.bar` is activated, with a `print.step = 10` (that you can change), but you may want to deactivate it by providing `progress.bar == FALSE`.
 
 ## Running Nosoi
 

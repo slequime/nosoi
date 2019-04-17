@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Single host pathogen in a non-structured host population • nosoi</title>
+<title>1 - Single host pathogen in a non-structured host population • nosoi</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Single host pathogen in a non-structured host population">
+<script src="../pkgdown.js"></script><meta property="og:title" content="1 - Single host pathogen in a non-structured host population">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -43,6 +43,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/nosoi.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -53,10 +56,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/single-host-discrete.html">Single host pathogen in a structured host population</a>
+      <a href="../articles/single-host-continuous.html">3 - Single host pathogen in a structured (continuous) host population</a>
     </li>
     <li>
-      <a href="../articles/single-host-none.html">Single host pathogen in a non-structured host population</a>
+      <a href="../articles/single-host-discrete.html">2 - Single host pathogen in a structured (discrete) host population</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-none.html">1 - Single host pathogen in a non-structured host population</a>
     </li>
   </ul>
 </li>
@@ -80,7 +86,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Single host pathogen in a non-structured host population</h1>
+      <h1>1 - Single host pathogen in a non-structured host population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
             <h4 class="date">2019-04-17</h4>
@@ -123,10 +129,10 @@
 <div id="timecontact" class="section level3">
 <h3 class="hasAnchor">
 <a href="#timecontact" class="anchor"></a>timeContact</h3>
-<p><code>timeContact</code> represents the number of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation (which will be stored in the variable <code>x</code>). The number of contacts has to be an integer and can be set to zero. As this number might vary, it has to be expressed as a function of <code>x</code> (uniquely), but it can take various forms:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">2</span>,x)} <span class="co">#to get a constant number of contacts for each hosts, here 2.</span>
-time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),x,<span class="dt">replace=</span><span class="ot">TRUE</span>,<span class="dt">prob=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.4</span>,<span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.1</span>))} <span class="co">#to get a varying number of contacts for each hosts.</span>
-time_contact_fct =<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>)} <span class="co">#another example of varying number of contacts for each hosts.</span></code></pre></div>
+<p><code>timeContact</code> represents the number of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation. The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero. As this number might vary, it has to be expressed as a function of <code>t</code> (uniquely), but it can take various forms:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">time_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">2</span>)} <span class="co">#to get a constant number of contacts for each hosts, here 2.</span>
+time_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),<span class="dv">1</span>,<span class="dt">replace=</span><span class="ot">TRUE</span>,<span class="dt">prob=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.4</span>,<span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.1</span>))} <span class="co">#to get a varying number of contacts for each hosts.</span>
+time_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>)} <span class="co">#another example of varying number of contacts for each hosts.</span></code></pre></div>
 <p>This thus gives us the following structure for <em>Nosoi</em>’s wrapper function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,
                         <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, 
@@ -162,12 +168,11 @@ t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<s
 <h3 class="hasAnchor">
 <a href="#pexit-and-param-pexit" class="anchor"></a>pExit and param.pExit</h3>
 <p><code>pExit</code> is the last required fundamental parameter and provides a daily probability for a host to leave the simulation (either cured, died, etc.). To accommodate several scenarios, it can be a constant, time dependent or even individually parameterized, to include some stochasticity at the individual host level. In the latter case, you need to specify <code>param.pExit</code> as a list of functions. Here are some possible functions for <code>pExit</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.08</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(x))} <span class="co">#as a constant</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.08</span>)} <span class="co">#as a constant</span>
 p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,<span class="dv">20</span>,<span class="dv">2</span>)} <span class="co">#as a time dependent function</span>
 
 p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t,pExit.param1){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,pExit.param1,<span class="dv">2</span>)} <span class="co">#as an individually parameterized function</span>
 p_exit_param1 &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">10</span>,<span class="dt">sd=</span><span class="dv">2</span>)} <span class="co">#sampling one parameter for each infected individual</span></code></pre></div>
-<p>In the case you want <code>pExit</code> to be constant over time, you have to specify it as as a function of <code>x</code>, with <code><a href="https://www.rdocumentation.org/packages/base/topics/length">length(x)</a></code> as it will be sampled multiple time for each active host during the time period. For the other scenarios, it should be a function of <code>t</code> (time since infection).</p>
 <p>For a constant or time-dependent function, with no individual parameter, <code>param.pExit</code> is <code>NA</code>. In the case of an individually parameterized <code>pExit</code>, the functions for the parameters have to be wrapped into a list, called <code>param.pExit</code> (similar to <code>param.pTrans</code> above). The name of each function in the list has to have the same name as the parameter it is sampling for <code>pExit</code>. Here it will look like:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">param.pExit=<span class="ot">NA</span>
 param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pExit.param1=</span>p_exit_param1)</code></pre></div>
@@ -185,7 +190,7 @@ param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/ba
 <h3 class="hasAnchor">
 <a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
 <p><code>prefix.host</code> allows you to define the first character(s) for the hosts’ unique ID. It will be followed by a hyphen and a unique number. By default, <code>prefix.host</code> is “H” for “Host”.</p>
-<p><code>progress.bar</code> allows you to display a progress bar that represent the ration of “current time point” over the <code>length.sim</code> parameter provided. By default, the <code>progress.bar</code> is activated, but you may want to deactivate it by providing <code>progress.bar == FALSE</code></p>
+<p><code>progress.bar</code> allows you to get some information printed on the screen about the simulation while running. It will print something every <code>print.step</code>. By default, <code>progress.bar</code> is activated, with a <code>print.step = 10</code> (that you can change), but you may want to deactivate it by providing <code>progress.bar == FALSE</code>.</p>
 </div>
 </div>
 <div id="running-nosoi" class="section level2">

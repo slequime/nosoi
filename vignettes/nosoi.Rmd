@@ -1,0 +1,79 @@
+---
+title: "Get started with nosoi"
+author: "Sebastian Lequime"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{getstarted}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+`nosoi` aims to provide a modular framework to conduct epidemiological simulations under a wide range of scenarios, varying from relatively simple to highly complex and parameteric. This flexibility allows `nosoi` to take into account the effect of numerous covariates, taken individualy or in interaction, on the epidemic process, without having to use advanced mathematics to formalize the model into differential equations. As it core, `nosoi` generates a transmission chain (a link between hosts), the foundation of every epidemic process, allowing the reconstruction in great details of the history of the epidemic.
+
+`nosoi` is an agent-based model, which means it is centered on individuals, here called "hosts", that enter the simulation when they get infected. It's also stochastic, and thus relies heavily on probabilities, mainly 4 core probabilities, and its time is discretized.
+
+## Critical assumption of `nosoi`
+
+`nosoi` assumes that the maximum number of hosts infected during your simulation is orders of magnitude smaller than the total exposed population. This means that, currently, it does not take into account building heard immunity using the simulated epidemic results (although a proxy can be used; discussed in the several tutorials).
+
+## Essential building blocs: 3 probabilities and 2 numbers
+
+As it core, `nosoi` can be summarised by 3 probabilities at a specific time point:
+
+- the probability to exit the simulation (here named `pExit`). For hosts, that means, for example, dying, being cured, leaving the study area, etc.
+- the probability to move (here named `pMove`, only relevant when your simulation has some kind of structure, either in a discrete or continuous space). For hosts, that could, for example, travelling, changing status (becoming rich, or getting a treatment), etc.
+- the distance travelled (here named `moveDist`) (only relevant when a stucture exist in a continuous space).
+- the number of contacts (here named `timeContact`). How many potentially infectious contacts does an infected host have?
+- the probability to transmit (here named `pTrans`). When a contact occures between two hosts, one of which being infected, the probability that the infection gets transmitted to the uninfected one.
+
+Each of these probabilities and numbers are computed during the simulation. In a very simple scenario, each one is a constant. In more complex models supported by `nosoi` they could depend on hosts parameters (e.g. genetics), dynamic parameters (since when the host is infected), environemental parameters (where the host is), or the moment of the simulation (e.g. seasons, mitigation campaign,...), taken individually into account or together.
+
+## What happens at each time step?
+
+Time is discretized in `nosoi`; each time step follows the same flow for each host:
+
+```{r setupMatrix, echo=FALSE, message=FALSE,warning=FALSE}
+library(ggplot2)
+library(viridis)
+library(igraph)
+library(ggnetwork)
+
+transition.matrix = matrix(c(0,0,0,0,0,
+                             1,0,0,0,0,
+                             0,1,0,0,0,
+                             0,0,1,0,0,
+                             0,0,0,1,0),nrow = 5, ncol = 5,dimnames=list(c("pExit","pMove","moveDist","timeContact","pTrans"),c("pExit","pMove","moveDist","timeContact","pTrans")))
+
+melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
+
+melted.transition.matrix = subset(melted.transition.matrix, prob!=0)
+
+graph.Matrix <- graph.data.frame(melted.transition.matrix,directed=T)
+
+graph.simA.network = ggnetwork(graph.Matrix, layout = "circle",arrow.gap=0.18) #using ggnetwork to provide the layout
+
+#plotting the network
+ggplot(graph.simA.network, aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_edges(color = "grey70",arrow = arrow(length = unit(1, "lines"), type = "closed"),curvature = 0.2) + geom_nodes(aes(color =vertex.names) , size = 30) +
+  geom_nodetext(aes(label = vertex.names),color="white", fontface = "bold",size=3) + scale_color_viridis(guide=FALSE,discrete=TRUE) +
+  theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2)
+```
+
+- Does the host exit the simulation? This step samples YES or NO based on the probability pExit and 1-pExit respectively.
+- Does the host move (if there is structure)? This step samples YES or NO based on the probability pMove and 1-pMove respectively.
+- How far does it go? (if the structure is a continuous space) This step gives back a number used as a distance in the continuous space.
+- How many infectious contacts does the host have? This step gives back a number (integer).
+- If there is an infectious contact, the host does it transmit to a new one? This step samples YES or NO based on the probability pTrans and 1-pTrans respectively.
+
+Once all steps have been gone through, the simulation moves to the next time step.
+
+## Now let's go to business!
+
+A series of tutorials are available to learn how to use `nosoi` and give you a starting point. We recommend going through them serially at least once to understand how to parameterize `nosoi` to your needs.
+
+1. [Single-host pathogens in an homogenous (no structure) population of hosts](single-host-none.html), a "simple" scenario.
+2. [Spread of a single-host pathogen in a structure (discrete) population of hosts](single-host-discrete.html).
+3. [Spread of a single-host pathogen in a structure (continuous) population of hostse](single-host-continuous.html).

@@ -1,0 +1,12 @@
+---
+title: "3 - Single-host pathogen in a structured (continuous) host population"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{single-host-continuous}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+#Work in progress
