@@ -5,7 +5,7 @@
 \title{Creates a new line to be added to the table when new host is infected (internal fonction)}
 \usage{
 newLine(hosts.ID, infected.by, infected.in, time.is, param.pExit,
-  param.pMove, param.timeContact, param.pTrans,
+  param.pMove, param.timeContact, param.pTrans, param.moveDist,
   current.environmental.value = NA)
 }
 \arguments{
@@ -23,7 +23,7 @@ newLine(hosts.ID, infected.by, infected.in, time.is, param.pExit,
 
 \item{param.pTrans}{list of transmission probability function(s).}
 
-\item{current.environmental.value}{current value of environemental variable (from raster) according to coordinates in current.in.}
+\item{current.in}{state in which the host currently is}
 }
 \value{
 a list with the new line to add.

@@ -5,7 +5,7 @@
 \title{Generates initial table to start the simulation (internal fonction)}
 \usage{
 iniTable(init.individuals, init.structure, prefix.host, param.pExit,
-  param.pMove, param.timeContact, param.pTrans,
+  param.pMove, param.timeContact, param.pTrans, param.moveDist,
   current.environmental.value = NA)
 }
 \arguments{

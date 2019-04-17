@@ -12,23 +12,29 @@
 #' @param init.structure which state (i.e. location) the initially infected individuals are located.
 #' @param structure.raster raster object defining the environmental variable.
 #' @param diff.pMove is pMove different between states of the structured population (TRUE/FALSE)
+#' @param timeDep.pMove is pMove dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pMove function that gives the probability of a host moving as a function of time.
 #' @param param.pMove parameter names (list of functions) for the pMove.
-#' @param diff.moveDist is moveDist dependant on the environmental value.
+#' @param diff.moveDist is moveDist dependant on the environmental value (TRUE/FALSE).
+#' @param timeDep.moveDist is moveDist dependant on the absolute time of the simulation (TRUE/FALSE).
 #' @param moveDist function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.
 #' @param param.moveDist parameter names (list of functions) for moveDist.
 #' @param attracted.by.raster should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)
 #' @param diff.timeContact is timeContact different between states of the structured population (TRUE/FALSE)
+#' @param timeDep.timeContact is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param timeContact function that gives the number of potential transmission events per unit of time.
 #' @param param.timeContact parameter names (list of functions) for timeContact.
 #' @param diff.pTrans is pTrans different between states of the structured population (TRUE/FALSE)
+#' @param timeDep.pTrans is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pTrans function that gives the probability of transmit a pathogen as a function of time since infection.
 #' @param param.pTrans parameter names (list of functions) for the pTrans.
 #' @param diff.pExit is pExit different between states of the structured population (TRUE/FALSE)
+#' @param timeDep.pExit is pExit dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pExit function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).
 #' @param param.pExit parameter names (list of functions) for the pExit.
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
-#' @param progress.bar if TRUE, displays a progress bar (current time/length.sim).
+#' @param progress.bar if TRUE, print message on simulation state to screen.
+#' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
 #' @param ... other arguments to be passed on to the simulator (see below).
 #'
 #' @export singleContinuous

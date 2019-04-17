@@ -8,12 +8,16 @@
 #' @param init.individuals number of initially infected individuals.
 #' @param timeContact function that gives the number of potential transmission events per unit of time.
 #' @param param.timeContact parameter names (list of functions) for param.timeContact.
+#' @param timeDep.timeContact is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pTrans function that gives the probability of transmit a pathogen as a function of time since infection.
 #' @param param.pTrans parameter names (list of functions) for the pExit.
+#' @param timeDep.pTrans is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pExit function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).
 #' @param param.pExit parameter names (list of functions) for the pExit.
+#' @param timeDep.pExit is pExit dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
 #' @param progress.bar if TRUE, displays a progress bar (current time/length.sim).
+#' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
 #' @param ... other arguments to be passed on to the simulator (see below).
 #'
 #' @export singleNone

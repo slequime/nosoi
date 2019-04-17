@@ -5,10 +5,12 @@
 \title{Single-host with structured host population}
 \usage{
 singleDiscrete(type, structure, length.sim, max.infected, init.individuals,
-  init.structure, structure.matrix, diff.pMove = FALSE, pMove,
-  param.pMove, diff.timeContact = FALSE, timeContact, param.timeContact,
-  diff.pTrans = FALSE, pTrans, param.pTrans, diff.pExit = FALSE, pExit,
-  param.pExit, prefix.host = "H", progress.bar = TRUE, ...)
+  init.structure, structure.matrix, diff.pMove = FALSE,
+  timeDep.pMove = FALSE, pMove, param.pMove, diff.timeContact = FALSE,
+  timeDep.timeContact = FALSE, timeContact, param.timeContact,
+  diff.pTrans = FALSE, timeDep.pTrans = FALSE, pTrans, param.pTrans,
+  diff.pExit = FALSE, timeDep.pExit = FALSE, pExit, param.pExit,
+  prefix.host = "H", progress.bar = TRUE, print.step = 10, ...)
 }
 \arguments{
 \item{type}{single host or dual host}
@@ -27,11 +29,15 @@ singleDiscrete(type, structure, length.sim, max.infected, init.individuals,
 
 \item{diff.pMove}{is pMove different between states of the structured population (TRUE/FALSE)}
 
+\item{timeDep.pMove}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE)}
+
 \item{pMove}{function that gives the probability of a host moving as a function of time.}
 
 \item{param.pMove}{parameter names (list of functions) for the pMove.}
 
 \item{diff.timeContact}{is timeContact different between states of the structured population (TRUE/FALSE)}
+
+\item{timeDep.timeContact}{is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)}
 
 \item{timeContact}{function that gives the number of potential transmission events per unit of time.}
 
@@ -39,11 +45,15 @@ singleDiscrete(type, structure, length.sim, max.infected, init.individuals,
 
 \item{diff.pTrans}{is pTrans different between states of the structured population (TRUE/FALSE)}
 
+\item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)}
+
 \item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
 
 \item{param.pTrans}{parameter names (list of functions) for the pTrans.}
 
 \item{diff.pExit}{is pExit different between states of the structured population (TRUE/FALSE)}
+
+\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)}
 
 \item{pExit}{function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).}
 
@@ -52,6 +62,8 @@ singleDiscrete(type, structure, length.sim, max.infected, init.individuals,
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
 \item{progress.bar}{if TRUE, displays a progress bar (current time/length.sim).}
+
+\item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
 
 \item{...}{other arguments to be passed on to the simulator (see below).}
 }

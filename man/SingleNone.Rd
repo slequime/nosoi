@@ -5,8 +5,9 @@
 \title{Single-host without structured host population}
 \usage{
 singleNone(length.sim, max.infected, init.individuals, timeContact,
-  param.timeContact, pTrans, param.pTrans, pExit, param.pExit,
-  prefix.host = "H", progress.bar = TRUE, ...)
+  param.timeContact, timeDep.timeContact = FALSE, pTrans, param.pTrans,
+  timeDep.pTrans = FALSE, pExit, param.pExit, timeDep.pExit = FALSE,
+  prefix.host = "H", progress.bar = TRUE, print.step = 10, ...)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -19,17 +20,25 @@ singleNone(length.sim, max.infected, init.individuals, timeContact,
 
 \item{param.timeContact}{parameter names (list of functions) for param.timeContact.}
 
+\item{timeDep.timeContact}{is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)}
+
 \item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
 
 \item{param.pTrans}{parameter names (list of functions) for the pExit.}
+
+\item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)}
 
 \item{pExit}{function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).}
 
 \item{param.pExit}{parameter names (list of functions) for the pExit.}
 
+\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)}
+
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
 \item{progress.bar}{if TRUE, displays a progress bar (current time/length.sim).}
+
+\item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
 
 \item{...}{other arguments to be passed on to the simulator (see below).}
 }

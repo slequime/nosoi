@@ -6,11 +6,13 @@
 \usage{
 singleContinuous(type, structure, length.sim, max.infected,
   init.individuals, init.structure, structure.raster, diff.pMove = FALSE,
-  pMove, param.pMove, diff.moveDist = FALSE, moveDist, param.moveDist,
-  attracted.by.raster = FALSE, diff.timeContact = FALSE, timeContact,
-  param.timeContact, diff.pTrans = FALSE, pTrans, param.pTrans,
-  diff.pExit = FALSE, pExit, param.pExit, prefix.host = "H",
-  progress.bar = TRUE, ...)
+  timeDep.pMove = FALSE, pMove, param.pMove, diff.moveDist = FALSE,
+  timeDep.moveDist = FALSE, moveDist, param.moveDist,
+  attracted.by.raster = FALSE, diff.timeContact = FALSE,
+  timeDep.timeContact = FALSE, timeContact, param.timeContact,
+  diff.pTrans = FALSE, timeDep.pTrans = FALSE, pTrans, param.pTrans,
+  diff.pExit = FALSE, timeDep.pExit = FALSE, pExit, param.pExit,
+  prefix.host = "H", progress.bar = TRUE, print.step = 10, ...)
 }
 \arguments{
 \item{type}{single host or dual host}
@@ -29,11 +31,15 @@ singleContinuous(type, structure, length.sim, max.infected,
 
 \item{diff.pMove}{is pMove different between states of the structured population (TRUE/FALSE)}
 
+\item{timeDep.pMove}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE)}
+
 \item{pMove}{function that gives the probability of a host moving as a function of time.}
 
 \item{param.pMove}{parameter names (list of functions) for the pMove.}
 
-\item{diff.moveDist}{is moveDist dependant on the environmental variable?}
+\item{diff.moveDist}{is moveDist dependant on the environmental value (TRUE/FALSE).}
+
+\item{timeDep.moveDist}{is moveDist dependant on the absolute time of the simulation (TRUE/FALSE).}
 
 \item{moveDist}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.}
 
@@ -43,11 +49,15 @@ singleContinuous(type, structure, length.sim, max.infected,
 
 \item{diff.timeContact}{is timeContact different between states of the structured population (TRUE/FALSE)}
 
+\item{timeDep.timeContact}{is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)}
+
 \item{timeContact}{function that gives the number of potential transmission events per unit of time.}
 
 \item{param.timeContact}{parameter names (list of functions) for timeContact.}
 
 \item{diff.pTrans}{is pTrans different between states of the structured population (TRUE/FALSE)}
+
+\item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)}
 
 \item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
 
@@ -55,13 +65,17 @@ singleContinuous(type, structure, length.sim, max.infected,
 
 \item{diff.pExit}{is pExit different between states of the structured population (TRUE/FALSE)}
 
+\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)}
+
 \item{pExit}{function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).}
 
 \item{param.pExit}{parameter names (list of functions) for the pExit.}
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
-\item{progress.bar}{if TRUE, displays a progress bar (current time/length.sim).}
+\item{progress.bar}{if TRUE, print message on simulation state to screen.}
+
+\item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
 
 \item{...}{other arguments to be passed on to the simulator (see below).}
 }

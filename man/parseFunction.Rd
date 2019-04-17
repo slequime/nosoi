@@ -4,7 +4,7 @@
 \alias{parseFunction}
 \title{Parse function for later use}
 \usage{
-parseFunction(pFunc, param.pFunc, name, diff = FALSE)
+parseFunction(pFunc, param.pFunc, name, diff = FALSE, timeDep = FALSE)
 }
 \arguments{
 \item{pFunc}{a function}
