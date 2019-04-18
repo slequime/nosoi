@@ -135,7 +135,59 @@ test_that("Error message pops out when missing state in diff functions", {
   )
 })
 
+test_that("Diffusion in continuous space", {
+  library(raster)
 
+  #Generating a raster the for movement
+  set.seed(860)
+
+  test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
+  test.raster[] <- runif(10000, -80, 180)
+  test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
+  # plot(test.raster)
+
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Move_fct  <- function(t){return(0.1)}
+
+  moveDist_fct = function(t,current.env.value){return(100/(current.env.value+1))}
+
+  p_Exit_fct  <- function(t){return(0.08)}
+
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+
+  start.pos <- c(0,0)
+
+  test.nosoiA <- nosoiSim(type="single", structure=TRUE, continuous = TRUE,
+                          length=200,
+                          max.infected=500,
+                          init.individuals=1,
+                          init.structure=start.pos,
+                          structure.raster=test.raster,
+                          pMove=p_Move_fct,
+                          param.pMove=NA,
+                          diff.moveDist=TRUE,
+                          moveDist=moveDist_fct,
+                          param.moveDist=NA,
+                          attracted.by.raster=TRUE,
+                          timeContact=time_contact,
+                          param.timeContact=NA,
+                          pTrans = proba,
+                          param.pTrans = list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          pExit=p_Exit_fct,
+                          param.pExit=NA)
+
+  expect_equal(nrow(test.nosoiA$table.hosts),648)
+  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),3)
+
+})
 
 
 
@@ -183,51 +235,7 @@ test_that("Error message pops out when missing state in diff functions", {
 #
 # test_that("Movement is coherent with single introduction, constant pMove", {
 #
-#   #Generating a raster the for movement
-#   set.seed(860)
-#
-#   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
-#   test.raster[] <- runif(10000, -80, 180)
-#   test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
-#   # plot(test.raster)
-#
-#   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
-#   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-#   p_Move_fct  <- function(t){return(0.1)}
-#
-#   moveDist_fct = function(t,current.env.value){return(100/(current.env.value+1))}
-#
-#   p_Exit_fct  <- function(t){return(0.08)}
-#
-#   proba <- function(t,p_max,t_incub){
-#     if(t <= t_incub){p=0}
-#     if(t >= t_incub){p=p_max}
-#     return(p)
-#   }
-#
-#   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
-#
-#   start.pos <- c(0,0)
-#
-#   test.nosoiA <- nosoiSim(type="single", structure=TRUE, continuous = TRUE,
-#                           length=365,
-#                           max.infected=10000,
-#                           init.individuals=1,
-#                           init.structure=start.pos,
-#                           structure.raster=test.raster,
-#                           pMove=p_Move_fct,
-#                           param.pMove=NA,
-#                           diff.moveDist=TRUE,
-#                           moveDist=moveDist_fct,
-#                           param.moveDist=NA,
-#                           attracted.by.raster=TRUE,
-#                           timeContact=time_contact,
-#                           param.timeContact=NA,
-#                           pTrans = proba,
-#                           param.pTrans = list(p_max=p_max_fct,
-#                                               t_incub=t_incub_fct),
-#                           pExit=p_Exit_fct,
-#                           param.pExit=NA)
+
 #
 # ggplot() +
 #     layer_spatial(tc) +

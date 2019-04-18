@@ -280,6 +280,8 @@ test_that("Movement is coherent with single introduction, constant pMove, diff t
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 8)
 
+  expect_equal(nrow(test.nosoiA$table.hosts),612)
+
   #Movement
   expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-3")),2)
   expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-3")$state,c("A","C"))
