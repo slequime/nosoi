@@ -42,50 +42,23 @@ singleNone <- function(length.sim,
   #Sanity check---------------------------------------------------------------------------------------------------------------------------
   #This section checks if the arguments of the function are in a correct format for the function to run properly
 
-  if (is.na(length.sim) | length.sim <= 1) stop("You must specify a length (in time units) for your simulation (bigger than 1).")
-  if (is.na(max.infected) | max.infected <= 1) stop("You must specify a maximum number of infected hosts (bigger than 1).")
-  if (is.na(init.individuals) | init.individuals < 1 | !init.individuals%%1==0) stop("The transmission chain should be started by 1 or more (integer) individuals")
+  CoreSanityChecks(length.sim, max.infected, init.individuals)
 
-  if (! is.function(timeContact)) stop("Contact probability should be a function of time.")
-  if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
-  if (! is.function(pExit)) stop("Exit probability should be a function of time.")
+  # if (! is.function(timeContact)) stop("Contact probability should be a function of time.")
+  # if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
+  # if (! is.function(pExit)) stop("Exit probability should be a function of time.")
 
   #Parsing timeContact
-  timeContact <- match.fun(timeContact)
-
-  if (timeDep.timeContact == FALSE) {
-    timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=FALSE,timeDep=FALSE)
-  }
-
-  if (timeDep.timeContact == TRUE) {
-    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'prestime'))==FALSE) stop("timeContact should have 'prestime' as a variable. timeDep.timeContact == TRUE.")
-    timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=FALSE,timeDep=TRUE)
-  }
+  timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),timeDep=timeDep.timeContact)
 
   #Parsing pTrans
-
-  if (timeDep.pTrans == FALSE) {
-    pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=FALSE,timeDep=FALSE)
-  }
-
-  if (timeDep.pTrans == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'prestime'))==FALSE) stop("pTrans should have 'prestime' as a variable. timeDep.pTrans == TRUE.")
-    pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=FALSE,timeDep=TRUE)
-  }
+  pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),timeDep=timeDep.pTrans)
 
   #Parsing pExit
-  if (timeDep.pExit == FALSE) {
-    pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=FALSE,timeDep=FALSE)
-  }
-
-  if (timeDep.pExit == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'prestime'))==FALSE) stop("pExit should have 'prestime' as a variable. timeDep.pExit == TRUE.")
-    pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=FALSE,timeDep=TRUE)
-  }
+  pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),timeDep=timeDep.pExit)
 
   # Init
-  message("Starting the simulation")
-  message("Initializing ...", appendLF = FALSE)
+  message("Starting the simulation\nInitializing ...", appendLF = FALSE)
 
   #Creation of initial data ----------------------------------------------------------
 
@@ -168,17 +141,13 @@ singleNone <- function(length.sim,
       }
     }
 
-    if (progress.bar == TRUE & pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: ", Host.count," (",round((Host.count/max.infected)*100,digits=0),"% of maximum infected hosts).")}
+    if (progress.bar == TRUE) progressMessage(Host.count, pres.time, print.step, length.sim, max.infected)
     if (Host.count > max.infected) {break}
   }
-  message(" done.")
-  message("The simulation has run for ",pres.time," units of time and a total of ",Host.count," hosts have been infected.")
 
-  nosoi.output <- list()
+  endMessage(Host.count, pres.time)
 
-  nosoi.output[["total.time"]] <- pres.time
-  nosoi.output[["N.infected"]] <- Host.count
-  nosoi.output[["table.hosts"]] <- table.hosts
+  nosoi.output <- outputWrapper(Host.count, pres.time, table.hosts, state.archive=NA)
 
   return(nosoi.output)
 }

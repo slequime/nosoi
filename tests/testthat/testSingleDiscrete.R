@@ -72,7 +72,7 @@ test_that("Error message pops out when missing state in diff functions", {
     "timeContact should have a realisation for each possible state. diff.timeContact is TRUE."
   )
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   proba <- function(t,current.in,p_max,t_incub){
     if(current.in=="A"){

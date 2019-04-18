@@ -1,0 +1,102 @@
+#' @title Checks if the simulator can start
+#'
+#' @description
+#' Checks if the simulator can start: did the user provide a length, a maximum number of infected individuals and a number of "seeding" individuals?
+#'
+#' @param length.sim
+#' @param max.infected
+#' @param init.individuals
+#'
+#' @seealso \code{\link{nosoiSim}}
+##
+
+CoreSanityChecks <- function(length.sim, max.infected, init.individuals) {
+  if (is.na(length.sim) | length.sim <= 1) stop("You must specify a length (in time units) for your simulation (bigger than 1).")
+  if (is.na(max.infected) | max.infected <= 1) stop("You must specify a maximum number of infected hosts (bigger than 1).")
+  if (is.na(init.individuals) | init.individuals < 1 | !init.individuals%%1==0) stop("The transmission chain should be started by 1 or more (integer) individuals.")
+}
+
+#' @title Checks if a function is properly formated
+#'
+#' @description
+#' Checks if the function is properly formated given the user's input and nosoi's requirements.
+#'
+#' @param pFunc
+#' @param name
+#' @param param.pFunc
+#' @param timeDep
+#' @param diff
+#' @param structure
+#' @param continuous
+#' @param stateNames
+#'
+#' @seealso \code{\link{nosoiSim}}
+##
+
+FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, continuous, stateNames) {
+
+  if (!is.function(pFunc)) stop("You must specify ",name, " as a function.")
+  pFunc <- match.fun(pFunc)
+  if (!formalArgs(pFunc)[1] == "t") stop(name, " must be a function of 't', placed as a first argument of the function.")
+
+  if ((diff == FALSE & timeDep == FALSE & length(formalArgs(pFunc)) > 1)|(diff == TRUE & timeDep == FALSE & length(formalArgs(pFunc)) > 2)|(diff == FALSE & timeDep == TRUE & length(formalArgs(pFunc)) > 2)|(diff == TRUE & timeDep==TRUE & length(formalArgs(pFunc)) > 3)) {
+    if (!is.list(is.na(param.pFunc)) && is.na(param.pFunc)) {
+      stop("There is a probleme with your function ", name, ": you should provide a parameter list named param.", name, ".")
+    }
+
+    if (is.list(param.pFunc)) {
+      pFunc.param <- formalArgs(pFunc)[-1]
+      if(! all(names(param.pFunc) %in% pFunc.param)) stop("Parameter name in param.", name, " should match the name used in ", name, ".")
+    }
+  }
+
+  if((diff == TRUE | timeDep == TRUE) & length(formalArgs(pFunc)) < 2) stop("Your are missing some function argument in ",name,". diff and/or timeDep.", name, " is/are TRUE.")
+
+  if (diff == TRUE & continuous == FALSE){
+    if (any(str_detect(paste0(as.character(body(pFunc)),collapse=" "),paste0('current.in == "',stateNames,'"'))==FALSE)) stop(name, " should have a realisation for each possible state. diff.", name, " is TRUE.")
+  }
+
+  if(timeDep == TRUE & formalArgs(pFunc)[2] != "prestime") stop(name, " should have 'prestime' as the second variable. timeDep.", name, " is TRUE.")
+
+  if(timeDep == FALSE & diff == TRUE & continuous == FALSE & formalArgs(pFunc)[2] != "current.in") stop(name, " should have 'current.in' as the second variable. diff.", name, " is TRUE.")
+  if(timeDep == TRUE & diff == TRUE & continuous == FALSE & formalArgs(pFunc)[3] != "current.in") stop(name, " should have 'current.in' as the third variable. diff.", name, " is TRUE.")
+
+  if(timeDep == FALSE & diff == TRUE & continuous == TRUE & formalArgs(pFunc)[2] != "current.env.value") stop(name, " should have 'current.env.value' as the second variable. diff.", name, " is TRUE.")
+  if(timeDep == TRUE & diff == TRUE & continuous == TRUE & formalArgs(pFunc)[3] != "current.env.value") stop(name, " should have 'current.env.value' as the second variable. diff.", name, " is TRUE.")
+}
+
+#' @title Checks if the matrix is properly formated
+#'
+#' @description
+#' Checks if the transition matrix is properly formated given the user's input and nosoi's requirements.
+#'
+#' @param structure.matrix
+#' @param init.structure
+#'
+#' @seealso \code{\link{nosoiSim}}
+##
+
+MatrixSanityChecks <- function(structure.matrix,init.structure) {
+  if (!is.matrix(structure.matrix)) stop("structure.matrix should be a matrix.")
+  if (ncol(structure.matrix)!=nrow(structure.matrix)) stop("structure.matrix should have the same number of rows and columns.")
+  if (!identical(colnames(structure.matrix),rownames(structure.matrix))) stop("structure.matrix rows and columns should have the same names.")
+  if (any(rowSums(structure.matrix) != 1)) stop("structure.matrix rows should sum up to 1.")
+  if (!init.structure %in% rownames(structure.matrix)) stop("init.structure should be a state present in structure.matrix.")
+}
+
+#' @title Checks if the raster is properly formated
+#'
+#' @description
+#' Checks if the environmental raster is properly formated given the user's input and nosoi's requirements.
+#'
+#' @param structure.matrix
+#' @param init.structure
+#'
+#' @seealso \code{\link{nosoiSim}}
+##
+
+RasterSanityChecks <- function(structure.raster,init.structure) {
+  if(!class(structure.raster) == "RasterLayer") stop("structure.raster must be a raster (class RasterLayer).")
+  start.env <- raster::extract(structure.raster,cbind(init.structure[1],init.structure[2]))
+  if(is.na(start.env)) stop("Your starting position (init.structure) should be on the raster.")
+}

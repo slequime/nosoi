@@ -75,142 +75,34 @@ singleContinuous <- function(type,
   #Sanity checks---------------------------------------------------------------------------------------------------------------------------
   #This section checks if the arguments of the function are in a correct format for the function to run properly
 
-  if (is.na(length.sim) | length.sim <= 1) stop("You must specify a length (in time units) for your simulation (bigger than 1).")
-  if (is.na(max.infected) | max.infected <= 1) stop("You must specify a maximum number of infected hosts (bigger than 1).")
-  if (is.na(init.individuals) | init.individuals < 1 | !init.individuals%%1==0) stop("The transmission chain should be started by 1 or more (integer) individuals")
+  CoreSanityChecks(length.sim, max.infected, init.individuals)
 
   #Parsing timeContact
-  if (diff.timeContact == FALSE & timeDep.timeContact == FALSE) {
-    if (! is.function(timeContact)) stop("Contact probability should be a function of time.")
-    timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)))
-  }
-
-  if (diff.timeContact == TRUE & timeDep.timeContact == FALSE) {
-    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'current.env.value'))==FALSE) stop("timeContact should have 'current.env.value' as a variable. diff.timeContact == TRUE.")
-    timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=TRUE)
-  }
-
-  if (diff.timeContact == FALSE & timeDep.timeContact == TRUE) {
-    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'prestime'))==FALSE) stop("timeContact should have 'prestime' as a variable. timeDep.timeContact == TRUE.")
-    timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=FALSE,timeDep=TRUE)
-  }
-
-  if (diff.timeContact == TRUE & timeDep.timeContact == TRUE) {
-    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'current.env.value'))==FALSE) stop("timeContact should have 'current.env.value' as a variable. diff.timeContact == TRUE.")
-    if (any(str_detect(paste0(as.character(body(timeContact)),collapse=" "),'prestime'))==FALSE) stop("timeContact should have 'prestime' as a variable. timeDep.timeContact == TRUE.")
-    timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=TRUE,timeDep=TRUE)
-  }
+  timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=diff.timeContact, timeDep = timeDep.timeContact, continuous=TRUE)
 
   #Parsing moveDist
-  if (diff.moveDist == FALSE) {
-    if (! is.function(moveDist)) stop("Contact probability should be a function of time.")
-    moveDistParsed <- parseFunction(moveDist, param.moveDist, as.character(quote(moveDist)))
-  }
-
-  if (diff.moveDist == TRUE) {
-    if (any(str_detect(paste0(as.character(body(moveDist)),collapse=" "),'current.env.value'))==FALSE) stop("moveDist should have 'current.env.value' as a variable. diff.moveDist == TRUE.")
-    moveDistParsed <- parseFunction(moveDist, param.moveDist, as.character(quote(moveDist)),diff=TRUE)
-  }
-
-  if (diff.moveDist == FALSE & timeDep.moveDist == TRUE) {
-    if (any(str_detect(paste0(as.character(body(moveDist)),collapse=" "),'prestime'))==FALSE) stop("moveDist should have 'prestime' as a variable. timeDep.moveDist == TRUE.")
-    moveDistParsed <- parseFunction(moveDist, param.moveDist, as.character(quote(moveDist)),diff=FALSE,timeDep=TRUE)
-  }
-
-  if (diff.moveDist == TRUE & timeDep.moveDist == TRUE) {
-    if (any(str_detect(paste0(as.character(body(moveDist)),collapse=" "),'current.env.value'))==FALSE) stop("moveDist should have 'current.env.value' as a variable. diff.moveDist == TRUE.")
-    if (any(str_detect(paste0(as.character(body(moveDist)),collapse=" "),'prestime'))==FALSE) stop("moveDist should have 'prestime' as a variable. timeDep.moveDist == TRUE.")
-    moveDistParsed <- parseFunction(moveDist, param.moveDist, as.character(quote(moveDist)),diff=TRUE,timeDep=TRUE)
-  }
+  moveDistParsed <- parseFunction(moveDist, param.moveDist, as.character(quote(moveDist)),diff=diff.moveDist, timeDep = timeDep.moveDist, continuous=TRUE)
 
   #Parsing pTrans
-  if (diff.pTrans == FALSE & timeDep.pTrans == FALSE) {
-    if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
-    pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)))
-  }
-
-  if (diff.pTrans == TRUE & timeDep.pTrans == FALSE) {
-    if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
-
-    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'current.env.value'))==FALSE) stop("pTrans should have 'current.env.value' as a variable. diff.pTrans == TRUE.")
-    pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=TRUE)
-  }
-
-  if (diff.pTrans == FALSE & timeDep.pTrans == TRUE) {
-    if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
-    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'prestime'))==FALSE) stop("pTrans should have 'prestime' as a variable. timeDep.pTrans == TRUE.")
-    pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=FALSE,timeDep=TRUE)
-  }
-
-  if (diff.pTrans == TRUE & timeDep.pTrans == TRUE) {
-    if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
-    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'current.env.value'))==FALSE) stop("pTrans should have 'current.env.value' as a variable. diff.pTrans == TRUE.")
-    if (any(str_detect(paste0(as.character(body(pTrans)),collapse=" "),'prestime'))==FALSE) stop("pTrans should have 'prestime' as a variable. timeDep.pTrans == TRUE.")
-    pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=TRUE,timeDep=TRUE)
-  }
+  pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=diff.pTrans, timeDep = timeDep.pTrans, continuous=TRUE)
 
   #Parsing pExit
-
-  if (diff.pExit == FALSE) {
-    pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)))
-  }
-
-  if (diff.pExit == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'current.env.value'))==FALSE) stop("pExit should have 'current.env.value' as a variable. diff.pExit == TRUE.")
-    pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=TRUE)
-  }
-
-  if (diff.pExit == FALSE & timeDep.pExit == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'prestime'))==FALSE) stop("pExit should have 'prestime' as a variable. timeDep.pExit == TRUE.")
-    pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=FALSE,timeDep=TRUE)
-  }
-
-  if (diff.pExit == TRUE & timeDep.pExit == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'current.env.value'))==FALSE) stop("pExit should have 'current.env.value' as a variable. diff.pExit == TRUE.")
-    if (any(str_detect(paste0(as.character(body(pExit)),collapse=" "),'prestime'))==FALSE) stop("pExit should have 'prestime' as a variable. timeDep.pExit == TRUE.")
-    pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=TRUE,timeDep=TRUE)
-  }
+  pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=diff.pExit, timeDep = timeDep.pExit, continuous=TRUE)
 
   #Discrete states sanity checks -------------------------------------------------------------------------------------------------------------------
 
-  # if (!is.matrix(structure.matrix)) stop("structure.matrix should be a matrix.")
-  # if (ncol(structure.matrix)!=nrow(structure.matrix)) stop("structure.matrix should have the same number of rows and columns.")
-  # if (!identical(colnames(structure.matrix),rownames(structure.matrix))) stop("structure.matrix rows and columns should have the same names.")
-  # if (any(rowSums(structure.matrix) != 1)) stop("structure.matrix rows should sum up to 1.")
-  # if (!init.structure %in% rownames(structure.matrix)) stop("init.structure should be a state present in structure.matrix.")
-  #
-  # melted.structure.matrix <- reshape2::melt(structure.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
-
   #Extract environmental value at origin:
+  RasterSanityChecks(structure.raster,init.structure)
   start.env <- raster::extract(structure.raster,cbind(init.structure[1],init.structure[2]))
   max.raster <- max(structure.raster[], na.rm=T)
 
   #Parse pMove (same as pExit !!attention if diff)
-  if (diff.pMove == FALSE & timeDep.pMove == FALSE) {
-    pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)))
-  }
-
-  if (diff.pMove == TRUE & timeDep.pMove == FALSE) {
-    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'current.env.value'))==FALSE) stop("pMove should have 'current.env.value' as a variable. diff.pMove == TRUE.")
-    pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=TRUE)
-  }
-
-  if (diff.pMove == FALSE & timeDep.pMove == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'prestime'))==FALSE) stop("pMove should have 'prestime' as a variable. timeDep.pMove == TRUE.")
-    pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=FALSE,timeDep=TRUE)
-  }
-
-  if (diff.pMove == TRUE & timeDep.pMove == TRUE) {
-    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'current.env.value'))==FALSE) stop("pMove should have 'current.env.value' as a variable. diff.pMove == TRUE.")
-    if (any(str_detect(paste0(as.character(body(pMove)),collapse=" "),'prestime'))==FALSE) stop("pMove should have 'prestime' as a variable. timeDep.pMove == TRUE.")
-    pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=TRUE,timeDep=TRUE)
-  }
+  pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=diff.pMove, timeDep = timeDep.pMove, continuous=TRUE)
 
   #START OF THE SIMULATION --------------------------------------------------------------------------------------------------------
 
   # Init
-  message("Starting the simulation")
-  message("Initializing ...", appendLF = FALSE)
+  message("Starting the simulation\nInitializing ...", appendLF = FALSE)
 
   #Creation of initial data ----------------------------------------------------------
 
@@ -398,18 +290,13 @@ singleContinuous <- function(type,
       }
     }
 
-    if (progress.bar == TRUE & pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: ", Host.count," (",round((Host.count/max.infected)*100,digits=0),"% of maximum infected hosts).")}
+    if (progress.bar == TRUE) progressMessage(Host.count, pres.time, print.step, length.sim, max.infected)
     if (Host.count > max.infected) {break}
   }
-  message(" done.")
-  message("The simulation has run for ",pres.time," units of time and a total of ",Host.count," hosts have been infected.")
 
-  nosoi.output <- list()
+  endMessage(Host.count, pres.time)
 
-  nosoi.output[["total.time"]] <- pres.time
-  nosoi.output[["N.infected"]] <- Host.count
-  nosoi.output[["table.hosts"]] <- table.hosts
-  nosoi.output[["table.state"]] <- state.archive
+  nosoi.output <- outputWrapper(Host.count, pres.time, table.hosts, state.archive)
 
   return(nosoi.output)
 }

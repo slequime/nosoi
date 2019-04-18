@@ -9,6 +9,7 @@ test_that("Error message pops out when missing state in diff functions", {
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
   test.raster[] <- runif(10000, -80, 180)
   test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
+
   # plot(test.raster)
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
@@ -49,7 +50,7 @@ test_that("Error message pops out when missing state in diff functions", {
                             diff.pExit=TRUE,
                             pExit=p_Exit_fct,
                             param.pExit=NA),
-    "pExit should have 'current.env.value' as a variable. diff.pExit == TRUE."
+    "Your are missing some function argument in pExit. diff and/or timeDep.pExit is/are TRUE."
   )
 
   p_Exit_fct  <- function(t,current.env.value){(1-current.env.value)}
@@ -75,7 +76,7 @@ test_that("Error message pops out when missing state in diff functions", {
                             diff.pExit=TRUE,
                             pExit=p_Exit_fct,
                             param.pExit=NA),
-    "pMove should have 'current.env.value' as a variable. diff.pMove == TRUE."
+    "Your are missing some function argument in pMove. diff and/or timeDep.pMove is/are TRUE."
   )
 
   p_Move_fct  <- function(t,current.env.value){current.env.value/1000}
@@ -102,7 +103,7 @@ test_that("Error message pops out when missing state in diff functions", {
                             diff.pExit=TRUE,
                             pExit=p_Exit_fct,
                             param.pExit=NA),
-    "moveDist should have 'current.env.value' as a variable. diff.moveDist == TRUE."
+    "Your are missing some function argument in moveDist. diff and/or timeDep.moveDist is/are TRUE."
   )
 
   moveDist_fct = function(t,current.env.value){return(100/current.env.value+1)}
@@ -130,7 +131,7 @@ test_that("Error message pops out when missing state in diff functions", {
                             diff.pExit=TRUE,
                             pExit=p_Exit_fct,
                             param.pExit=NA),
-    "pTrans should have 'current.env.value' as a variable. diff.pTrans == TRUE."
+    "pTrans should have 'current.env.value' as the second variable. diff.pTrans is TRUE."
   )
 })
 

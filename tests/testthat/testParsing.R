@@ -4,7 +4,7 @@ test_that("Missing args", {
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Exit_fct  <- function(x){rep(0.08,length(x))}
+  p_Exit_fct  <- function(t){return(0.08)}
 
   proba <- function(t, p_max, t_incub){
     if(t <= t_incub){p=0}
@@ -12,7 +12,7 @@ test_that("Missing args", {
     return(p)
   }
 
-  time_contact = function(x){round(rnorm(x, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   p_exit_param1 <- function(x){rnorm(x,mean = 10,sd=2)}
 
@@ -80,7 +80,7 @@ test_that("Actual parsing", {
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-  p_Exit_fct  <- function(x){rep(0.08,length(x))}
+  p_Exit_fct  <- function(t){return(0.08)}
 
   proba <- function(t, p_max, t_incub){
     if(t <= t_incub){p = 0}

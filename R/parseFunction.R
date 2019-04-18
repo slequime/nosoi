@@ -7,6 +7,9 @@
 #' @param param.pFunc a named list of arguments
 #' @param name the name of the function
 #' @param diff is the function differential according to state/env.variable? (TRUE/FALSE)
+#' @param timeDep
+#' @param continuous
+#' @param stateNames
 #'
 #' @return list of parsed quantities:
 #' \itemize{
@@ -19,19 +22,11 @@
 #' @keywords internal
 ##
 
-parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE) {
+parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE, continuous=FALSE, stateNames=NA) {
+
+  FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, continuous, stateNames)
+
   pFunc <- match.fun(pFunc)
-
-  if ((diff == FALSE & timeDep == FALSE & length(formalArgs(pFunc)) > 1)|(diff == TRUE & timeDep == FALSE & length(formalArgs(pFunc)) > 2)|(diff == FALSE & timeDep == TRUE & length(formalArgs(pFunc)) > 2)|(diff == TRUE & timeDep==TRUE & length(formalArgs(pFunc)) > 3)) {
-    if (!is.list(is.na(param.pFunc)) && is.na(param.pFunc)) {
-      stop("There is a probleme with your function ", name, ": you should provide a parameter list named param.", name, ".")
-    }
-
-    if (is.list(param.pFunc)) {
-      pFunc.param <- formalArgs(pFunc)[-1]
-      if(! all(names(param.pFunc) %in% pFunc.param)) stop(paste0("Parameter name in param.", name, " should match the name used in ", name, "."))
-    }
-  }
 
   if (timeDep == FALSE){
     pFunc_eval <- function(prestime, inf.time,...) {
