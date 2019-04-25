@@ -1,0 +1,26 @@
+navbar:
+  structure:
+    left:  [home, intro, reference, articles, tutorials, news]
+    right: [github]
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    intro:
+      text: Get started
+      href: articles/nosoi.html
+    articles:
+      text: Articles
+      menu:
+      - text: 1 - Single-host pathogen in a non-structured host population
+        href: articles/single-host-none.html
+      - text: 3 - Single-host pathogen in a structured (continuous) host population
+        href: articles/single-host-continuous.html
+      - text: 2 - Single-host pathogen in a structured (discrete) host population
+        href: articles/single-host-discrete.html
+    github:
+      icon: fa-github fa-lg
+      href: https://github.com/slequime/nosoi

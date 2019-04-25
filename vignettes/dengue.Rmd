@@ -1,0 +1,12 @@
+---
+title: "Spread of dengue virus in a discrete space"
+author: "Sebastian Lequime"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dengue}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+##WORK IN PROGRESS

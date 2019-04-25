@@ -3,11 +3,11 @@
 #' @description
 #' Checks if the simulator can start: did the user provide a length, a maximum number of infected individuals and a number of "seeding" individuals?
 #'
-#' @param length.sim
-#' @param max.infected
-#' @param init.individuals
+#' @param length.sim specifies the length (in unit of time) over which the simulation should be run.
+#' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
+#' @param init.individuals  number of initially infected individuals.
 #'
-#' @seealso \code{\link{nosoiSim}}
+#' @keywords internal
 ##
 
 CoreSanityChecks <- function(length.sim, max.infected, init.individuals) {
@@ -21,16 +21,16 @@ CoreSanityChecks <- function(length.sim, max.infected, init.individuals) {
 #' @description
 #' Checks if the function is properly formated given the user's input and nosoi's requirements.
 #'
-#' @param pFunc
-#' @param name
-#' @param param.pFunc
-#' @param timeDep
-#' @param diff
-#' @param structure
-#' @param continuous
-#' @param stateNames
+#' @param pFunc a function
+#' @param name the name of the function
+#' @param param.pFunc a named list of arguments
+#' @param timeDep is the function differential according to absolute time? (TRUE/FALSE)
+#' @param diff is the function differential according to state/env.variable? (TRUE/FALSE)
+#' @param structure is the function to be used in a structured population? (TRUE/FALSE)
+#' @param continuous is the function to be used in a continuous space? (TRUE/FALSE)
+#' @param stateNames name of the states (vector) in case of discrete structure.
 #'
-#' @seealso \code{\link{nosoiSim}}
+#' @keywords internal
 ##
 
 FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, continuous, stateNames) {
@@ -70,10 +70,10 @@ FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, contin
 #' @description
 #' Checks if the transition matrix is properly formated given the user's input and nosoi's requirements.
 #'
-#' @param structure.matrix
-#' @param init.structure
+#' @param structure.matrix transition matrix (probabilities) to go from location A (row) to B (column)
+#' @param init.structure which state (i.e. location) the initially infected individuals are located.
 #'
-#' @seealso \code{\link{nosoiSim}}
+#' @keywords internal
 ##
 
 MatrixSanityChecks <- function(structure.matrix,init.structure) {
@@ -89,10 +89,10 @@ MatrixSanityChecks <- function(structure.matrix,init.structure) {
 #' @description
 #' Checks if the environmental raster is properly formated given the user's input and nosoi's requirements.
 #'
-#' @param structure.matrix
-#' @param init.structure
+#' @param structure.raster raster object defining the environmental variable.
+#' @param init.structure which state (i.e. location) the initially infected individuals are located.
 #'
-#' @seealso \code{\link{nosoiSim}}
+#' @keywords internal
 ##
 
 RasterSanityChecks <- function(structure.raster,init.structure) {

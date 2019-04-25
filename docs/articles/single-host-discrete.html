@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2 - Single-host pathogen in a structured (discrete) host population • nosoi</title>
+<title>Spread of a pathogen in a discrete structured population • nosoi</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="2 - Single-host pathogen in a structured (discrete) host population">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Spread of a pathogen in a discrete structured population">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -50,7 +50,46 @@
   </a>
 </li>
 <li>
-  <a href="../articles/nosoi.html">Get started</a>
+  <a href="../articles/nosoi.html">General principles</a>
+</li>
+<li>
+  <a href="../articles/get-started.html">Get started</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/single-host-none.html">Spread of a pathogen in a homogeneous population</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-discrete.html">Spread of a pathogen in a discrete structured population</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-continuous.html">Spread of a pathogen in a continuous space</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/dengue.html">Spread of dengue virus in a discrete space</a>
+    </li>
+    <li>
+      <a href="../articles/ebola.html">Spread of Ebola virus in a continuous space</a>
+    </li>
+    <li>
+      <a href="../articles/vector-competence.html">Epidemiological impact of mosquito vector competence</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -63,13 +102,25 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/single-host-continuous.html">3 - Single-host pathogen in a structured (continuous) host population</a>
+      <a href="../articles/dengue.html">Spread of dengue virus in a discrete space</a>
     </li>
     <li>
-      <a href="../articles/single-host-discrete.html">2 - Single-host pathogen in a structured (discrete) host population</a>
+      <a href="../articles/ebola.html">Spread of Ebola virus in a continuous space</a>
     </li>
     <li>
-      <a href="../articles/single-host-none.html">1 - Single-host pathogen in a non-structured host population</a>
+      <a href="../articles/get-started.html">Get started</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-continuous.html">Spread of a pathogen in a continuous space</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-discrete.html">Spread of a pathogen in a discrete structured population</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-none.html">Spread of a pathogen in a homogeneous population</a>
+    </li>
+    <li>
+      <a href="../articles/vector-competence.html">Epidemiological impact of mosquito vector competence</a>
     </li>
   </ul>
 </li>
@@ -93,10 +144,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>2 - Single-host pathogen in a structured (discrete) host population</h1>
+      <h1>Spread of a pathogen in a discrete structured population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-04-17</h4>
+            <h4 class="date">2019-04-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/single-host-discrete.Rmd"><code>vignettes/single-host-discrete.Rmd</code></a></small>
       <div class="hidden name"><code>single-host-discrete.Rmd</code></div>
@@ -133,26 +184,34 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SimulationB &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">TRUE</span>, ...)</code></pre></div>
 <p>This simulation (<code>singleNone</code>) type takes several arguments or options to be able to run, namely:</p>
 <ul>
-<li><code>length.sim</code></li>
-<li><code>max.infected</code></li>
-<li><code>init.individuals</code></li>
-<li><code>init.structure</code></li>
+<li>
+<code>length.sim</code> <a href="single-host-none.html#general-parameters">see general parameters</a>
+</li>
+<li>
+<code>max.infected</code> <a href="single-host-none.html#general-parameters">see general parameters</a>
+</li>
+<li>
+<code>init.individuals</code> <a href="single-host-none.html#general-parameters">see general parameters</a>
+</li>
+<li>
+<code>init.structure</code> <a href="single-host-none.html#general-parameters">see general parameters</a>
+</li>
 <li><code>structure.matrix</code></li>
 <li>
-<code>pExit</code> with <code>param.pExit</code> and <code>diff.pExit</code>
+<code>pExit</code> with <code>param.pExit</code>, <code>diff.pExit</code> and <code>timeDep.pExit</code> <a href="single-host-none.html#pexit-param-pexit-and-timedep-pexit">see pExit</a>
 </li>
 <li>
-<code>pMove</code> with <code>param.pMove</code> and <code>diff.pMove</code>
+<code>pMove</code> with <code>param.pMove</code>, <code>diff.pMove</code> and <code>timeDep.pMove</code>
 </li>
 <li>
-<code>timeContact</code> with <code>param.timeContact</code> and <code>diff.timeContact</code>
+<code>timeContact</code> with <code>param.timeContact</code>, <code>diff.timeContact</code> and <code>timeDep.timeContact</code> <a href="single-host-none.html#timecontact-param-timecontact-and-timedep-timecontact">see timeContact</a>
 </li>
 <li>
-<code>pTrans</code> with <code>param.pTrans</code> and <code>diff.pTrans</code>
+<code>pTrans</code> with <code>param.pTrans</code>, <code>diff.pTrans</code> and <code>timeDep.pTrans</code> <a href="single-host-none.html#ptrans-param-ptrans-and-timedep-ptrans">see pTrans</a>
 </li>
 <li><code>prefix.host</code></li>
 </ul>
-<p>All the <code>param</code> elements provide individual-level parameters to be taken into account; the <code>diff</code> elements informs the simulator if there is a differential probability according to the state the host is currently in.</p>
+<p>All the <code>param</code> elements provide individual-level parameters to be taken into account; the <code>diff</code> elements inform the simulator if there is a differential probability according to the state the host is currently in and the <code>timeDep</code> elements inform the simulator if the “absolute” simulation time should be taken into account.</p>
 <div id="general-parameters" class="section level3">
 <h3 class="hasAnchor">
 <a href="#general-parameters" class="anchor"></a>General parameters</h3>
@@ -166,7 +225,6 @@
 <div id="work-in-progress" class="section level2">
 <h2 class="hasAnchor">
 <a href="#work-in-progress" class="anchor"></a>WORK IN PROGRESS</h2>
-<p><a href="single-host-none.html#pexit-param-pexit-and-timedep-pexit">see pExit</a> <a href="single-host-none.html#timecontact-param-timecontact-and-timedep-timecontact">see timeContact</a> <a href="single-host-none.html#ptrans-param-ptrans-and-timedep-ptrans">see pTrans</a></p>
 </div>
   </div>
 

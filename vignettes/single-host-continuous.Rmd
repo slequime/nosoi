@@ -1,6 +1,6 @@
 ---
-title: "3 - Single-host pathogen in a structured (continuous) host population"
-author: "Vignette Author"
+title: "Spread of a pathogen in a continuous space"
+author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

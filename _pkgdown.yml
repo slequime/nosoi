@@ -1,0 +1,38 @@
+navbar:
+  structure:
+    left:  [home, intro, start, tutorials, examples, reference, news]
+    right: [github]
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    intro:
+      text: General principles
+      href: articles/nosoi.html
+    start:
+      text: Get started
+      href: articles/get-started.html
+    tutorials:
+      text: Tutorials
+      menu:
+      - text: Spread of a pathogen in a homogeneous population
+        href: articles/single-host-none.html
+      - text: Spread of a pathogen in a discrete structured population
+        href: articles/single-host-discrete.html
+      - text: Spread of a pathogen in a continuous space
+        href: articles/single-host-continuous.html
+    examples:
+      text: Examples
+      menu:
+      - text: Spread of dengue virus in a discrete space
+        href: articles/dengue.html
+      - text: Spread of Ebola virus in a continuous space
+        href: articles/ebola.html
+      - text: Epidemiological impact of mosquito vector competence
+        href: articles/vector-competence.html
+    github:
+      icon: fa-github fa-lg
+      href: https://github.com/slequime/nosoi

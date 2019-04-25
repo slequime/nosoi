@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1 - Single-host pathogen in a non-structured host population • nosoi</title>
+<title>Spread of a pathogen in a homogeneous population • nosoi</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="1 - Single-host pathogen in a non-structured host population">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Spread of a pathogen in a homogeneous population">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -50,7 +50,46 @@
   </a>
 </li>
 <li>
-  <a href="../articles/nosoi.html">Get started</a>
+  <a href="../articles/nosoi.html">General principles</a>
+</li>
+<li>
+  <a href="../articles/get-started.html">Get started</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/single-host-none.html">Spread of a pathogen in a homogeneous population</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-discrete.html">Spread of a pathogen in a discrete structured population</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-continuous.html">Spread of a pathogen in a continuous space</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/dengue.html">Spread of dengue virus in a discrete space</a>
+    </li>
+    <li>
+      <a href="../articles/ebola.html">Spread of Ebola virus in a continuous space</a>
+    </li>
+    <li>
+      <a href="../articles/vector-competence.html">Epidemiological impact of mosquito vector competence</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -63,13 +102,25 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/single-host-continuous.html">3 - Single-host pathogen in a structured (continuous) host population</a>
+      <a href="../articles/dengue.html">Spread of dengue virus in a discrete space</a>
     </li>
     <li>
-      <a href="../articles/single-host-discrete.html">2 - Single-host pathogen in a structured (discrete) host population</a>
+      <a href="../articles/ebola.html">Spread of Ebola virus in a continuous space</a>
     </li>
     <li>
-      <a href="../articles/single-host-none.html">1 - Single-host pathogen in a non-structured host population</a>
+      <a href="../articles/get-started.html">Get started</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-continuous.html">Spread of a pathogen in a continuous space</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-discrete.html">Spread of a pathogen in a discrete structured population</a>
+    </li>
+    <li>
+      <a href="../articles/single-host-none.html">Spread of a pathogen in a homogeneous population</a>
+    </li>
+    <li>
+      <a href="../articles/vector-competence.html">Epidemiological impact of mosquito vector competence</a>
     </li>
   </ul>
 </li>
@@ -93,10 +144,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>1 - Single-host pathogen in a non-structured host population</h1>
+      <h1>Spread of a pathogen in a homogeneous population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-04-17</h4>
+            <h4 class="date">2019-04-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/single-host-none.Rmd"><code>vignettes/single-host-none.Rmd</code></a></small>
       <div class="hidden name"><code>single-host-none.Rmd</code></div>
@@ -250,8 +301,9 @@ SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference
                         <span class="dt">prefix.host=</span><span class="st">"H"</span>,
                         <span class="dt">progress.bar=</span><span class="ot">FALSE</span>)
 <span class="co">#&gt; Starting the simulation</span>
-<span class="co">#&gt; Initializing ... running ...</span>
-<span class="co">#&gt;  done.</span>
+<span class="co">#&gt; Initializing ...</span>
+<span class="co">#&gt;  running ...</span>
+<span class="co">#&gt; done. </span>
 <span class="co">#&gt; The simulation has run for 40 units of time and a total of 111 hosts have been infected.</span></code></pre></div>
 <p>The simulation can stop before 100% of the progress bar is reached if the maximum number of infected hosts has been reached. Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111). Note that the simulation has stopped here before reaching <code>length.sim</code> as it has crossed the <code>max.infected</code> threshold set at 100.</p>
 </div>

@@ -1,5 +1,5 @@
 ---
-title: "2 - Single-host pathogen in a structured (discrete) host population"
+title: "Spread of a pathogen in a discrete structured population"
 author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -67,18 +67,18 @@ SimulationB <- nosoiSim(type="single", structure=TRUE, ...)
 
 This simulation (`singleNone`) type takes several arguments or options to be able to run, namely:
 
-- `length.sim` 
-- `max.infected` 
-- `init.individuals` 
-- `init.structure`
+- `length.sim` [see general parameters](single-host-none.html#general-parameters) 
+- `max.infected`  [see general parameters](single-host-none.html#general-parameters) 
+- `init.individuals`  [see general parameters](single-host-none.html#general-parameters) 
+- `init.structure`  [see general parameters](single-host-none.html#general-parameters) 
 - `structure.matrix`
-- `pExit` with `param.pExit` and `diff.pExit`
-- `pMove` with `param.pMove` and `diff.pMove`
-- `timeContact` with `param.timeContact` and `diff.timeContact`
-- `pTrans` with `param.pTrans` and `diff.pTrans`
+- `pExit` with `param.pExit`, `diff.pExit` and `timeDep.pExit` [see pExit](single-host-none.html#pexit-param-pexit-and-timedep-pexit) 
+- `pMove` with `param.pMove`, `diff.pMove` and `timeDep.pMove`
+- `timeContact` with `param.timeContact`, `diff.timeContact` and `timeDep.timeContact` [see timeContact](single-host-none.html#timecontact-param-timecontact-and-timedep-timecontact)
+- `pTrans` with `param.pTrans`, `diff.pTrans` and `timeDep.pTrans` [see pTrans](single-host-none.html#ptrans-param-ptrans-and-timedep-ptrans)
 - `prefix.host`
 
-All the `param` elements provide individual-level parameters to be taken into account; the `diff` elements informs the simulator if there is a differential probability according to the state the host is currently in.
+All the `param` elements provide individual-level parameters to be taken into account; the `diff` elements inform the simulator if there is a differential probability according to the state the host is currently in and the `timeDep` elements inform the simulator if the "absolute" simulation time should be taken into account.
 
 ### General parameters
 
@@ -95,6 +95,6 @@ SimulationA <- nosoiSim(type="single", structure=TRUE,
 
 ## WORK IN PROGRESS
 
-[see pExit](single-host-none.html#pexit-param-pexit-and-timedep-pexit) 
-[see timeContact](single-host-none.html#timecontact-param-timecontact-and-timedep-timecontact)
-[see pTrans](single-host-none.html#ptrans-param-ptrans-and-timedep-ptrans)
+
+
+

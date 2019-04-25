@@ -1,10 +1,10 @@
 ---
-title: "Get started with nosoi"
+title: "General principles"
 author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{getstarted}
+  %\VignetteIndexEntry{general-principles}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,7 +21,7 @@ vignette: >
 
 ## Essential building blocs: 3 probabilities and 2 numbers
 
-As it core, `nosoi` can be summarised by 3 probabilities at a specific time point:
+At its core, `nosoi` can be summarised by 3 probabilities and 2 numbers at a specific time point:
 
 - the probability to exit the simulation (here named `pExit`). For hosts, that means, for example, dying, being cured, leaving the study area, etc.
 - the probability to move (here named `pMove`, only relevant when your simulation has some kind of structure, either in a discrete or continuous space). For hosts, that could, for example, travelling, changing status (becoming rich, or getting a treatment), etc.

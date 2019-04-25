@@ -10,7 +10,7 @@
 #' @param max.infected
 #'
 #'
-#' @seealso \code{\link{nosoiSim}}
+#' @keywords internal
 ##
 
 progressMessage <- function(Host.count, pres.time, print.step, length.sim, max.infected) {
@@ -26,7 +26,7 @@ progressMessage <- function(Host.count, pres.time, print.step, length.sim, max.i
 #' @param pres.time
 #'
 #'
-#' @seealso \code{\link{nosoiSim}}
+#' @keywords internal
 ##
 
 endMessage <- function(Host.count, pres.time) {
@@ -44,7 +44,7 @@ endMessage <- function(Host.count, pres.time) {
 #' @param state.archive
 #'
 #'
-#' @seealso \code{\link{nosoiSim}}
+#' @keywords internal
 ##
 
 outputWrapper <- function(Host.count, pres.time, table.hosts, state.archive) {

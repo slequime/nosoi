@@ -7,14 +7,12 @@
 #' @param param.pFunc a named list of arguments
 #' @param name the name of the function
 #' @param diff is the function differential according to state/env.variable? (TRUE/FALSE)
-#' @param timeDep
-#' @param continuous
-#' @param stateNames
+#' @param timeDep is the function differential according to absolute time? (TRUE/FALSE)
+#' @param continuous is the function to be used in a continuous space? (TRUE/FALSE)
+#' @param stateNames name of the states (vector) in case of discrete structure.
 #'
 #' @return list of parsed quantities:
 #' \itemize{
-#'  \item{"type"}{A string, "simple" of "complex": are there several arguments to the function ?}
-#'  \item{"nArgs"}{Number of arguments (besides time).}
 #'  \item{"vect"}{Vectorized version of the function.}
 #'  \item{"vectArgs"}{Vector of arguments for the vectorized function.}
 #' }

@@ -4,7 +4,8 @@
 \alias{parseFunction}
 \title{Parse function for later use}
 \usage{
-parseFunction(pFunc, param.pFunc, name, diff = FALSE, timeDep = FALSE)
+parseFunction(pFunc, param.pFunc, name, diff = FALSE, timeDep = FALSE,
+  continuous = FALSE, stateNames = NA)
 }
 \arguments{
 \item{pFunc}{a function}
@@ -14,12 +15,16 @@ parseFunction(pFunc, param.pFunc, name, diff = FALSE, timeDep = FALSE)
 \item{name}{the name of the function}
 
 \item{diff}{is the function differential according to state/env.variable? (TRUE/FALSE)}
+
+\item{timeDep}{is the function differential according to absolute time? (TRUE/FALSE)}
+
+\item{continuous}{is the function to be used in a continuous space? (TRUE/FALSE)}
+
+\item{stateNames}{name of the states (vector) in case of discrete structure.}
 }
 \value{
 list of parsed quantities:
 \itemize{
- \item{"type"}{A string, "simple" of "complex": are there several arguments to the function ?}
- \item{"nArgs"}{Number of arguments (besides time).}
  \item{"vect"}{Vectorized version of the function.}
  \item{"vectArgs"}{Vector of arguments for the vectorized function.}
 }

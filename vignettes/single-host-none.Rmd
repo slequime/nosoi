@@ -1,5 +1,5 @@
 ---
-title: "1 - Single-host pathogen in a non-structured host population"
+title: "Spread of a pathogen in a homogeneous population"
 author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
