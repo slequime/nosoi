@@ -8,7 +8,15 @@ progressMessage(Host.count, pres.time, print.step, length.sim,
   max.infected)
 }
 \arguments{
-\item{max.infected}{}
+\item{Host.count}{number of infected hosts}
+
+\item{pres.time}{current time of the simulation}
+
+\item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
+
+\item{length.sim}{the length (in unit of time) over which the simulation should be run.}
+
+\item{max.infected}{the maximum number of hosts that can be infected in the simulation.}
 }
 \description{
 Echos the state of the simulation at any given time step provided by the user.

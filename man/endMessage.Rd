@@ -7,7 +7,9 @@
 endMessage(Host.count, pres.time)
 }
 \arguments{
-\item{pres.time}{}
+\item{Host.count}{number of infected hosts}
+
+\item{pres.time}{current time of the simulation}
 }
 \description{
 Message that ends the simulation

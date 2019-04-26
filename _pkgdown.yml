@@ -19,11 +19,11 @@ navbar:
       text: Tutorials
       menu:
       - text: Spread of a pathogen in a homogeneous population
-        href: articles/single-host-none.html
+        href: articles/none.html
       - text: Spread of a pathogen in a discrete structured population
-        href: articles/single-host-discrete.html
+        href: articles/discrete.html
       - text: Spread of a pathogen in a continuous space
-        href: articles/single-host-continuous.html
+        href: articles/continuous.html
     examples:
       text: Examples
       menu:

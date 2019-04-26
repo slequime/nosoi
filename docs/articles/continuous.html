@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -63,13 +63,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/single-host-none.html">Spread of a pathogen in a homogeneous population</a>
+      <a href="../articles/none.html">Spread of a pathogen in a homogeneous population</a>
     </li>
     <li>
-      <a href="../articles/single-host-discrete.html">Spread of a pathogen in a discrete structured population</a>
+      <a href="../articles/discrete.html">Spread of a pathogen in a discrete structured population</a>
     </li>
     <li>
-      <a href="../articles/single-host-continuous.html">Spread of a pathogen in a continuous space</a>
+      <a href="../articles/continuous.html">Spread of a pathogen in a continuous space</a>
     </li>
   </ul>
 </li>
@@ -102,7 +102,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/continuous.html">Spread of a pathogen in a continuous space</a>
+    </li>
+    <li>
       <a href="../articles/dengue.html">Spread of dengue virus in a discrete space</a>
+    </li>
+    <li>
+      <a href="../articles/discrete.html">Spread of a pathogen in a discrete structured population</a>
     </li>
     <li>
       <a href="../articles/ebola.html">Spread of Ebola virus in a continuous space</a>
@@ -111,13 +117,7 @@
       <a href="../articles/get-started.html">Get started</a>
     </li>
     <li>
-      <a href="../articles/single-host-continuous.html">Spread of a pathogen in a continuous space</a>
-    </li>
-    <li>
-      <a href="../articles/single-host-discrete.html">Spread of a pathogen in a discrete structured population</a>
-    </li>
-    <li>
-      <a href="../articles/single-host-none.html">Spread of a pathogen in a homogeneous population</a>
+      <a href="../articles/none.html">Spread of a pathogen in a homogeneous population</a>
     </li>
     <li>
       <a href="../articles/vector-competence.html">Epidemiological impact of mosquito vector competence</a>
@@ -147,10 +147,10 @@
       <h1>Spread of a pathogen in a continuous space</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-04-25</h4>
+            <h4 class="date">2019-04-26</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/single-host-continuous.Rmd"><code>vignettes/single-host-continuous.Rmd</code></a></small>
-      <div class="hidden name"><code>single-host-continuous.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/continuous.Rmd"><code>vignettes/continuous.Rmd</code></a></small>
+      <div class="hidden name"><code>continuous.Rmd</code></div>
 
     </div>
 
@@ -159,6 +159,16 @@
 <div id="work-in-progress" class="section level1">
 <h1 class="hasAnchor">
 <a href="#work-in-progress" class="anchor"></a>Work in progress</h1>
+<p><details><summary>Code used to create a random raster</summary></details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">860</span>)
+test.raster &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="dt">nrows=</span><span class="dv">100</span>, <span class="dt">ncols=</span><span class="dv">100</span>, <span class="dt">xmn=</span><span class="op">-</span><span class="dv">50</span>, <span class="dt">xmx=</span><span class="dv">50</span>, <span class="dt">ymn=</span><span class="op">-</span><span class="dv">50</span>,<span class="dt">ymx=</span><span class="dv">50</span>)
+test.raster[] &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(<span class="dv">10000</span>, <span class="op">-</span><span class="dv">80</span>, <span class="dv">150</span>)
+test.raster &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/focal">focal</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/focal">focal</a></span>(test.raster, <span class="dt">w=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>), mean), <span class="dt">w=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>), mean)</code></pre></div>
+<p></p>
+<p><code>structure.raster</code></p>
+<p><img src="continuous_files/figure-html/setupMatrix-1.png" width="700"></p>
 </div>
   </div>
 
@@ -176,7 +186,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Sebastian Lequime, Paul Bastide, Simon Dellicour, Guy Baele.</p>
+  <p>Developed by Sebastian Lequime, Paul Bastide, Simon Dellicour, Philippe Lemey, Guy Baele.</p>
 </div>
 
 <div class="pkgdown">

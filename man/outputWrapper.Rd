@@ -7,7 +7,13 @@
 outputWrapper(Host.count, pres.time, table.hosts, state.archive)
 }
 \arguments{
-\item{state.archive}{}
+\item{Host.count}{number of infected hosts}
+
+\item{pres.time}{current time of the simulation}
+
+\item{table.hosts}{data.table of hosts}
+
+\item{state.archive}{data.table of hosts movement}
 }
 \description{
 Wraps up the nosoi output

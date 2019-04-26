@@ -2,12 +2,12 @@ pandoc: 1.19.2.1
 pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
+  continuous: continuous.html
   dengue: dengue.html
+  discrete: discrete.html
   ebola: ebola.html
   get-started: get-started.html
+  none: none.html
   nosoi: nosoi.html
-  single-host-continuous: single-host-continuous.html
-  single-host-discrete: single-host-discrete.html
-  single-host-none: single-host-none.html
   vector-competence: vector-competence.html
 
