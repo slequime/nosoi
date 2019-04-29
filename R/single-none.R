@@ -63,7 +63,7 @@ singleNone <- function(length.sim,
   #Creation of initial data ----------------------------------------------------------
 
   res <- nosoiSimConstructor(N.infected = init.individuals,
-                             pres.time = 1,
+                             total.time = 1,
                              table.hosts = iniTable(init.individuals, NA, prefix.host, param.pExit, param.pMove = NA, param.timeContact, param.pTrans, param.moveDist = NA),
                              table.state = NA,
                              type = "singleNone")
@@ -74,25 +74,12 @@ singleNone <- function(length.sim,
   for (pres.time in 1:length.sim) {
 
     #Step 0: Active hosts ----------------------------------------------------------
-    active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
-    if (any(active.hosts)) {
-
-      fun <- function(z) {
-        pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
-      }
-      p.exit.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
-
-      exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
-    }
-    # }
-
-    exiting.full <- active.hosts
-    exiting.full[exiting.full] <- exiting
+    exiting.full <- getExiting(res, pres.time, pExitParsed)
 
     res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                     active = 0)]
 
-    active.hosts[active.hosts] <- !exiting # Update active hosts
+    active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
 
     if (!any(active.hosts)) {break}
 
@@ -112,7 +99,7 @@ singleNone <- function(length.sim,
 
   endMessage(res$N.infected, pres.time)
 
-  res$pres.time <- pres.time
+  res$total.time <- pres.time
 
   return(res)
 }

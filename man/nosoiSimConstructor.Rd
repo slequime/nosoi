@@ -4,19 +4,19 @@
 \alias{nosoiSimConstructor}
 \title{nosoiSim Constructor}
 \usage{
-nosoiSimConstructor(N.infected, pres.time, table.hosts, table.state,
+nosoiSimConstructor(N.infected, total.time, table.hosts, table.state,
   type = c("singleNone", "singleDiscrete", "singleContinuous"))
 }
 \arguments{
 \item{N.infected}{number of infected hosts}
-
-\item{pres.time}{current time of the simulation}
 
 \item{table.hosts}{data.table of hosts}
 
 \item{table.state}{data.table of hosts movement}
 
 \item{type}{name of the diffusion}
+
+\item{pres.time}{current time of the simulation}
 }
 \value{
 An object of class \code{nosoiSim}

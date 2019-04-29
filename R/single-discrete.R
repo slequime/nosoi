@@ -93,7 +93,7 @@ singleDiscrete <- function(type,
   #Creation of initial data ----------------------------------------------------------
 
   res <- nosoiSimConstructor(N.infected = init.individuals,
-                             pres.time = 1,
+                             total.time = 1,
                              table.hosts = iniTable(init.individuals, init.structure, prefix.host, param.pExit, param.pMove, param.timeContact, param.pTrans, param.moveDist = NA),
                              table.state = iniTableState(init.individuals, init.structure, prefix.host),
                              type = "singleDiscrete")
@@ -104,31 +104,14 @@ singleDiscrete <- function(type,
   for (pres.time in 1:length.sim) {
 
     #Step 0: Active hosts ----------------------------------------------------------
-    active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
-
-    if (any(active.hosts)) {
-
-      fun <- function(z) {
-        pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
-      }
-      p.exit.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
-
-      exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
-    }
-
-    exiting.full <- active.hosts
-    exiting.full[exiting.full] <- exiting
+    exiting.full <- getExiting(res, pres.time, pExitParsed)
 
     res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
-                                    active = 0)]
+                                        active = 0)]
 
-    exiting.ID <- res$table.hosts[active.hosts][as.vector(exiting), "hosts.ID"]$hosts.ID
+    active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
 
-    res$table.state[res$table.state[["hosts.ID"]] %in% exiting.ID & is.na(res$table.state[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
-
-    active.hosts[active.hosts] <- !exiting # Update active hosts
-
-    if (!any(active.hosts)) {break} #if no more active hosts, then end simulation
+    if (!any(active.hosts)) {break}
 
     #Step 1: Moving ----------------------------------------------------
 
@@ -185,7 +168,7 @@ singleDiscrete <- function(type,
 
   endMessage(res$N.infected, pres.time)
 
-  res$pres.time <- pres.time
+  res$total.time <- pres.time
 
   return(res)
 }

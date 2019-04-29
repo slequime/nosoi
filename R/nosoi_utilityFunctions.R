@@ -49,12 +49,12 @@ endMessage <- function(Host.count, pres.time) {
 #' @keywords internal
 ##
 
-nosoiSimConstructor <- function(N.infected, pres.time, table.hosts, table.state,
+nosoiSimConstructor <- function(N.infected, total.time, table.hosts, table.state,
                                 type = c("singleNone", "singleDiscrete", "singleContinuous")) {
 
   type <- match.arg(type)
 
-  res <- list(total.time = pres.time,
+  res <- list(total.time = total.time,
               N.infected = N.infected,
               table.hosts = table.hosts,
               table.state = table.state,
