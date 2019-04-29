@@ -79,15 +79,12 @@ singleNone <- function(length.sim,
     res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                     active = 0)]
 
-    active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
-
-    if (!any(active.hosts)) {break}
+    if (all(res$table.hosts[["active"]] == 0)) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
 
     res <- meetTransmit(res,
                         pres.time,
-                        active.hosts,
                         positions = NULL,
                         timeContactParsed, pTransParsed,
                         prefix.host, param.pExit, param.pMove = NA, param.timeContact, param.pTrans,

@@ -123,9 +123,7 @@ singleContinuous <- function(type,
     res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                         active = 0)]
 
-    active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
-
-    if (!any(active.hosts)) {break}
+    if (all(res$table.hosts[["active"]] == 0)) {break}
 
     #Step 1: Moving ----------------------------------------------------
 
@@ -140,6 +138,7 @@ singleContinuous <- function(type,
     if (length(Move.ID) > 0){
       #Updating state archive for moving individuals:
       # res$table.state[hosts.ID %in% Move.ID & is.na(time.to), `:=` (time.to = as.numeric(pres.time))]
+      active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
 
       res$table.state[res$table.state[["hosts.ID"]] %in% Move.ID & is.na(res$table.state[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
 
@@ -217,7 +216,6 @@ singleContinuous <- function(type,
 
     res <- meetTransmit(res,
                         pres.time,
-                        active.hosts,
                         positions = c("current.in.x", "current.in.y", "current.env.value"),
                         timeContactParsed, pTransParsed,
                         prefix.host, param.pExit, param.pMove, param.timeContact, param.pTrans,

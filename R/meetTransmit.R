@@ -13,13 +13,14 @@
 ##
 meetTransmit <- function(res,
                          pres.time,
-                         active.hosts,
                          positions,
                          timeContactParsed, pTransParsed,
                          prefix.host, param.pExit, param.pMove, param.timeContact, param.pTrans,
                          param.moveDist) {
 
   keepHistory <- keepState(res)
+
+  active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
 
   df.meetTransmit <- res$table.hosts[active.hosts, c("hosts.ID", positions), with = FALSE]
   df.meetTransmit[, active.hosts:=hosts.ID]
