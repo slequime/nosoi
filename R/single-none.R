@@ -77,7 +77,7 @@ singleNone <- function(length.sim,
       fun <- function(z) {
         pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
       }
-      p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+      p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
 
       exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
     }

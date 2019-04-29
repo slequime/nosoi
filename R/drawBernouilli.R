@@ -12,6 +12,6 @@
 #' @keywords internal
 ##
 drawBernouilli <- function(p) {
-  if(is.data.table(p)) return(runif(nrow(p), 0, 1) < p)
-  if(!is.data.table(p)) return(runif(length(p), 0, 1) < p)
+  if (!is.vector(p)) stop("Function 'drawBernouilli' should be applied to a vector.")
+  return(runif(length(p), 0, 1) < p)
 }
