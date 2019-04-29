@@ -62,8 +62,11 @@ singleNone <- function(length.sim,
 
   #Creation of initial data ----------------------------------------------------------
 
-  table.hosts <- iniTable(init.individuals, NA, prefix.host, param.pExit, param.pMove = NA, param.timeContact, param.pTrans, param.moveDist=NA)
-  Host.count <- init.individuals
+  res <- nosoiSimConstructor(N.infected = init.individuals,
+                             pres.time = 1,
+                             table.hosts = iniTable(init.individuals, NA, prefix.host, param.pExit, param.pMove = NA, param.timeContact, param.pTrans, param.moveDist = NA),
+                             table.state = NA,
+                             type = "singleNone")
 
   # Running the simulation ----------------------------------------
   message(" running ...")
@@ -71,13 +74,13 @@ singleNone <- function(length.sim,
   for (pres.time in 1:length.sim) {
 
     #Step 0: Active hosts ----------------------------------------------------------
-    active.hosts <- table.hosts[["active"]] == 1 #active hosts (boolean vector)
+    active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
     if (any(active.hosts)) {
 
       fun <- function(z) {
         pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
       }
-      p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
+      p.exit.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
 
       exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
     }
@@ -86,7 +89,7 @@ singleNone <- function(length.sim,
     exiting.full <- active.hosts
     exiting.full[exiting.full] <- exiting
 
-    table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
+    res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                     active = 0)]
 
     active.hosts[active.hosts] <- !exiting # Update active hosts
@@ -94,13 +97,13 @@ singleNone <- function(length.sim,
     if (!any(active.hosts)) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
-    df.meetTransmit <- table.hosts[active.hosts, c("hosts.ID")]
+    df.meetTransmit <- res$table.hosts[active.hosts, c("hosts.ID")]
     df.meetTransmit[, active.hosts:=hosts.ID]
 
     fun <- function(z) {
       timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
     }
-    timeContact.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+    timeContact.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
 
     df.meetTransmit$number.contacts <- timeContact.values
 
@@ -114,7 +117,7 @@ singleNone <- function(length.sim,
         pTransParsed$vect(prestime = pres.time, z[, pTransParsed$vectArgs, with = FALSE])
       }
 
-      df.meetTransmit[, "Ptransmit"] <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"] #adds transmission probability to events
+      df.meetTransmit[, "Ptransmit"] <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"] #adds transmission probability to events
       df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Ptransmit"]] > 0] #discards event with probability 0
 
       if (nrow(df.meetTransmit) > 0) {
@@ -129,25 +132,25 @@ singleNone <- function(length.sim,
           table.temp <- vector("list", nrow(df.meetTransmit))
           for (i in 1:nrow(df.meetTransmit)) {
 
-            Host.count <- Host.count+1
-            hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
+            res$N.infected <- res$N.infected + 1
+            hosts.ID <- as.character(paste(prefix.host,res$N.infected,sep="-"))
 
             table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts), NA, pres.time, param.pExit, param.pMove=NA,param.timeContact, param.pTrans,param.moveDist=NA)
           }
 
-          table.hosts <- data.table::rbindlist(c(list(table.hosts),table.temp))
-          data.table::setkey(table.hosts,hosts.ID)
+          res$table.hosts <- data.table::rbindlist(c(list(res$table.hosts),table.temp))
+          data.table::setkey(res$table.hosts,hosts.ID)
         }
       }
     }
 
-    if (progress.bar == TRUE) progressMessage(Host.count, pres.time, print.step, length.sim, max.infected)
-    if (Host.count > max.infected) {break}
+    if (progress.bar == TRUE) progressMessage(res$N.infected, pres.time, print.step, length.sim, max.infected)
+    if (res$N.infected > max.infected) {break}
   }
 
-  endMessage(Host.count, pres.time)
+  endMessage(res$N.infected, pres.time)
 
-  nosoi.output <- outputWrapper(Host.count, pres.time, table.hosts, state.archive=NA)
+  res$pres.time <- pres.time
 
-  return(nosoi.output)
+  return(res)
 }

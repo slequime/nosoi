@@ -17,30 +17,36 @@
 #'
 #' @keywords internal
 
-newLine <- function(hosts.ID,infected.by,infected.in,time.is,param.pExit,param.pMove,param.timeContact,param.pTrans,param.moveDist,current.environmental.value=NA) {
+newLine <- function(hosts.ID,
+                    infected.by, infected.in,
+                    time.is,
+                    param.pExit, param.pMove, param.timeContact, param.pTrans,
+                    param.moveDist, current.environmental.value = NA) {
+
   if (is.na(param.pExit)) param.pExit <- NULL
   if (is.na(param.pMove)) param.pMove <- NULL
   if (is.na(param.timeContact)) param.timeContact <- NULL
   if (is.na(param.moveDist)) param.moveDist <- NULL
   if (is.na(current.environmental.value)) current.environmental.value <- NULL
 
-  if (length(infected.in) == 1){
+  if (length(infected.in) == 1) {
     if (is.na(infected.in)) infected.in <- NULL
-  return(c(hosts.ID = hosts.ID,
-           inf.by = infected.by,
-           inf.in = infected.in,
-           current.in = infected.in,
-           inf.time = time.is,
-           out.time = NA_real_,
-           active = 1,
-           as.list(sapply(param.pTrans, function(x) x(1))),
-           as.list(sapply(param.pMove, function(x) x(1))),
-           as.list(sapply(param.timeContact, function(x) x(1))),
-           as.list(sapply(param.pExit, function(x) x(1)))
-  )
-  )}
+    return(c(hosts.ID = hosts.ID,
+             inf.by = infected.by,
+             inf.in = infected.in,
+             current.in = infected.in,
+             inf.time = time.is,
+             out.time = NA_real_,
+             active = 1,
+             as.list(sapply(param.pTrans, function(x) x(1))),
+             as.list(sapply(param.pMove, function(x) x(1))),
+             as.list(sapply(param.timeContact, function(x) x(1))),
+             as.list(sapply(param.pExit, function(x) x(1)))
+    )
+    )
+  }
 
-  if (length(infected.in) == 2){
+  if (length(infected.in) == 2) {
 
     return(c(hosts.ID = hosts.ID,
              inf.by = infected.by,
@@ -57,5 +63,6 @@ newLine <- function(hosts.ID,infected.by,infected.in,time.is,param.pExit,param.p
              as.list(sapply(param.timeContact, function(x) x(1))),
              as.list(sapply(param.pExit, function(x) x(1)))
     )
-    )}
+    )
+  }
 }

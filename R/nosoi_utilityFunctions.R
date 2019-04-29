@@ -31,26 +31,36 @@ progressMessage <- function(Host.count, pres.time, print.step, length.sim, max.i
 
 endMessage <- function(Host.count, pres.time) {
   message("done. \nThe simulation has run for ",pres.time," units of time and a total of ",Host.count," hosts have been infected.")
-  }
+}
 
-#' @title Output wrapper
+#' @title nosoiSim Constructor
 #'
 #' @description
-#' Wraps up the nosoi output
+#' Creates a \code{nosoiSim} object.
 #'
-#' @param Host.count number of infected hosts
+#' @param N.infected number of infected hosts
 #' @param pres.time current time of the simulation
 #' @param table.hosts data.table of hosts
-#' @param state.archive data.table of hosts movement
+#' @param table.state data.table of hosts movement
+#' @param type name of the diffusion
 #'
 #'
 #' @keywords internal
 ##
 
-outputWrapper <- function(Host.count, pres.time, table.hosts, state.archive) {
+nosoiSimConstructor <- function(N.infected, pres.time, table.hosts, table.state,
+                                type = c("singleNone", "singleDiscrete", "singleContinuous")) {
 
-return(list(total.time = pres.time,
-            N.infected = Host.count,
-            table.hosts = table.hosts,
-            table.state = state.archive))
+  type <- match.arg(type)
+
+  res <- list(total.time = pres.time,
+              N.infected = N.infected,
+              table.hosts = table.hosts,
+              table.state = table.state,
+              type = type)
+
+  class(res) <- "nosoiSim"
+
+  return(res)
+
 }

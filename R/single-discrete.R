@@ -92,11 +92,11 @@ singleDiscrete <- function(type,
 
   #Creation of initial data ----------------------------------------------------------
 
-  table.hosts <- iniTable(init.individuals, init.structure, prefix.host, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist=NA)
-
-  state.archive <- iniTableState(init.individuals, init.structure, prefix.host)
-
-  Host.count <- init.individuals
+  res <- nosoiSimConstructor(N.infected = init.individuals,
+                             pres.time = 1,
+                             table.hosts = iniTable(init.individuals, init.structure, prefix.host, param.pExit, param.pMove, param.timeContact, param.pTrans, param.moveDist = NA),
+                             table.state = iniTableState(init.individuals, init.structure, prefix.host),
+                             type = "singleDiscrete")
 
   # Running the simulation ----------------------------------------
   message(" running ...")
@@ -104,14 +104,14 @@ singleDiscrete <- function(type,
   for (pres.time in 1:length.sim) {
 
     #Step 0: Active hosts ----------------------------------------------------------
-    active.hosts <- table.hosts[["active"]] == 1 #active hosts (boolean vector)
+    active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
 
     if (any(active.hosts)) {
 
       fun <- function(z) {
         pExitParsed$vect(prestime = pres.time, z[, pExitParsed$vectArgs, with = FALSE])
       }
-      p.exit.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
+      p.exit.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
 
       exiting <- drawBernouilli(p.exit.values) #Draws K bernouillis with various probability (see function for more detail)
     }
@@ -119,12 +119,12 @@ singleDiscrete <- function(type,
     exiting.full <- active.hosts
     exiting.full[exiting.full] <- exiting
 
-    table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
+    res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                     active = 0)]
 
-    exiting.ID <- table.hosts[active.hosts][as.vector(exiting), "hosts.ID"]$hosts.ID
+    exiting.ID <- res$table.hosts[active.hosts][as.vector(exiting), "hosts.ID"]$hosts.ID
 
-    state.archive[state.archive[["hosts.ID"]] %in% exiting.ID & is.na(state.archive[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
+    res$table.state[res$table.state[["hosts.ID"]] %in% exiting.ID & is.na(res$table.state[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
 
     active.hosts[active.hosts] <- !exiting # Update active hosts
 
@@ -137,7 +137,7 @@ singleDiscrete <- function(type,
     fun <- function(z) {
       pMoveParsed$vect(prestime = pres.time, z[, pMoveParsed$vectArgs, with = FALSE])
     }
-    p.move.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
+    p.move.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
     moving <- drawBernouilli(p.move.values) #Draws K bernouillis with various probability (see function for more detail)
     # }
 
@@ -146,38 +146,38 @@ singleDiscrete <- function(type,
 
     #step 1.2 if moving, where are they going?
 
-    Move.ID <- table.hosts[moving.full,][["hosts.ID"]]
+    Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
 
     if (length(Move.ID) > 0){
       #Updating state archive for moving individuals:
 
-      state.archive[state.archive[["hosts.ID"]] %in% Move.ID & is.na(state.archive[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
+      res$table.state[res$table.state[["hosts.ID"]] %in% Move.ID & is.na(res$table.state[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
 
       table.state.temp <- vector("list", length(Move.ID))
 
       for (i in 1:length(Move.ID)) {
 
-        current.move.pos <- melted.structure.matrix[which(melted.structure.matrix$from==as.character(table.hosts[Move.ID[i],"current.in"])),]
+        current.move.pos <- melted.structure.matrix[which(melted.structure.matrix$from==as.character(res$table.hosts[Move.ID[i],"current.in"])),]
 
         going.to <- sample(current.move.pos$to, 1, replace = FALSE, prob = current.move.pos$prob)
         table.state.temp[[i]] <- newLineState(Move.ID[i],going.to,pres.time)
-        table.hosts[Move.ID[i], `:=` (current.in = going.to)]
+        res$table.hosts[Move.ID[i], `:=` (current.in = going.to)]
 
       }
 
-      state.archive <- data.table::rbindlist(c(list(state.archive),table.state.temp))
-      data.table::setkey(state.archive, "hosts.ID")
+      res$table.state <- data.table::rbindlist(c(list(res$table.state),table.state.temp))
+      data.table::setkey(res$table.state, "hosts.ID")
     }
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
-    df.meetTransmit <- table.hosts[active.hosts, c("hosts.ID","current.in")]
+    df.meetTransmit <- res$table.hosts[active.hosts, c("hosts.ID","current.in")]
     df.meetTransmit[, active.hosts:=hosts.ID]
 
     fun <- function(z) {
       timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
     }
-    timeContact.values <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+    timeContact.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
 
     df.meetTransmit$number.contacts <- timeContact.values
 
@@ -191,7 +191,7 @@ singleDiscrete <- function(type,
         pTransParsed$vect(prestime = pres.time, z[, pTransParsed$vectArgs, with = FALSE])
       }
 
-      df.meetTransmit[, "Ptransmit"] <- table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"] #adds transmission probability to events
+      df.meetTransmit[, "Ptransmit"] <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"] #adds transmission probability to events
       df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Ptransmit"]] > 0] #discards event with probability 0
 
       if (nrow(df.meetTransmit) > 0) {
@@ -207,28 +207,28 @@ singleDiscrete <- function(type,
           table.state.temp <- vector("list", nrow(df.meetTransmit))
           for (i in 1:nrow(df.meetTransmit)) {
 
-            Host.count <- Host.count+1
-            hosts.ID <- as.character(paste(prefix.host,Host.count,sep="-"))
+            res$N.infected <- res$N.infected + 1
+            hosts.ID <- as.character(paste(prefix.host,res$N.infected,sep="-"))
 
             table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),as.character(df.meetTransmit[i,]$current.in), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist=NA)
             table.state.temp[[i]] <- newLineState(hosts.ID,as.character(df.meetTransmit[i,]$current.in),pres.time)
           }
 
-          table.hosts <- data.table::rbindlist(c(list(table.hosts),table.temp))
-          data.table::setkey(table.hosts,hosts.ID)
-          state.archive <- data.table::rbindlist(c(list(state.archive),table.state.temp))
-          data.table::setkey(state.archive, "hosts.ID")
+          res$table.hosts <- data.table::rbindlist(c(list(res$table.hosts),table.temp))
+          data.table::setkey(res$table.hosts,hosts.ID)
+          res$table.state <- data.table::rbindlist(c(list(res$table.state),table.state.temp))
+          data.table::setkey(res$table.state, "hosts.ID")
         }
       }
     }
 
-    if (progress.bar == TRUE) progressMessage(Host.count, pres.time, print.step, length.sim, max.infected)
-    if (Host.count > max.infected) {break}
+    if (progress.bar == TRUE) progressMessage(res$N.infected, pres.time, print.step, length.sim, max.infected)
+    if (res$N.infected > max.infected) {break}
   }
 
-  endMessage(Host.count, pres.time)
+  endMessage(res$N.infected, pres.time)
 
-  nosoi.output <- outputWrapper(Host.count, pres.time, table.hosts, state.archive)
+  res$pres.time <- pres.time
 
-  return(nosoi.output)
+  return(res)
 }
