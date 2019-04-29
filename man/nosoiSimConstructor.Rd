@@ -18,6 +18,9 @@ nosoiSimConstructor(N.infected, pres.time, table.hosts, table.state,
 
 \item{type}{name of the diffusion}
 }
+\value{
+An object of class \code{nosoiSim}
+}
 \description{
 Creates a \code{nosoiSim} object.
 }

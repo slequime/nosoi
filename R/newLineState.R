@@ -13,7 +13,7 @@
 #'
 #' @keywords internal
 
-newLineState <- function(hosts.ID,state.pres,time.is,current.environmental.value=NA) {
+newLineState <- function(hosts.ID, state.pres, time.is, current.environmental.value=NA) {
 
   if (length(state.pres) == 1){
     return(list(hosts.ID = hosts.ID,

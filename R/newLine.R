@@ -27,7 +27,7 @@ newLine <- function(hosts.ID,
   if (is.na(param.pMove)) param.pMove <- NULL
   if (is.na(param.timeContact)) param.timeContact <- NULL
   if (is.na(param.moveDist)) param.moveDist <- NULL
-  if (is.na(current.environmental.value)) current.environmental.value <- NULL
+  if (!is.null(current.environmental.value) && is.na(current.environmental.value)) current.environmental.value <- NULL
 
   if (length(infected.in) == 1) {
     if (is.na(infected.in)) infected.in <- NULL

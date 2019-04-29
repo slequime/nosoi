@@ -44,6 +44,7 @@ endMessage <- function(Host.count, pres.time) {
 #' @param table.state data.table of hosts movement
 #' @param type name of the diffusion
 #'
+#' @return An object of class \code{nosoiSim}
 #'
 #' @keywords internal
 ##
@@ -63,4 +64,37 @@ nosoiSimConstructor <- function(N.infected, pres.time, table.hosts, table.state,
 
   return(res)
 
+}
+
+#' @title get Position Infected
+#'
+#' @description
+#' Return the relevent position of the infected individual.
+#'
+#' @param nosoiSim an object of class \code{nosoiSim}.
+#' @param df.meetTransmit current data.table for transmission
+#' @param i individual
+#'
+#' @return A vector of positions
+#'
+#' @keywords internal
+##
+getPositionInfected <- function(nosoiSim, df.meetTransmit, i) {
+  if (nosoiSim$type == "singleNone") return(NA)
+  if (nosoiSim$type == "singleDiscrete") return(df.meetTransmit[i, ]$current.in)
+  if (nosoiSim$type == "singleContinuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
+}
+
+#' @title Should we build the table.host table
+#'
+#' @param nosoiSim an object of class \code{nosoiSim}.
+#'
+#' @return boolean
+#'
+#' @keywords internal
+##
+keepState <- function(nosoiSim) {
+  if (nosoiSim$type == "singleNone") return(FALSE)
+  if (nosoiSim$type == "singleDiscrete") return(TRUE)
+  if (nosoiSim$type == "singleContinuous") return(TRUE)
 }

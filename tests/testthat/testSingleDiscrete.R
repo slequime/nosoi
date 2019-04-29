@@ -150,7 +150,7 @@ test.nosoiA <- nosoiSim(type="single",structure=TRUE,
 )
 
 #Structure
-g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
+g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)], directed = F)
 expect_equal(transitivity(g, type="global"), 0)
 expect_equal(clusters(g, "weak")$no, 1)
 expect_equal(diameter(g, directed=F, weights=NA), 7)

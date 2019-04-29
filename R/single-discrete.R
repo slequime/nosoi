@@ -171,56 +171,13 @@ singleDiscrete <- function(type,
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
-    df.meetTransmit <- res$table.hosts[active.hosts, c("hosts.ID","current.in")]
-    df.meetTransmit[, active.hosts:=hosts.ID]
-
-    fun <- function(z) {
-      timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
-    }
-    timeContact.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
-
-    df.meetTransmit$number.contacts <- timeContact.values
-
-    haveContact <- df.meetTransmit[["number.contacts"]] > 0
-    df.meetTransmit <- df.meetTransmit[haveContact]
-    active.hosts[active.hosts] <- haveContact # Update active hosts
-
-    if (nrow(df.meetTransmit) > 0) {
-
-      fun <- function(z) {
-        pTransParsed$vect(prestime = pres.time, z[, pTransParsed$vectArgs, with = FALSE])
-      }
-
-      df.meetTransmit[, "Ptransmit"] <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"] #adds transmission probability to events
-      df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Ptransmit"]] > 0] #discards event with probability 0
-
-      if (nrow(df.meetTransmit) > 0) {
-
-        df.meetTransmit <- df.meetTransmit[rep(seq(1, nrow(df.meetTransmit)), df.meetTransmit$number.contacts)]
-
-        df.meetTransmit[,"Trans"] <- drawBernouilli(df.meetTransmit[["Ptransmit"]]) #Draws K bernouillis with various probability (see function for more detail)
-
-        df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Trans"]]] #Discards events with no realisation
-
-        if (nrow(df.meetTransmit) >0) {
-          table.temp <- vector("list", nrow(df.meetTransmit))
-          table.state.temp <- vector("list", nrow(df.meetTransmit))
-          for (i in 1:nrow(df.meetTransmit)) {
-
-            res$N.infected <- res$N.infected + 1
-            hosts.ID <- as.character(paste(prefix.host,res$N.infected,sep="-"))
-
-            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),as.character(df.meetTransmit[i,]$current.in), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist=NA)
-            table.state.temp[[i]] <- newLineState(hosts.ID,as.character(df.meetTransmit[i,]$current.in),pres.time)
-          }
-
-          res$table.hosts <- data.table::rbindlist(c(list(res$table.hosts),table.temp))
-          data.table::setkey(res$table.hosts,hosts.ID)
-          res$table.state <- data.table::rbindlist(c(list(res$table.state),table.state.temp))
-          data.table::setkey(res$table.state, "hosts.ID")
-        }
-      }
-    }
+    res <- meetTransmit(res,
+                        pres.time,
+                        active.hosts,
+                        positions = c("current.in"),
+                        timeContactParsed, pTransParsed,
+                        prefix.host, param.pExit, param.pMove, param.timeContact, param.pTrans,
+                        param.moveDist = NA)
 
     if (progress.bar == TRUE) progressMessage(res$N.infected, pres.time, print.step, length.sim, max.infected)
     if (res$N.infected > max.infected) {break}

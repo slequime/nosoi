@@ -40,37 +40,37 @@
 #' @export singleContinuous
 
 singleContinuous <- function(type,
-                           structure,
-                           length.sim,
-                           max.infected,
-                           init.individuals,
-                           init.structure,
-                           structure.raster,
-                           diff.pMove=FALSE,
-                           timeDep.pMove=FALSE,
-                           pMove,
-                           param.pMove,
-                           diff.moveDist=FALSE,
-                           timeDep.moveDist=FALSE,
-                           moveDist,
-                           param.moveDist,
-                           attracted.by.raster=FALSE,
-                           diff.timeContact=FALSE,
-                           timeDep.timeContact=FALSE,
-                           timeContact,
-                           param.timeContact,
-                           diff.pTrans=FALSE,
-                           timeDep.pTrans=FALSE,
-                           pTrans,
-                           param.pTrans,
-                           diff.pExit=FALSE,
-                           timeDep.pExit=FALSE,
-                           pExit,
-                           param.pExit,
-                           prefix.host="H",
-                           progress.bar=TRUE,
-                           print.step=10,
-                           ...){
+                             structure,
+                             length.sim,
+                             max.infected,
+                             init.individuals,
+                             init.structure,
+                             structure.raster,
+                             diff.pMove=FALSE,
+                             timeDep.pMove=FALSE,
+                             pMove,
+                             param.pMove,
+                             diff.moveDist=FALSE,
+                             timeDep.moveDist=FALSE,
+                             moveDist,
+                             param.moveDist,
+                             attracted.by.raster=FALSE,
+                             diff.timeContact=FALSE,
+                             timeDep.timeContact=FALSE,
+                             timeContact,
+                             param.timeContact,
+                             diff.pTrans=FALSE,
+                             timeDep.pTrans=FALSE,
+                             pTrans,
+                             param.pTrans,
+                             diff.pExit=FALSE,
+                             timeDep.pExit=FALSE,
+                             pExit,
+                             param.pExit,
+                             prefix.host="H",
+                             progress.bar=TRUE,
+                             print.step=10,
+                             ...){
 
   #Sanity checks---------------------------------------------------------------------------------------------------------------------------
   #This section checks if the arguments of the function are in a correct format for the function to run properly
@@ -133,7 +133,7 @@ singleContinuous <- function(type,
     exiting.full[exiting.full] <- exiting
 
     res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
-                                    active = 0)]
+                                        active = 0)]
 
     exiting.ID <- res$table.hosts[active.hosts][as.vector(exiting), "hosts.ID"]$hosts.ID
 
@@ -145,7 +145,7 @@ singleContinuous <- function(type,
 
     #Step 1: Moving ----------------------------------------------------
 
-      #step 1.1 which hosts are moving
+    #step 1.1 which hosts are moving
 
     fun <- function(z) {
       pMoveParsed$vect(prestime = pres.time, z[, pMoveParsed$vectArgs, with = FALSE])
@@ -157,7 +157,7 @@ singleContinuous <- function(type,
     moving.full <- active.hosts
     moving.full[moving.full] <- moving
 
-      #step 1.2 if moving, where are they going?
+    #step 1.2 if moving, where are they going?
 
     Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
 
@@ -239,56 +239,13 @@ singleContinuous <- function(type,
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
-    df.meetTransmit <- res$table.hosts[active.hosts, c("hosts.ID","current.in.x","current.in.y","current.env.value")]
-    df.meetTransmit[, active.hosts:=hosts.ID]
-
-    fun <- function(z) {
-      timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
-    }
-    timeContact.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
-
-    df.meetTransmit$number.contacts <- timeContact.values
-
-    haveContact <- df.meetTransmit[["number.contacts"]] > 0
-    df.meetTransmit <- df.meetTransmit[haveContact]
-    active.hosts[active.hosts] <- haveContact # Update active hosts
-
-    if (nrow(df.meetTransmit) > 0) {
-
-      fun <- function(z) {
-        pTransParsed$vect(prestime = pres.time, z[, pTransParsed$vectArgs, with = FALSE])
-      }
-
-      df.meetTransmit[, "Ptransmit"] <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"] #adds transmission probability to events
-      df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Ptransmit"]] > 0] #discards event with probability 0
-
-      if (nrow(df.meetTransmit) > 0) {
-
-        df.meetTransmit <- df.meetTransmit[rep(seq(1, nrow(df.meetTransmit)), df.meetTransmit$number.contacts)]
-
-        df.meetTransmit[,"Trans"] <- drawBernouilli(df.meetTransmit[["Ptransmit"]]) #Draws K bernouillis with various probability (see function for more detail)
-
-        df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Trans"]]] #Discards events with no realisation
-
-        if (nrow(df.meetTransmit) >0) {
-          table.temp <- vector("list", nrow(df.meetTransmit))
-          table.state.temp <- vector("list", nrow(df.meetTransmit))
-          for (i in 1:nrow(df.meetTransmit)) {
-
-            res$N.infected <- res$N.infected + 1
-            hosts.ID <- as.character(paste(prefix.host,res$N.infected,sep="-"))
-
-            table.temp[[i]] <- newLine(hosts.ID, as.character(df.meetTransmit[i,]$active.hosts),c(df.meetTransmit[i,]$current.in.x,df.meetTransmit[i,]$current.in.y), pres.time, param.pExit, param.pMove,param.timeContact, param.pTrans,param.moveDist,current.environmental.value=df.meetTransmit[i,]$current.env.value)
-            table.state.temp[[i]] <- newLineState(hosts.ID,c(df.meetTransmit[i,]$current.in.x,df.meetTransmit[i,]$current.in.y),pres.time,current.environmental.value=df.meetTransmit[i,]$current.env.value)
-          }
-
-          res$table.hosts <- data.table::rbindlist(c(list(res$table.hosts),table.temp))
-          data.table::setkey(res$table.hosts,hosts.ID)
-          res$table.state <- data.table::rbindlist(c(list(res$table.state),table.state.temp))
-          data.table::setkey(res$table.state, "hosts.ID")
-        }
-      }
-    }
+    res <- meetTransmit(res,
+                        pres.time,
+                        active.hosts,
+                        positions = c("current.in.x", "current.in.y", "current.env.value"),
+                        timeContactParsed, pTransParsed,
+                        prefix.host, param.pExit, param.pMove, param.timeContact, param.pTrans,
+                        param.moveDist)
 
     if (progress.bar == TRUE) progressMessage(res$N.infected, pres.time, print.step, length.sim, max.infected)
     if (res$N.infected > max.infected) {break}
