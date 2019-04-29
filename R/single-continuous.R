@@ -118,7 +118,7 @@ singleContinuous <- function(type,
   for (pres.time in 1:length.sim) {
 
     #Step 0: Active hosts ----------------------------------------------------------
-    exiting.full <- getExiting(res, pres.time, pExitParsed)
+    exiting.full <- getExitingMoving(res, pres.time, pExitParsed)
 
     res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                         active = 0)]
@@ -131,15 +131,7 @@ singleContinuous <- function(type,
 
     #step 1.1 which hosts are moving
 
-    fun <- function(z) {
-      pMoveParsed$vect(prestime = pres.time, z[, pMoveParsed$vectArgs, with = FALSE])
-    }
-    p.move.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
-    moving <- drawBernouilli(p.move.values) #Draws K bernouillis with various probability (see function for more detail)
-    # }
-
-    moving.full <- active.hosts
-    moving.full[moving.full] <- moving
+    moving.full <- getExitingMoving(res, pres.time, pMoveParsed)
 
     #step 1.2 if moving, where are they going?
 

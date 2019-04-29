@@ -74,7 +74,7 @@ singleNone <- function(length.sim,
   for (pres.time in 1:length.sim) {
 
     #Step 0: Active hosts ----------------------------------------------------------
-    exiting.full <- getExiting(res, pres.time, pExitParsed)
+    exiting.full <- getExitingMoving(res, pres.time, pExitParsed)
 
     res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                     active = 0)]
