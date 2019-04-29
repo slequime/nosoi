@@ -35,7 +35,10 @@ Suggests:
     knitr,
     rmarkdown,
     igraph,
+    tidyverse,
     ggplot2,
     ggnetwork,
-    viridis
+    viridis,
+    ggspatial,
+    gganimate
 VignetteBuilder: knitr
