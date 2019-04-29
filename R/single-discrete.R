@@ -80,8 +80,6 @@ singleDiscrete <- function(type,
 
   MatrixSanityChecks(structure.matrix,init.structure)
 
-  melted.structure.matrix <- reshape2::melt(structure.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
-
   #Parse pMove (same as pExit !!attention if diff)
   pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=diff.pMove, timeDep = timeDep.pMove, stateNames=colnames(structure.matrix))
 
@@ -119,28 +117,7 @@ singleDiscrete <- function(type,
 
     #step 1.2 if moving, where are they going?
 
-    Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
-
-    if (length(Move.ID) > 0){
-      #Updating state archive for moving individuals:
-
-      res$table.state[res$table.state[["hosts.ID"]] %in% Move.ID & is.na(res$table.state[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
-
-      table.state.temp <- vector("list", length(Move.ID))
-
-      for (i in 1:length(Move.ID)) {
-
-        current.move.pos <- melted.structure.matrix[which(melted.structure.matrix$from==as.character(res$table.hosts[Move.ID[i],"current.in"])),]
-
-        going.to <- sample(current.move.pos$to, 1, replace = FALSE, prob = current.move.pos$prob)
-        table.state.temp[[i]] <- newLineState(Move.ID[i],going.to,pres.time)
-        res$table.hosts[Move.ID[i], `:=` (current.in = going.to)]
-
-      }
-
-      res$table.state <- data.table::rbindlist(c(list(res$table.state),table.state.temp))
-      data.table::setkey(res$table.state, "hosts.ID")
-    }
+    res <- makeMoves(res, pres.time, moving.full, structure.matrix = structure.matrix)
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 

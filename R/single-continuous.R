@@ -133,84 +133,11 @@ singleContinuous <- function(type,
 
     #step 1.2 if moving, where are they going?
 
-    Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
-
-    if (length(Move.ID) > 0){
-      #Updating state archive for moving individuals:
-      # res$table.state[hosts.ID %in% Move.ID & is.na(time.to), `:=` (time.to = as.numeric(pres.time))]
-      active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
-
-      res$table.state[res$table.state[["hosts.ID"]] %in% Move.ID & is.na(res$table.state[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
-
-      table.state.temp <- vector("list", length(Move.ID))
-
-      fun <- function(z) {
-        moveDistParsed$vect(prestime = pres.time, z[, moveDistParsed$vectArgs, with = FALSE])
-      }
-
-      moveDist.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
-
-      for (i in 1:length(Move.ID)) {
-
-        current.move.pos.x = res$table.hosts[Move.ID[i],"current.in.x"]
-        current.move.pos.y = res$table.hosts[Move.ID[i],"current.in.y"]
-        current.env.value = res$table.hosts[Move.ID[i],"current.env.value"]
-        current.moveDist.value = as.numeric(moveDist.values[i])
-
-        positionFound1 = FALSE
-        while (positionFound1 == FALSE)
-        {
-          counter = 0
-          dX = rnorm(1, 0, current.moveDist.value)
-          dY = rnorm(1, 0, current.moveDist.value)
-          positionFound2 = FALSE
-          while (positionFound2 == FALSE)
-          {
-            angle = (2*base::pi)*runif(1)
-            newP = moveRotateContinuous(c(as.numeric(current.move.pos.x),as.numeric(current.move.pos.y)), dX, dY,angle)
-
-            temp.env.value = raster::extract(structure.raster,cbind(newP[1],newP[2]))
-
-            if (!is.na(temp.env.value)){
-
-              if (attracted.by.raster==FALSE) {
-                res$table.hosts[Move.ID[i], `:=` (current.in.x = newP[1])]
-                res$table.hosts[Move.ID[i], `:=` (current.in.y = newP[2])]
-                res$table.hosts[Move.ID[i], `:=` (current.env.value = temp.env.value)]
-
-                table.state.temp[[i]] <- newLineState(Move.ID[i],newP,pres.time,current.environmental.value=temp.env.value)
-
-                positionFound2 = TRUE
-                positionFound1 = TRUE
-              }
-
-              if (attracted.by.raster==TRUE) {
-                counter = counter+1
-                v2 = temp.env.value/max.raster
-                if (runif(1,0,1) < v2)
-                {
-                  res$table.hosts[Move.ID[i], `:=` (current.in.x = newP[1])]
-                  res$table.hosts[Move.ID[i], `:=` (current.in.y = newP[2])]
-                  res$table.hosts[Move.ID[i], `:=` (current.env.value = temp.env.value)]
-
-                  table.state.temp[[i]] <- newLineState(Move.ID[i],newP,pres.time,current.environmental.value=temp.env.value)
-
-                  positionFound2 = TRUE
-                  positionFound1 = TRUE
-                  if (counter == 30) {
-                    positionFound1 = TRUE
-                    positionFound2 = TRUE
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      res$table.state <- data.table::rbindlist(c(list(res$table.state),table.state.temp))
-      data.table::setkey(res$table.state, "hosts.ID")
-    }
+    res <- makeMoves(res, pres.time, moving.full,
+                     moveDistParsed = moveDistParsed,
+                     structure.raster = structure.raster,
+                     attracted.by.raster = attracted.by.raster,
+                     max.raster = max.raster)
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
