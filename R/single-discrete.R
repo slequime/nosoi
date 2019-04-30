@@ -97,6 +97,7 @@ singleDiscrete <- function(type,
                              total.time = 1,
                              table.hosts = iniTable(init.individuals, init.structure, prefix.host, ParamHost),
                              table.state = iniTableState(init.individuals, init.structure, prefix.host),
+                             prefix.host = prefix.host,
                              type = "singleDiscrete")
 
   # Running the simulation ----------------------------------------
@@ -124,17 +125,15 @@ singleDiscrete <- function(type,
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
-    res <- meetTransmit(res,
-                        pres.time,
-                        positions = c("current.in"),
-                        timeContactParsed, pTransParsed,
-                        prefix.host, ParamHost)
+    df.meetTransmit <- meetTransmit(res, pres.time, positions = c("current.in"), timeContactParsed, pTransParsed)
 
-    if (progress.bar == TRUE) progressMessage(res$N.infected, pres.time, print.step, length.sim, max.infected)
+    res <- writeInfected(df.meetTransmit, res, pres.time, ParamHost)
+
+    if (progress.bar == TRUE) progressMessage(Host.count.A = res$N.infected, pres.time = pres.time, print.step = print.step, length.sim = length.sim, max.infected.A = max.infected)
     if (res$N.infected > max.infected) {break}
   }
 
-  endMessage(res$N.infected, pres.time)
+  endMessage(Host.count.A = res$N.infected, pres.time = pres.time)
 
   res$total.time <- pres.time
 

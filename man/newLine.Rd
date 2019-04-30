@@ -4,9 +4,8 @@
 \alias{newLine}
 \title{Creates a new line to be added to the table when new host is infected (internal fonction)}
 \usage{
-newLine(hosts.ID, infected.by, infected.in, time.is, param.pExit,
-  param.pMove, param.timeContact, param.pTrans, param.moveDist,
-  current.environmental.value = NA)
+newLine(hosts.ID, infected.by, infected.in, time.is, ParamHost,
+  current.environmental.value = NULL)
 }
 \arguments{
 \item{hosts.ID}{unique ID for the new host}
@@ -17,11 +16,7 @@ newLine(hosts.ID, infected.by, infected.in, time.is, param.pExit,
 
 \item{time.is}{time in the simulation, when the infection takes place}
 
-\item{param.pExit}{list of exit probability function(s).}
-
-\item{param.pMove}{list of movement probability function(s).}
-
-\item{param.pTrans}{list of transmission probability function(s).}
+\item{ParamHost}{list of individual based parameters.}
 
 \item{current.in}{state in which the host currently is}
 }

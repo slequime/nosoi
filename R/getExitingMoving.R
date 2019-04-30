@@ -25,8 +25,12 @@ getExitingMoving <- function(res, pres.time, pasedFunction) {
     exitMove <- drawBernouilli(p.exitMove.values) #Draws K bernouillis with various probability (see function for more detail)
   }
 
+  if(all(active.hosts == FALSE)) exitMove <- FALSE
+
   exitMove.full <- active.hosts
   exitMove.full[exitMove.full] <- exitMove
 
   return(exitMove.full)
 }
+
+

@@ -4,18 +4,10 @@
 \alias{meetTransmit}
 \title{Meet Transmit function}
 \usage{
-meetTransmit(res, pres.time, positions, timeContactParsed, pTransParsed,
-  prefix.host, param.pExit, param.pMove, param.timeContact, param.pTrans,
-  param.moveDist)
+meetTransmit(res, pres.time, positions, timeContactParsed, pTransParsed)
 }
 \arguments{
 \item{res}{an object of class \code{nosoiSim}.}
-
-\item{param.pExit}{list of exit probability function(s).}
-
-\item{param.pMove}{list of movement probability function(s).}
-
-\item{param.pTrans}{list of transmission probability function(s).}
 }
 \value{
 The modified object res

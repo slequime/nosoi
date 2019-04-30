@@ -5,7 +5,7 @@
 \title{Generates initial movement table to start the simulation (internal fonction)}
 \usage{
 iniTableState(init.individuals, init.structure, prefix.host,
-  current.environmental.value = NA)
+  current.environmental.value = NULL)
 }
 \arguments{
 \item{init.individuals}{number of initially infected individuals (i.e. number of lines at time 0).}

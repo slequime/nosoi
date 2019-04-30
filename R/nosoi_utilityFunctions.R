@@ -3,18 +3,27 @@
 #' @description
 #' Echos the state of the simulation at any given time step provided by the user.
 #'
-#' @param Host.count number of infected hosts
+#' @param Host.count.A number of infected hosts of host A.
+#' @param Host.count.B number of infected hosts of host B.
 #' @param pres.time current time of the simulation
 #' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
 #' @param length.sim the length (in unit of time) over which the simulation should be run.
-#' @param max.infected the maximum number of hosts that can be infected in the simulation.
-#'
+#' @param max.infected.A the maximum number of hosts that can be infected in the simulation for host A.
+#' @param max.infected.B the maximum number of hosts that can be infected in the simulation for host B.
+#' @param type either single/dual host
 #'
 #' @keywords internal
 ##
 
-progressMessage <- function(Host.count, pres.time, print.step, length.sim, max.infected) {
-  if (pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: ", Host.count," (",round((Host.count/max.infected)*100,digits=0),"% of maximum infected hosts).")}
+progressMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, print.step, length.sim, max.infected.A, max.infected.B=NULL, type="single") {
+
+  if(type == "single"){
+    if (pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: ", Host.count.A," (",round((Host.count.A/max.infected.A)*100,digits=0),"% of maximum infected hosts).")}
+  }
+
+  if(type == "dual"){
+    if (pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: (A) ", Host.count.A," (",round((Host.count.A/max.infected.A)*100,digits=0),"% of maximum infected hosts); (B) ", Host.count.B," (",round((Host.count.B/max.infected.B)*100,digits=0),"% of maximum infected hosts).")}
+  }
 }
 
 #' @title End message
@@ -22,15 +31,21 @@ progressMessage <- function(Host.count, pres.time, print.step, length.sim, max.i
 #' @description
 #' Message that ends the simulation
 #'
-#' @param Host.count number of infected hosts
+#' @param Host.count.A number of infected hosts (host A)
+#' @param Host.count.B number of infected hosts (host B)
 #' @param pres.time current time of the simulation
-#'
+#' @param type either single/dual host
 #'
 #' @keywords internal
 ##
 
-endMessage <- function(Host.count, pres.time) {
-  message("done. \nThe simulation has run for ",pres.time," units of time and a total of ",Host.count," hosts have been infected.")
+endMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, type="single") {
+  if(type == "single"){
+    message("done. \nThe simulation has run for ",pres.time," units of time and a total of ",Host.count.A," hosts have been infected.")
+  }
+  if(type == "dual"){
+    message("done. \nThe simulation has run for ",pres.time," units of time and a total of ",Host.count.A," (A) and ",Host.count.B, " (B) hosts have been infected.")
+  }
 }
 
 #' @title nosoiSim Constructor
@@ -49,8 +64,8 @@ endMessage <- function(Host.count, pres.time) {
 #' @keywords internal
 ##
 
-nosoiSimConstructor <- function(N.infected, total.time, table.hosts, table.state,
-                                type = c("singleNone", "singleDiscrete", "singleContinuous")) {
+nosoiSimConstructor <- function(N.infected, total.time, table.hosts, table.state, prefix.host,
+                                type = c("singleNone", "singleDiscrete", "singleContinuous","dualNone")) {
 
   type <- match.arg(type)
 
@@ -58,6 +73,7 @@ nosoiSimConstructor <- function(N.infected, total.time, table.hosts, table.state
               N.infected = N.infected,
               table.hosts = table.hosts,
               table.state = table.state,
+              prefix.host = prefix.host,
               type = type)
 
   class(res) <- "nosoiSim"
@@ -83,6 +99,8 @@ getPositionInfected <- function(nosoiSim, df.meetTransmit, i) {
   if (nosoiSim$type == "singleNone") return(NA)
   if (nosoiSim$type == "singleDiscrete") return(df.meetTransmit[i, ]$current.in)
   if (nosoiSim$type == "singleContinuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
+  if (nosoiSim$type == "dualNone") return(NA)
+  stop(paste("This type",nosoiSim$type,"is not implemented yet"))
 }
 
 #' @title Should we build the table.host table
@@ -97,6 +115,8 @@ keepState <- function(nosoiSim) {
   if (nosoiSim$type == "singleNone") return(FALSE)
   if (nosoiSim$type == "singleDiscrete") return(TRUE)
   if (nosoiSim$type == "singleContinuous") return(TRUE)
+  if (nosoiSim$type == "dualNone") return(FALSE)
+  stop(paste("This type",nosoiSim$type,"is not implemented yet"))
 }
 
 #' @title Param concatenator

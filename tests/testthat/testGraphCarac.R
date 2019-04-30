@@ -1,4 +1,4 @@
-context("Graph of the transmission tree structure")
+context("Testing single-host without structure")
 
 test_that("Transmission is coherent with single introduction, constant pExit and pTrans", {
   library(igraph)

@@ -44,10 +44,6 @@ singleNone <- function(length.sim,
 
   CoreSanityChecks(length.sim, max.infected, init.individuals)
 
-  # if (! is.function(timeContact)) stop("Contact probability should be a function of time.")
-  # if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
-  # if (! is.function(pExit)) stop("Exit probability should be a function of time.")
-
   #Parsing timeContact
   timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),timeDep=timeDep.timeContact)
 
@@ -69,6 +65,7 @@ singleNone <- function(length.sim,
                              total.time = 1,
                              table.hosts = iniTable(init.individuals, NA, prefix.host, ParamHost),
                              table.state = NA,
+                             prefix.host = prefix.host,
                              type = "singleNone")
 
   # Running the simulation ----------------------------------------
@@ -86,17 +83,15 @@ singleNone <- function(length.sim,
 
     #Step 1: Meeting & transmission ----------------------------------------------------
 
-    res <- meetTransmit(res,
-                        pres.time,
-                        positions = NULL,
-                        timeContactParsed, pTransParsed,
-                        prefix.host, ParamHost)
+    df.meetTransmit <- meetTransmit(res, pres.time, positions = NULL, timeContactParsed, pTransParsed)
 
-    if (progress.bar == TRUE) progressMessage(res$N.infected, pres.time, print.step, length.sim, max.infected)
+    res <- writeInfected(df.meetTransmit, res, pres.time, ParamHost)
+
+    if (progress.bar == TRUE) progressMessage(Host.count.A = res$N.infected, pres.time = pres.time, print.step = print.step, length.sim = length.sim, max.infected.A = max.infected)
     if (res$N.infected > max.infected) {break}
   }
 
-  endMessage(res$N.infected, pres.time)
+  endMessage(Host.count.A = res$N.infected, pres.time = pres.time)
 
   res$total.time <- pres.time
 

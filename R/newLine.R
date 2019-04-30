@@ -9,9 +9,7 @@
 #' @param infected.in state in which the host was infected
 #' @param current.in state in which the host currently is
 #' @param time.is time in the simulation, when the infection takes place
-#' @param param.pExit list of exit probability function(s).
-#' @param param.pMove list of movement probability function(s).
-#' @param param.pTrans list of transmission probability function(s).
+#' @param ParamHost list of individual based parameters.
 #'
 #' @return a list with the new line to add.
 #'

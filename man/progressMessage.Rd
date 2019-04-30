@@ -4,11 +4,13 @@
 \alias{progressMessage}
 \title{Progress bar}
 \usage{
-progressMessage(Host.count, pres.time, print.step, length.sim,
-  max.infected)
+progressMessage(Host.count.A, Host.count.B = NULL, pres.time, print.step,
+  length.sim, max.infected.A, max.infected.B = NULL, type = "single")
 }
 \arguments{
-\item{Host.count}{number of infected hosts}
+\item{Host.count.A}{number of infected hosts of host A.}
+
+\item{Host.count.B}{number of infected hosts of host B.}
 
 \item{pres.time}{current time of the simulation}
 
@@ -16,7 +18,11 @@ progressMessage(Host.count, pres.time, print.step, length.sim,
 
 \item{length.sim}{the length (in unit of time) over which the simulation should be run.}
 
-\item{max.infected}{the maximum number of hosts that can be infected in the simulation.}
+\item{max.infected.A}{the maximum number of hosts that can be infected in the simulation for host A.}
+
+\item{max.infected.B}{the maximum number of hosts that can be infected in the simulation for host B.}
+
+\item{type}{either single/dual host}
 }
 \description{
 Echos the state of the simulation at any given time step provided by the user.
