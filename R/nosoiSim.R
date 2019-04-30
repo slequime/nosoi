@@ -28,8 +28,11 @@ nosoiSim <- function(type="single",structure=FALSE, continuous=FALSE, ...){
   if(type=="single" & structure==TRUE & continuous == TRUE)  {
     output = singleContinuous(...)
   }
+
+  # if(type=="dual" & structure==FALSE) {
+  #   output = dualNone(...)
+  # }
   #To be implemented
-  if(type=="dual" & structure==FALSE) stop("This version has not been implemented yet.")
   if(type=="dual" & structure==TRUE) stop("This version has not been implemented yet.")
   return(output)
 }

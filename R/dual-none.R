@@ -1,4 +1,4 @@
-#' Single-host without structured host population
+#' Dual-host without structured host population
 #'
 #' @description This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
 #' the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.
@@ -20,33 +20,44 @@
 #' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
 #' @param ... other arguments to be passed on to the simulator (see below).
 #'
-#' @export singleNone
+#' @export dualNone
 
-singleNone <- function(length.sim,
-                       max.infected,
-                       init.individuals,
-                       pExit,
-                       param.pExit,
-                       timeDep.pExit=FALSE,
-                       timeContact,
-                       param.timeContact,
-                       timeDep.timeContact=FALSE,
-                       pTrans,
-                       param.pTrans,
-                       timeDep.pTrans=FALSE,
-                       prefix.host="H",
-                       progress.bar=TRUE,
-                       print.step=10,
-                       ...){
+dualNone <- function(length.sim,
+                     max.infected.A,
+                     max.infected.B,
+                     init.individuals.A,
+                     init.individuals.B,
+
+                     pExit.A,
+                     param.pExit.A,
+                     timeDep.pExit.A=FALSE,
+                     timeContact.A,
+                     param.timeContact.A,
+                     timeDep.timeContact.A=FALSE,
+                     pTrans.A,
+                     param.pTrans.A,
+                     timeDep.pTrans.A=FALSE,
+                     prefix.host.A="H",
+
+                     pExit.B,
+                     param.pExit.B,
+                     timeDep.pExit.B=FALSE,
+                     timeContact.B,
+                     param.timeContact.B,
+                     timeDep.timeContact.B=FALSE,
+                     pTrans.B,
+                     param.pTrans.B,
+                     timeDep.pTrans.B=FALSE,
+                     prefix.host.B="V",
+
+                     progress.bar=TRUE,
+                     print.step=10,
+                     ...){
 
   #Sanity check---------------------------------------------------------------------------------------------------------------------------
   #This section checks if the arguments of the function are in a correct format for the function to run properly
 
   CoreSanityChecks(length.sim, max.infected, init.individuals)
-
-  # if (! is.function(timeContact)) stop("Contact probability should be a function of time.")
-  # if (! is.function(pTrans)) stop("Transmission probability should be a function of time.")
-  # if (! is.function(pExit)) stop("Exit probability should be a function of time.")
 
   #Parsing timeContact
   timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),timeDep=timeDep.timeContact)
@@ -57,9 +68,6 @@ singleNone <- function(length.sim,
   #Parsing pExit
   pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),timeDep=timeDep.pExit)
 
-  #Parsing all parameters
-  ParamHost <- paramConstructor(param.pExit, param.pMove=NA, param.timeContact, param.pTrans, param.moveDist=NA)
-
   # Init
   message("Starting the simulation\nInitializing ...", appendLF = FALSE)
 
@@ -67,7 +75,7 @@ singleNone <- function(length.sim,
 
   res <- nosoiSimConstructor(N.infected = init.individuals,
                              total.time = 1,
-                             table.hosts = iniTable(init.individuals, NA, prefix.host, ParamHost),
+                             table.hosts = iniTable(init.individuals, NA, prefix.host, param.pExit, param.pMove = NA, param.timeContact, param.pTrans, param.moveDist = NA),
                              table.state = NA,
                              type = "singleNone")
 
@@ -90,7 +98,8 @@ singleNone <- function(length.sim,
                         pres.time,
                         positions = NULL,
                         timeContactParsed, pTransParsed,
-                        prefix.host, ParamHost)
+                        prefix.host, param.pExit, param.pMove = NA, param.timeContact, param.pTrans,
+                        param.moveDist = NA)
 
     if (progress.bar == TRUE) progressMessage(res$N.infected, pres.time, print.step, length.sim, max.infected)
     if (res$N.infected > max.infected) {break}

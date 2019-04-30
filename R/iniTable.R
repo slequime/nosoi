@@ -13,7 +13,7 @@
 #'
 #' @keywords internal
 
-iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,param.pMove,param.timeContact,param.pTrans,param.moveDist, current.environmental.value=NA){
+iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value=NULL){
 
   list.init <- vector("list", init.individuals)
 
@@ -22,11 +22,7 @@ iniTable <- function(init.individuals,init.structure,prefix.host,param.pExit,par
                                     infected.by = paste(NA,indiv,sep="-"),
                                     infected.in = init.structure,
                                     time.is = 0,
-                                    param.pExit = param.pExit,
-                                    param.pMove = param.pMove,
-                                    param.timeContact = param.timeContact,
-                                    param.pTrans = param.pTrans,
-                                    param.moveDist=param.moveDist,
+                                    ParamHost = ParamHost,
                                     current.environmental.value=current.environmental.value)
   }
 

@@ -99,6 +99,9 @@ singleContinuous <- function(type,
   #Parse pMove (same as pExit !!attention if diff)
   pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=diff.pMove, timeDep = timeDep.pMove, continuous=TRUE)
 
+  #Parsing all parameters
+  ParamHost <- paramConstructor(param.pExit, param.pMove, param.timeContact, param.pTrans, param.moveDist)
+
   #START OF THE SIMULATION --------------------------------------------------------------------------------------------------------
 
   # Init
@@ -108,7 +111,7 @@ singleContinuous <- function(type,
 
   res <- nosoiSimConstructor(N.infected = init.individuals,
                              total.time = 1,
-                             table.hosts = iniTable(init.individuals, init.structure, prefix.host, param.pExit, param.pMove, param.timeContact, param.pTrans, param.moveDist, current.environmental.value = start.env),
+                             table.hosts = iniTable(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value = start.env),
                              table.state = iniTableState(init.individuals, init.structure, prefix.host, current.environmental.value = start.env),
                              type = "singleContinuous")
 
@@ -145,8 +148,7 @@ singleContinuous <- function(type,
                         pres.time,
                         positions = c("current.in.x", "current.in.y", "current.env.value"),
                         timeContactParsed, pTransParsed,
-                        prefix.host, param.pExit, param.pMove, param.timeContact, param.pTrans,
-                        param.moveDist)
+                        prefix.host, ParamHost)
 
     if (progress.bar == TRUE) progressMessage(res$N.infected, pres.time, print.step, length.sim, max.infected)
     if (res$N.infected > max.infected) {break}

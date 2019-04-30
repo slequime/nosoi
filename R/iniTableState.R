@@ -9,7 +9,7 @@
 #'
 #' @keywords internal
 
-iniTableState <- function(init.individuals,init.structure,prefix.host,current.environmental.value=NA){
+iniTableState <- function(init.individuals,init.structure,prefix.host,current.environmental.value=NULL){
 
   list.init <- vector("list", init.individuals)
 

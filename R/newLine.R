@@ -20,14 +20,7 @@
 newLine <- function(hosts.ID,
                     infected.by, infected.in,
                     time.is,
-                    param.pExit, param.pMove, param.timeContact, param.pTrans,
-                    param.moveDist, current.environmental.value = NA) {
-
-  if (is.na(param.pExit)) param.pExit <- NULL
-  if (is.na(param.pMove)) param.pMove <- NULL
-  if (is.na(param.timeContact)) param.timeContact <- NULL
-  if (is.na(param.moveDist)) param.moveDist <- NULL
-  if (!is.null(current.environmental.value) && is.na(current.environmental.value)) current.environmental.value <- NULL
+                    ParamHost, current.environmental.value = NULL) {
 
   if (length(infected.in) == 1) {
     if (is.na(infected.in)) infected.in <- NULL
@@ -38,10 +31,7 @@ newLine <- function(hosts.ID,
              inf.time = time.is,
              out.time = NA_real_,
              active = 1,
-             as.list(sapply(param.pTrans, function(x) x(1))),
-             as.list(sapply(param.pMove, function(x) x(1))),
-             as.list(sapply(param.timeContact, function(x) x(1))),
-             as.list(sapply(param.pExit, function(x) x(1)))
+             as.list(sapply(ParamHost, function(x) x(1)))
     )
     )
   }
@@ -58,10 +48,7 @@ newLine <- function(hosts.ID,
              inf.time = time.is,
              out.time = NA_real_,
              active = 1,
-             as.list(sapply(param.pTrans, function(x) x(1))),
-             as.list(sapply(param.pMove, function(x) x(1))),
-             as.list(sapply(param.timeContact, function(x) x(1))),
-             as.list(sapply(param.pExit, function(x) x(1)))
+             as.list(sapply(ParamHost, function(x) x(1)))
     )
     )
   }

@@ -98,3 +98,35 @@ keepState <- function(nosoiSim) {
   if (nosoiSim$type == "singleDiscrete") return(TRUE)
   if (nosoiSim$type == "singleContinuous") return(TRUE)
 }
+
+#' @title Param concatenator
+#'
+#' @description
+#' Creates a \code{ParamHost} object.
+#'
+#' @inheritParams singleContinuous
+#'
+#' @return An object of class \code{ParamHost}
+#'
+#' @keywords internal
+##
+
+paramConstructor <- function(param.pExit, param.pMove, param.timeContact, param.pTrans,
+                                param.moveDist) {
+
+  checkna <- function(param){return((length(param) == 1) && is.na(param))}
+
+  if (checkna(param.pExit)) param.pExit <- NULL
+  if (checkna(param.pMove)) param.pMove <- NULL
+  if (checkna(param.timeContact)) param.timeContact <- NULL
+  if (checkna(param.moveDist)) param.moveDist <- NULL
+  if (checkna(param.pTrans)) param.pTrans <- NULL
+
+  merged <- c(param.pTrans, param.pMove, param.timeContact, param.pExit, param.moveDist)
+
+  ParamHost <- merged[!duplicated(merged)]
+
+  class(ParamHost) <- "ParamHost"
+
+  return(ParamHost)
+}

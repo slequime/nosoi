@@ -15,8 +15,7 @@ meetTransmit <- function(res,
                          pres.time,
                          positions,
                          timeContactParsed, pTransParsed,
-                         prefix.host, param.pExit, param.pMove, param.timeContact, param.pTrans,
-                         param.moveDist) {
+                         prefix.host, ParamHost) {
 
   keepHistory <- keepState(res)
 
@@ -63,8 +62,7 @@ meetTransmit <- function(res,
                                      as.character(df.meetTransmit[i,]$active.hosts),
                                      infected.in = getPositionInfected(res, df.meetTransmit, i),
                                      pres.time,
-                                     param.pExit, param.pMove, param.timeContact, param.pTrans,
-                                     param.moveDist,
+                                     ParamHost,
                                      current.environmental.value = df.meetTransmit[i,]$current.env.value)
           if (keepHistory) {
             table.state.temp[[i]] <- newLineState(hosts.ID,
