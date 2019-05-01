@@ -17,10 +17,7 @@ getExitingMoving <- function(res, pres.time, pasedFunction) {
 
   if (any(active.hosts)) {
 
-    fun <- function(z) {
-      pasedFunction$vect(prestime = pres.time, z[, pasedFunction$vectArgs, with = FALSE])
-    }
-    p.exitMove.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]]
+    p.exitMove.values <- applyFunctionToHosts(res, pres.time, pasedFunction, active.hosts)
 
     exitMove <- drawBernouilli(p.exitMove.values) #Draws K bernouillis with various probability (see function for more detail)
   }
@@ -33,4 +30,23 @@ getExitingMoving <- function(res, pres.time, pasedFunction) {
   return(exitMove.full)
 }
 
-
+#' @title Apply a function to table.host
+#'
+#' @description
+#' Return a vector of the results of the function
+#'
+#' @param res an object of class \code{nosoiSim}.
+#' @param pres.time current time
+#' @param pasedFunction parsed exit/moving function
+#' @param active.hosts a boolean vector of active hosts
+#'
+#' @return result vector
+#'
+#' @keywords internal
+##
+applyFunctionToHosts <- function(res, pres.time, pasedFunction, active.hosts) {
+  fun <- function(z) {
+    pasedFunction$vect(prestime = pres.time, z[, pasedFunction$vectArgs, with = FALSE])
+  }
+  return(res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]])
+}

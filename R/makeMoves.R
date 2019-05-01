@@ -104,11 +104,7 @@ moveFunction.singleContinuous <- function(res, pres.time, moving.full,
 
     table.state.temp <- vector("list", length(Move.ID))
 
-    fun <- function(z) {
-      moveDistParsed$vect(prestime = pres.time, z[, moveDistParsed$vectArgs, with = FALSE])
-    }
-
-    moveDist.values <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+    moveDist.values <- applyFunctionToHosts(res, pres.time, moveDistParsed, active.hosts)
 
     for (i in 1:length(Move.ID)) {
 

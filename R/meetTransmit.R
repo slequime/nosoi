@@ -21,10 +21,7 @@ meetTransmit <- function(res,
   df.meetTransmit <- res$table.hosts[active.hosts, c("hosts.ID", positions), with = FALSE]
   df.meetTransmit[, active.hosts:=hosts.ID]
 
-  fun <- function(z) {
-    timeContactParsed$vect(prestime = pres.time, z[, timeContactParsed$vectArgs, with = FALSE])
-  }
-  df.meetTransmit$number.contacts <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"]
+  df.meetTransmit$number.contacts <- applyFunctionToHosts(res, pres.time, timeContactParsed, active.hosts)
 
   haveContact <- df.meetTransmit[["number.contacts"]] > 0
   df.meetTransmit <- df.meetTransmit[haveContact]
@@ -32,11 +29,7 @@ meetTransmit <- function(res,
 
   if (nrow(df.meetTransmit) > 0) {
 
-    fun <- function(z) {
-      pTransParsed$vect(prestime = pres.time, z[, pTransParsed$vectArgs, with = FALSE])
-    }
-
-    df.meetTransmit[, "Ptransmit"] <- res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][, "V1"] #adds transmission probability to events
+    df.meetTransmit[, "Ptransmit"] <- applyFunctionToHosts(res, pres.time, pTransParsed, active.hosts) #adds transmission probability to events
     df.meetTransmit <- df.meetTransmit[df.meetTransmit[["Ptransmit"]] > 0] #discards event with probability 0
 
     if (nrow(df.meetTransmit) > 0) {

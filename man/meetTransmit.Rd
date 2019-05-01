@@ -10,7 +10,7 @@ meetTransmit(res, pres.time, positions, timeContactParsed, pTransParsed)
 \item{res}{an object of class \code{nosoiSim}.}
 }
 \value{
-The modified object res
+A table with active transmission events
 }
 \description{
 Perform the tasks related to meeting and transmission events.
