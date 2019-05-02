@@ -134,7 +134,7 @@ dualNone <- function(length.sim,
     res.A <- writeInfected(df.meetTransmit.B, res.A, pres.time, ParamHost.A)
 
     if (progress.bar == TRUE) progressMessage(Host.count.A=res.A$N.infected, Host.count.B=res.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")
-    if (res.A$N.infected > max.infected.A | res.B$N.infected > max.infected.B) {break}
+    if (res.A$N.infected > max.infected.A || res.B$N.infected > max.infected.B) {break}
   }
 
   endMessage(Host.count.A=res.A$N.infected, Host.count.B=res.B$N.infected, pres.time, type="dual")

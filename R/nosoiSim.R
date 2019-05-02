@@ -19,22 +19,22 @@ nosoiSim <- function(type="single", structure=FALSE, continuous=FALSE, ...){
   if (! structure %in% c(TRUE,FALSE)) stop("Unrecognized parameters for population structure, should be TRUE or FALSE.")
 
   #Loading correct script ------------------
-  if (type=="single" & structure==FALSE) {
+  if (type=="single" && structure==FALSE) {
     output <- singleNone(...)
   }
-  if (type=="single" & structure==TRUE & continuous == FALSE) {
+  if (type=="single" && structure==TRUE && continuous == FALSE) {
     output <- singleDiscrete(...)
   }
-  if (type=="single" & structure==TRUE & continuous == TRUE) {
+  if (type=="single" && structure==TRUE && continuous == TRUE) {
     output <- singleContinuous(...)
   }
 
-  if (type=="dual" & structure==FALSE) {
+  if (type=="dual" && structure==FALSE) {
     output <- dualNone(...)
   }
 
   #To be implemented
-  if(type=="dual" & structure==TRUE) stop("This version has not been implemented yet.")
+  if(type=="dual" && structure==TRUE) stop("This version has not been implemented yet.")
 
   return(output)
 }
