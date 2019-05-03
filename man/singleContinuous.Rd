@@ -4,8 +4,8 @@
 \alias{singleContinuous}
 \title{Single-host with structured host population}
 \usage{
-singleContinuous(type, structure, length.sim, max.infected,
-  init.individuals, init.structure, structure.raster, diff.pMove = FALSE,
+singleContinuous(length.sim, max.infected, init.individuals,
+  init.structure, structure.raster, diff.pMove = FALSE,
   timeDep.pMove = FALSE, pMove, param.pMove, diff.moveDist = FALSE,
   timeDep.moveDist = FALSE, moveDist, param.moveDist,
   attracted.by.raster = FALSE, diff.timeContact = FALSE,
@@ -15,10 +15,6 @@ singleContinuous(type, structure, length.sim, max.infected,
   prefix.host = "H", progress.bar = TRUE, print.step = 10, ...)
 }
 \arguments{
-\item{type}{single host or dual host}
-
-\item{structure}{is there any discrete structure in the host population to be accounted for (such as spatial features)}
-
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
 
 \item{max.infected}{specifies the maximum number of hosts that can be infected in the simulation.}

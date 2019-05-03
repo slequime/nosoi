@@ -79,12 +79,15 @@ FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, contin
 #' @keywords internal
 ##
 
-MatrixSanityChecks <- function(structure.matrix,init.structure) {
+MatrixSanityChecks <- function(structure.matrix, init.structure, none.at.start=NULL) {
   if (!is.matrix(structure.matrix)) stop("structure.matrix should be a matrix.")
   if (ncol(structure.matrix)!=nrow(structure.matrix)) stop("structure.matrix should have the same number of rows and columns.")
   if (!identical(colnames(structure.matrix),rownames(structure.matrix))) stop("structure.matrix rows and columns should have the same names.")
   if (any(rowSums(structure.matrix) != 1)) stop("structure.matrix rows should sum up to 1.")
-  if (!init.structure %in% rownames(structure.matrix)) stop("init.structure should be a state present in structure.matrix.")
+
+  if (is.null(none.at.start) && !init.structure %in% rownames(structure.matrix)) stop("init.structure should be a state present in structure.matrix.")
+
+  if(!is.null(none.at.start) && none.at.start==FALSE && (!init.structure %in% rownames(structure.matrix))) stop("init.structure should be a state present in structure.matrix.")
 }
 
 #' @title Checks if the raster is properly formated
@@ -98,7 +101,7 @@ MatrixSanityChecks <- function(structure.matrix,init.structure) {
 #' @keywords internal
 ##
 
-RasterSanityChecks <- function(structure.raster,init.structure) {
+RasterSanityChecks <- function(structure.raster, init.structure) {
   if(!class(structure.raster) == "RasterLayer") stop("structure.raster must be a raster (class RasterLayer).")
   start.env <- raster::extract(structure.raster,cbind(init.structure[1],init.structure[2]))
   if(is.na(start.env)) stop("Your starting position (init.structure) should be on the raster.")

@@ -4,7 +4,8 @@
 \alias{MatrixSanityChecks}
 \title{Checks if the matrix is properly formated}
 \usage{
-MatrixSanityChecks(structure.matrix, init.structure)
+MatrixSanityChecks(structure.matrix, init.structure,
+  none.at.start = NULL)
 }
 \arguments{
 \item{structure.matrix}{transition matrix (probabilities) to go from location A (row) to B (column)}

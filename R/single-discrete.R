@@ -4,12 +4,10 @@
 #' The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
 #' is passed.
 #'
-#' @param type single host or dual host
-#' @param structure is there any discrete structure in the host population to be accounted for (such as spatial features)
 #' @param length.sim specifies the length (in unit of time) over which the simulation should be run.
 #' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
 #' @param init.individuals number of initially infected individuals.
-#' @param init.structure which state (i.e. location) the initially infected individuals are located.
+#' @param init.structure which state (e.g. location) the initially infected individuals are located.
 #' @param structure.matrix transition matrix (probabilities) to go from location A (row) to B (column)
 #' @param diff.pMove is pMove different between states of the structured population (TRUE/FALSE)
 #' @param timeDep.pMove is pMove dependant on the absolute time of the simulation (TRUE/FALSE)
@@ -34,9 +32,7 @@
 #'
 #' @export singleDiscrete
 
-singleDiscrete <- function(type,
-                           structure,
-                           length.sim,
+singleDiscrete <- function(length.sim,
                            max.infected,
                            init.individuals,
                            init.structure,
@@ -110,6 +106,8 @@ singleDiscrete <- function(type,
 
     res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                         active = 0)]
+
+    res <- updateTableState(res, exiting.full, pres.time)
 
     if (all(res$table.hosts[["active"]] == 0)) {break}
 

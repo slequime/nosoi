@@ -50,3 +50,27 @@ applyFunctionToHosts <- function(res, pres.time, pasedFunction, active.hosts) {
   }
   return(res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]])
 }
+
+#' @title Update table state with exiting individuals
+#'
+#' @description
+#' Return a vector of exiting individuals.
+#'
+#' @param res an object of class \code{nosoiSim}.
+#' @param exiting a vector (TRUE/FALSE) of exiting individuals
+#' @param pres.time current time
+#'
+#' @return \code{nosoiSim} object
+#'
+#' @keywords internal
+##
+
+updateTableState <- function(res, exiting, pres.time) {
+
+  exiting.ID <- res$table.hosts[exiting]$hosts.ID
+  exiting.state <- res$table.state[,is.na(time.to) & hosts.ID %in% exiting.ID]
+
+  res$table.state[exiting.state, `:=` (time.to = as.numeric(pres.time))]
+
+  return(res)
+}

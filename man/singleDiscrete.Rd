@@ -4,26 +4,22 @@
 \alias{singleDiscrete}
 \title{Single-host with structured host population}
 \usage{
-singleDiscrete(type, structure, length.sim, max.infected, init.individuals,
-  init.structure, structure.matrix, diff.pMove = FALSE,
-  timeDep.pMove = FALSE, pMove, param.pMove, diff.timeContact = FALSE,
-  timeDep.timeContact = FALSE, timeContact, param.timeContact,
-  diff.pTrans = FALSE, timeDep.pTrans = FALSE, pTrans, param.pTrans,
-  diff.pExit = FALSE, timeDep.pExit = FALSE, pExit, param.pExit,
-  prefix.host = "H", progress.bar = TRUE, print.step = 10, ...)
+singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
+  structure.matrix, diff.pMove = FALSE, timeDep.pMove = FALSE, pMove,
+  param.pMove, diff.timeContact = FALSE, timeDep.timeContact = FALSE,
+  timeContact, param.timeContact, diff.pTrans = FALSE,
+  timeDep.pTrans = FALSE, pTrans, param.pTrans, diff.pExit = FALSE,
+  timeDep.pExit = FALSE, pExit, param.pExit, prefix.host = "H",
+  progress.bar = TRUE, print.step = 10, ...)
 }
 \arguments{
-\item{type}{single host or dual host}
-
-\item{structure}{is there any discrete structure in the host population to be accounted for (such as spatial features)}
-
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
 
 \item{max.infected}{specifies the maximum number of hosts that can be infected in the simulation.}
 
 \item{init.individuals}{number of initially infected individuals.}
 
-\item{init.structure}{which state (i.e. location) the initially infected individuals are located.}
+\item{init.structure}{which state (e.g. location) the initially infected individuals are located.}
 
 \item{structure.matrix}{transition matrix (probabilities) to go from location A (row) to B (column)}
 

@@ -19,7 +19,8 @@ makeMoves <- function(res, pres.time, moving.full,
 
   moveFunction <-  switch(res$type,
                           singleDiscrete = moveFunction.singleDiscrete,
-                          singleContinuous = moveFunction.singleContinuous)
+                          singleContinuous = moveFunction.singleContinuous,
+                          dualDiscrete = moveFunction.singleDiscrete,)
 
   Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
 

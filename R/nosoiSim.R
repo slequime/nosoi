@@ -32,9 +32,12 @@ nosoiSim <- function(type="single", structure=FALSE, continuous=FALSE, ...){
   if (type=="dual" && structure==FALSE) {
     output <- dualNone(...)
   }
+  if (type=="dual" && structure==TRUE && continuous == FALSE) {
+    output <- dualDiscrete(...)
+  }
 
   #To be implemented
-  if(type=="dual" && structure==TRUE) stop("This version has not been implemented yet.")
+  if(type=="dual" && structure==TRUE && continuous == TRUE) stop("This version has not been implemented yet.")
 
   return(output)
 }

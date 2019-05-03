@@ -191,9 +191,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>iniTable</span>(<span class='no'>init.individuals</span>, <span class='no'>init.structure</span>, <span class='no'>prefix.host</span>, <span class='no'>param.pExit</span>,
-  <span class='no'>param.pMove</span>, <span class='no'>param.timeContact</span>, <span class='no'>param.pTrans</span>, <span class='no'>param.moveDist</span>,
-  <span class='kw'>current.environmental.value</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
+    <pre class="usage"><span class='fu'>iniTable</span>(<span class='no'>init.individuals</span>, <span class='no'>init.structure</span>, <span class='no'>prefix.host</span>, <span class='no'>ParamHost</span>,
+  <span class='kw'>current.environmental.value</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -211,20 +210,8 @@
       <td><p>character(s) to be used as a prefix for the hosts identification number.</p></td>
     </tr>
     <tr>
-      <th>param.pExit</th>
-      <td><p>list of exit probability function(s).</p></td>
-    </tr>
-    <tr>
-      <th>param.pMove</th>
-      <td><p>list of movement probability function(s).</p></td>
-    </tr>
-    <tr>
-      <th>param.timeContact</th>
-      <td><p>list of contact probability function(s).</p></td>
-    </tr>
-    <tr>
-      <th>param.pTrans</th>
-      <td><p>list of transmission probability function(s).</p></td>
+      <th>ParamHost</th>
+      <td><p>list of individual based parameters.</p></td>
     </tr>
     <tr>
       <th>current.environmental.value</th>

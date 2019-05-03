@@ -4,8 +4,6 @@
 #' The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
 #' is passed.
 #'
-#' @param type single host or dual host
-#' @param structure is there any discrete structure in the host population to be accounted for (such as spatial features)
 #' @param length.sim specifies the length (in unit of time) over which the simulation should be run.
 #' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
 #' @param init.individuals number of initially infected individuals.
@@ -39,9 +37,7 @@
 #'
 #' @export singleContinuous
 
-singleContinuous <- function(type,
-                             structure,
-                             length.sim,
+singleContinuous <- function(length.sim,
                              max.infected,
                              init.individuals,
                              init.structure,
@@ -126,6 +122,8 @@ singleContinuous <- function(type,
 
     res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
                                         active = 0)]
+
+    res <- updateTableState(res, exiting.full, pres.time)
 
     if (all(res$table.hosts[["active"]] == 0)) {break}
 

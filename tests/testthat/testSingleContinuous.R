@@ -1,4 +1,4 @@
-context("Checking movement and differential expressions in continuous space")
+context("Testing single-host with continuous structure")
 
 test_that("Error message pops out when missing state in diff functions", {
   library(raster)

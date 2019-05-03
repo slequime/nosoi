@@ -11,17 +11,34 @@
 
 iniTableState <- function(init.individuals, init.structure, prefix.host, current.environmental.value=NULL){
 
-  list.init <- vector("list", init.individuals)
+  if (init.individuals >= 1){
+    list.init <- vector("list", init.individuals)
 
-  for (indiv in 1:init.individuals) {
+    for (indiv in 1:init.individuals) {
       list.init[[indiv]] <- newLineState(hosts.ID = paste(prefix.host,indiv,sep="-"),
-                                    state.pres = init.structure,
-                                    time.is = 0,
-                                    current.environmental.value=current.environmental.value)
+                                         state.pres = init.structure,
+                                         time.is = 0,
+                                         current.environmental.value=current.environmental.value)
+    }
+
+    table.mov <- data.table::rbindlist(list.init)
+
   }
 
-   table.mov <- data.table::rbindlist(list.init)
-   data.table::setkey(table.mov, "hosts.ID")
+  if (init.individuals == 0){
+    fake.init.individuals <- 1
+    list.init <- vector("list", fake.init.individuals)
+
+    for (indiv in 1:fake.init.individuals) {
+      list.init[[indiv]] <- newLineState(hosts.ID = paste(prefix.host,indiv,sep="-"),
+                                         state.pres = init.structure,
+                                         time.is = 0,
+                                         current.environmental.value=current.environmental.value)
+    }
+    table.mov <- data.table::rbindlist(list.init)
+    table.mov <- table.mov[-1]
+  }
+  data.table::setkey(table.mov, "hosts.ID")
 
   return(table.mov)
 }

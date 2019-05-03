@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Single-host with structured host population — singleDiscrete • nosoi</title>
+<title>Dual-host without structured host population — dualNone • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,11 +37,10 @@
 
 
 
-<meta property="og:title" content="Single-host with structured host population — singleDiscrete" />
+<meta property="og:title" content="Dual-host without structured host population — dualNone" />
 
-<meta property="og:description" content="This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
-The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed." />
+<meta property="og:description" content="This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
+the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -182,26 +181,26 @@ is passed." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Single-host with structured host population</h1>
-    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/single-discrete.R'><code>R/single-discrete.R</code></a></small>
-    <div class="hidden name"><code>singleDiscrete.Rd</code></div>
+    <h1>Dual-host without structured host population</h1>
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/dual-none.R'><code>R/dual-none.R</code></a></small>
+    <div class="hidden name"><code>dualNone.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
-The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed.</p>
+    <p>This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
+the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>singleDiscrete</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>, <span class='no'>init.structure</span>,
-  <span class='no'>structure.matrix</span>, <span class='kw'>diff.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>,
-  <span class='no'>param.pMove</span>, <span class='kw'>diff.timeContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.timeContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>timeContact</span>, <span class='no'>param.timeContact</span>, <span class='kw'>diff.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='kw'>diff.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>, <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>,
-  <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>dualNone</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected.A</span>, <span class='no'>max.infected.B</span>, <span class='no'>init.individuals.A</span>,
+  <span class='no'>init.individuals.B</span>, <span class='no'>pExit.A</span>, <span class='no'>param.pExit.A</span>, <span class='kw'>timeDep.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>timeContact.A</span>, <span class='no'>param.timeContact.A</span>, <span class='kw'>timeDep.timeContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>pTrans.A</span>, <span class='no'>param.pTrans.A</span>, <span class='kw'>timeDep.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>prefix.host.A</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='no'>pExit.B</span>, <span class='no'>param.pExit.B</span>, <span class='kw'>timeDep.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>timeContact.B</span>, <span class='no'>param.timeContact.B</span>, <span class='kw'>timeDep.timeContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>pTrans.B</span>, <span class='no'>param.pTrans.B</span>, <span class='kw'>timeDep.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>prefix.host.B</span> <span class='kw'>=</span> <span class='st'>"V"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -211,88 +210,100 @@ is passed.</p>
       <td><p>specifies the length (in unit of time) over which the simulation should be run.</p></td>
     </tr>
     <tr>
-      <th>max.infected</th>
-      <td><p>specifies the maximum number of hosts that can be infected in the simulation.</p></td>
+      <th>max.infected.A</th>
+      <td><p>specifies the maximum number of hosts A that can be infected in the simulation.</p></td>
     </tr>
     <tr>
-      <th>init.individuals</th>
-      <td><p>number of initially infected individuals.</p></td>
+      <th>max.infected.B</th>
+      <td><p>specifies the maximum number of hosts B that can be infected in the simulation.</p></td>
     </tr>
     <tr>
-      <th>init.structure</th>
-      <td><p>which state (e.g. location) the initially infected individuals are located.</p></td>
+      <th>init.individuals.A</th>
+      <td><p>number of initially infected individuals (hosts A).</p></td>
     </tr>
     <tr>
-      <th>structure.matrix</th>
-      <td><p>transition matrix (probabilities) to go from location A (row) to B (column)</p></td>
+      <th>init.individuals.B</th>
+      <td><p>number of initially infected individuals (hosts B).</p></td>
     </tr>
     <tr>
-      <th>diff.pMove</th>
-      <td><p>is pMove different between states of the structured population (TRUE/FALSE)</p></td>
+      <th>pExit.A</th>
+      <td><p>function that gives the probability to exit the simulation for an infected host A (either moving out, dying, etc.).</p></td>
     </tr>
     <tr>
-      <th>timeDep.pMove</th>
-      <td><p>is pMove dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+      <th>param.pExit.A</th>
+      <td><p>parameter names (list of functions) for the pExit for host A.</p></td>
     </tr>
     <tr>
-      <th>pMove</th>
-      <td><p>function that gives the probability of a host moving as a function of time.</p></td>
+      <th>timeDep.pExit.A</th>
+      <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
     </tr>
     <tr>
-      <th>param.pMove</th>
-      <td><p>parameter names (list of functions) for the pMove.</p></td>
+      <th>timeContact.A</th>
+      <td><p>function that gives the number of potential transmission events per unit of time  for host A.</p></td>
     </tr>
     <tr>
-      <th>diff.timeContact</th>
-      <td><p>is timeContact different between states of the structured population (TRUE/FALSE)</p></td>
+      <th>param.timeContact.A</th>
+      <td><p>parameter names (list of functions) for param.timeContact  for host A.</p></td>
     </tr>
     <tr>
-      <th>timeDep.timeContact</th>
-      <td><p>is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+      <th>timeDep.timeContact.A</th>
+      <td><p>is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
     </tr>
     <tr>
-      <th>timeContact</th>
-      <td><p>function that gives the number of potential transmission events per unit of time.</p></td>
+      <th>pTrans.A</th>
+      <td><p>function that gives the probability of transmit a pathogen as a function of time since infection  for host A.</p></td>
     </tr>
     <tr>
-      <th>param.timeContact</th>
-      <td><p>parameter names (list of functions) for timeContact.</p></td>
+      <th>param.pTrans.A</th>
+      <td><p>parameter names (list of functions) for the pExit  for host A.</p></td>
     </tr>
     <tr>
-      <th>diff.pTrans</th>
-      <td><p>is pTrans different between states of the structured population (TRUE/FALSE)</p></td>
+      <th>timeDep.pTrans.A</th>
+      <td><p>is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
     </tr>
     <tr>
-      <th>timeDep.pTrans</th>
-      <td><p>is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+      <th>prefix.host.A</th>
+      <td><p>character(s) to be used as a prefix for the host A identification number.</p></td>
     </tr>
     <tr>
-      <th>pTrans</th>
-      <td><p>function that gives the probability of transmit a pathogen as a function of time since infection.</p></td>
+      <th>pExit.B</th>
+      <td><p>function that gives the probability to exit the simulation for an infected host B (either moving out, dying, etc.).</p></td>
     </tr>
     <tr>
-      <th>param.pTrans</th>
-      <td><p>parameter names (list of functions) for the pTrans.</p></td>
+      <th>param.pExit.B</th>
+      <td><p>parameter names (list of functions) for the pExit for host B.</p></td>
     </tr>
     <tr>
-      <th>diff.pExit</th>
-      <td><p>is pExit different between states of the structured population (TRUE/FALSE)</p></td>
+      <th>timeDep.pExit.B</th>
+      <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
     </tr>
     <tr>
-      <th>timeDep.pExit</th>
-      <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+      <th>timeContact.B</th>
+      <td><p>function that gives the number of potential transmission events per unit of time  for host B.</p></td>
     </tr>
     <tr>
-      <th>pExit</th>
-      <td><p>function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).</p></td>
+      <th>param.timeContact.B</th>
+      <td><p>parameter names (list of functions) for param.timeContact  for host B.</p></td>
     </tr>
     <tr>
-      <th>param.pExit</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
+      <th>timeDep.timeContact.B</th>
+      <td><p>is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
     </tr>
     <tr>
-      <th>prefix.host</th>
-      <td><p>character(s) to be used as a prefix for the hosts identification number.</p></td>
+      <th>pTrans.B</th>
+      <td><p>function that gives the probability of transmit a pathogen as a function of time since infection  for host B.</p></td>
+    </tr>
+    <tr>
+      <th>param.pTrans.B</th>
+      <td><p>parameter names (list of functions) for the pExit  for host B.</p></td>
+    </tr>
+    <tr>
+      <th>timeDep.pTrans.B</th>
+      <td><p>is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
+    </tr>
+    <tr>
+      <th>prefix.host.B</th>
+      <td><p>character(s) to be used as a prefix for the host B identification number.</p></td>
     </tr>
     <tr>
       <th>progress.bar</th>
@@ -301,10 +312,6 @@ is passed.</p>
     <tr>
       <th>print.step</th>
       <td><p>progress.bar is TRUE, step with which the progress message will be printed.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>other arguments to be passed on to the simulator (see below).</p></td>
     </tr>
     </table>
     

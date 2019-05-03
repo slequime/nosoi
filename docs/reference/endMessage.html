@@ -191,18 +191,27 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>endMessage</span>(<span class='no'>Host.count</span>, <span class='no'>pres.time</span>)</pre>
+    <pre class="usage"><span class='fu'>endMessage</span>(<span class='no'>Host.count.A</span>, <span class='kw'>Host.count.B</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>pres.time</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"single"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Host.count</th>
-      <td><p>number of infected hosts</p></td>
+      <th>Host.count.A</th>
+      <td><p>number of infected hosts (host A)</p></td>
+    </tr>
+    <tr>
+      <th>Host.count.B</th>
+      <td><p>number of infected hosts (host B)</p></td>
     </tr>
     <tr>
       <th>pres.time</th>
       <td><p>current time of the simulation</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>either single/dual host</p></td>
     </tr>
     </table>
     
