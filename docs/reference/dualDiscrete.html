@@ -198,14 +198,14 @@ the end of given time (specified by length.sim) or when the number of hosts infe
   <span class='no'>init.structure.B</span>, <span class='no'>structure.matrix.A</span>, <span class='no'>structure.matrix.B</span>, <span class='no'>pExit.A</span>,
   <span class='no'>param.pExit.A</span>, <span class='kw'>timeDep.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>pMove.A</span>, <span class='no'>param.pMove.A</span>, <span class='kw'>timeDep.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>timeContact.A</span>, <span class='no'>param.timeContact.A</span>,
-  <span class='kw'>timeDep.timeContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.timeContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.A</span>,
+  <span class='kw'>diff.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.A</span>, <span class='no'>param.nContact.A</span>,
+  <span class='kw'>timeDep.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.A</span>,
   <span class='no'>param.pTrans.A</span>, <span class='kw'>timeDep.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>prefix.host.A</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='no'>pExit.B</span>, <span class='no'>param.pExit.B</span>, <span class='kw'>timeDep.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>diff.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove.B</span>, <span class='no'>param.pMove.B</span>,
-  <span class='kw'>timeDep.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>timeContact.B</span>,
-  <span class='no'>param.timeContact.B</span>, <span class='kw'>timeDep.timeContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.timeContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.B</span>, <span class='no'>param.pTrans.B</span>,
+  <span class='kw'>timeDep.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.B</span>,
+  <span class='no'>param.nContact.B</span>, <span class='kw'>timeDep.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>diff.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.B</span>, <span class='no'>param.pTrans.B</span>,
   <span class='kw'>timeDep.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>prefix.host.B</span> <span class='kw'>=</span> <span class='st'>"V"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
@@ -274,27 +274,27 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     </tr>
     <tr>
       <th>timeDep.pMove.A</th>
-      <td><p>is moveDist dependant on the absolute time of the simulation (TRUE/FALSE) for host A.</p></td>
+      <td><p>is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.</p></td>
     </tr>
     <tr>
       <th>diff.pMove.A</th>
       <td><p>is pMove different between states of the structured population (TRUE/FALSE) for host A.</p></td>
     </tr>
     <tr>
-      <th>timeContact.A</th>
+      <th>nContact.A</th>
       <td><p>function that gives the number of potential transmission events per unit of time  for host A.</p></td>
     </tr>
     <tr>
-      <th>param.timeContact.A</th>
-      <td><p>parameter names (list of functions) for param.timeContact  for host A.</p></td>
+      <th>param.nContact.A</th>
+      <td><p>parameter names (list of functions) for param.nContact  for host A.</p></td>
     </tr>
     <tr>
-      <th>timeDep.timeContact.A</th>
-      <td><p>is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
+      <th>timeDep.nContact.A</th>
+      <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
     </tr>
     <tr>
-      <th>diff.timeContact.A</th>
-      <td><p>is timeContact different between states of the structured population (TRUE/FALSE) for host A.</p></td>
+      <th>diff.nContact.A</th>
+      <td><p>is nContact different between states of the structured population (TRUE/FALSE) for host A.</p></td>
     </tr>
     <tr>
       <th>pTrans.A</th>
@@ -342,27 +342,27 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     </tr>
     <tr>
       <th>timeDep.pMove.B</th>
-      <td><p>is moveDist dependant on the absolute time of the simulation (TRUE/FALSE) for host B.</p></td>
+      <td><p>is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host B.</p></td>
     </tr>
     <tr>
       <th>diff.pMove.B</th>
       <td><p>is pMove different between states of the structured population (TRUE/FALSE) for host B.</p></td>
     </tr>
     <tr>
-      <th>timeContact.B</th>
+      <th>nContact.B</th>
       <td><p>function that gives the number of potential transmission events per unit of time  for host B.</p></td>
     </tr>
     <tr>
-      <th>param.timeContact.B</th>
-      <td><p>parameter names (list of functions) for param.timeContact  for host B.</p></td>
+      <th>param.nContact.B</th>
+      <td><p>parameter names (list of functions) for param.nContact  for host B.</p></td>
     </tr>
     <tr>
-      <th>timeDep.timeContact.B</th>
-      <td><p>is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
+      <th>timeDep.nContact.B</th>
+      <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
     </tr>
     <tr>
-      <th>diff.timeContact.B</th>
-      <td><p>is timeContact different between states of the structured population (TRUE/FALSE) for host B.</p></td>
+      <th>diff.nContact.B</th>
+      <td><p>is nContact different between states of the structured population (TRUE/FALSE) for host B.</p></td>
     </tr>
     <tr>
       <th>pTrans.B</th>

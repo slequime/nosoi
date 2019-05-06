@@ -13,10 +13,10 @@
 #' @param timeDep.pMove is pMove dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pMove function that gives the probability of a host moving as a function of time.
 #' @param param.pMove parameter names (list of functions) for the pMove.
-#' @param diff.timeContact is timeContact different between states of the structured population (TRUE/FALSE)
-#' @param timeDep.timeContact is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)
-#' @param timeContact function that gives the number of potential transmission events per unit of time.
-#' @param param.timeContact parameter names (list of functions) for timeContact.
+#' @param diff.nContact is nContact different between states of the structured population (TRUE/FALSE)
+#' @param timeDep.nContact is nContact dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param nContact function that gives the number of potential transmission events per unit of time.
+#' @param param.nContact parameter names (list of functions) for nContact.
 #' @param diff.pTrans is pTrans different between states of the structured population (TRUE/FALSE)
 #' @param timeDep.pTrans is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pTrans function that gives the probability of transmit a pathogen as a function of time since infection.
@@ -41,10 +41,10 @@ singleDiscrete <- function(length.sim,
                            timeDep.pMove=FALSE,
                            pMove,
                            param.pMove,
-                           diff.timeContact=FALSE,
-                           timeDep.timeContact=FALSE,
-                           timeContact,
-                           param.timeContact,
+                           diff.nContact=FALSE,
+                           timeDep.nContact=FALSE,
+                           nContact,
+                           param.nContact,
                            diff.pTrans=FALSE,
                            timeDep.pTrans=FALSE,
                            pTrans,
@@ -63,8 +63,8 @@ singleDiscrete <- function(length.sim,
 
   CoreSanityChecks(length.sim, max.infected, init.individuals)
 
-  #Parsing timeContact
-  timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=diff.timeContact, timeDep = timeDep.timeContact, stateNames=colnames(structure.matrix))
+  #Parsing nContact
+  nContactParsed <- parseFunction(nContact, param.nContact, as.character(quote(nContact)),diff=diff.nContact, timeDep = timeDep.nContact, stateNames=colnames(structure.matrix))
 
   #Parsing pTrans
   pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=diff.pTrans, timeDep = timeDep.pTrans, stateNames=colnames(structure.matrix))
@@ -80,7 +80,7 @@ singleDiscrete <- function(length.sim,
   pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=diff.pMove, timeDep = timeDep.pMove, stateNames=colnames(structure.matrix))
 
   #Parsing all parameters
-  ParamHost <- paramConstructor(param.pExit, param.pMove, param.timeContact, param.pTrans, param.moveDist=NA)
+  ParamHost <- paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans, param.coordMove=NA)
 
   #START OF THE SIMULATION --------------------------------------------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ singleDiscrete <- function(length.sim,
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
-    df.meetTransmit <- meetTransmit(res, pres.time, positions = c("current.in"), timeContactParsed, pTransParsed)
+    df.meetTransmit <- meetTransmit(res, pres.time, positions = c("current.in"), nContactParsed, pTransParsed)
 
     res <- writeInfected(df.meetTransmit, res, pres.time, ParamHost)
 

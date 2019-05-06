@@ -147,7 +147,7 @@
       <h1>General principles</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-05-03</h4>
+            <h4 class="date">2019-05-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/nosoi.Rmd"><code>vignettes/nosoi.Rmd</code></a></small>
       <div class="hidden name"><code>nosoi.Rmd</code></div>
@@ -175,8 +175,8 @@
 <ul>
 <li>the probability to exit the simulation (here named <code>pExit</code>). For hosts, that means, for example, dying, being cured, leaving the study area, etc.</li>
 <li>the probability to move (here named <code>pMove</code>, only relevant when your simulation has some kind of structure, either in a discrete or continuous space). For hosts, that could, for example, travelling, changing status (becoming rich, or getting a treatment), etc.</li>
-<li>the distance travelled (here named <code>moveDist</code>) (only relevant when a stucture exist in a continuous space).</li>
-<li>the number of contacts (here named <code>timeContact</code>). How many potentially infectious contacts does an infected host have?</li>
+<li>the distance travelled (here named <code>coordMove</code>) (only relevant when a stucture exist in a continuous space).</li>
+<li>the number of contacts (here named <code>nContact</code>). How many potentially infectious contacts does an infected host have?</li>
 <li>the probability to transmit (here named <code>pTrans</code>). When a contact occures between two hosts, one of which being infected, the probability that the infection gets transmitted to the uninfected one.</li>
 </ul>
 <p>Each of these probabilities and numbers are computed during the simulation. In a very simple scenario, each one is a constant. In more complex models supported by <code>nosoi</code> they could depend on hosts parameters (e.g. genetics), dynamic parameters (since when the host is infected), environemental parameters (where the host is), or the moment of the simulation (e.g. seasons, mitigation campaign,…), taken individually into account or together.</p>

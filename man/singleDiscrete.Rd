@@ -6,8 +6,8 @@
 \usage{
 singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
   structure.matrix, diff.pMove = FALSE, timeDep.pMove = FALSE, pMove,
-  param.pMove, diff.timeContact = FALSE, timeDep.timeContact = FALSE,
-  timeContact, param.timeContact, diff.pTrans = FALSE,
+  param.pMove, diff.nContact = FALSE, timeDep.nContact = FALSE,
+  nContact, param.nContact, diff.pTrans = FALSE,
   timeDep.pTrans = FALSE, pTrans, param.pTrans, diff.pExit = FALSE,
   timeDep.pExit = FALSE, pExit, param.pExit, prefix.host = "H",
   progress.bar = TRUE, print.step = 10, ...)
@@ -31,13 +31,13 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 
 \item{param.pMove}{parameter names (list of functions) for the pMove.}
 
-\item{diff.timeContact}{is timeContact different between states of the structured population (TRUE/FALSE)}
+\item{diff.nContact}{is nContact different between states of the structured population (TRUE/FALSE)}
 
-\item{timeDep.timeContact}{is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)}
+\item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)}
 
-\item{timeContact}{function that gives the number of potential transmission events per unit of time.}
+\item{nContact}{function that gives the number of potential transmission events per unit of time.}
 
-\item{param.timeContact}{parameter names (list of functions) for timeContact.}
+\item{param.nContact}{parameter names (list of functions) for nContact.}
 
 \item{diff.pTrans}{is pTrans different between states of the structured population (TRUE/FALSE)}
 

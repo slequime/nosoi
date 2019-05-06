@@ -36,8 +36,8 @@ This simulation (`singleNone`) type takes several arguments or options to be abl
 - `max.infected` 
 - `init.individuals` 
 - `pExit` with `param.pExit` (optional)  and `timeDep.pExit` (optional)
-- `timeContact` with `param.timeContact` (optional) and `timeDep.timeContact` (optional) 
-- `pTrans` with `param.pTrans` and `timeDep.timeContact` (optional)
+- `nContact` with `param.nContact` (optional) and `timeDep.nContact` (optional) 
+- `pTrans` with `param.pTrans` and `timeDep.pTrans` (optional)
 - `prefix.host`
 - `progress.bar`
 - `print.step`
@@ -60,12 +60,12 @@ SimulationA <- nosoiSim(type="single", structure=FALSE,
 
 ### Core functions
 
-The core functions `pExit`, `timeContact` and `pTrans` each follow the same principles to be set up ([see General principles](nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers) and [see Get started](get-started.html#setting-up-the-core-functions) for more details). 
+The core functions `pExit`, `nContact` and `pTrans` each follow the same principles to be set up ([see General principles](nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers) and [see Get started](get-started.html#setting-up-the-core-functions) for more details). 
 To accommodate several scenarios, they can be constant, time-dependent (relative time since infection for each individual or "absolute"" time of the simulation) or even individually parameterized, to include some stochasticity at the individual host level.
 In every case, the function provided, like all other core function in `nosoi`, has to be expressed as function of time `t`, even if time is not used to compute the probability.
-In case the function uses individual-based parameters, you have to specify a list of functions (called `param.pExit`, `param.timeContact` or `param.pTrans`) ( [see Get started](get-started.html#parameters) ). If no individual-based parameter is used, then `param.pExit` is `NA`.
+In case the function uses individual-based parameters, you have to specify a list of functions (called `param.pExit`, `param.nContact` or `param.pTrans`) ( [see Get started](get-started.html#parameters) ). If no individual-based parameter is used, then `param.pExit` is `NA`.
 
-> Keep in mind that `pExit` and `pTrans` have to give back a probability (i.e. a number between 0 and 1) while `timeContact` should give back a positive natural number (positive integer).
+> Keep in mind that `pExit` and `pTrans` have to give back a probability (i.e. a number between 0 and 1) while `nContact` should give back a positive natural number (positive integer).
 
 You can combine the influence of several parameters, such as time since infection, "absolute" time of the simulation and individual-based parameters within the same function.
 
@@ -107,26 +107,26 @@ p_exit_param1 <- function(x){rnorm(x,mean = 10,sd=2)}
 param.pExit=list(pExit.param1=p_exit_param1)
 ```
 
-#### `timeContact`, `param.timeContact` and `timeDep.timeContact`
+#### `nContact`, `param.nContact` and `timeDep.nContact`
 
-`timeContact` represents the number (a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation.
+`nContact` represents the number (a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation.
 The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero. As this number might vary, it has to be expressed as a function of `t` (uniquely), but it can take various forms. Here are some examples:
 
-```{r timeContact, eval = FALSE}
-time_contact_fct = function(t){return(2)} #to get a constant number of contacts for each hosts, here 2.
-time_contact_fct = function(t){sample(c(0,1,2,3),1,prob=c(0.4,0.3,0.2,0.1))} #to get a varying number of contacts for each hosts.
-time_contact_fct = function(t){round(rnorm(1, 3, 1), 0)} #another example of varying number of contacts for each hosts.
+```{r nContact, eval = FALSE}
+n_contact_fct = function(t){return(2)} #to get a constant number of contacts for each hosts, here 2.
+n_contact_fct = function(t){sample(c(0,1,2,3),1,prob=c(0.4,0.3,0.2,0.1))} #to get a varying number of contacts for each hosts.
+n_contact_fct = function(t){round(rnorm(1, 3, 1), 0)} #another example of varying number of contacts for each hosts.
 
-time_contact_fct = function(t,prestime){
+n_contact_fct = function(t,prestime){
   if(prestime < 10){round(rnorm(1, 9, 1), 0)}
   if(prestime >= 10){round(rnorm(1, 3, 1), 0)}
 } #for an absolute time dependent value
 ```
 
-For a constant or time-dependent function, with no individual parameter, `param.timeContact` is `NA`.
-In the case of an individually parameterized `timeContact`, the functions for the parameters have to be wrapped into a list, called `param.timeContact`.
-The name of each function in the list has to have the same name as the parameter it is sampling for `timeContact`.
-`timeDep.timeContact` allows for `timeContact` to be dependant of the "absolute time" of the simulation, to account, for example, for seasonality or other external time related covariates. 
+For a constant or time-dependent function, with no individual parameter, `param.nContact` is `NA`.
+In the case of an individually parameterized `nContact`, the functions for the parameters have to be wrapped into a list, called `param.nContact`.
+The name of each function in the list has to have the same name as the parameter it is sampling for `nContact`.
+`timeDep.nContact` allows for `nContact` to be dependant of the "absolute time" of the simulation, to account, for example, for seasonality or other external time related covariates. 
 
 #### `pTrans`, `param.pTrans` and `timeDep.pTrans`
 
@@ -179,9 +179,9 @@ At this step, the `nosoi` function should look like this:
 ```{r setupE, eval = FALSE}
 SimulationA <- nosoiSim(type="single", structure=FALSE,
                         length.sim=300, max.infected=1000, init.individuals=1, 
-                        timeContact=time_contact_fct,
-                        param.timeContact=NA,
-                        timeDep.timeContact=FALSE,
+                        nContact=n_contact_fct,
+                        param.nContact=NA,
+                        timeDep.nContact=FALSE,
                         pExit = p_Exit_fct,
                         param.pExit = list(pExit.param1=p_exit_param1),
                         timeDep.pExit=FALSE,
@@ -205,8 +205,8 @@ Once nosoiSim is set up, you can run the simulation (here the "seed" ensures tha
 
 ```{r setupF}
 library(nosoi)
-#timeContact
-time_contact_fct = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
+#nContact
+n_contact_fct = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
 
 #pTrans
 pTrans_fct <- function(t,p_max,t_incub){
@@ -224,9 +224,9 @@ p_Exit_fct  <- function(t){return(0.08)}
 set.seed(805)
 SimulationA <- nosoiSim(type="single", structure=FALSE,
                         length.sim=100, max.infected=100, init.individuals=1, 
-                        timeContact=time_contact_fct,
-                        param.timeContact=NA,
-                        timeDep.timeContact=FALSE,
+                        nContact=n_contact_fct,
+                        param.nContact=NA,
+                        timeDep.nContact=FALSE,
                         pExit = p_Exit_fct,
                         param.pExit = NA,
                         timeDep.pExit=FALSE,

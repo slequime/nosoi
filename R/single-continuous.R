@@ -13,15 +13,15 @@
 #' @param timeDep.pMove is pMove dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pMove function that gives the probability of a host moving as a function of time.
 #' @param param.pMove parameter names (list of functions) for the pMove.
-#' @param diff.moveDist is moveDist dependant on the environmental value (TRUE/FALSE).
-#' @param timeDep.moveDist is moveDist dependant on the absolute time of the simulation (TRUE/FALSE).
-#' @param moveDist function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.
-#' @param param.moveDist parameter names (list of functions) for moveDist.
+#' @param diff.coordMove is coordMove dependant on the environmental value (TRUE/FALSE).
+#' @param timeDep.coordMove is coordMove dependant on the absolute time of the simulation (TRUE/FALSE).
+#' @param coordMove function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.
+#' @param param.coordMove parameter names (list of functions) for coordMove.
 #' @param attracted.by.raster should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)
-#' @param diff.timeContact is timeContact different between states of the structured population (TRUE/FALSE)
-#' @param timeDep.timeContact is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)
-#' @param timeContact function that gives the number of potential transmission events per unit of time.
-#' @param param.timeContact parameter names (list of functions) for timeContact.
+#' @param diff.nContact is nContact different between states of the structured population (TRUE/FALSE)
+#' @param timeDep.nContact is nContact dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param nContact function that gives the number of potential transmission events per unit of time.
+#' @param param.nContact parameter names (list of functions) for nContact.
 #' @param diff.pTrans is pTrans different between states of the structured population (TRUE/FALSE)
 #' @param timeDep.pTrans is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pTrans function that gives the probability of transmit a pathogen as a function of time since infection.
@@ -46,15 +46,15 @@ singleContinuous <- function(length.sim,
                              timeDep.pMove=FALSE,
                              pMove,
                              param.pMove,
-                             diff.moveDist=FALSE,
-                             timeDep.moveDist=FALSE,
-                             moveDist,
-                             param.moveDist,
+                             diff.coordMove=FALSE,
+                             timeDep.coordMove=FALSE,
+                             coordMove,
+                             param.coordMove,
                              attracted.by.raster=FALSE,
-                             diff.timeContact=FALSE,
-                             timeDep.timeContact=FALSE,
-                             timeContact,
-                             param.timeContact,
+                             diff.nContact=FALSE,
+                             timeDep.nContact=FALSE,
+                             nContact,
+                             param.nContact,
                              diff.pTrans=FALSE,
                              timeDep.pTrans=FALSE,
                              pTrans,
@@ -73,11 +73,11 @@ singleContinuous <- function(length.sim,
 
   CoreSanityChecks(length.sim, max.infected, init.individuals)
 
-  #Parsing timeContact
-  timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),diff=diff.timeContact, timeDep = timeDep.timeContact, continuous=TRUE)
+  #Parsing nContact
+  nContactParsed <- parseFunction(nContact, param.nContact, as.character(quote(nContact)),diff=diff.nContact, timeDep = timeDep.nContact, continuous=TRUE)
 
-  #Parsing moveDist
-  moveDistParsed <- parseFunction(moveDist, param.moveDist, as.character(quote(moveDist)),diff=diff.moveDist, timeDep = timeDep.moveDist, continuous=TRUE)
+  #Parsing coordMove
+  coordMoveParsed <- parseFunction(coordMove, param.coordMove, as.character(quote(coordMove)),diff=diff.coordMove, timeDep = timeDep.coordMove, continuous=TRUE)
 
   #Parsing pTrans
   pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=diff.pTrans, timeDep = timeDep.pTrans, continuous=TRUE)
@@ -96,7 +96,7 @@ singleContinuous <- function(length.sim,
   pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=diff.pMove, timeDep = timeDep.pMove, continuous=TRUE)
 
   #Parsing all parameters
-  ParamHost <- paramConstructor(param.pExit, param.pMove, param.timeContact, param.pTrans, param.moveDist)
+  ParamHost <- paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans, param.coordMove)
 
   #START OF THE SIMULATION --------------------------------------------------------------------------------------------------------
 
@@ -136,14 +136,14 @@ singleContinuous <- function(length.sim,
     #step 1.2 if moving, where are they going?
 
     res <- makeMoves(res, pres.time, moving.full,
-                     moveDistParsed = moveDistParsed,
+                     coordMoveParsed = coordMoveParsed,
                      structure.raster = structure.raster,
                      attracted.by.raster = attracted.by.raster,
                      max.raster = max.raster)
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
-    df.meetTransmit <- meetTransmit(res, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value"), timeContactParsed, pTransParsed)
+    df.meetTransmit <- meetTransmit(res, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value"), nContactParsed, pTransParsed)
 
     res <- writeInfected(df.meetTransmit, res, pres.time, ParamHost)
 

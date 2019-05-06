@@ -11,13 +11,13 @@ vignette: >
 
 # Setting up the core functions
 
-`nosoi` runs under a series of user defined probabilities and numbers ( [see General principles](nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers) ). Each follows the same principles to be set up. We will detail here how to set up a correct function to be used into the simulator; this will apply for the functions `pExit`, `pMove`, `moveDist`, `timeContact` and `pTrans`.
+`nosoi` runs under a series of user defined probabilities and numbers ( [see General principles](nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers) ). Each follows the same principles to be set up. We will detail here how to set up a correct function to be used into the simulator; this will apply for the functions `pExit`, `pMove`, `coordMove`, `nContact` and `pTrans`.
 
 ## Expected output
 
 Every function which name starts with a `p` (i.e. `pExit`, `pMove` and `pTrans`) should give back a single probability (a number between 0 and 1). 
 
-`timeContact` should give back a positive natural number (positive integer), while `moveDist` can give whatever number back.
+`nContact` should give back a positive natural number (positive integer), while `coordMove` can give whatever number back.
 
 ## Function arguments
 

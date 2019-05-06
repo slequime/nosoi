@@ -14,14 +14,14 @@
 meetTransmit <- function(res,
                          pres.time,
                          positions,
-                         timeContactParsed, pTransParsed) {
+                         nContactParsed, pTransParsed) {
 
   active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
 
   df.meetTransmit <- res$table.hosts[active.hosts, c("hosts.ID", positions), with = FALSE]
   df.meetTransmit[, active.hosts:=hosts.ID]
 
-  df.meetTransmit$number.contacts <- applyFunctionToHosts(res, pres.time, timeContactParsed, active.hosts)
+  df.meetTransmit$number.contacts <- applyFunctionToHosts(res, pres.time, nContactParsed, active.hosts)
 
   haveContact <- df.meetTransmit[["number.contacts"]] > 0
   df.meetTransmit <- df.meetTransmit[haveContact]

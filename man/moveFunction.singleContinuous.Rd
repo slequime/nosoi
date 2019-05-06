@@ -4,7 +4,7 @@
 \alias{moveFunction.singleContinuous}
 \title{Make Continuous Move function}
 \usage{
-moveFunction.singleContinuous(res, pres.time, moving.full, moveDistParsed,
+moveFunction.singleContinuous(res, pres.time, moving.full, coordMoveParsed,
   structure.raster, attracted.by.raster, max.raster, ...)
 }
 \arguments{

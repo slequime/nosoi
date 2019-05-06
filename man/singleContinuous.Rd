@@ -6,10 +6,10 @@
 \usage{
 singleContinuous(length.sim, max.infected, init.individuals,
   init.structure, structure.raster, diff.pMove = FALSE,
-  timeDep.pMove = FALSE, pMove, param.pMove, diff.moveDist = FALSE,
-  timeDep.moveDist = FALSE, moveDist, param.moveDist,
-  attracted.by.raster = FALSE, diff.timeContact = FALSE,
-  timeDep.timeContact = FALSE, timeContact, param.timeContact,
+  timeDep.pMove = FALSE, pMove, param.pMove, diff.coordMove = FALSE,
+  timeDep.coordMove = FALSE, coordMove, param.coordMove,
+  attracted.by.raster = FALSE, diff.nContact = FALSE,
+  timeDep.nContact = FALSE, nContact, param.nContact,
   diff.pTrans = FALSE, timeDep.pTrans = FALSE, pTrans, param.pTrans,
   diff.pExit = FALSE, timeDep.pExit = FALSE, pExit, param.pExit,
   prefix.host = "H", progress.bar = TRUE, print.step = 10, ...)
@@ -33,23 +33,23 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{param.pMove}{parameter names (list of functions) for the pMove.}
 
-\item{diff.moveDist}{is moveDist dependant on the environmental value (TRUE/FALSE).}
+\item{diff.coordMove}{is coordMove dependant on the environmental value (TRUE/FALSE).}
 
-\item{timeDep.moveDist}{is moveDist dependant on the absolute time of the simulation (TRUE/FALSE).}
+\item{timeDep.coordMove}{is coordMove dependant on the absolute time of the simulation (TRUE/FALSE).}
 
-\item{moveDist}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.}
+\item{coordMove}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.}
 
-\item{param.moveDist}{parameter names (list of functions) for moveDist.}
+\item{param.coordMove}{parameter names (list of functions) for coordMove.}
 
 \item{attracted.by.raster}{should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)}
 
-\item{diff.timeContact}{is timeContact different between states of the structured population (TRUE/FALSE)}
+\item{diff.nContact}{is nContact different between states of the structured population (TRUE/FALSE)}
 
-\item{timeDep.timeContact}{is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)}
+\item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)}
 
-\item{timeContact}{function that gives the number of potential transmission events per unit of time.}
+\item{nContact}{function that gives the number of potential transmission events per unit of time.}
 
-\item{param.timeContact}{parameter names (list of functions) for timeContact.}
+\item{param.nContact}{parameter names (list of functions) for nContact.}
 
 \item{diff.pTrans}{is pTrans different between states of the structured population (TRUE/FALSE)}
 

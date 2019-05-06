@@ -19,12 +19,12 @@
 #' @param diff.pExit.A is pExit different between states of the structured population (TRUE/FALSE) for host A.
 #' @param pMove.A function that gives the probability of a host moving as a function of time for host A.
 #' @param param.pMove.A parameter names (list of functions) for the pMove for host A.
-#' @param timeDep.pMove.A is moveDist dependant on the absolute time of the simulation (TRUE/FALSE) for host A.
+#' @param timeDep.pMove.A is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.
 #' @param diff.pMove.A is pMove different between states of the structured population (TRUE/FALSE) for host A.
-#' @param timeContact.A function that gives the number of potential transmission events per unit of time  for host A.
-#' @param param.timeContact.A parameter names (list of functions) for param.timeContact  for host A.
-#' @param timeDep.timeContact.A is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.
-#' @param diff.timeContact.A is timeContact different between states of the structured population (TRUE/FALSE) for host A.
+#' @param nContact.A function that gives the number of potential transmission events per unit of time  for host A.
+#' @param param.nContact.A parameter names (list of functions) for param.nContact  for host A.
+#' @param timeDep.nContact.A is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.
+#' @param diff.nContact.A is nContact different between states of the structured population (TRUE/FALSE) for host A.
 #' @param pTrans.A function that gives the probability of transmit a pathogen as a function of time since infection  for host A.
 #' @param param.pTrans.A parameter names (list of functions) for the pExit  for host A.
 #' @param timeDep.pTrans.A is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.
@@ -37,12 +37,12 @@
 #' @param diff.pExit.B is pExit different between states of the structured population (TRUE/FALSE) for host B.
 #' @param pMove.B function that gives the probability of a host moving as a function of time for host B.
 #' @param param.pMove.B parameter names (list of functions) for the pMove for host B.
-#' @param timeDep.pMove.B is moveDist dependant on the absolute time of the simulation (TRUE/FALSE) for host B.
+#' @param timeDep.pMove.B is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host B.
 #' @param diff.pMove.B is pMove different between states of the structured population (TRUE/FALSE) for host B.
-#' @param timeContact.B function that gives the number of potential transmission events per unit of time  for host B.
-#' @param param.timeContact.B parameter names (list of functions) for param.timeContact  for host B.
-#' @param timeDep.timeContact.B is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.
-#' @param diff.timeContact.B is timeContact different between states of the structured population (TRUE/FALSE) for host B.
+#' @param nContact.B function that gives the number of potential transmission events per unit of time  for host B.
+#' @param param.nContact.B parameter names (list of functions) for param.nContact  for host B.
+#' @param timeDep.nContact.B is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.
+#' @param diff.nContact.B is nContact different between states of the structured population (TRUE/FALSE) for host B.
 #' @param pTrans.B function that gives the probability of transmit a pathogen as a function of time since infection  for host B.
 #' @param param.pTrans.B parameter names (list of functions) for the pExit  for host B.
 #' @param timeDep.pTrans.B is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.
@@ -72,10 +72,10 @@ dualDiscrete <- function(length.sim,
                      param.pMove.A,
                      timeDep.pMove.A=FALSE,
                      diff.pMove.A=FALSE,
-                     timeContact.A,
-                     param.timeContact.A,
-                     timeDep.timeContact.A=FALSE,
-                     diff.timeContact.A=FALSE,
+                     nContact.A,
+                     param.nContact.A,
+                     timeDep.nContact.A=FALSE,
+                     diff.nContact.A=FALSE,
                      pTrans.A,
                      param.pTrans.A,
                      timeDep.pTrans.A=FALSE,
@@ -90,10 +90,10 @@ dualDiscrete <- function(length.sim,
                      param.pMove.B,
                      timeDep.pMove.B=FALSE,
                      diff.pMove.B=FALSE,
-                     timeContact.B,
-                     param.timeContact.B,
-                     timeDep.timeContact.B=FALSE,
-                     diff.timeContact.B=FALSE,
+                     nContact.B,
+                     param.nContact.B,
+                     timeDep.nContact.B=FALSE,
+                     diff.nContact.B=FALSE,
                      pTrans.B,
                      param.pTrans.B,
                      timeDep.pTrans.B=FALSE,
@@ -115,9 +115,9 @@ dualDiscrete <- function(length.sim,
 
   if((!is.function(pMove.A)) && (!is.function(pMove.B))) stop("At least one host must move!.")
 
-  #Parsing timeContact
-  timeContactParsed.A <- parseFunction(timeContact.A, param.timeContact.A, as.character(quote(timeContact.A)), diff=diff.timeContact.A, timeDep = timeDep.timeContact.A, stateNames=colnames(structure.matrix.A))
-  timeContactParsed.B <- parseFunction(timeContact.B, param.timeContact.B, as.character(quote(timeContact.B)), diff=diff.timeContact.B, timeDep = timeDep.timeContact.B, stateNames=colnames(structure.matrix.B))
+  #Parsing nContact
+  nContactParsed.A <- parseFunction(nContact.A, param.nContact.A, as.character(quote(nContact.A)), diff=diff.nContact.A, timeDep = timeDep.nContact.A, stateNames=colnames(structure.matrix.A))
+  nContactParsed.B <- parseFunction(nContact.B, param.nContact.B, as.character(quote(nContact.B)), diff=diff.nContact.B, timeDep = timeDep.nContact.B, stateNames=colnames(structure.matrix.B))
 
   #Parsing pTrans
   pTransParsed.A <- parseFunction(pTrans.A, param.pTrans.A, as.character(quote(pTrans.A)), diff=diff.pTrans.A, timeDep = timeDep.pTrans.A, stateNames=colnames(structure.matrix.A))
@@ -135,8 +135,8 @@ dualDiscrete <- function(length.sim,
   if(is.function(pMove.B)) pMoveParsed.B <- parseFunction(pMove.B, param.pMove.B, as.character(quote(pMove.B)), diff=diff.pMove.B, timeDep = timeDep.pMove.B, stateNames=colnames(structure.matrix.B))
 
   #Parsing all parameters
-  ParamHost.A <- paramConstructor(param.pExit.A, param.pMove=param.pMove.A, param.timeContact.A, param.pTrans.A, param.moveDist=NA)
-  ParamHost.B <- paramConstructor(param.pExit.B, param.pMove=param.pMove.B, param.timeContact.B, param.pTrans.B, param.moveDist=NA)
+  ParamHost.A <- paramConstructor(param.pExit.A, param.pMove=param.pMove.A, param.nContact.A, param.pTrans.A, param.coordMove=NA)
+  ParamHost.B <- paramConstructor(param.pExit.B, param.pMove=param.pMove.B, param.nContact.B, param.pTrans.B, param.coordMove=NA)
 
   # Init
   message("Starting the simulation\nInitializing ...", appendLF = FALSE)
@@ -191,11 +191,11 @@ dualDiscrete <- function(length.sim,
     #Step 2: Meeting & transmission ----------------------------------------------------
 
     #Transmission from A to B
-    df.meetTransmit.A <- meetTransmit(res.A, pres.time, positions = c("current.in"), timeContactParsed.A, pTransParsed.A)
+    df.meetTransmit.A <- meetTransmit(res.A, pres.time, positions = c("current.in"), nContactParsed.A, pTransParsed.A)
     res.B <- writeInfected(df.meetTransmit.A, res.B, pres.time, ParamHost.B)
 
     #Transmission from B to A
-    df.meetTransmit.B <- meetTransmit(res.B, pres.time, positions = c("current.in"), timeContactParsed.B, pTransParsed.B)
+    df.meetTransmit.B <- meetTransmit(res.B, pres.time, positions = c("current.in"), nContactParsed.B, pTransParsed.B)
     res.A <- writeInfected(df.meetTransmit.B, res.A, pres.time, ParamHost.A)
 
     if (progress.bar == TRUE) progressMessage(Host.count.A=res.A$N.infected, Host.count.B=res.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")

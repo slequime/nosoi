@@ -6,9 +6,9 @@
 #' @param length.sim specifies the length (in unit of time) over which the simulation should be run.
 #' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
 #' @param init.individuals number of initially infected individuals.
-#' @param timeContact function that gives the number of potential transmission events per unit of time.
-#' @param param.timeContact parameter names (list of functions) for param.timeContact.
-#' @param timeDep.timeContact is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param nContact function that gives the number of potential transmission events per unit of time.
+#' @param param.nContact parameter names (list of functions) for param.nContact.
+#' @param timeDep.nContact is nContact dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pTrans function that gives the probability of transmit a pathogen as a function of time since infection.
 #' @param param.pTrans parameter names (list of functions) for the pExit.
 #' @param timeDep.pTrans is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)
@@ -28,9 +28,9 @@ singleNone <- function(length.sim,
                        pExit,
                        param.pExit,
                        timeDep.pExit=FALSE,
-                       timeContact,
-                       param.timeContact,
-                       timeDep.timeContact=FALSE,
+                       nContact,
+                       param.nContact,
+                       timeDep.nContact=FALSE,
                        pTrans,
                        param.pTrans,
                        timeDep.pTrans=FALSE,
@@ -44,8 +44,8 @@ singleNone <- function(length.sim,
 
   CoreSanityChecks(length.sim, max.infected, init.individuals)
 
-  #Parsing timeContact
-  timeContactParsed <- parseFunction(timeContact, param.timeContact, as.character(quote(timeContact)),timeDep=timeDep.timeContact)
+  #Parsing nContact
+  nContactParsed <- parseFunction(nContact, param.nContact, as.character(quote(nContact)),timeDep=timeDep.nContact)
 
   #Parsing pTrans
   pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),timeDep=timeDep.pTrans)
@@ -54,7 +54,7 @@ singleNone <- function(length.sim,
   pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),timeDep=timeDep.pExit)
 
   #Parsing all parameters
-  ParamHost <- paramConstructor(param.pExit, param.pMove=NA, param.timeContact, param.pTrans, param.moveDist=NA)
+  ParamHost <- paramConstructor(param.pExit, param.pMove=NA, param.nContact, param.pTrans, param.coordMove=NA)
 
   # Init
   message("Starting the simulation\nInitializing ...", appendLF = FALSE)
@@ -83,7 +83,7 @@ singleNone <- function(length.sim,
 
     #Step 1: Meeting & transmission ----------------------------------------------------
 
-    df.meetTransmit <- meetTransmit(res, pres.time, positions = NULL, timeContactParsed, pTransParsed)
+    df.meetTransmit <- meetTransmit(res, pres.time, positions = NULL, nContactParsed, pTransParsed)
 
     res <- writeInfected(df.meetTransmit, res, pres.time, ParamHost)
 

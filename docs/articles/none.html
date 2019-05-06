@@ -147,7 +147,7 @@
       <h1>Spread of a pathogen in a homogeneous population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-05-03</h4>
+            <h4 class="date">2019-05-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/none.Rmd"><code>vignettes/none.Rmd</code></a></small>
       <div class="hidden name"><code>none.Rmd</code></div>
@@ -173,9 +173,9 @@
 <li>
 <code>pExit</code> with <code>param.pExit</code> (optional) and <code>timeDep.pExit</code> (optional)</li>
 <li>
-<code>timeContact</code> with <code>param.timeContact</code> (optional) and <code>timeDep.timeContact</code> (optional)</li>
+<code>nContact</code> with <code>param.nContact</code> (optional) and <code>timeDep.nContact</code> (optional)</li>
 <li>
-<code>pTrans</code> with <code>param.pTrans</code> and <code>timeDep.timeContact</code> (optional)</li>
+<code>pTrans</code> with <code>param.pTrans</code> and <code>timeDep.pTrans</code> (optional)</li>
 <li><code>prefix.host</code></li>
 <li><code>progress.bar</code></li>
 <li><code>print.step</code></li>
@@ -192,9 +192,9 @@
 <div id="core-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#core-functions" class="anchor"></a>Core functions</h3>
-<p>The core functions <code>pExit</code>, <code>timeContact</code> and <code>pTrans</code> each follow the same principles to be set up (<a href="nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers">see General principles</a> and <a href="get-started.html#setting-up-the-core-functions">see Get started</a> for more details). To accommodate several scenarios, they can be constant, time-dependent (relative time since infection for each individual or “absolute”" time of the simulation) or even individually parameterized, to include some stochasticity at the individual host level. In every case, the function provided, like all other core function in <code>nosoi</code>, has to be expressed as function of time <code>t</code>, even if time is not used to compute the probability. In case the function uses individual-based parameters, you have to specify a list of functions (called <code>param.pExit</code>, <code>param.timeContact</code> or <code>param.pTrans</code>) ( <a href="get-started.html#parameters">see Get started</a> ). If no individual-based parameter is used, then <code>param.pExit</code> is <code>NA</code>.</p>
+<p>The core functions <code>pExit</code>, <code>nContact</code> and <code>pTrans</code> each follow the same principles to be set up (<a href="nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers">see General principles</a> and <a href="get-started.html#setting-up-the-core-functions">see Get started</a> for more details). To accommodate several scenarios, they can be constant, time-dependent (relative time since infection for each individual or “absolute”" time of the simulation) or even individually parameterized, to include some stochasticity at the individual host level. In every case, the function provided, like all other core function in <code>nosoi</code>, has to be expressed as function of time <code>t</code>, even if time is not used to compute the probability. In case the function uses individual-based parameters, you have to specify a list of functions (called <code>param.pExit</code>, <code>param.nContact</code> or <code>param.pTrans</code>) ( <a href="get-started.html#parameters">see Get started</a> ). If no individual-based parameter is used, then <code>param.pExit</code> is <code>NA</code>.</p>
 <blockquote>
-<p>Keep in mind that <code>pExit</code> and <code>pTrans</code> have to give back a probability (i.e. a number between 0 and 1) while <code>timeContact</code> should give back a positive natural number (positive integer).</p>
+<p>Keep in mind that <code>pExit</code> and <code>pTrans</code> have to give back a probability (i.e. a number between 0 and 1) while <code>nContact</code> should give back a positive natural number (positive integer).</p>
 </blockquote>
 <p>You can combine the influence of several parameters, such as time since infection, “absolute” time of the simulation and individual-based parameters within the same function.</p>
 <blockquote>
@@ -222,20 +222,20 @@
 <a class="sourceLine" id="cb6-2" data-line-number="2">p_exit_param1 &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">10</span>,<span class="dt">sd=</span><span class="dv">2</span>)}</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">param.pExit=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pExit.param1=</span>p_exit_param1)</a></code></pre></div>
 </div>
-<div id="timecontact-param-timecontact-and-timedep-timecontact" class="section level4">
+<div id="ncontact-param-ncontact-and-timedep-ncontact" class="section level4">
 <h4 class="hasAnchor">
-<a href="#timecontact-param-timecontact-and-timedep-timecontact" class="anchor"></a><code>timeContact</code>, <code>param.timeContact</code> and <code>timeDep.timeContact</code>
+<a href="#ncontact-param-ncontact-and-timedep-ncontact" class="anchor"></a><code>nContact</code>, <code>param.nContact</code> and <code>timeDep.nContact</code>
 </h4>
-<p><code>timeContact</code> represents the number (a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation. The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero. As this number might vary, it has to be expressed as a function of <code>t</code> (uniquely), but it can take various forms. Here are some examples:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">time_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">2</span>)} <span class="co">#to get a constant number of contacts for each hosts, here 2.</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">time_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.4</span>,<span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.1</span>))} <span class="co">#to get a varying number of contacts for each hosts.</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">time_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>)} <span class="co">#another example of varying number of contacts for each hosts.</span></a>
+<p><code>nContact</code> represents the number (a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation. The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero. As this number might vary, it has to be expressed as a function of <code>t</code> (uniquely), but it can take various forms. Here are some examples:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">n_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">2</span>)} <span class="co">#to get a constant number of contacts for each hosts, here 2.</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">n_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.4</span>,<span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.1</span>))} <span class="co">#to get a varying number of contacts for each hosts.</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">n_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>)} <span class="co">#another example of varying number of contacts for each hosts.</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">time_contact_fct =<span class="st"> </span><span class="cf">function</span>(t,prestime){</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">n_contact_fct =<span class="st"> </span><span class="cf">function</span>(t,prestime){</a>
 <a class="sourceLine" id="cb7-6" data-line-number="6">  <span class="cf">if</span>(prestime <span class="op">&lt;</span><span class="st"> </span><span class="dv">10</span>){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">1</span>), <span class="dv">0</span>)}</a>
 <a class="sourceLine" id="cb7-7" data-line-number="7">  <span class="cf">if</span>(prestime <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>)}</a>
 <a class="sourceLine" id="cb7-8" data-line-number="8">} <span class="co">#for an absolute time dependent value</span></a></code></pre></div>
-<p>For a constant or time-dependent function, with no individual parameter, <code>param.timeContact</code> is <code>NA</code>. In the case of an individually parameterized <code>timeContact</code>, the functions for the parameters have to be wrapped into a list, called <code>param.timeContact</code>. The name of each function in the list has to have the same name as the parameter it is sampling for <code>timeContact</code>. <code>timeDep.timeContact</code> allows for <code>timeContact</code> to be dependant of the “absolute time” of the simulation, to account, for example, for seasonality or other external time related covariates.</p>
+<p>For a constant or time-dependent function, with no individual parameter, <code>param.nContact</code> is <code>NA</code>. In the case of an individually parameterized <code>nContact</code>, the functions for the parameters have to be wrapped into a list, called <code>param.nContact</code>. The name of each function in the list has to have the same name as the parameter it is sampling for <code>nContact</code>. <code>timeDep.nContact</code> allows for <code>nContact</code> to be dependant of the “absolute time” of the simulation, to account, for example, for seasonality or other external time related covariates.</p>
 </div>
 <div id="ptrans-param-ptrans-and-timedep-ptrans" class="section level4">
 <h4 class="hasAnchor">
@@ -259,9 +259,9 @@
 <p>At this step, the <code>nosoi</code> function should look like this:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2">                        <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">                        <span class="dt">timeContact=</span>time_contact_fct,</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">                        <span class="dt">param.timeContact=</span><span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">                        <span class="dt">timeDep.timeContact=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">                        <span class="dt">nContact=</span>n_contact_fct,</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">                        <span class="dt">param.nContact=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">                        <span class="dt">timeDep.nContact=</span><span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb12-6" data-line-number="6">                        <span class="dt">pExit =</span> p_Exit_fct,</a>
 <a class="sourceLine" id="cb12-7" data-line-number="7">                        <span class="dt">param.pExit =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pExit.param1=</span>p_exit_param1),</a>
 <a class="sourceLine" id="cb12-8" data-line-number="8">                        <span class="dt">timeDep.pExit=</span><span class="ot">FALSE</span>,</a>
@@ -284,8 +284,8 @@
 <p>Once nosoiSim is set up, you can run the simulation (here the “seed” ensures that you will get the same results as in this tutorial).</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; Loading required package: data.table</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#timeContact</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">time_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#nContact</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">n_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
 <a class="sourceLine" id="cb13-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#pTrans</span></a>
 <a class="sourceLine" id="cb13-7" data-line-number="7">pTrans_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){</a>
@@ -303,9 +303,9 @@
 <a class="sourceLine" id="cb13-19" data-line-number="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">805</span>)</a>
 <a class="sourceLine" id="cb13-20" data-line-number="20">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb13-21" data-line-number="21">                        <span class="dt">length.sim=</span><span class="dv">100</span>, <span class="dt">max.infected=</span><span class="dv">100</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb13-22" data-line-number="22">                        <span class="dt">timeContact=</span>time_contact_fct,</a>
-<a class="sourceLine" id="cb13-23" data-line-number="23">                        <span class="dt">param.timeContact=</span><span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb13-24" data-line-number="24">                        <span class="dt">timeDep.timeContact=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb13-22" data-line-number="22">                        <span class="dt">nContact=</span>n_contact_fct,</a>
+<a class="sourceLine" id="cb13-23" data-line-number="23">                        <span class="dt">param.nContact=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb13-24" data-line-number="24">                        <span class="dt">timeDep.nContact=</span><span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb13-25" data-line-number="25">                        <span class="dt">pExit =</span> p_Exit_fct,</a>
 <a class="sourceLine" id="cb13-26" data-line-number="26">                        <span class="dt">param.pExit =</span> <span class="ot">NA</span>,</a>
 <a class="sourceLine" id="cb13-27" data-line-number="27">                        <span class="dt">timeDep.pExit=</span><span class="ot">FALSE</span>,</a>

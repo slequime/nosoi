@@ -9,14 +9,14 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
   init.structure.B, structure.matrix.A, structure.matrix.B, pExit.A,
   param.pExit.A, timeDep.pExit.A = FALSE, diff.pExit.A = FALSE,
   pMove.A, param.pMove.A, timeDep.pMove.A = FALSE,
-  diff.pMove.A = FALSE, timeContact.A, param.timeContact.A,
-  timeDep.timeContact.A = FALSE, diff.timeContact.A = FALSE, pTrans.A,
+  diff.pMove.A = FALSE, nContact.A, param.nContact.A,
+  timeDep.nContact.A = FALSE, diff.nContact.A = FALSE, pTrans.A,
   param.pTrans.A, timeDep.pTrans.A = FALSE, diff.pTrans.A = FALSE,
   prefix.host.A = "H", pExit.B, param.pExit.B, timeDep.pExit.B = FALSE,
   diff.pExit.B = FALSE, pMove.B, param.pMove.B,
-  timeDep.pMove.B = FALSE, diff.pMove.B = FALSE, timeContact.B,
-  param.timeContact.B, timeDep.timeContact.B = FALSE,
-  diff.timeContact.B = FALSE, pTrans.B, param.pTrans.B,
+  timeDep.pMove.B = FALSE, diff.pMove.B = FALSE, nContact.B,
+  param.nContact.B, timeDep.nContact.B = FALSE,
+  diff.nContact.B = FALSE, pTrans.B, param.pTrans.B,
   timeDep.pTrans.B = FALSE, diff.pTrans.B = FALSE,
   prefix.host.B = "V", progress.bar = TRUE, print.step = 10)
 }
@@ -51,17 +51,17 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pMove.A}{parameter names (list of functions) for the pMove for host A.}
 
-\item{timeDep.pMove.A}{is moveDist dependant on the absolute time of the simulation (TRUE/FALSE) for host A.}
+\item{timeDep.pMove.A}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.}
 
 \item{diff.pMove.A}{is pMove different between states of the structured population (TRUE/FALSE) for host A.}
 
-\item{timeContact.A}{function that gives the number of potential transmission events per unit of time  for host A.}
+\item{nContact.A}{function that gives the number of potential transmission events per unit of time  for host A.}
 
-\item{param.timeContact.A}{parameter names (list of functions) for param.timeContact  for host A.}
+\item{param.nContact.A}{parameter names (list of functions) for param.nContact  for host A.}
 
-\item{timeDep.timeContact.A}{is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
+\item{timeDep.nContact.A}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
 
-\item{diff.timeContact.A}{is timeContact different between states of the structured population (TRUE/FALSE) for host A.}
+\item{diff.nContact.A}{is nContact different between states of the structured population (TRUE/FALSE) for host A.}
 
 \item{pTrans.A}{function that gives the probability of transmit a pathogen as a function of time since infection  for host A.}
 
@@ -85,17 +85,17 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pMove.B}{parameter names (list of functions) for the pMove for host B.}
 
-\item{timeDep.pMove.B}{is moveDist dependant on the absolute time of the simulation (TRUE/FALSE) for host B.}
+\item{timeDep.pMove.B}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host B.}
 
 \item{diff.pMove.B}{is pMove different between states of the structured population (TRUE/FALSE) for host B.}
 
-\item{timeContact.B}{function that gives the number of potential transmission events per unit of time  for host B.}
+\item{nContact.B}{function that gives the number of potential transmission events per unit of time  for host B.}
 
-\item{param.timeContact.B}{parameter names (list of functions) for param.timeContact  for host B.}
+\item{param.nContact.B}{parameter names (list of functions) for param.nContact  for host B.}
 
-\item{timeDep.timeContact.B}{is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
+\item{timeDep.nContact.B}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
 
-\item{diff.timeContact.B}{is timeContact different between states of the structured population (TRUE/FALSE) for host B.}
+\item{diff.nContact.B}{is nContact different between states of the structured population (TRUE/FALSE) for host B.}
 
 \item{pTrans.B}{function that gives the probability of transmit a pathogen as a function of time since infection  for host B.}
 

@@ -6,12 +6,12 @@
 \usage{
 dualNone(length.sim, max.infected.A, max.infected.B, init.individuals.A,
   init.individuals.B, pExit.A, param.pExit.A, timeDep.pExit.A = FALSE,
-  timeContact.A, param.timeContact.A, timeDep.timeContact.A = FALSE,
-  pTrans.A, param.pTrans.A, timeDep.pTrans.A = FALSE,
-  prefix.host.A = "H", pExit.B, param.pExit.B, timeDep.pExit.B = FALSE,
-  timeContact.B, param.timeContact.B, timeDep.timeContact.B = FALSE,
-  pTrans.B, param.pTrans.B, timeDep.pTrans.B = FALSE,
-  prefix.host.B = "V", progress.bar = TRUE, print.step = 10)
+  nContact.A, param.nContact.A, timeDep.nContact.A = FALSE, pTrans.A,
+  param.pTrans.A, timeDep.pTrans.A = FALSE, prefix.host.A = "H",
+  pExit.B, param.pExit.B, timeDep.pExit.B = FALSE, nContact.B,
+  param.nContact.B, timeDep.nContact.B = FALSE, pTrans.B, param.pTrans.B,
+  timeDep.pTrans.B = FALSE, prefix.host.B = "V", progress.bar = TRUE,
+  print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -30,11 +30,11 @@ dualNone(length.sim, max.infected.A, max.infected.B, init.individuals.A,
 
 \item{timeDep.pExit.A}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
 
-\item{timeContact.A}{function that gives the number of potential transmission events per unit of time  for host A.}
+\item{nContact.A}{function that gives the number of potential transmission events per unit of time  for host A.}
 
-\item{param.timeContact.A}{parameter names (list of functions) for param.timeContact  for host A.}
+\item{param.nContact.A}{parameter names (list of functions) for param.nContact  for host A.}
 
-\item{timeDep.timeContact.A}{is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
+\item{timeDep.nContact.A}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
 
 \item{pTrans.A}{function that gives the probability of transmit a pathogen as a function of time since infection  for host A.}
 
@@ -50,11 +50,11 @@ dualNone(length.sim, max.infected.A, max.infected.B, init.individuals.A,
 
 \item{timeDep.pExit.B}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
 
-\item{timeContact.B}{function that gives the number of potential transmission events per unit of time  for host B.}
+\item{nContact.B}{function that gives the number of potential transmission events per unit of time  for host B.}
 
-\item{param.timeContact.B}{parameter names (list of functions) for param.timeContact  for host B.}
+\item{param.nContact.B}{parameter names (list of functions) for param.nContact  for host B.}
 
-\item{timeDep.timeContact.B}{is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
+\item{timeDep.nContact.B}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
 
 \item{pTrans.B}{function that gives the probability of transmit a pathogen as a function of time since infection  for host B.}
 

@@ -195,12 +195,12 @@ the end of given time (specified by length.sim) or when the number of hosts infe
 
     <pre class="usage"><span class='fu'>dualNone</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected.A</span>, <span class='no'>max.infected.B</span>, <span class='no'>init.individuals.A</span>,
   <span class='no'>init.individuals.B</span>, <span class='no'>pExit.A</span>, <span class='no'>param.pExit.A</span>, <span class='kw'>timeDep.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>timeContact.A</span>, <span class='no'>param.timeContact.A</span>, <span class='kw'>timeDep.timeContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>pTrans.A</span>, <span class='no'>param.pTrans.A</span>, <span class='kw'>timeDep.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>prefix.host.A</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='no'>pExit.B</span>, <span class='no'>param.pExit.B</span>, <span class='kw'>timeDep.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>timeContact.B</span>, <span class='no'>param.timeContact.B</span>, <span class='kw'>timeDep.timeContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>pTrans.B</span>, <span class='no'>param.pTrans.B</span>, <span class='kw'>timeDep.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>prefix.host.B</span> <span class='kw'>=</span> <span class='st'>"V"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+  <span class='no'>nContact.A</span>, <span class='no'>param.nContact.A</span>, <span class='kw'>timeDep.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.A</span>,
+  <span class='no'>param.pTrans.A</span>, <span class='kw'>timeDep.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prefix.host.A</span> <span class='kw'>=</span> <span class='st'>"H"</span>,
+  <span class='no'>pExit.B</span>, <span class='no'>param.pExit.B</span>, <span class='kw'>timeDep.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.B</span>,
+  <span class='no'>param.nContact.B</span>, <span class='kw'>timeDep.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.B</span>, <span class='no'>param.pTrans.B</span>,
+  <span class='kw'>timeDep.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prefix.host.B</span> <span class='kw'>=</span> <span class='st'>"V"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -238,16 +238,16 @@ the end of given time (specified by length.sim) or when the number of hosts infe
       <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
     </tr>
     <tr>
-      <th>timeContact.A</th>
+      <th>nContact.A</th>
       <td><p>function that gives the number of potential transmission events per unit of time  for host A.</p></td>
     </tr>
     <tr>
-      <th>param.timeContact.A</th>
-      <td><p>parameter names (list of functions) for param.timeContact  for host A.</p></td>
+      <th>param.nContact.A</th>
+      <td><p>parameter names (list of functions) for param.nContact  for host A.</p></td>
     </tr>
     <tr>
-      <th>timeDep.timeContact.A</th>
-      <td><p>is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
+      <th>timeDep.nContact.A</th>
+      <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
     </tr>
     <tr>
       <th>pTrans.A</th>
@@ -278,16 +278,16 @@ the end of given time (specified by length.sim) or when the number of hosts infe
       <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
     </tr>
     <tr>
-      <th>timeContact.B</th>
+      <th>nContact.B</th>
       <td><p>function that gives the number of potential transmission events per unit of time  for host B.</p></td>
     </tr>
     <tr>
-      <th>param.timeContact.B</th>
-      <td><p>parameter names (list of functions) for param.timeContact  for host B.</p></td>
+      <th>param.nContact.B</th>
+      <td><p>parameter names (list of functions) for param.nContact  for host B.</p></td>
     </tr>
     <tr>
-      <th>timeDep.timeContact.B</th>
-      <td><p>is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
+      <th>timeDep.nContact.B</th>
+      <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
     </tr>
     <tr>
       <th>pTrans.B</th>

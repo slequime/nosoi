@@ -25,8 +25,8 @@ At its core, `nosoi` can be summarised by 3 probabilities and 2 numbers at a spe
 
 - the probability to exit the simulation (here named `pExit`). For hosts, that means, for example, dying, being cured, leaving the study area, etc.
 - the probability to move (here named `pMove`, only relevant when your simulation has some kind of structure, either in a discrete or continuous space). For hosts, that could, for example, travelling, changing status (becoming rich, or getting a treatment), etc.
-- the distance travelled (here named `moveDist`) (only relevant when a stucture exist in a continuous space).
-- the number of contacts (here named `timeContact`). How many potentially infectious contacts does an infected host have?
+- the distance travelled (here named `coordMove`) (only relevant when a stucture exist in a continuous space).
+- the number of contacts (here named `nContact`). How many potentially infectious contacts does an infected host have?
 - the probability to transmit (here named `pTrans`). When a contact occures between two hosts, one of which being infected, the probability that the infection gets transmitted to the uninfected one.
 
 Each of these probabilities and numbers are computed during the simulation. In a very simple scenario, each one is a constant. In more complex models supported by `nosoi` they could depend on hosts parameters (e.g. genetics), dynamic parameters (since when the host is infected), environemental parameters (where the host is), or the moment of the simulation (e.g. seasons, mitigation campaign,...), taken individually into account or together.
@@ -45,7 +45,7 @@ transition.matrix = matrix(c(0,0,0,0,0,
                              1,0,0,0,0,
                              0,1,0,0,0,
                              0,0,1,0,0,
-                             0,0,0,1,0),nrow = 5, ncol = 5,dimnames=list(c("pExit","pMove","moveDist","timeContact","pTrans"),c("pExit","pMove","moveDist","timeContact","pTrans")))
+                             0,0,0,1,0),nrow = 5, ncol = 5,dimnames=list(c("pExit","pMove","coordMove","nContact","pTrans"),c("pExit","pMove","coordMove","nContact","pTrans")))
 
 melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
 

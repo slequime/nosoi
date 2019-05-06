@@ -4,7 +4,7 @@
 \alias{meetTransmit}
 \title{Meet Transmit function}
 \usage{
-meetTransmit(res, pres.time, positions, timeContactParsed, pTransParsed)
+meetTransmit(res, pres.time, positions, nContactParsed, pTransParsed)
 }
 \arguments{
 \item{res}{an object of class \code{nosoiSim}.}

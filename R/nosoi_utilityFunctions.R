@@ -133,18 +133,18 @@ keepState <- function(nosoiSim) {
 #' @keywords internal
 ##
 
-paramConstructor <- function(param.pExit, param.pMove, param.timeContact, param.pTrans,
-                                param.moveDist) {
+paramConstructor <- function(param.pExit, param.pMove, param.nContact, param.pTrans,
+                                param.coordMove) {
 
   checkna <- function(param){return((length(param) == 1) && is.na(param))}
 
   if (checkna(param.pExit)) param.pExit <- NULL
   if (checkna(param.pMove)) param.pMove <- NULL
-  if (checkna(param.timeContact)) param.timeContact <- NULL
-  if (checkna(param.moveDist)) param.moveDist <- NULL
+  if (checkna(param.nContact)) param.nContact <- NULL
+  if (checkna(param.coordMove)) param.coordMove <- NULL
   if (checkna(param.pTrans)) param.pTrans <- NULL
 
-  merged <- c(param.pTrans, param.pMove, param.timeContact, param.pExit, param.moveDist)
+  merged <- c(param.pTrans, param.pMove, param.nContact, param.pExit, param.coordMove)
 
   ParamHost <- merged[!duplicated(merged)]
 

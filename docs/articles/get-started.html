@@ -147,7 +147,7 @@
       <h1>Get started</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-05-03</h4>
+            <h4 class="date">2019-05-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/get-started.Rmd"><code>vignettes/get-started.Rmd</code></a></small>
       <div class="hidden name"><code>get-started.Rmd</code></div>
@@ -159,12 +159,12 @@
 <div id="setting-up-the-core-functions" class="section level1">
 <h1 class="hasAnchor">
 <a href="#setting-up-the-core-functions" class="anchor"></a>Setting up the core functions</h1>
-<p><code>nosoi</code> runs under a series of user defined probabilities and numbers ( <a href="nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers">see General principles</a> ). Each follows the same principles to be set up. We will detail here how to set up a correct function to be used into the simulator; this will apply for the functions <code>pExit</code>, <code>pMove</code>, <code>moveDist</code>, <code>timeContact</code> and <code>pTrans</code>.</p>
+<p><code>nosoi</code> runs under a series of user defined probabilities and numbers ( <a href="nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers">see General principles</a> ). Each follows the same principles to be set up. We will detail here how to set up a correct function to be used into the simulator; this will apply for the functions <code>pExit</code>, <code>pMove</code>, <code>coordMove</code>, <code>nContact</code> and <code>pTrans</code>.</p>
 <div id="expected-output" class="section level2">
 <h2 class="hasAnchor">
 <a href="#expected-output" class="anchor"></a>Expected output</h2>
 <p>Every function which name starts with a <code>p</code> (i.e. <code>pExit</code>, <code>pMove</code> and <code>pTrans</code>) should give back a single probability (a number between 0 and 1).</p>
-<p><code>timeContact</code> should give back a positive natural number (positive integer), while <code>moveDist</code> can give whatever number back.</p>
+<p><code>nContact</code> should give back a positive natural number (positive integer), while <code>coordMove</code> can give whatever number back.</p>
 </div>
 <div id="function-arguments" class="section level2">
 <h2 class="hasAnchor">

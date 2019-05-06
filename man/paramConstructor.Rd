@@ -4,19 +4,19 @@
 \alias{paramConstructor}
 \title{Param concatenator}
 \usage{
-paramConstructor(param.pExit, param.pMove, param.timeContact, param.pTrans,
-  param.moveDist)
+paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans,
+  param.coordMove)
 }
 \arguments{
 \item{param.pExit}{parameter names (list of functions) for the pExit.}
 
 \item{param.pMove}{parameter names (list of functions) for the pMove.}
 
-\item{param.timeContact}{parameter names (list of functions) for timeContact.}
+\item{param.nContact}{parameter names (list of functions) for nContact.}
 
 \item{param.pTrans}{parameter names (list of functions) for the pTrans.}
 
-\item{param.moveDist}{parameter names (list of functions) for moveDist.}
+\item{param.coordMove}{parameter names (list of functions) for coordMove.}
 }
 \value{
 An object of class \code{ParamHost}

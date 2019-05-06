@@ -5,8 +5,8 @@
 \title{Single-host without structured host population}
 \usage{
 singleNone(length.sim, max.infected, init.individuals, pExit, param.pExit,
-  timeDep.pExit = FALSE, timeContact, param.timeContact,
-  timeDep.timeContact = FALSE, pTrans, param.pTrans,
+  timeDep.pExit = FALSE, nContact, param.nContact,
+  timeDep.nContact = FALSE, pTrans, param.pTrans,
   timeDep.pTrans = FALSE, prefix.host = "H", progress.bar = TRUE,
   print.step = 10, ...)
 }
@@ -23,11 +23,11 @@ singleNone(length.sim, max.infected, init.individuals, pExit, param.pExit,
 
 \item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)}
 
-\item{timeContact}{function that gives the number of potential transmission events per unit of time.}
+\item{nContact}{function that gives the number of potential transmission events per unit of time.}
 
-\item{param.timeContact}{parameter names (list of functions) for param.timeContact.}
+\item{param.nContact}{parameter names (list of functions) for param.nContact.}
 
-\item{timeDep.timeContact}{is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)}
+\item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)}
 
 \item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
 

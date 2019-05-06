@@ -5,7 +5,7 @@
 \title{Make Move function}
 \usage{
 makeMoves(res, pres.time, moving.full, structure.matrix = NA,
-  moveDistParsed = NA, structure.raster = NA,
+  coordMoveParsed = NA, structure.raster = NA,
   attracted.by.raster = NA, max.raster = NA)
 }
 \arguments{

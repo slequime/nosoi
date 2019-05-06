@@ -197,10 +197,10 @@ is passed.</p>
 
     <pre class="usage"><span class='fu'>singleContinuous</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>,
   <span class='no'>init.structure</span>, <span class='no'>structure.raster</span>, <span class='kw'>diff.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>, <span class='no'>param.pMove</span>, <span class='kw'>diff.moveDist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.moveDist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>moveDist</span>, <span class='no'>param.moveDist</span>,
-  <span class='kw'>attracted.by.raster</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.timeContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.timeContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>timeContact</span>, <span class='no'>param.timeContact</span>,
+  <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>, <span class='no'>param.pMove</span>, <span class='kw'>diff.coordMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>timeDep.coordMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>coordMove</span>, <span class='no'>param.coordMove</span>,
+  <span class='kw'>attracted.by.raster</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>timeDep.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact</span>, <span class='no'>param.nContact</span>,
   <span class='kw'>diff.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>,
   <span class='kw'>diff.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
   <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
@@ -245,40 +245,40 @@ is passed.</p>
       <td><p>parameter names (list of functions) for the pMove.</p></td>
     </tr>
     <tr>
-      <th>diff.moveDist</th>
-      <td><p>is moveDist dependant on the environmental value (TRUE/FALSE).</p></td>
+      <th>diff.coordMove</th>
+      <td><p>is coordMove dependant on the environmental value (TRUE/FALSE).</p></td>
     </tr>
     <tr>
-      <th>timeDep.moveDist</th>
-      <td><p>is moveDist dependant on the absolute time of the simulation (TRUE/FALSE).</p></td>
+      <th>timeDep.coordMove</th>
+      <td><p>is coordMove dependant on the absolute time of the simulation (TRUE/FALSE).</p></td>
     </tr>
     <tr>
-      <th>moveDist</th>
+      <th>coordMove</th>
       <td><p>function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.</p></td>
     </tr>
     <tr>
-      <th>param.moveDist</th>
-      <td><p>parameter names (list of functions) for moveDist.</p></td>
+      <th>param.coordMove</th>
+      <td><p>parameter names (list of functions) for coordMove.</p></td>
     </tr>
     <tr>
       <th>attracted.by.raster</th>
       <td><p>should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
-      <th>diff.timeContact</th>
-      <td><p>is timeContact different between states of the structured population (TRUE/FALSE)</p></td>
+      <th>diff.nContact</th>
+      <td><p>is nContact different between states of the structured population (TRUE/FALSE)</p></td>
     </tr>
     <tr>
-      <th>timeDep.timeContact</th>
-      <td><p>is timeContact dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+      <th>timeDep.nContact</th>
+      <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
     </tr>
     <tr>
-      <th>timeContact</th>
+      <th>nContact</th>
       <td><p>function that gives the number of potential transmission events per unit of time.</p></td>
     </tr>
     <tr>
-      <th>param.timeContact</th>
-      <td><p>parameter names (list of functions) for timeContact.</p></td>
+      <th>param.nContact</th>
+      <td><p>parameter names (list of functions) for nContact.</p></td>
     </tr>
     <tr>
       <th>diff.pTrans</th>
