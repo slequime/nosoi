@@ -16,7 +16,7 @@ test_that("Error message pops out when missing state in diff functions", {
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}
 
-  coordMove_fct = function(t){return(1)}
+  sdMove_fct = function(t){return(1)}
 
   p_Exit_fct  <- function(t){return(0.08)}
 
@@ -39,8 +39,8 @@ test_that("Error message pops out when missing state in diff functions", {
                             structure.raster=test.raster,
                             pMove=p_Move_fct,
                             param.pMove=NA,
-                            coordMove=coordMove_fct,
-                            param.coordMove=NA,
+                            sdMove=sdMove_fct,
+                            param.sdMove=NA,
                             attracted.by.raster=TRUE,
                             nContact=time_contact,
                             param.nContact=NA,
@@ -65,8 +65,8 @@ test_that("Error message pops out when missing state in diff functions", {
                             diff.pMove=TRUE,
                             pMove=p_Move_fct,
                             param.pMove=NA,
-                            coordMove=coordMove_fct,
-                            param.coordMove=NA,
+                            sdMove=sdMove_fct,
+                            param.sdMove=NA,
                             attracted.by.raster=TRUE,
                             nContact=time_contact,
                             param.nContact=NA,
@@ -91,9 +91,9 @@ test_that("Error message pops out when missing state in diff functions", {
                             diff.pMove=TRUE,
                             pMove=p_Move_fct,
                             param.pMove=NA,
-                            diff.coordMove=TRUE,
-                            coordMove=coordMove_fct,
-                            param.coordMove=NA,
+                            diff.sdMove=TRUE,
+                            sdMove=sdMove_fct,
+                            param.sdMove=NA,
                             attracted.by.raster=TRUE,
                             nContact=time_contact,
                             param.nContact=NA,
@@ -103,10 +103,10 @@ test_that("Error message pops out when missing state in diff functions", {
                             diff.pExit=TRUE,
                             pExit=p_Exit_fct,
                             param.pExit=NA),
-    "Your are missing some function argument in coordMove. diff and/or timeDep.coordMove is/are TRUE."
+    "Your are missing some function argument in sdMove. diff and/or timeDep.sdMove is/are TRUE."
   )
 
-  coordMove_fct = function(t,current.env.value){return(100/current.env.value+1)}
+  sdMove_fct = function(t,current.env.value){return(100/current.env.value+1)}
 
   expect_error(
     test.nosoiA <- nosoiSim(type="single", structure=TRUE, continuous = TRUE,
@@ -118,9 +118,9 @@ test_that("Error message pops out when missing state in diff functions", {
                             diff.pMove=TRUE,
                             pMove=p_Move_fct,
                             param.pMove=NA,
-                            diff.coordMove=TRUE,
-                            coordMove=coordMove_fct,
-                            param.coordMove=NA,
+                            diff.sdMove=TRUE,
+                            sdMove=sdMove_fct,
+                            param.sdMove=NA,
                             attracted.by.raster=TRUE,
                             nContact=time_contact,
                             param.nContact=NA,
@@ -150,7 +150,7 @@ test_that("Diffusion in continuous space", {
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}
 
-  coordMove_fct = function(t,current.env.value){return(100/(current.env.value+1))}
+  sdMove_fct = function(t,current.env.value){return(100/(current.env.value+1))}
 
   p_Exit_fct  <- function(t){return(0.08)}
 
@@ -172,9 +172,9 @@ test_that("Diffusion in continuous space", {
                           structure.raster=test.raster,
                           pMove=p_Move_fct,
                           param.pMove=NA,
-                          diff.coordMove=TRUE,
-                          coordMove=coordMove_fct,
-                          param.coordMove=NA,
+                          diff.sdMove=TRUE,
+                          sdMove=sdMove_fct,
+                          param.sdMove=NA,
                           attracted.by.raster=TRUE,
                           nContact=time_contact,
                           param.nContact=NA,

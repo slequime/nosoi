@@ -18,7 +18,6 @@
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
 #' @param progress.bar if TRUE, displays a progress bar (current time/length.sim).
 #' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
-#' @param ... other arguments to be passed on to the simulator (see below).
 #'
 #' @export singleNone
 
@@ -36,8 +35,7 @@ singleNone <- function(length.sim,
                        timeDep.pTrans=FALSE,
                        prefix.host="H",
                        progress.bar=TRUE,
-                       print.step=10,
-                       ...){
+                       print.step=10){
 
   #Sanity check---------------------------------------------------------------------------------------------------------------------------
   #This section checks if the arguments of the function are in a correct format for the function to run properly
@@ -54,7 +52,7 @@ singleNone <- function(length.sim,
   pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),timeDep=timeDep.pExit)
 
   #Parsing all parameters
-  ParamHost <- paramConstructor(param.pExit, param.pMove=NA, param.nContact, param.pTrans, param.coordMove=NA)
+  ParamHost <- paramConstructor(param.pExit, param.pMove=NA, param.nContact, param.pTrans, param.sdMove=NA)
 
   # Init
   message("Starting the simulation\nInitializing ...", appendLF = FALSE)

@@ -8,7 +8,7 @@ singleNone(length.sim, max.infected, init.individuals, pExit, param.pExit,
   timeDep.pExit = FALSE, nContact, param.nContact,
   timeDep.nContact = FALSE, pTrans, param.pTrans,
   timeDep.pTrans = FALSE, prefix.host = "H", progress.bar = TRUE,
-  print.step = 10, ...)
+  print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -40,8 +40,6 @@ singleNone(length.sim, max.infected, init.individuals, pExit, param.pExit,
 \item{progress.bar}{if TRUE, displays a progress bar (current time/length.sim).}
 
 \item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
-
-\item{...}{other arguments to be passed on to the simulator (see below).}
 }
 \description{
 This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at

@@ -12,8 +12,6 @@ moveFunction.singleDiscrete(res, pres.time, Move.ID, structure.matrix, ...)
 \item{pres.time}{current time}
 
 \item{structure.matrix}{transition matrix (probabilities) to go from location A (row) to B (column)}
-
-\item{...}{other arguments to be passed on to the simulator (see below).}
 }
 \value{
 The modified object res

@@ -1,22 +1,18 @@
 navbar:
   structure:
-    left:  [home, intro, start, tutorials, examples, reference, news]
-    right: [github]
+    left:  [home, intro, tutorials, examples, reference]
+    right: [news, github]
   components:
     home:
       icon: fa-home fa-lg
       href: index.html
-    reference:
-      text: Reference
-      href: reference/index.html
     intro:
-      text: General principles
-      href: articles/nosoi.html
-    start:
       text: Get started
-      href: articles/get-started.html
+      icon: fas fa-play-circle
+      href: articles/nosoi.html
     tutorials:
       text: Tutorials
+      icon: fas fa-book
       menu:
       - text: Spread of a pathogen in a homogeneous population
         href: articles/none.html
@@ -26,6 +22,7 @@ navbar:
         href: articles/continuous.html
     examples:
       text: Examples
+      icon: fas fa-file
       menu:
       - text: Spread of dengue virus in a discrete space
         href: articles/dengue.html
@@ -33,6 +30,25 @@ navbar:
         href: articles/ebola.html
       - text: Epidemiological impact of mosquito vector competence
         href: articles/vector-competence.html
+    reference:
+      text: Reference
+      icon: fa-file-code-o
+      href: reference/index.html
     github:
       icon: fa-github fa-lg
       href: https://github.com/slequime/nosoi
+
+reference:
+  - title: "Wrapper function"
+    contents: 
+      - nosoiSim
+  - title: "Specific functions"
+    desc: "These functions are called by nosoiSim and are specific to the type of simulations your run."
+    contents:
+      - starts_with("single")
+      - starts_with("dual")
+  - title: "Output functions"
+    desc: "These functions are used to get information on your nosoi output."
+    contents:
+      - nosoiSummary
+      - numberInfected

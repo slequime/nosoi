@@ -5,7 +5,7 @@
 \title{Param concatenator}
 \usage{
 paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans,
-  param.coordMove)
+  param.sdMove)
 }
 \arguments{
 \item{param.pExit}{parameter names (list of functions) for the pExit.}
@@ -16,7 +16,7 @@ paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans,
 
 \item{param.pTrans}{parameter names (list of functions) for the pTrans.}
 
-\item{param.coordMove}{parameter names (list of functions) for coordMove.}
+\item{param.sdMove}{parameter names (list of functions) for sdMove}
 }
 \value{
 An object of class \code{ParamHost}

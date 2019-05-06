@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>General principles • nosoi</title>
+<title>Getting started • nosoi</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="General principles">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Getting started">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -50,13 +50,16 @@
   </a>
 </li>
 <li>
-  <a href="../articles/nosoi.html">General principles</a>
-</li>
-<li>
-  <a href="../articles/get-started.html">Get started</a>
+  <a href="../articles/nosoi.html">
+    <span class="fas fa fas fa-play-circle"></span>
+     
+    Get started
+  </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-book"></span>
+     
     Tutorials
      
     <span class="caret"></span>
@@ -75,6 +78,8 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-file"></span>
+     
     Examples
      
     <span class="caret"></span>
@@ -92,7 +97,11 @@
   </ul>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    Reference
+  </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -112,9 +121,6 @@
     </li>
     <li>
       <a href="../articles/ebola.html">Spread of Ebola virus in a continuous space</a>
-    </li>
-    <li>
-      <a href="../articles/get-started.html">Get started</a>
     </li>
     <li>
       <a href="../articles/none.html">Spread of a pathogen in a homogeneous population</a>
@@ -144,7 +150,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>General principles</h1>
+      <h1>Getting started</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
             <h4 class="date">2019-05-06</h4>
@@ -156,12 +162,11 @@
 
     
     
-<div id="introduction" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h2>
+<div id="introduction" class="section level1">
+<h1 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h1>
 <p><code>nosoi</code> aims to provide a modular framework to conduct epidemiological simulations under a wide range of scenarios, varying from relatively simple to highly complex and parameteric. This flexibility allows <code>nosoi</code> to take into account the effect of numerous covariates, taken individualy or in interaction, on the epidemic process, without having to use advanced mathematics to formalize the model into differential equations. As it core, <code>nosoi</code> generates a transmission chain (a link between hosts), the foundation of every epidemic process, allowing the reconstruction in great details of the history of the epidemic.</p>
 <p><code>nosoi</code> is an agent-based model, which means it is centered on individuals, here called “hosts”, that enter the simulation when they get infected. It’s also stochastic, and thus relies heavily on probabilities, mainly 4 core probabilities, and its time is discretized.</p>
-</div>
 <div id="critical-assumption-of-nosoi" class="section level2">
 <h2 class="hasAnchor">
 <a href="#critical-assumption-of-nosoi" class="anchor"></a>Critical assumption of <code>nosoi</code>
@@ -174,8 +179,8 @@
 <p>At its core, <code>nosoi</code> can be summarised by 3 probabilities and 2 numbers at a specific time point:</p>
 <ul>
 <li>the probability to exit the simulation (here named <code>pExit</code>). For hosts, that means, for example, dying, being cured, leaving the study area, etc.</li>
-<li>the probability to move (here named <code>pMove</code>, only relevant when your simulation has some kind of structure, either in a discrete or continuous space). For hosts, that could, for example, travelling, changing status (becoming rich, or getting a treatment), etc.</li>
-<li>the distance travelled (here named <code>coordMove</code>) (only relevant when a stucture exist in a continuous space).</li>
+<li>the probability to move (here named <code>pMove</code>), only relevant when your simulation has some kind of structure, either in a discrete or continuous space. For hosts, that could, for example, travelling, changing status (becoming rich, or getting a treatment), etc.</li>
+<li>the standard deviation of the random walk (links to the distance travelled in coordinate space ; here named <code>sdMove</code>), only relevant when a stucture exist in a continuous space.</li>
 <li>the number of contacts (here named <code>nContact</code>). How many potentially infectious contacts does an infected host have?</li>
 <li>the probability to transmit (here named <code>pTrans</code>). When a contact occures between two hosts, one of which being infected, the probability that the infection gets transmitted to the uninfected one.</li>
 </ul>
@@ -195,18 +200,74 @@
 </ul>
 <p>Once all steps have been gone through, the simulation moves to the next time step.</p>
 </div>
-<div id="now-lets-go-to-business" class="section level2">
+</div>
+<div id="setting-up-the-core-functions" class="section level1">
+<h1 class="hasAnchor">
+<a href="#setting-up-the-core-functions" class="anchor"></a>Setting up the core functions</h1>
+<p><code>nosoi</code> runs under a series of user defined probabilities and numbers ( <a href="nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers">see General principles</a> ). Each follows the same principles to be set up. We will detail here how to set up a correct function to be used into the simulator; this will apply for the functions <code>pExit</code>, <code>pMove</code>, <code>sdMove</code>, <code>nContact</code> and <code>pTrans</code>.</p>
+<div id="expected-output" class="section level2">
 <h2 class="hasAnchor">
-<a href="#now-lets-go-to-business" class="anchor"></a>Now let’s go to business!</h2>
-<p>A series of tutorials are available to learn how to use <code>nosoi</code> and give you a starting point. We recommend going through them serially at least once to understand how to parameterize <code>nosoi</code> to your needs.</p>
+<a href="#expected-output" class="anchor"></a>Expected output</h2>
+<p>Every function which name starts with a <code>p</code> (i.e. <code>pExit</code>, <code>pMove</code> and <code>pTrans</code>) should give back a single probability (a number between 0 and 1).</p>
+<p><code>nContact</code> should give back a positive natural number (positive integer), while <code>sdMove</code> can give whatever number back (keep in mind its related to your coordinate space).</p>
+</div>
+<div id="function-arguments" class="section level2">
+<h2 class="hasAnchor">
+<a href="#function-arguments" class="anchor"></a>Function arguments</h2>
+<p>A core function used by <code>nosoi</code> should be at least expressed as a function of <code>t</code> (e.g. <code>pExit(t)</code>), even if <code>t</code> is not used within the body of the function. Thus, to have a constant value to be returned, the function should be expressed as:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="fl">0.08</span>}</a></code></pre></div>
+<p>This will give back a single value (0.08). If this probability/number should dependent on time since initial infection of the host, then you only have to add <code>t</code> in the body of the function, such as in the following example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,<span class="dv">10</span>,<span class="dv">2</span>)}</a></code></pre></div>
+<p>Here the probability/number will follow a logistic distribution with parameters <span class="math inline">\(\mu\)</span> 10 and <span class="math inline">\(s\)</span> 2. If you want your probability/number to be dependant on the “absolute” time of the simulation (not to be confused with the time since infection <code>t</code>, which is individual-dependant), then you have to add the argument <code>prestime</code> (for “present time”), such as:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,prestime){(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Trig">sin</a></span>(prestime<span class="op">/</span><span class="dv">12</span>)<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span>}</a></code></pre></div>
+<p>In that specific case, the function will give back values following a periodic pattern. If you want your probability/number to be dependant on the location where the host is present (only if you use a structured population), then you have to add the argument <code>current.in</code> (discrete structure) or <code>current.env.value</code> (continuous structure).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.in){</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"A"</span>){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">0</span>)}</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"B"</span>){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.5</span>)}</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"C"</span>){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">1</span>)}} <span class="co">#discrete (between states "A","B" and "C")</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.env.value){current.env.value<span class="op">/</span><span class="dv">100</span>} <span class="co">#continuous</span></a></code></pre></div>
+<p>For more details on how to set up the influence of the structure, please refer to the tutorials: <a href="single-host-discrete.html">discrete</a> or <a href="single-host-continuous.html">continuous</a> structure.</p>
+</div>
+<div id="parameters" class="section level2">
+<h2 class="hasAnchor">
+<a href="#parameters" class="anchor"></a>Parameters</h2>
+<p>If you want one of the parameters of the logistic distribution (or any other function) to be individual host-dependant (including some heterogeneity between hosts), then you can add a parameter:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,pFunction.param1){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">plogis</a></span>(t,pExit.param1,<span class="dv">2</span>)}</a></code></pre></div>
+<p>In this case, the <span class="math inline">\(\mu\)</span> parameter will be determined for each individual host by another function that you have to specify. Here we will use:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">p_Function_param1 &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">10</span>,<span class="dt">sd=</span><span class="dv">2</span>)} <span class="co">#sampling one parameter for each infected individual</span></a></code></pre></div>
+<p>will be sample from a normal distribution (mean 10 and sd 2). Notice here that the function is expressed as a function of <code>x</code> instead of <code>t</code>. <code>x</code> is present in the body of the function as the number of draws to make in the distribution. Every parameter function you specify should be compiled into a list, where the function determining the parameter for each individual (right) can be named (left), using the name provided in p_Function for this parameter.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">p_Function_parameters  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pFunction.param1 =</span> p_Function_param1)</a></code></pre></div>
+</div>
+<div id="combining-arguments" class="section level2">
+<h2 class="hasAnchor">
+<a href="#combining-arguments" class="anchor"></a>Combining arguments</h2>
+<p>We have previously seen that you can combine the time since infection <code>t</code> with other parameters such as <code>current.in</code> or <code>prestime</code>. In fact, you can combine as many arguments as you want, making a function dependant of time since ifnection, current location, presentime and individual host-dependant parameters. They however need to respect a specific order to be correctly parsed by the simulator: first <code>t</code>, then <code>prestime</code>, then <code>current.in</code> (discrete) or <code>current.env.value</code> (continuous) and finally individual host-dependant parameters.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t, prestime, current.in, pFunction.param1, pFunction.param2,...){}</a></code></pre></div>
+</div>
+</div>
+<div id="going-further" class="section level1">
+<h1 class="hasAnchor">
+<a href="#going-further" class="anchor"></a>Going further</h1>
+<p>Once your core functions are ready, you can provide everything <code>nosoi</code> needs to run a simulation. A series of tutorials will guide you in how to set up <code>nosoi</code> depending on your case, both single host and dual host:</p>
 <ol style="list-style-type: decimal">
 <li>
-<a href="single-host-none.html">Single-host pathogens in an homogenous (no structure) population of hosts</a>, a “simple” scenario.</li>
+<a href="none.html">Spread of a pathogen in a homogeneous population (no structure) of hosts</a>, a “simple” scenario.</li>
 <li>
-<a href="single-host-discrete.html">Spread of a single-host pathogen in a structure (discrete) population of hosts</a>.</li>
+<a href="discrete.html">Spread of a pathogen in a structured (discrete) population of hosts</a>.</li>
 <li>
-<a href="single-host-continuous.html">Spread of a single-host pathogen in a structure (continuous) population of hostse</a>.</li>
+<a href="continuous.html">Spread of a pathogen in a structure (continuous) population of hosts</a>.</li>
 </ol>
+<p>To visualize or get basic statistics about your simulations, you can have a look at <a href="viz_stat.html">these few examples</a>.</p>
+<p>A series of practical examples are also available:</p>
+<ul>
+<li>
+<a href="dengue.html">Spread of dengue virus in a discrete space</a>, a “simple” scenario.</li>
+<li>
+<a href="ebola.html">Spread of Ebola virus in a continuous space</a>.</li>
+<li>
+<a href="vector-competence.html">Epidemiological impact of mosquito vector competence</a>.</li>
+</ul>
 </div>
   </div>
 
@@ -215,11 +276,22 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#introduction">Introduction</a></li>
-      <li><a href="#critical-assumption-of-nosoi">Critical assumption of <code>nosoi</code></a></li>
+<li>
+<a href="#introduction">Introduction</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#critical-assumption-of-nosoi">Critical assumption of <code>nosoi</code></a></li>
       <li><a href="#essential-building-blocs-3-probabilities-and-2-numbers">Essential building blocs: 3 probabilities and 2 numbers</a></li>
       <li><a href="#what-happens-at-each-time-step">What happens at each time step?</a></li>
-      <li><a href="#now-lets-go-to-business">Now let’s go to business!</a></li>
+      </ul>
+</li>
+      <li>
+<a href="#setting-up-the-core-functions">Setting up the core functions</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#expected-output">Expected output</a></li>
+      <li><a href="#function-arguments">Function arguments</a></li>
+      <li><a href="#parameters">Parameters</a></li>
+      <li><a href="#combining-arguments">Combining arguments</a></li>
+      </ul>
+</li>
+      <li><a href="#going-further">Going further</a></li>
       </ul>
 </div>
       </div>

@@ -2,17 +2,17 @@
 % Please edit documentation in R/single-continuous.R
 \name{singleContinuous}
 \alias{singleContinuous}
-\title{Single-host with structured host population}
+\title{Single-host with structured (continuous) host population}
 \usage{
 singleContinuous(length.sim, max.infected, init.individuals,
   init.structure, structure.raster, diff.pMove = FALSE,
-  timeDep.pMove = FALSE, pMove, param.pMove, diff.coordMove = FALSE,
-  timeDep.coordMove = FALSE, coordMove, param.coordMove,
+  timeDep.pMove = FALSE, pMove, param.pMove, diff.sdMove = FALSE,
+  timeDep.sdMove = FALSE, sdMove, param.sdMove,
   attracted.by.raster = FALSE, diff.nContact = FALSE,
   timeDep.nContact = FALSE, nContact, param.nContact,
   diff.pTrans = FALSE, timeDep.pTrans = FALSE, pTrans, param.pTrans,
   diff.pExit = FALSE, timeDep.pExit = FALSE, pExit, param.pExit,
-  prefix.host = "H", progress.bar = TRUE, print.step = 10, ...)
+  prefix.host = "H", progress.bar = TRUE, print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -33,13 +33,13 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{param.pMove}{parameter names (list of functions) for the pMove.}
 
-\item{diff.coordMove}{is coordMove dependant on the environmental value (TRUE/FALSE).}
+\item{diff.sdMove}{is sdMove dependant on the environmental value (TRUE/FALSE).}
 
-\item{timeDep.coordMove}{is coordMove dependant on the absolute time of the simulation (TRUE/FALSE).}
+\item{timeDep.sdMove}{is sdMove dependant on the absolute time of the simulation (TRUE/FALSE).}
 
-\item{coordMove}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.}
+\item{sdMove}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.}
 
-\item{param.coordMove}{parameter names (list of functions) for coordMove.}
+\item{param.sdMove}{parameter names (list of functions) for sdMove}
 
 \item{attracted.by.raster}{should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)}
 
@@ -72,8 +72,6 @@ singleContinuous(length.sim, max.infected, init.individuals,
 \item{progress.bar}{if TRUE, print message on simulation state to screen.}
 
 \item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
-
-\item{...}{other arguments to be passed on to the simulator (see below).}
 }
 \description{
 This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).

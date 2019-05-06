@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Single-host with structured host population — singleContinuous • nosoi</title>
+<title>Single-host with structured (continuous) host population — singleContinuous • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Single-host with structured host population — singleContinuous" />
+<meta property="og:title" content="Single-host with structured (continuous) host population — singleContinuous" />
 
 <meta property="og:description" content="This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
 The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
@@ -87,13 +87,16 @@ is passed." />
   </a>
 </li>
 <li>
-  <a href="../articles/nosoi.html">General principles</a>
-</li>
-<li>
-  <a href="../articles/get-started.html">Get started</a>
+  <a href="../articles/nosoi.html">
+    <span class="fas fa fas fa-play-circle"></span>
+     
+    Get started
+  </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-book"></span>
+     
     Tutorials
      
     <span class="caret"></span>
@@ -112,6 +115,8 @@ is passed." />
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-file"></span>
+     
     Examples
      
     <span class="caret"></span>
@@ -129,7 +134,11 @@ is passed." />
   </ul>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    Reference
+  </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -149,9 +158,6 @@ is passed." />
     </li>
     <li>
       <a href="../articles/ebola.html">Spread of Ebola virus in a continuous space</a>
-    </li>
-    <li>
-      <a href="../articles/get-started.html">Get started</a>
     </li>
     <li>
       <a href="../articles/none.html">Spread of a pathogen in a homogeneous population</a>
@@ -182,7 +188,7 @@ is passed." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Single-host with structured host population</h1>
+    <h1>Single-host with structured (continuous) host population</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/single-continuous.R'><code>R/single-continuous.R</code></a></small>
     <div class="hidden name"><code>singleContinuous.Rd</code></div>
     </div>
@@ -197,13 +203,13 @@ is passed.</p>
 
     <pre class="usage"><span class='fu'>singleContinuous</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>,
   <span class='no'>init.structure</span>, <span class='no'>structure.raster</span>, <span class='kw'>diff.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>, <span class='no'>param.pMove</span>, <span class='kw'>diff.coordMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.coordMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>coordMove</span>, <span class='no'>param.coordMove</span>,
+  <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>, <span class='no'>param.pMove</span>, <span class='kw'>diff.sdMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>timeDep.sdMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>sdMove</span>, <span class='no'>param.sdMove</span>,
   <span class='kw'>attracted.by.raster</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>timeDep.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact</span>, <span class='no'>param.nContact</span>,
   <span class='kw'>diff.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>,
   <span class='kw'>diff.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
-  <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -245,20 +251,20 @@ is passed.</p>
       <td><p>parameter names (list of functions) for the pMove.</p></td>
     </tr>
     <tr>
-      <th>diff.coordMove</th>
-      <td><p>is coordMove dependant on the environmental value (TRUE/FALSE).</p></td>
+      <th>diff.sdMove</th>
+      <td><p>is sdMove dependant on the environmental value (TRUE/FALSE).</p></td>
     </tr>
     <tr>
-      <th>timeDep.coordMove</th>
-      <td><p>is coordMove dependant on the absolute time of the simulation (TRUE/FALSE).</p></td>
+      <th>timeDep.sdMove</th>
+      <td><p>is sdMove dependant on the absolute time of the simulation (TRUE/FALSE).</p></td>
     </tr>
     <tr>
-      <th>coordMove</th>
+      <th>sdMove</th>
       <td><p>function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.</p></td>
     </tr>
     <tr>
-      <th>param.coordMove</th>
-      <td><p>parameter names (list of functions) for coordMove.</p></td>
+      <th>param.sdMove</th>
+      <td><p>parameter names (list of functions) for sdMove</p></td>
     </tr>
     <tr>
       <th>attracted.by.raster</th>
@@ -323,10 +329,6 @@ is passed.</p>
     <tr>
       <th>print.step</th>
       <td><p>progress.bar is TRUE, step with which the progress message will be printed.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>other arguments to be passed on to the simulator (see below).</p></td>
     </tr>
     </table>
     

@@ -14,7 +14,7 @@
 ##
 makeMoves <- function(res, pres.time, moving.full,
                       structure.matrix = NA,
-                      coordMoveParsed = NA, structure.raster = NA,
+                      sdMoveParsed = NA, structure.raster = NA,
                       attracted.by.raster = NA, max.raster = NA) {
 
   moveFunction <-  switch(res$type,
@@ -26,7 +26,7 @@ makeMoves <- function(res, pres.time, moving.full,
 
   return(moveFunction(res, pres.time, Move.ID,
                       structure.matrix = structure.matrix,
-                      coordMoveParsed = coordMoveParsed,
+                      sdMoveParsed = sdMoveParsed,
                       structure.raster = structure.raster,
                       attracted.by.raster = attracted.by.raster,
                       max.raster = max.raster))
@@ -91,7 +91,7 @@ moveFunction.singleDiscrete <- function(res, pres.time, Move.ID, structure.matri
 #' @keywords internal
 ##
 moveFunction.singleContinuous <- function(res, pres.time, moving.full,
-                                          coordMoveParsed, structure.raster,
+                                          sdMoveParsed, structure.raster,
                                           attracted.by.raster, max.raster, ...) {
 
   Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
@@ -105,21 +105,21 @@ moveFunction.singleContinuous <- function(res, pres.time, moving.full,
 
     table.state.temp <- vector("list", length(Move.ID))
 
-    coordMove.values <- applyFunctionToHosts(res, pres.time, coordMoveParsed, active.hosts)
+    sdMove.values <- applyFunctionToHosts(res, pres.time, sdMoveParsed, active.hosts)
 
     for (i in 1:length(Move.ID)) {
 
       current.move.pos.x = res$table.hosts[Move.ID[i],"current.in.x"]
       current.move.pos.y = res$table.hosts[Move.ID[i],"current.in.y"]
       current.env.value = res$table.hosts[Move.ID[i],"current.env.value"]
-      current.coordMove.value = as.numeric(coordMove.values[i])
+      current.sdMove.value = as.numeric(sdMove.values[i])
 
       positionFound1 = FALSE
       while (positionFound1 == FALSE)
       {
         counter = 0
-        dX = rnorm(1, 0, current.coordMove.value)
-        dY = rnorm(1, 0, current.coordMove.value)
+        dX = rnorm(1, 0, current.sdMove.value)
+        dY = rnorm(1, 0, current.sdMove.value)
         positionFound2 = FALSE
         while (positionFound2 == FALSE)
         {

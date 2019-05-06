@@ -1,4 +1,4 @@
-#' Single-host with structured host population
+#' Single-host with structured (discrete) host population
 #'
 #' @description This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
 #' The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
@@ -28,7 +28,6 @@
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
 #' @param progress.bar if TRUE, displays a progress bar (current time/length.sim).
 #' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
-#' @param ... other arguments to be passed on to the simulator (see below).
 #'
 #' @export singleDiscrete
 
@@ -55,8 +54,7 @@ singleDiscrete <- function(length.sim,
                            param.pExit,
                            prefix.host="H",
                            progress.bar=TRUE,
-                           print.step=10,
-                           ...){
+                           print.step=10){
 
   #Sanity checks---------------------------------------------------------------------------------------------------------------------------
   #This section checks if the arguments of the function are in a correct format for the function to run properly
@@ -80,7 +78,7 @@ singleDiscrete <- function(length.sim,
   pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=diff.pMove, timeDep = timeDep.pMove, stateNames=colnames(structure.matrix))
 
   #Parsing all parameters
-  ParamHost <- paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans, param.coordMove=NA)
+  ParamHost <- paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans, param.sdMove=NA)
 
   #START OF THE SIMULATION --------------------------------------------------------------------------------------------------------
 

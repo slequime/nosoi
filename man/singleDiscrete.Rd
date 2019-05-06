@@ -2,7 +2,7 @@
 % Please edit documentation in R/single-discrete.R
 \name{singleDiscrete}
 \alias{singleDiscrete}
-\title{Single-host with structured host population}
+\title{Single-host with structured (discrete) host population}
 \usage{
 singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
   structure.matrix, diff.pMove = FALSE, timeDep.pMove = FALSE, pMove,
@@ -10,7 +10,7 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
   nContact, param.nContact, diff.pTrans = FALSE,
   timeDep.pTrans = FALSE, pTrans, param.pTrans, diff.pExit = FALSE,
   timeDep.pExit = FALSE, pExit, param.pExit, prefix.host = "H",
-  progress.bar = TRUE, print.step = 10, ...)
+  progress.bar = TRUE, print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -60,8 +60,6 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 \item{progress.bar}{if TRUE, displays a progress bar (current time/length.sim).}
 
 \item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
-
-\item{...}{other arguments to be passed on to the simulator (see below).}
 }
 \description{
 This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).

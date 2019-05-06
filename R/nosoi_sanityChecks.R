@@ -36,6 +36,7 @@ CoreSanityChecks <- function(length.sim, max.infected, init.individuals) {
 FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, continuous, stateNames) {
 
   if (!is.function(pFunc)) stop("You must specify ",name, " as a function.")
+
   pFunc <- match.fun(pFunc)
   if (!formalArgs(pFunc)[1] == "t") stop(name, " must be a function of 't', placed as a first argument of the function.")
 
@@ -43,7 +44,7 @@ FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, contin
       || (diff == TRUE && timeDep == FALSE && length(formalArgs(pFunc)) > 2)
       || (diff == FALSE && timeDep == TRUE && length(formalArgs(pFunc)) > 2)
       || (diff == TRUE && timeDep==TRUE && length(formalArgs(pFunc)) > 3)) {
-    if (!is.list(is.na(param.pFunc)) && is.na(param.pFunc)) {
+    if (!is.list(is.na(param.pFunc)) && any(is.na(param.pFunc))) {
       stop("There is a probleme with your function ", name, ": you should provide a parameter list named param.", name, ".")
     }
 

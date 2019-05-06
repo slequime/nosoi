@@ -5,8 +5,8 @@
 \title{Make Move function}
 \usage{
 makeMoves(res, pres.time, moving.full, structure.matrix = NA,
-  coordMoveParsed = NA, structure.raster = NA,
-  attracted.by.raster = NA, max.raster = NA)
+  sdMoveParsed = NA, structure.raster = NA, attracted.by.raster = NA,
+  max.raster = NA)
 }
 \arguments{
 \item{res}{an object of class \code{nosoiSim}.}

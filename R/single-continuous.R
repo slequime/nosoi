@@ -1,4 +1,4 @@
-#' Single-host with structured host population
+#' Single-host with structured (continuous) host population
 #'
 #' @description This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
 #' The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
@@ -13,10 +13,10 @@
 #' @param timeDep.pMove is pMove dependant on the absolute time of the simulation (TRUE/FALSE)
 #' @param pMove function that gives the probability of a host moving as a function of time.
 #' @param param.pMove parameter names (list of functions) for the pMove.
-#' @param diff.coordMove is coordMove dependant on the environmental value (TRUE/FALSE).
-#' @param timeDep.coordMove is coordMove dependant on the absolute time of the simulation (TRUE/FALSE).
-#' @param coordMove function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.
-#' @param param.coordMove parameter names (list of functions) for coordMove.
+#' @param diff.sdMove is sdMove dependant on the environmental value (TRUE/FALSE).
+#' @param timeDep.sdMove is sdMove dependant on the absolute time of the simulation (TRUE/FALSE).
+#' @param sdMove function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.
+#' @param param.sdMove parameter names (list of functions) for sdMove
 #' @param attracted.by.raster should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)
 #' @param diff.nContact is nContact different between states of the structured population (TRUE/FALSE)
 #' @param timeDep.nContact is nContact dependant on the absolute time of the simulation (TRUE/FALSE)
@@ -33,7 +33,6 @@
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
 #' @param progress.bar if TRUE, print message on simulation state to screen.
 #' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
-#' @param ... other arguments to be passed on to the simulator (see below).
 #'
 #' @export singleContinuous
 
@@ -46,10 +45,10 @@ singleContinuous <- function(length.sim,
                              timeDep.pMove=FALSE,
                              pMove,
                              param.pMove,
-                             diff.coordMove=FALSE,
-                             timeDep.coordMove=FALSE,
-                             coordMove,
-                             param.coordMove,
+                             diff.sdMove=FALSE,
+                             timeDep.sdMove=FALSE,
+                             sdMove,
+                             param.sdMove,
                              attracted.by.raster=FALSE,
                              diff.nContact=FALSE,
                              timeDep.nContact=FALSE,
@@ -65,8 +64,7 @@ singleContinuous <- function(length.sim,
                              param.pExit,
                              prefix.host="H",
                              progress.bar=TRUE,
-                             print.step=10,
-                             ...){
+                             print.step=10){
 
   #Sanity checks---------------------------------------------------------------------------------------------------------------------------
   #This section checks if the arguments of the function are in a correct format for the function to run properly
@@ -76,8 +74,8 @@ singleContinuous <- function(length.sim,
   #Parsing nContact
   nContactParsed <- parseFunction(nContact, param.nContact, as.character(quote(nContact)),diff=diff.nContact, timeDep = timeDep.nContact, continuous=TRUE)
 
-  #Parsing coordMove
-  coordMoveParsed <- parseFunction(coordMove, param.coordMove, as.character(quote(coordMove)),diff=diff.coordMove, timeDep = timeDep.coordMove, continuous=TRUE)
+  #Parsing sdMove
+  sdMoveParsed <- parseFunction(sdMove, param.sdMove, as.character(quote(sdMove)),diff=diff.sdMove, timeDep = timeDep.sdMove, continuous=TRUE)
 
   #Parsing pTrans
   pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=diff.pTrans, timeDep = timeDep.pTrans, continuous=TRUE)
@@ -96,7 +94,7 @@ singleContinuous <- function(length.sim,
   pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=diff.pMove, timeDep = timeDep.pMove, continuous=TRUE)
 
   #Parsing all parameters
-  ParamHost <- paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans, param.coordMove)
+  ParamHost <- paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans, param.sdMove)
 
   #START OF THE SIMULATION --------------------------------------------------------------------------------------------------------
 
@@ -136,7 +134,7 @@ singleContinuous <- function(length.sim,
     #step 1.2 if moving, where are they going?
 
     res <- makeMoves(res, pres.time, moving.full,
-                     coordMoveParsed = coordMoveParsed,
+                     sdMoveParsed = sdMoveParsed,
                      structure.raster = structure.raster,
                      attracted.by.raster = attracted.by.raster,
                      max.raster = max.raster)

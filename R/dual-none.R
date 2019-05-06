@@ -85,8 +85,8 @@ dualNone <- function(length.sim,
   pExitParsed.B <- parseFunction(pExit.B, param.pExit.B, as.character(quote(pExit.B)), timeDep = timeDep.pExit.B)
 
   #Parsing all parameters
-  ParamHost.A <- paramConstructor(param.pExit.A, param.pMove=NA, param.nContact.A, param.pTrans.A, param.coordMove=NA)
-  ParamHost.B <- paramConstructor(param.pExit.B, param.pMove=NA, param.nContact.B, param.pTrans.B, param.coordMove=NA)
+  ParamHost.A <- paramConstructor(param.pExit.A, param.pMove=NA, param.nContact.A, param.pTrans.A, param.sdMove=NA)
+  ParamHost.B <- paramConstructor(param.pExit.B, param.pMove=NA, param.nContact.B, param.pTrans.B, param.sdMove=NA)
 
   # Init
   message("Starting the simulation\nInitializing ...", appendLF = FALSE)
