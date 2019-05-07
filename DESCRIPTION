@@ -40,5 +40,6 @@ Suggests:
     ggnetwork,
     viridis,
     ggspatial,
-    gganimate
+    gganimate,
+    rgdal
 VignetteBuilder: knitr
