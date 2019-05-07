@@ -240,20 +240,3 @@ H1_moves <- subset(full.results.nosoi.state, hosts.ID == "H-1")
 expect_equal(nrow(H1_moves),5)
 expect_equal(H1_moves$current.env.value[1] < H1_moves$current.env.value[5],TRUE)
 })
-
-
-# test.nosoiA$table.state_A$Host="A"
-# test.nosoiA$table.state_B$Host="B"
-# full.results.nosoi.state <- rbindlist(list(test.nosoiA$table.state_A,test.nosoiA$table.state_B))
-# ggplot() +
-#     layer_spatial(test.raster) +
-#     scale_fill_gradient(low = "gray95", high = "forestgreen", limits=c(0,NA),na.value="white", name=NULL) +
-#     # scale_fill_gradient(low = "cornsilk", high = "darkgoldenrod4",na.value=NA, name=NULL) +
-#     # scale_y_continuous(breaks = seq(30, 90, by = 5), labels = NULL) +
-#     theme(panel.background = element_blank(),
-#           panel.ontop = TRUE,
-#           panel.grid.major = element_line(size = 0.25, linetype = 'dashed',colour = "grey70"),
-#           axis.ticks=element_blank(),
-#           plot.caption=element_text(size=10)) +
-#     labs(caption = "Elevation (source: Spatial Data Access Tool - SDAT)") +
-#     geom_spatial_point(data=full.results.nosoi.state,aes(state.x,state.y,color=Host))

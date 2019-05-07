@@ -33,7 +33,7 @@ test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5,
 ```{r setupMatrix, echo=FALSE, message=FALSE,warning=FALSE}
 library(raster)
 library(ggplot2)
-library(ggspatial)
+# library(ggspatial)
 library(viridis)
 
 set.seed(860)
@@ -41,14 +41,14 @@ test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
 test.raster[] <- runif(10000, -80, 150)
 test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
 
-ggplot() +
-  layer_spatial(test.raster) +
-  # scale_fill_gradient(low = "gray95", high = "forestgreen", limits=c(0,NA),na.value="white", name=NULL) +
-  scale_fill_viridis(limits=c(0,NA),na.value="white", name="Environmental\nvalue") +
-  labs(caption = "Environmental raster") +
-  theme(panel.background = element_blank(),
-        panel.ontop = TRUE,
-        panel.grid.major = element_line(size = 0.25, linetype = 'dashed',colour = "grey70"),
-        axis.ticks=element_blank(),
-        plot.caption=element_text(size=10))
+# ggplot() +
+#   layer_spatial(test.raster) +
+#   # scale_fill_gradient(low = "gray95", high = "forestgreen", limits=c(0,NA),na.value="white", name=NULL) +
+#   scale_fill_viridis(limits=c(0,NA),na.value="white", name="Environmental\nvalue") +
+#   labs(caption = "Environmental raster") +
+#   theme(panel.background = element_blank(),
+#         panel.ontop = TRUE,
+#         panel.grid.major = element_line(size = 0.25, linetype = 'dashed',colour = "grey70"),
+#         axis.ticks=element_blank(),
+#         plot.caption=element_text(size=10))
 ```

@@ -39,6 +39,5 @@ Suggests:
     ggplot2,
     ggnetwork,
     viridis,
-    ggspatial,
     gganimate
 VignetteBuilder: knitr
