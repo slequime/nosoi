@@ -69,6 +69,6 @@ dualNone(length.sim, max.infected.A, max.infected.B, init.individuals.A,
 \item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
 }
 \description{
-This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
+This function runs a dual-host transmission chain simulation, without any spatial features. The simulation stops either at
 the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.
 }

@@ -44,7 +44,7 @@ FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, contin
       || (diff == TRUE && timeDep == FALSE && length(formalArgs(pFunc)) > 2)
       || (diff == FALSE && timeDep == TRUE && length(formalArgs(pFunc)) > 2)
       || (diff == TRUE && timeDep==TRUE && length(formalArgs(pFunc)) > 3)) {
-    if (!is.list(is.na(param.pFunc)) && any(is.na(param.pFunc))) {
+    if (!is.list(param.pFunc) && is.na(param.pFunc)) {
       stop("There is a probleme with your function ", name, ": you should provide a parameter list named param.", name, ".")
     }
 
@@ -86,9 +86,9 @@ MatrixSanityChecks <- function(structure.matrix, init.structure, none.at.start=N
   if (!identical(colnames(structure.matrix),rownames(structure.matrix))) stop("structure.matrix rows and columns should have the same names.")
   if (any(rowSums(structure.matrix) != 1)) stop("structure.matrix rows should sum up to 1.")
 
-  if (is.null(none.at.start) && !init.structure %in% rownames(structure.matrix)) stop("init.structure should be a state present in structure.matrix.")
+  if (is.null(none.at.start) && !(init.structure %in% rownames(structure.matrix))) stop("init.structure should be a state present in structure.matrix.")
 
-  if(!is.null(none.at.start) && none.at.start==FALSE && (!init.structure %in% rownames(structure.matrix))) stop("init.structure should be a state present in structure.matrix.")
+  if(!is.null(none.at.start) && none.at.start==FALSE && !(init.structure %in% rownames(structure.matrix))) stop("init.structure should be a state present in structure.matrix.")
 }
 
 #' @title Checks if the raster is properly formated
@@ -102,8 +102,21 @@ MatrixSanityChecks <- function(structure.matrix, init.structure, none.at.start=N
 #' @keywords internal
 ##
 
-RasterSanityChecks <- function(structure.raster, init.structure) {
+RasterSanityChecks <- function(structure.raster, init.structure, none.at.start=NULL) {
   if(!class(structure.raster) == "RasterLayer") stop("structure.raster must be a raster (class RasterLayer).")
+
+  if(is.null(none.at.start)){
+    start.env <- raster::extract(structure.raster,cbind(init.structure[1],init.structure[2]))
+    if(is.na(start.env)) stop("Your starting position (init.structure) should be on the raster.")
+  }
+
+  if(!is.null(none.at.start) && !none.at.start){
   start.env <- raster::extract(structure.raster,cbind(init.structure[1],init.structure[2]))
   if(is.na(start.env)) stop("Your starting position (init.structure) should be on the raster.")
+  }
+
+  if(!is.null(none.at.start) && none.at.start){
+    start.env <- NA
+  }
+
 }

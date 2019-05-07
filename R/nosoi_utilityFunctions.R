@@ -65,7 +65,7 @@ endMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, type="single"
 ##
 
 nosoiSimConstructor <- function(N.infected, total.time, table.hosts, table.state, prefix.host,
-                                type = c("singleNone", "singleDiscrete", "singleContinuous","dualNone","dualDiscrete")) {
+                                type = c("singleNone", "singleDiscrete", "singleContinuous","dualNone","dualDiscrete", "dualContinuous")) {
 
   type <- match.arg(type)
 
@@ -101,6 +101,7 @@ getPositionInfected <- function(nosoiSim, df.meetTransmit, i) {
   if (nosoiSim$type == "singleContinuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
   if (nosoiSim$type == "dualNone") return(NA)
   if (nosoiSim$type == "dualDiscrete") return(df.meetTransmit[i, ]$current.in)
+  if (nosoiSim$type == "dualContinuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
   stop(paste("This type",nosoiSim$type,"is not implemented yet"))
 }
 
@@ -118,6 +119,7 @@ keepState <- function(nosoiSim) {
   if (nosoiSim$type == "singleContinuous") return(TRUE)
   if (nosoiSim$type == "dualNone") return(FALSE)
   if (nosoiSim$type == "dualDiscrete") return(TRUE)
+  if (nosoiSim$type == "dualContinuous") return(TRUE)
   stop(paste("This type",nosoiSim$type,"is not implemented yet"))
 }
 

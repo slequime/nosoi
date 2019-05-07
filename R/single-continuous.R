@@ -83,7 +83,7 @@ singleContinuous <- function(length.sim,
   #Parsing pExit
   pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=diff.pExit, timeDep = timeDep.pExit, continuous=TRUE)
 
-  #Discrete states sanity checks -------------------------------------------------------------------------------------------------------------------
+  #Continuous states sanity checks -------------------------------------------------------------------------------------------------------------------
 
   #Extract environmental value at origin:
   RasterSanityChecks(structure.raster,init.structure)

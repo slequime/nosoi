@@ -4,7 +4,8 @@
 \alias{RasterSanityChecks}
 \title{Checks if the raster is properly formated}
 \usage{
-RasterSanityChecks(structure.raster, init.structure)
+RasterSanityChecks(structure.raster, init.structure,
+  none.at.start = NULL)
 }
 \arguments{
 \item{structure.raster}{raster object defining the environmental variable.}

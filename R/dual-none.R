@@ -1,6 +1,6 @@
 #' Dual-host without structured host population
 #'
-#' @description This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
+#' @description This function runs a dual-host transmission chain simulation, without any spatial features. The simulation stops either at
 #' the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.
 #'
 #' @param length.sim specifies the length (in unit of time) over which the simulation should be run.

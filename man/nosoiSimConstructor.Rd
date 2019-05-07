@@ -6,7 +6,7 @@
 \usage{
 nosoiSimConstructor(N.infected, total.time, table.hosts, table.state,
   prefix.host, type = c("singleNone", "singleDiscrete",
-  "singleContinuous", "dualNone", "dualDiscrete"))
+  "singleContinuous", "dualNone", "dualDiscrete", "dualContinuous"))
 }
 \arguments{
 \item{N.infected}{number of infected hosts}

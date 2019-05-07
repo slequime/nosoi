@@ -8,7 +8,10 @@
 #' @details This function determines which general settings the user wants to use for his simulation.
 #' @details All other arguments are passed down to the chosen simulator itself, such as \code{\link{singleNone}}, \code{\link{singleDiscrete}}, \code{\link{singleContinuous}}, \code{\link{dualNone}} or \code{\link{dualDiscrete}}.
 #' @export nosoiSim
-#'
+#' @import data.table
+#' @import methods
+#' @import stats
+
 nosoiSim <- function(type="single", structure=FALSE, continuous=FALSE, ...){
   #Sanity checks -------------
   if (! type %in% c("single","dual")) stop("Type of transmission should be 'single' or 'dual'-host.")
@@ -33,7 +36,9 @@ nosoiSim <- function(type="single", structure=FALSE, continuous=FALSE, ...){
   }
 
   #To be implemented
-  if(type=="dual" && structure==TRUE && continuous == TRUE) stop("This version has not been implemented yet.")
+  if(type=="dual" && structure==TRUE && continuous == TRUE) {
+    output <- dualContinuous(...)
+  }
 
   return(output)
 }
