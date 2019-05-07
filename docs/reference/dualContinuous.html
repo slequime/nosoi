@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dual-host with structured (discrete) host population — dualDiscrete • nosoi</title>
+<title>Dual-host with structured (discrete) host population — dualContinuous • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Dual-host with structured (discrete) host population — dualDiscrete" />
+<meta property="og:title" content="Dual-host with structured (discrete) host population — dualContinuous" />
 
 <meta property="og:description" content="This function runs a dual-host transmission chain simulation, with discrete structure features. The simulation stops either at
 the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed." />
@@ -188,8 +188,8 @@ the end of given time (specified by length.sim) or when the number of hosts infe
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Dual-host with structured (discrete) host population</h1>
-    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/dual-discrete.R'><code>R/dual-discrete.R</code></a></small>
-    <div class="hidden name"><code>dualDiscrete.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/dual-continuous.R'><code>R/dual-continuous.R</code></a></small>
+    <div class="hidden name"><code>dualContinuous.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -199,20 +199,23 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     
     </div>
 
-    <pre class="usage"><span class='fu'>dualDiscrete</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected.A</span>, <span class='no'>max.infected.B</span>,
+    <pre class="usage"><span class='fu'>dualContinuous</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected.A</span>, <span class='no'>max.infected.B</span>,
   <span class='no'>init.individuals.A</span>, <span class='no'>init.individuals.B</span>, <span class='no'>init.structure.A</span>,
-  <span class='no'>init.structure.B</span>, <span class='no'>structure.matrix.A</span>, <span class='no'>structure.matrix.B</span>, <span class='no'>pExit.A</span>,
+  <span class='no'>init.structure.B</span>, <span class='no'>structure.raster.A</span>, <span class='no'>structure.raster.B</span>, <span class='no'>pExit.A</span>,
   <span class='no'>param.pExit.A</span>, <span class='kw'>timeDep.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>pMove.A</span>, <span class='no'>param.pMove.A</span>, <span class='kw'>timeDep.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.A</span>, <span class='no'>param.nContact.A</span>,
+  <span class='kw'>diff.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>sdMove.A</span>, <span class='no'>param.sdMove.A</span>,
+  <span class='kw'>diff.sdMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.sdMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>attracted.by.raster.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.A</span>, <span class='no'>param.nContact.A</span>,
   <span class='kw'>timeDep.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.A</span>,
   <span class='no'>param.pTrans.A</span>, <span class='kw'>timeDep.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>prefix.host.A</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='no'>pExit.B</span>, <span class='no'>param.pExit.B</span>, <span class='kw'>timeDep.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>diff.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove.B</span>, <span class='no'>param.pMove.B</span>,
-  <span class='kw'>timeDep.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.B</span>,
-  <span class='no'>param.nContact.B</span>, <span class='kw'>timeDep.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.B</span>, <span class='no'>param.pTrans.B</span>,
-  <span class='kw'>timeDep.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>timeDep.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>sdMove.B</span>,
+  <span class='no'>param.sdMove.B</span>, <span class='kw'>diff.sdMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.sdMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>attracted.by.raster.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.B</span>, <span class='no'>param.nContact.B</span>,
+  <span class='kw'>timeDep.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.B</span>,
+  <span class='no'>param.pTrans.B</span>, <span class='kw'>timeDep.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>prefix.host.B</span> <span class='kw'>=</span> <span class='st'>"V"</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -247,12 +250,12 @@ the end of given time (specified by length.sim) or when the number of hosts infe
       <td><p>which state (e.g. location) the initially infected individuals of host B are located. (NA if init.individual.B is 0)</p></td>
     </tr>
     <tr>
-      <th>structure.matrix.A</th>
-      <td><p>transition matrix (probabilities) to go from location A (row) to B (column) for host A.</p></td>
+      <th>structure.raster.A</th>
+      <td><p>raster object defining the environmental variable for host A.</p></td>
     </tr>
     <tr>
-      <th>structure.matrix.B</th>
-      <td><p>transition matrix (probabilities) to go from location A (row) to B (column) for host B.</p></td>
+      <th>structure.raster.B</th>
+      <td><p>raster object defining the environmental variable for host B.</p></td>
     </tr>
     <tr>
       <th>pExit.A</th>
@@ -285,6 +288,26 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <tr>
       <th>diff.pMove.A</th>
       <td><p>is pMove different between states of the structured population (TRUE/FALSE) for host A.</p></td>
+    </tr>
+    <tr>
+      <th>sdMove.A</th>
+      <td><p>function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion for host A.</p></td>
+    </tr>
+    <tr>
+      <th>param.sdMove.A</th>
+      <td><p>parameter names (list of functions) for sdMove for host A</p></td>
+    </tr>
+    <tr>
+      <th>diff.sdMove.A</th>
+      <td><p>is sdMove dependant on the environmental value (TRUE/FALSE) for host A.</p></td>
+    </tr>
+    <tr>
+      <th>timeDep.sdMove.A</th>
+      <td><p>is sdMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.</p></td>
+    </tr>
+    <tr>
+      <th>attracted.by.raster.A</th>
+      <td><p>should the hosts A be attracted by high values in the environmental raster? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>nContact.A</th>
@@ -353,6 +376,26 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <tr>
       <th>diff.pMove.B</th>
       <td><p>is pMove different between states of the structured population (TRUE/FALSE) for host B.</p></td>
+    </tr>
+    <tr>
+      <th>sdMove.B</th>
+      <td><p>function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion for host A.</p></td>
+    </tr>
+    <tr>
+      <th>param.sdMove.B</th>
+      <td><p>parameter names (list of functions) for sdMove for host A</p></td>
+    </tr>
+    <tr>
+      <th>diff.sdMove.B</th>
+      <td><p>is sdMove dependant on the environmental value (TRUE/FALSE) for host A.</p></td>
+    </tr>
+    <tr>
+      <th>timeDep.sdMove.B</th>
+      <td><p>is sdMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.</p></td>
+    </tr>
+    <tr>
+      <th>attracted.by.raster.B</th>
+      <td><p>should the hosts A be attracted by high values in the environmental raster? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>nContact.B</th>

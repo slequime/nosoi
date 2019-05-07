@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -153,7 +153,21 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#nosoi" class="anchor"></a>nosoi <img src="reference/figures/logo.png" align="right" alt="" width="120">
 </h1></div>
-<p>nosoi (pronounced no.so.i) is a flexible agent-based stochastic epidemiological simulator in R, named after the <em>daimones</em> of plague, sickness and disease that escaped Pandora’s jar in the Greek mythology. Nosoi is able to take into account the influence of multiple variable on the transmission process (e.g. dual-host systems (such as arboviruses), within-host viral dynamics, transportation, population structure), alone or taken together, to create complex but relatively intuitive epidemiological simulations.</p>
+
+<p><code>nosoi</code> (pronounced no.so.i) is a flexible agent-based stochastic transmission chain/epidemic simulator in R, named after the <em>daimones</em> of plague, sickness and disease that escaped Pandora’s jar in the Greek mythology. <code>nosoi</code> is able to take into account the influence of multiple variable on the transmission process (e.g. dual-host systems (such as arboviruses), within-host viral dynamics, transportation, population structure), alone or taken together, to create complex but relatively intuitive epidemiological simulations.</p>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>Stable version will be deposited on CRAN.</p>
+<p>To get the latest (and possibly unstable) version, you can use the <a href="https://github.com/hadley/devtools"><code>devtools</code></a> package:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"slequime/nosoi"</span>)</a></code></pre></div>
+</div>
+<div id="documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<p>You can find package documentation, with reference, tutorials and examples here: <a href="http://slequime.github.io/nosoi/" class="uri">http://slequime.github.io/nosoi/</a> (built with <a href="https://github.com/hadley/pkgdown"><code>pkgdown</code></a>).</p>
+</div>
 </div>
   </div>
 
@@ -182,7 +196,15 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.org/slequime/nosoi"><img src="https://travis-ci.org/pbastide/PhylogeneticEM.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://codecov.io/gh/slequime/nosoi"><img src="https://codecov.io/gh/slequime/nosoi/branch/master/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="http://slequime.github.io/nosoi/"><img src="https://img.shields.io/badge/docs-vignettes-blue.svg"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
       <footer><div class="copyright">
