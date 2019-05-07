@@ -787,3 +787,47 @@ test_that("Movement is coherent with single introduction, all parameters are dif
   expect_equal(subset(Where.when.died, current.in == "C")$N,integer(0))
   expect_equal(subset(Where.when.died, current.in == "D")$N,207)
 })
+
+test_that("Epidemic dying out", {
+  library(igraph)
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Exit_fct  <- function(t){return(0.08)}
+  p_Move_fct  <- function(t){return(0.1)}
+
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+
+  transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+
+  set.seed(10)
+  test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+                          length=20,
+                          max.infected=100,
+                          init.individuals=1,
+                          init.structure="A",
+                          structure.matrix=transition.matrix,
+                          pMove=p_Move_fct,
+                          param.pMove=NA,
+                          nContact=time_contact,
+                          param.nContact=NA,
+                          pTrans = proba,
+                          param.pTrans = list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          pExit=p_Exit_fct,
+                          param.pExit=NA
+  )
+
+  #Movement
+  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),1)
+  expect_equal(test.nosoiA$total.time,4)
+
+  Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+
+  expect_equal(subset(Where.at.end, current.in == "A")$N,1)
+})

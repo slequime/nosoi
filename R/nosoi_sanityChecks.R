@@ -66,7 +66,7 @@ FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, contin
   if(timeDep == TRUE && diff == TRUE && continuous == FALSE && formalArgs(pFunc)[3] != "current.in") stop(name, " should have 'current.in' as the third variable. diff.", name, " is TRUE.")
 
   if(timeDep == FALSE && diff == TRUE && continuous == TRUE && formalArgs(pFunc)[2] != "current.env.value") stop(name, " should have 'current.env.value' as the second variable. diff.", name, " is TRUE.")
-  if(timeDep == TRUE && diff == TRUE && continuous == TRUE && formalArgs(pFunc)[3] != "current.env.value") stop(name, " should have 'current.env.value' as the second variable. diff.", name, " is TRUE.")
+  if(timeDep == TRUE && diff == TRUE && continuous == TRUE && formalArgs(pFunc)[3] != "current.env.value") stop(name, " should have 'current.env.value' as the third variable. diff.", name, " is TRUE.")
 }
 
 #' @title Checks if the matrix is properly formated

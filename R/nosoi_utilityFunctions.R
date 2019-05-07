@@ -102,7 +102,6 @@ getPositionInfected <- function(nosoiSim, df.meetTransmit, i) {
   if (nosoiSim$type == "dualNone") return(NA)
   if (nosoiSim$type == "dualDiscrete") return(df.meetTransmit[i, ]$current.in)
   if (nosoiSim$type == "dualContinuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
-  stop(paste("This type",nosoiSim$type,"is not implemented yet"))
 }
 
 #' @title Should we build the table.host table
@@ -120,7 +119,6 @@ keepState <- function(nosoiSim) {
   if (nosoiSim$type == "dualNone") return(FALSE)
   if (nosoiSim$type == "dualDiscrete") return(TRUE)
   if (nosoiSim$type == "dualContinuous") return(TRUE)
-  stop(paste("This type",nosoiSim$type,"is not implemented yet"))
 }
 
 #' @title Param concatenator
@@ -150,7 +148,7 @@ paramConstructor <- function(param.pExit, param.pMove, param.nContact, param.pTr
 
   ParamHost <- merged[!duplicated(merged)]
 
-  class(ParamHost) <- "ParamHost"
+  if(!is.null(ParamHost)) class(ParamHost) <- "ParamHost"
 
   return(ParamHost)
 }

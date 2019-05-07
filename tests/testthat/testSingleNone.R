@@ -2,6 +2,35 @@ context("Testing single-host without structure")
 
 test_that("Transmission is coherent with single introduction, constant pExit and pTrans", {
   library(igraph)
+
+  p_Exit_fct  <- function(t){return(0.08)}
+
+  proba <- function(t){return(0.2)}
+
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+
+  set.seed(805)
+  test.nosoiA <- nosoiSim(type="single",structure=FALSE,
+                          length=40,
+                          max.infected=100,
+                          init.individuals=1,
+                          nContact=time_contact,
+                          param.nContact=NA,
+                          pTrans = proba,
+                          param.pTrans = NA,
+                          pExit=p_Exit_fct,
+                          param.pExit=NA
+  )
+  g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
+
+  expect_equal(transitivity(g, type="global"), 0)
+  expect_equal(clusters(g, "weak")$no, 1)
+  expect_equal(diameter(g, directed=F, weights=NA), 12)
+})
+
+
+test_that("Transmission is coherent with single introduction, constant pExit and pTrans", {
+  library(igraph)
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}
@@ -214,4 +243,36 @@ test_that("Transmission is coherent with multiple introductions, complex pExit a
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 3)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
+})
+
+test_that("Dying out epidemic", {
+  library(igraph)
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Exit_fct  <- function(t){return(0.08)}
+
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+
+  set.seed(111)
+  test.nosoiA <- nosoiSim(type="single",structure=FALSE,
+                          length=40,
+                          max.infected=100,
+                          init.individuals=1,
+                          nContact=time_contact,
+                          param.nContact=NA,
+                          pTrans = proba,
+                          param.pTrans = list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          pExit=p_Exit_fct,
+                          param.pExit=NA
+  )
+
+  expect_equal(nrow(test.nosoiA$table.hosts),1)
+  expect_equal(test.nosoiA$total.time,4)
 })

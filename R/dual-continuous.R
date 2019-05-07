@@ -133,7 +133,7 @@ dualContinuous <- function(length.sim,
   if(none.at.start.A) init.structure.A = c(0,0)
   if(none.at.start.B) init.structure.B = c(0,0)
 
-  if((!is.function(pMove.A)) && (!is.function(pMove.B))) stop("At least one host must move!.")
+  if((!is.function(pMove.A)) && (!is.function(pMove.B))) stop("At least one host must move.")
 
   #Parsing nContact
   nContactParsed.A <- parseFunction(nContact.A, param.nContact.A, as.character(quote(nContact.A)), diff=diff.nContact.A, timeDep = timeDep.nContact.A, continuous=TRUE)

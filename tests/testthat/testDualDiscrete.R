@@ -229,3 +229,280 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   test.A <- test.nosoiA$table.state_A %>% group_by(hosts.ID) %>% summarise(N=length(hosts.ID))
   expect_equal(length(test.A$N) > 1, TRUE)
 })
+
+test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, A does not move", {
+  library(igraph)
+
+  #Host A
+
+  t_infectA_fct <- function(x){rnorm(x,mean = 12,sd=3)}
+  pTrans_hostA <- function(t,t_infectA){
+    if(t/t_infectA <= 1){p=sin(pi*t/t_infectA)}
+    if(t/t_infectA > 1){p=0}
+    return(p)
+  }
+
+  p_Exit_fctA  <- function(t,t_infectA){
+    if(t/t_infectA <= 1){p=0}
+    if(t/t_infectA > 1){p=1}
+    return(p)
+  }
+
+  time_contact_A = function(t){sample(c(0,1,2),1,prob=c(0.2,0.4,0.4))}
+
+  #Host B
+  t_incub_fct_B <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct_B <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+
+  p_Exit_fct_B  <- function(t,current.in){
+    if(current.in=="A"){return(0.1)}
+    if(current.in=="B"){return(0.2)}
+    if(current.in=="C"){return(1)}}
+
+  p_Move_fctB  <- function(t){return(0.1)}
+
+  pTrans_hostB <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact_B = function(t){round(rnorm(1, 3, 1), 0)}
+
+  transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+
+  set.seed(6262)
+  test.nosoiA <- nosoiSim(type="dual",structure=TRUE,
+                          length.sim=40,
+                          max.infected.A=100,
+                          max.infected.B=200,
+                          init.individuals.A=1,
+                          init.individuals.B=0,
+                          init.structure.A="A",
+                          init.structure.B=NA,
+                          structure.matrix.A=transition.matrix,
+                          structure.matrix.B=transition.matrix,
+
+                          pExit.A = p_Exit_fctA,
+                          param.pExit.A = list(t_infectA = t_infectA_fct),
+                          pMove.A=NA,
+                          param.pMove.A=NA,
+                          timeDep.pMove.A=FALSE,
+                          diff.pMove.A=FALSE,
+                          timeDep.pExit.A=FALSE,
+                          nContact.A = time_contact_A,
+                          param.nContact.A = NA,
+                          timeDep.nContact.A=FALSE,
+                          pTrans.A = pTrans_hostA,
+                          param.pTrans.A = list(t_infectA=t_infectA_fct),
+                          timeDep.pTrans.A=FALSE,
+                          prefix.host.A="H",
+
+                          pExit.B = p_Exit_fct_B,
+                          param.pExit.B = NA,
+                          timeDep.pExit.B=FALSE,
+                          diff.pExit.B=TRUE,
+                          pMove.B=p_Move_fctB,
+                          param.pMove.B=NA,
+                          timeDep.pMove.B=FALSE,
+                          diff.pMove.B=FALSE,
+                          nContact.B = time_contact_B,
+                          param.nContact.B = NA,
+                          timeDep.nContact.B=FALSE,
+                          pTrans.B = pTrans_hostB,
+                          param.pTrans.B = list(p_max=p_max_fct_B,
+                                                t_incub=t_incub_fct_B),
+                          timeDep.pTrans.B=FALSE,
+                          prefix.host.B="V")
+
+
+  full.results.nosoi <- rbindlist(list(test.nosoiA$table.hosts_A[,c(1:7)],test.nosoiA$table.hosts_B[,c(1:7)]))
+  full.results.nosoi.state <- rbindlist(list(test.nosoiA$table.state_A,test.nosoiA$table.state_B))
+
+  g <- graph.data.frame(full.results.nosoi[inf.by != "NA-1",c(1,2)],directed=F)
+
+  expect_equal(transitivity(g, type="global"), 0)
+  expect_equal(clusters(g, "weak")$no, 1)
+  expect_equal(diameter(g, directed=F, weights=NA), 11)
+
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_A$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_A[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_B$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_B[-1]$inf.by,"H-") == TRUE),TRUE)
+
+  expect_equal(test.nosoiA$total.time, 21)
+
+  expect_equal(test.nosoiA$N.infected_A, 125)
+  expect_equal(test.nosoiA$N.infected_B, 238)
+
+  expect_equal(colnames(test.nosoiA$table.hosts_A)[8],"t_infectA")
+
+  #Movement
+  expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "H-3")),1)
+  expect_equal(subset(full.results.nosoi.state, hosts.ID == "H-3")$state,c("A"))
+
+  expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "V-2")),2)
+  expect_equal(subset(full.results.nosoi.state, hosts.ID == "V-2")$state,c("A","C"))
+
+  Where.when.exit.B <- subset(test.nosoiA$table.hosts_B,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+  Where.when.exit.A <- subset(test.nosoiA$table.hosts_A,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+
+  expect_equal(subset(Where.when.exit.A, current.in == "A")$N,3)
+  expect_equal(subset(Where.when.exit.B, current.in == "B")$N,25)
+
+  expect_error(
+  test.nosoiA <- nosoiSim(type="dual",structure=TRUE,
+                          length.sim=40,
+                          max.infected.A=100,
+                          max.infected.B=200,
+                          init.individuals.A=1,
+                          init.individuals.B=0,
+                          init.structure.A="A",
+                          init.structure.B=NA,
+                          structure.matrix.A=transition.matrix,
+                          structure.matrix.B=transition.matrix,
+
+                          pExit.A = p_Exit_fctA,
+                          param.pExit.A = list(t_infectA = t_infectA_fct),
+                          pMove.A=NA,
+                          param.pMove.A=NA,
+                          timeDep.pMove.A=FALSE,
+                          diff.pMove.A=FALSE,
+                          timeDep.pExit.A=FALSE,
+                          nContact.A = time_contact_A,
+                          param.nContact.A = NA,
+                          timeDep.nContact.A=FALSE,
+                          pTrans.A = pTrans_hostA,
+                          param.pTrans.A = list(t_infectA=t_infectA_fct),
+                          timeDep.pTrans.A=FALSE,
+                          prefix.host.A="H",
+
+                          pExit.B = p_Exit_fct_B,
+                          param.pExit.B = NA,
+                          timeDep.pExit.B=FALSE,
+                          diff.pExit.B=TRUE,
+                          pMove.B=NA,
+                          param.pMove.B=NA,
+                          timeDep.pMove.B=FALSE,
+                          diff.pMove.B=FALSE,
+                          nContact.B = time_contact_B,
+                          param.nContact.B = NA,
+                          timeDep.nContact.B=FALSE,
+                          pTrans.B = pTrans_hostB,
+                          param.pTrans.B = list(p_max=p_max_fct_B,
+                                                t_incub=t_incub_fct_B),
+                          timeDep.pTrans.B=FALSE,
+                          prefix.host.B="V"),
+  "At least one host must move."
+  )
+})
+
+test_that("Epidemics dying out", {
+  library(igraph)
+
+  #Host A
+
+  t_infectA_fct <- function(x){rnorm(x,mean = 12,sd=3)}
+  pTrans_hostA <- function(t,t_infectA){
+    if(t/t_infectA <= 1){p=sin(pi*t/t_infectA)}
+    if(t/t_infectA > 1){p=0}
+    return(p)
+  }
+
+  p_Move_fctA  <- function(t){return(0.1)}
+
+  p_Exit_fctA  <- function(t,t_infectA){
+    if(t/t_infectA <= 1){p=0}
+    if(t/t_infectA > 1){p=1}
+    return(p)
+  }
+
+  time_contact_A = function(t){sample(c(0,1,2),1,prob=c(0.2,0.4,0.4))}
+
+  #Host B
+  t_incub_fct_B <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct_B <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+
+  p_Exit_fct_B  <- function(t,current.in){
+    if(current.in=="A"){return(0.1)}
+    if(current.in=="B"){return(0.2)}
+    if(current.in=="C"){return(1)}}
+
+  pTrans_hostB <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact_B = function(t){round(rnorm(1, 3, 1), 0)}
+
+  transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+
+  set.seed(101)
+  test.nosoiA <- nosoiSim(type="dual",structure=TRUE,
+                          length.sim=40,
+                          max.infected.A=100,
+                          max.infected.B=200,
+                          init.individuals.A=1,
+                          init.individuals.B=0,
+                          init.structure.A="A",
+                          init.structure.B=NA,
+                          structure.matrix.A=transition.matrix,
+                          structure.matrix.B=transition.matrix,
+
+                          pExit.A = p_Exit_fctA,
+                          param.pExit.A = list(t_infectA = t_infectA_fct),
+                          pMove.A=p_Move_fctA,
+                          param.pMove.A=NA,
+                          timeDep.pMove.A=FALSE,
+                          diff.pMove.A=FALSE,
+                          timeDep.pExit.A=FALSE,
+                          nContact.A = time_contact_A,
+                          param.nContact.A = NA,
+                          timeDep.nContact.A=FALSE,
+                          pTrans.A = pTrans_hostA,
+                          param.pTrans.A = list(t_infectA=t_infectA_fct),
+                          timeDep.pTrans.A=FALSE,
+                          prefix.host.A="H",
+
+                          pExit.B = p_Exit_fct_B,
+                          param.pExit.B = NA,
+                          timeDep.pExit.B=FALSE,
+                          diff.pExit.B=TRUE,
+                          pMove.B=NA,
+                          param.pMove.B=NA,
+                          timeDep.pMove.B=FALSE,
+                          diff.pMove.B=FALSE,
+                          nContact.B = time_contact_B,
+                          param.nContact.B = NA,
+                          timeDep.nContact.B=FALSE,
+                          pTrans.B = pTrans_hostB,
+                          param.pTrans.B = list(p_max=p_max_fct_B,
+                                                t_incub=t_incub_fct_B),
+                          timeDep.pTrans.B=FALSE,
+                          prefix.host.B="V")
+
+
+  full.results.nosoi <- rbindlist(list(test.nosoiA$table.hosts_A[,c(1:7)],test.nosoiA$table.hosts_B[,c(1:7)]))
+  full.results.nosoi.state <- rbindlist(list(test.nosoiA$table.state_A,test.nosoiA$table.state_B))
+
+  g <- graph.data.frame(full.results.nosoi[inf.by != "NA-1",c(1,2)],directed=F)
+
+  expect_equal(transitivity(g, type="global"), 0)
+  expect_equal(clusters(g, "weak")$no, 1)
+  expect_equal(diameter(g, directed=F, weights=NA), 2)
+
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_A$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_A[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_B$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_B[-1]$inf.by,"H-") == TRUE),TRUE)
+
+  expect_equal(test.nosoiA$total.time, 12)
+
+  expect_equal(test.nosoiA$N.infected_A, 1)
+  expect_equal(test.nosoiA$N.infected_B, 8)
+
+  #Movement
+  expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "H-1")),3)
+  expect_equal(subset(full.results.nosoi.state, hosts.ID == "H-1")$state,c("A","B","C"))
+})

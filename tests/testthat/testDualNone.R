@@ -240,3 +240,62 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(test.nosoiA$N.infected_B, 221)
 
 })
+
+test_that("Epidemic dying out", {
+  library(igraph)
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Exit_fct  <- function(t){return(0.08)}
+
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+
+  set.seed(2)
+  test.nosoiA <- nosoiSim(type="dual",structure=FALSE,
+                          length.sim=40,
+                          max.infected.A=100,
+                          max.infected.B=100,
+                          init.individuals.A=1,
+                          init.individuals.B=0,
+
+                          pExit.A = p_Exit_fct,
+                          param.pExit.A = NA,
+                          timeDep.pExit.A=FALSE,
+                          nContact.A = time_contact,
+                          param.nContact.A = NA,
+                          timeDep.nContact.A=FALSE,
+                          pTrans.A = proba,
+                          param.pTrans.A = list(p_max=p_max_fct,
+                                                t_incub=t_incub_fct),
+                          timeDep.pTrans.A=FALSE,
+                          prefix.host.A="H",
+
+                          pExit.B = p_Exit_fct,
+                          param.pExit.B = NA,
+                          timeDep.pExit.B=FALSE,
+                          nContact.B = time_contact,
+                          param.nContact.B = NA,
+                          timeDep.nContact.B=FALSE,
+                          pTrans.B = proba,
+                          param.pTrans.B = list(p_max=p_max_fct,
+                                                t_incub=t_incub_fct),
+                          timeDep.pTrans.B=FALSE,
+                          prefix.host.B="V")
+
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_A$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_A[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_B$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$table.hosts_B[-1]$inf.by,"H-") == TRUE),TRUE)
+
+  expect_equal(test.nosoiA$total.time, 5)
+
+  expect_equal(test.nosoiA$N.infected_A, 1)
+  expect_equal(test.nosoiA$N.infected_B, 0)
+
+  expect_equal(test.nosoiA$type, "dualNone")
+})
