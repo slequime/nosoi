@@ -40,7 +40,5 @@ Suggests:
     ggnetwork,
     viridis,
     ggspatial,
-    gganimate,
-Remotes: 
-    cran/rgdal@1.3-9
+    gganimate
 VignetteBuilder: knitr
