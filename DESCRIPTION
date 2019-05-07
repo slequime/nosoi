@@ -38,6 +38,7 @@ Suggests:
     tidyverse,
     ggplot2,
     ggnetwork,
+    intergraph,
     viridis,
     gganimate
 VignetteBuilder: knitr
