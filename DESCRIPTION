@@ -39,7 +39,8 @@ Suggests:
     ggplot2,
     ggnetwork,
     intergraph,
-    gifski,
     viridis,
-    gganimate
+    gganimate,
+    gifski,
+    png
 VignetteBuilder: knitr
