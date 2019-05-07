@@ -3,4 +3,5 @@
 ^\.Rproj\.user$
 ^tests/manual$
 ^_pkgdown\.yml$
+^.travis\.yml$
 ^pkgdown$
