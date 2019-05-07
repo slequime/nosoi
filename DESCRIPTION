@@ -41,5 +41,6 @@ Suggests:
     viridis,
     ggspatial,
     gganimate,
-    rgdal
+Remotes: 
+    cran/rgdal@1.3-9
 VignetteBuilder: knitr
