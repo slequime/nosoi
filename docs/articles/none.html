@@ -74,6 +74,9 @@
     <li>
       <a href="../articles/continuous.html">Spread of a pathogen in a continuous space</a>
     </li>
+    <li>
+      <a href="../articles/viz_stat.html">nosoi output and visualization</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -128,6 +131,9 @@
     <li>
       <a href="../articles/vector-competence.html">Epidemiological impact of mosquito vector competence</a>
     </li>
+    <li>
+      <a href="../articles/viz_stat.html">`nosoi` output and visualization</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -174,11 +180,14 @@
 <li><code>max.infected</code></li>
 <li><code>init.individuals</code></li>
 <li>
-<code>pExit</code> with <code>param.pExit</code> (optional) and <code>timeDep.pExit</code> (optional)</li>
+<code>pExit</code> with <code>param.pExit</code> and <code>timeDep.pExit</code>
+</li>
 <li>
-<code>nContact</code> with <code>param.nContact</code> (optional) and <code>timeDep.nContact</code> (optional)</li>
+<code>nContact</code> with <code>param.nContact</code> and <code>timeDep.nContact</code>
+</li>
 <li>
-<code>pTrans</code> with <code>param.pTrans</code> and <code>timeDep.pTrans</code> (optional)</li>
+<code>pTrans</code> with <code>param.pTrans</code> and <code>timeDep.pTrans</code>
+</li>
 <li><code>prefix.host</code></li>
 <li><code>progress.bar</code></li>
 <li><code>print.step</code></li>
@@ -201,7 +210,7 @@
 </blockquote>
 <p>You can combine the influence of several parameters, such as time since infection, “absolute” time of the simulation and individual-based parameters within the same function.</p>
 <blockquote>
-<p>In any case, time since infection and “absolute” time should ALWAYS be designated by (<code>t</code>) and (<code>prestime</code>) respectively, and be in that order and first of the function parameters.</p>
+<p>In any case, time since infection and “absolute” time should ALWAYS be designated by <code>t</code> and <code>prestime</code> respectively, and be in that order and before of the individual-based parameters.</p>
 </blockquote>
 <div id="pexit-param-pexit-and-timedep-pexit" class="section level3">
 <h3 class="hasAnchor">
@@ -241,18 +250,24 @@
 <li><code>init.individuals.A</code></li>
 <li><code>init.individuals.B</code></li>
 <li>
-<code>pExit.A</code> with <code>param.pExit.A</code> (optional) and <code>timeDep.pExit.A</code> (optional)</li>
+<code>pExit.A</code> with <code>param.pExit.A</code> and <code>timeDep.pExit.A</code>
+</li>
 <li>
-<code>nContact.A</code> with <code>param.nContact.A</code> (optional) and <code>timeDep.nContact.A</code> (optional)</li>
+<code>nContact.A</code> with <code>param.nContact.A</code> and <code>timeDep.nContact.A</code>
+</li>
 <li>
-<code>pTrans.A</code> with <code>param.pTrans.A</code> and <code>timeDep.pTrans.A</code> (optional)</li>
+<code>pTrans.A</code> with <code>param.pTrans.A</code> and <code>timeDep.pTrans.A</code>
+</li>
 <li><code>prefix.host.A</code></li>
 <li>
-<code>pExit.B</code> with <code>param.pExit.B</code> (optional) and <code>timeDep.pExit.B</code> (optional)</li>
+<code>pExit.B</code> with <code>param.pExit.B</code> and <code>timeDep.pExit.B</code>
+</li>
 <li>
-<code>nContact.B</code> with <code>param.nContact.B</code> (optional) and <code>timeDep.nContact.B</code> (optional)</li>
+<code>nContact.B</code> with <code>param.nContact.B</code> and <code>timeDep.nContact.B</code>
+</li>
 <li>
-<code>pTrans.B</code> with <code>param.pTrans.B</code> and <code>timeDep.pTrans.B</code> (optional)</li>
+<code>pTrans.B</code> with <code>param.pTrans.B</code> and <code>timeDep.pTrans.B</code>
+</li>
 <li><code>prefix.host.B</code></li>
 <li><code>print.progress</code></li>
 <li><code>print.step</code></li>
@@ -407,7 +422,7 @@
 <p>Note again that here <code>max.time</code> is function of <code>x</code> and not <code>t</code> (not core function but individual-based parameters), and <code>x</code> enters the function as the number of draws to make.</p>
 <p>Taken together, the profile for pTrans for a subset of 200 individuals in the population will look like this:</p>
 <p><img src="none_files/figure-html/pTrans3.B-1.png" width="700"></p>
-<p>Since <code>pTrans.B</code> is not dependent of the “absolute” time of the simulation. So <code>timeDep.pTrans.B=FALSE</code>. However, since we have ever individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The names of each element of the list should have the same name that the core function (<code>pTrans.B</code> here) uses as argument, such as here:</p>
+<p>Since <code>pTrans.B</code> is not dependent of the “absolute” time of the simulation, <code>timeDep.pTrans.B=FALSE</code>. However, since we have ever individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The names of each element of the list should have the same name that the core function (<code>pTrans.B</code> here) uses as argument, such as here:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb15-3" data-line-number="3">param_pTrans.B =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">max.time=</span>max.time_fct)</a></code></pre></div>
@@ -486,7 +501,7 @@
 <a class="sourceLine" id="cb16-68" data-line-number="68">                        <span class="dt">pTrans.B=</span>p_Trans_fct.B,</a>
 <a class="sourceLine" id="cb16-69" data-line-number="69">                        <span class="dt">param.pTrans.B=</span>param_pTrans.B,</a>
 <a class="sourceLine" id="cb16-70" data-line-number="70">                        <span class="dt">timeDep.pTrans.B=</span><span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb16-71" data-line-number="71">                        <span class="dt">prefix.host.B=</span><span class="st">"H"</span>,</a>
+<a class="sourceLine" id="cb16-71" data-line-number="71">                        <span class="dt">prefix.host.B=</span><span class="st">"V"</span>,</a>
 <a class="sourceLine" id="cb16-72" data-line-number="72">                        </a>
 <a class="sourceLine" id="cb16-73" data-line-number="73">                        <span class="dt">print.progress=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb16-74" data-line-number="74"><span class="co">#&gt; Starting the simulation</span></a>

@@ -33,9 +33,9 @@ This simulation type takes several arguments or options to be able to run, namel
 - `length.sim` 
 - `max.infected` 
 - `init.individuals` 
-- `pExit` with `param.pExit` (optional)  and `timeDep.pExit` (optional)
-- `nContact` with `param.nContact` (optional) and `timeDep.nContact` (optional) 
-- `pTrans` with `param.pTrans` and `timeDep.pTrans` (optional)
+- `pExit` with `param.pExit`  and `timeDep.pExit`
+- `nContact` with `param.nContact` and `timeDep.nContact`
+- `pTrans` with `param.pTrans` and `timeDep.pTrans`
 - `prefix.host`
 - `progress.bar`
 - `print.step`
@@ -66,7 +66,7 @@ In case the function uses individual-based parameters, you have to specify a lis
 
 You can combine the influence of several parameters, such as time since infection, "absolute" time of the simulation and individual-based parameters within the same function.
 
-> In any case, time since infection and "absolute" time should ALWAYS be designated by (`t`) and (`prestime`) respectively, and be in that order and first of the function parameters.
+> In any case, time since infection and "absolute" time should ALWAYS be designated by `t` and `prestime` respectively, and be in that order and before of the individual-based parameters.
 
 ### `pExit`, `param.pExit` and `timeDep.pExit`
 
@@ -110,13 +110,13 @@ As with `singleNone`, this function takes several arguments or options to be abl
 - `max.infected.B`
 - `init.individuals.A`
 - `init.individuals.B`
-- `pExit.A` with `param.pExit.A` (optional)  and `timeDep.pExit.A` (optional)
-- `nContact.A` with `param.nContact.A` (optional) and `timeDep.nContact.A` (optional) 
-- `pTrans.A` with `param.pTrans.A` and `timeDep.pTrans.A` (optional)
+- `pExit.A` with `param.pExit.A` and `timeDep.pExit.A`
+- `nContact.A` with `param.nContact.A` and `timeDep.nContact.A`
+- `pTrans.A` with `param.pTrans.A` and `timeDep.pTrans.A`
 - `prefix.host.A`
-- `pExit.B` with `param.pExit.B` (optional)  and `timeDep.pExit.B` (optional)
-- `nContact.B` with `param.nContact.B` (optional) and `timeDep.nContact.B` (optional) 
-- `pTrans.B` with `param.pTrans.B` and `timeDep.pTrans.B` (optional)
+- `pExit.B` with `param.pExit.B`  and `timeDep.pExit.B`
+- `nContact.B` with `param.nContact.B` and `timeDep.nContact.B`
+- `pTrans.B` with `param.pTrans.B` and `timeDep.pTrans.B`
 - `prefix.host.B`
 - `print.progress`
 - `print.step`
@@ -305,7 +305,6 @@ data = data.frame(N=sample(c(0,1,2),200,replace=TRUE,prob=c(0.6,0.3,0.1)))
 data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
 
 ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact.B",y="Frequency")
-
 ```
 
 At each time and for each infected host, `nContact.B` will be drawn anew. Remember that `nContact.B`, like the other core function has to be function of `t`, even if `t` is not used. Since `nContact.B` is constant here, there is no use of the "absolute" time of the simulation nor individual-based parameters. So `param.nContact.B = NA`, and `timeDep.nContact.B=FALSE`.
@@ -353,7 +352,7 @@ for(t in 0:15){
 ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60",alpha=0.3) + theme_minimal() + labs(x="Time since infection (t)",y="pTrans")
 ```
 
-Since `pTrans.B` is not dependent of the "absolute" time of the simulation. So `timeDep.pTrans.B=FALSE`. However, since we have ever individual-based parameters, we have to provide a `param.pTrans` as a list of functions. The names of each element of the list should have the same name that the core function (`pTrans.B` here) uses as argument, such as here:
+Since `pTrans.B` is not dependent of the "absolute" time of the simulation, `timeDep.pTrans.B=FALSE`. However, since we have ever individual-based parameters, we have to provide a `param.pTrans` as a list of functions. The names of each element of the list should have the same name that the core function (`pTrans.B` here) uses as argument, such as here:
 
 ```{r pTrans4.B, eval = FALSE}
 max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
@@ -436,7 +435,7 @@ SimulationDual <- nosoiSim(type="dual", popStructure="none",
                         pTrans.B=p_Trans_fct.B,
                         param.pTrans.B=param_pTrans.B,
                         timeDep.pTrans.B=FALSE,
-                        prefix.host.B="H",
+                        prefix.host.B="V",
                         
                         print.progress=FALSE)
 ```

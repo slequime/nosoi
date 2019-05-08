@@ -157,6 +157,6 @@ To visualize or get basic statistics about your simulations, you can have a look
 
 A series of practical examples are also available: 
 
-- [Spread of dengue virus in a discrete space](dengue.html), a "simple" scenario.
+- [Spread of dengue virus in a discrete space](dengue.html).
 - [Spread of Ebola virus in a continuous space](ebola.html).
 - [Epidemiological impact of mosquito vector competence](vector-competence.html).

@@ -20,6 +20,8 @@ navbar:
         href: articles/discrete.html
       - text: Spread of a pathogen in a continuous space
         href: articles/continuous.html
+      - text: nosoi output and visualization
+        href: articles/viz_stat.html
     examples:
       text: Examples
       icon: fas fa-file
