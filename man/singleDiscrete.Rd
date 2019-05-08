@@ -10,7 +10,7 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
   nContact, param.nContact, diff.pTrans = FALSE,
   timeDep.pTrans = FALSE, pTrans, param.pTrans, diff.pExit = FALSE,
   timeDep.pExit = FALSE, pExit, param.pExit, prefix.host = "H",
-  progress.bar = TRUE, print.step = 10)
+  print.progress = TRUE, print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -57,9 +57,9 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
-\item{progress.bar}{if TRUE, displays a progress bar (current time/length.sim).}
+\item{print.progress}{if TRUE, displays a progress bar (current time/length.sim).}
 
-\item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
+\item{print.step}{print.progress is TRUE, step with which the progress message will be printed.}
 }
 \description{
 This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).

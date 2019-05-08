@@ -19,7 +19,7 @@ test_that("Missing args and error messages", {
   p_Exit_fct_complex  <- function(t, pExit.param1){plogis(t, pExit.param1, 2)}
 
   expect_error(
-    test.nosoiA <- nosoiSim(type = "single", structure = FALSE,
+    test.nosoiA <- nosoiSim(type = "single", popStructure="none",
                             length = 40,
                             max.infected = 100,
                             init.individuals = 1,
@@ -32,7 +32,7 @@ test_that("Missing args and error messages", {
   )
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=FALSE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="none",
                             length=40,
                             max.infected=100,
                             init.individuals=1,
@@ -46,7 +46,7 @@ test_that("Missing args and error messages", {
   )
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=FALSE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="none",
                             length=40,
                             max.infected=100,
                             init.individuals=1,
@@ -60,7 +60,7 @@ test_that("Missing args and error messages", {
   )
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=FALSE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="none",
                             length=40,
                             max.infected=100,
                             init.individuals=1,
@@ -76,7 +76,7 @@ test_that("Missing args and error messages", {
 
   proba2 <- 0.5
   expect_error(
-    nosoiSim(type="single",structure=FALSE,
+    nosoiSim(type="single", popStructure="none",
                             length=40,
                             max.infected=100,
                             init.individuals=1,
@@ -92,7 +92,7 @@ test_that("Missing args and error messages", {
 
   proba3 <- function(z){return(0.08)}
   expect_error(
-    nosoiSim(type="single",structure=FALSE,
+    nosoiSim(type="single", popStructure="none",
              length=40,
              max.infected=100,
              init.individuals=1,
@@ -107,7 +107,7 @@ test_that("Missing args and error messages", {
   )
 
   expect_error(
-    nosoiSim(type="single",structure=FALSE,
+    nosoiSim(type="single", popStructure="none",
              length=40,
              max.infected=100,
              init.individuals=1,
@@ -122,7 +122,7 @@ test_that("Missing args and error messages", {
   )
 
   expect_error(
-    nosoiSim(type="single",structure=FALSE,
+    nosoiSim(type="single", popStructure="none",
              length=40,
              max.infected=100,
              init.individuals=1,
@@ -176,7 +176,7 @@ test_that("Error message with discrete structure", {
 
   set.seed(750)
   expect_error(
-    nosoiSim(type="single",structure=TRUE,
+    nosoiSim(type="single", popStructure="discrete",
              length=20,
              max.infected=10000,
              init.individuals=1,
@@ -197,7 +197,7 @@ test_that("Error message with discrete structure", {
   )
 
   expect_error(
-    nosoiSim(type="single",structure=TRUE,
+    nosoiSim(type="single", popStructure="discrete",
              length=20,
              max.infected=10000,
              init.individuals=1,
@@ -251,7 +251,7 @@ test_that("Error message with continuous structure", {
   start.pos <- c(0,0)
 
   expect_error(
-    nosoiSim(type="single", structure=TRUE, continuous = TRUE,
+    nosoiSim(type="single", popStructure="continuous",
                           length=200,
                           max.infected=500,
                           init.individuals=1,

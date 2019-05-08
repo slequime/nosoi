@@ -31,7 +31,7 @@ test_that("Error message pops out when missing state in diff functions", {
   start.pos <- c(0,0)
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single", structure=TRUE, continuous = TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="continuous",
                             length=365,
                             max.infected=10000,
                             init.individuals=1,
@@ -56,7 +56,7 @@ test_that("Error message pops out when missing state in diff functions", {
   p_Exit_fct  <- function(t,current.env.value){(1-current.env.value)}
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single", structure=TRUE, continuous = TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="continuous",
                             length=365,
                             max.infected=10000,
                             init.individuals=1,
@@ -82,7 +82,7 @@ test_that("Error message pops out when missing state in diff functions", {
   p_Move_fct  <- function(t,current.env.value){current.env.value/1000}
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single", structure=TRUE, continuous = TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="continuous",
                             length=365,
                             max.infected=10000,
                             init.individuals=1,
@@ -109,7 +109,7 @@ test_that("Error message pops out when missing state in diff functions", {
   sdMove_fct = function(t,current.env.value){return(100/current.env.value+1)}
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single", structure=TRUE, continuous = TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="continuous",
                             length=365,
                             max.infected=10000,
                             init.individuals=1,
@@ -164,7 +164,7 @@ test_that("Diffusion in continuous space", {
 
   start.pos <- c(0,0)
 
-  test.nosoiA <- nosoiSim(type="single", structure=TRUE, continuous = TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="continuous",
                           length=200,
                           max.infected=500,
                           init.individuals=1,
@@ -217,7 +217,7 @@ test_that("Epidemic dying out", {
 
   start.pos <- c(0,0)
 
-  test.nosoiA <- nosoiSim(type="single", structure=TRUE, continuous = TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="continuous",
                           length=200,
                           max.infected=500,
                           init.individuals=1,

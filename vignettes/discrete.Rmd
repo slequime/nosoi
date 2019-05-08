@@ -61,10 +61,10 @@ For `structure.matrix` to be adequate, a few rules have to be followed:
 
 ##Setting up the simulation
 
-As we have seen [before](none.html#setting-up-the-simulation) , the wrapper function `nosoiSim` takes all the arguments that will be passed down to the core function, in the case of this tutorial: `singleDiscrete` (for "single host, discrete population structure"). We thus start by providing the options `type="single"` and `structure=TRUE` to set up the analysis:
+As we have seen [before](none.html#setting-up-the-simulation) , the wrapper function `nosoiSim` takes all the arguments that will be passed down to the core function, in the case of this tutorial: `singleDiscrete` (for "single host, discrete population structure"). We thus start by providing the options `type="single"` and `popStructure="discrete"` to set up the analysis:
 
 ```{r setupA, eval = FALSE}
-SimulationB <- nosoiSim(type="single", structure=TRUE, ...)
+SimulationB <- nosoiSim(type="single", popStructure="discrete", ...)
 ```
 
 This simulation (`singleNone`) type takes several arguments or options to be able to run, namely:
@@ -79,7 +79,7 @@ This simulation (`singleNone`) type takes several arguments or options to be abl
 - `nContact` with `param.nContact`, `diff.nContact` and `timeDep.nContact`
 - `pTrans` with `param.pTrans`, `diff.pTrans` and `timeDep.pTrans`
 - `prefix.host`
-- `progress.bar`
+- `print.progress`
 - `print.step`
 
 All the `param` elements provide individual-level parameters to be taken into account; the `diff` elements inform the simulator if there is a differential probability according to the state the host is currently in and the `timeDep` elements inform the simulator if the "absolute" simulation time should be taken into account.
@@ -93,7 +93,7 @@ All the `param` elements provide individual-level parameters to be taken into ac
 Here, we will run a simulation starting with 1 individual in state "A", for a maximum of 1.000 infected individuals and a maximum time of 300 days.
 
 ```{r setupB, eval = FALSE}
-SimulationA <- nosoiSim(type="single", structure=TRUE,
+SimulationA <- nosoiSim(type="single", popStructure="discrete",
                         length.sim=300, max.infected=1000, init.individuals=1, init.structure="A", ...)
 ```
 
@@ -248,7 +248,7 @@ list(p_max=p_max_fct, t_incub=t_incub_fct)
 At this step, the `nosoi` function should look something like this:
 
 ```{r setupE, eval = FALSE}
-SimulationA <- nosoiSim(type="single", structure=TRUE,
+SimulationA <- nosoiSim(type="single", popStructure="discrete",
                         length.sim=300, max.infected=1000, init.individuals=1, init.structure="A", 
                         
                         diff.pExit=FALSE,
@@ -280,7 +280,7 @@ SimulationA <- nosoiSim(type="single", structure=TRUE,
 It will be followed by a hyphen and a unique number.
 By default, `prefix.host` is "H" for "Host".
 
-`progress.bar` allows you to get some information printed on the screen about the simulation while running. It will print something every `print.step`. By default, `progress.bar` is activated, with a `print.step = 10` (that you can change), but you may want to deactivate it by providing `progress.bar == FALSE`.
+`print.progress` allows you to get some information printed on the screen about the simulation while running. It will print something every `print.step`. By default, `print.progress` is activated, with a `print.step = 10` (that you can change), but you may want to deactivate it by providing `print.progress == FALSE`.
 
 ## Running Nosoi
 
@@ -310,7 +310,7 @@ p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 transition.matrix <- matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
 set.seed(846)
-SimulationA <- nosoiSim(type="single", structure=TRUE,
+SimulationA <- nosoiSim(type="single", popStructure="discrete",
                         length.sim=300, max.infected=300, init.individuals=1, init.structure="A", 
                         
                         structure.matrix=transition.matrix,
@@ -337,7 +337,7 @@ SimulationA <- nosoiSim(type="single", structure=TRUE,
                         timeDep.pTrans=FALSE,
                       
                         prefix.host="H",
-                        progress.bar=FALSE,
+                        print.progress=FALSE,
                         print.step=10)
 ```
 Once the simulation is finished, it reports the number of time units for which the simulation has run (134), and the maximum number of infected hosts (321).

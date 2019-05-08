@@ -17,7 +17,7 @@ makeMoves <- function(res, pres.time, moving.full,
                       sdMoveParsed = NA, structure.raster = NA,
                       attracted.by.raster = NA, max.raster = NA) {
 
-  moveFunction <-  switch(res$geoStructure,
+  moveFunction <-  switch(res$popStructure,
                           discrete = moveFunction.discrete,
                           continuous = moveFunction.continuous)
 

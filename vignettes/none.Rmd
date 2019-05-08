@@ -24,10 +24,10 @@ This tutorial aims to illustrate how to set up a `nosoi` simulation for a "simpl
 ## Setting up the simulation
 
 The wrapper function `nosoiSim` takes all the arguments that will be passed down to the simulator, in the case of this tutorial `singleNone` (for "single host, no structure").
-We thus start by providing the options `type="single"` and `structure=FALSE` to set up the analysis:
+We thus start by providing the options `type="single"` and `popStructure="none"` to set up the analysis:
 
 ```{r setupA, eval = FALSE}
-SimulationA <- nosoiSim(type="single", structure=FALSE, ...)
+SimulationA <- nosoiSim(type="single", popStructure="none", ...)
 ```
 
 This simulation (`singleNone`) type takes several arguments or options to be able to run, namely:
@@ -39,7 +39,7 @@ This simulation (`singleNone`) type takes several arguments or options to be abl
 - `nContact` with `param.nContact` (optional) and `timeDep.nContact` (optional) 
 - `pTrans` with `param.pTrans` and `timeDep.pTrans` (optional)
 - `prefix.host`
-- `progress.bar`
+- `print.progress`
 - `print.step`
 
 All the `param` elements provide individual-level parameters to be taken into account, while the `timeDep` elements inform the simulator if the "absolute" simulation time should be taken into account.
@@ -54,7 +54,7 @@ Both values need to be provided, and the simulation will thus run until either t
 Here, we will run a simulation starting with 1 individual, for a maximum of 1.000 infected individuals and a maximum time of 300 days.
 
 ```{r setupB, eval = FALSE}
-SimulationA <- nosoiSim(type="single", structure=FALSE,
+SimulationA <- nosoiSim(type="single", popStructure="none",
                         length.sim=300, max.infected=1000, init.individuals=1, ...)
 ```
 
@@ -177,7 +177,7 @@ list(p_max=p_max_fct, t_incub=t_incub_fct)
 At this step, the `nosoi` function should look like this:
 
 ```{r setupE, eval = FALSE}
-SimulationA <- nosoiSim(type="single", structure=FALSE,
+SimulationA <- nosoiSim(type="single", popStructure="none",
                         length.sim=300, max.infected=1000, init.individuals=1, 
                         nContact=n_contact_fct,
                         param.nContact=NA,
@@ -197,7 +197,7 @@ SimulationA <- nosoiSim(type="single", structure=FALSE,
 It will be followed by a hyphen and a unique number.
 By default, `prefix.host` is "H" for "Host".
 
-`progress.bar` allows you to get some information printed on the screen about the simulation while running. It will print something every `print.step`. By default, `progress.bar` is activated, with a `print.step = 10` (that you can change), but you may want to deactivate it by providing `progress.bar == FALSE`.
+`print.progress` allows you to get some information printed on the screen about the simulation while running. It will print something every `print.step`. By default, `print.progress` is activated, with a `print.step = 10` (that you can change), but you may want to deactivate it by providing `print.progress == FALSE`.
 
 ## Running Nosoi
 
@@ -222,7 +222,7 @@ p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 p_Exit_fct  <- function(t){return(0.08)}
 
 set.seed(805)
-SimulationA <- nosoiSim(type="single", structure=FALSE,
+SimulationA <- nosoiSim(type="single", popStructure="none",
                         length.sim=100, max.infected=100, init.individuals=1, 
                         nContact=n_contact_fct,
                         param.nContact=NA,
@@ -234,7 +234,7 @@ SimulationA <- nosoiSim(type="single", structure=FALSE,
                         param.pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct),
                         timeDep.pTrans=FALSE,
                         prefix.host="H",
-                        progress.bar=FALSE)
+                        print.progress=FALSE)
 ```
 Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111).
 Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected` threshold set at 100.

@@ -5,12 +5,12 @@
 \title{get host info}
 \usage{
 getHostInfo(res, what = c("table.hosts", "N.infected", "table.state",
-  "geoStructure"), pop = "A")
+  "popStructure"), pop = "A")
 }
 \arguments{
 \item{res}{an object of class \code{nosoiSim}}
 
-\item{what}{the information to get. One of "table.hosts", "N.infected", "table.state", "geoStructure}
+\item{what}{the information to get. One of "table.hosts", "N.infected", "table.state", "popStructure"}
 
 \item{pop}{the population to be extracted (one of "A" or "B")}
 }
@@ -20,4 +20,3 @@ a data.table with host informations
 \description{
 Creates a \code{nosoiSim} object.
 }
-\keyword{internal}

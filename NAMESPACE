@@ -3,6 +3,7 @@
 export(dualContinuous)
 export(dualDiscrete)
 export(dualNone)
+export(getHostInfo)
 export(getTableHosts)
 export(getTableState)
 export(nosoiSim)

@@ -12,7 +12,7 @@ singleContinuous(length.sim, max.infected, init.individuals,
   timeDep.nContact = FALSE, nContact, param.nContact,
   diff.pTrans = FALSE, timeDep.pTrans = FALSE, pTrans, param.pTrans,
   diff.pExit = FALSE, timeDep.pExit = FALSE, pExit, param.pExit,
-  prefix.host = "H", progress.bar = TRUE, print.step = 10)
+  prefix.host = "H", print.progress = TRUE, print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -69,9 +69,9 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
-\item{progress.bar}{if TRUE, print message on simulation state to screen.}
+\item{print.progress}{if TRUE, print message on simulation state to screen.}
 
-\item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
+\item{print.step}{print.progress is TRUE, step with which the progress message will be printed.}
 }
 \description{
 This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).

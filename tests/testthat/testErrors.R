@@ -18,7 +18,7 @@ test_that("Error messages on NosoiSim", {
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   expect_error(
-  test.nosoiC <- nosoiSim(type="triple",structure=FALSE,
+  test.nosoiC <- nosoiSim(type="triple", popStructure="none",
                           length=40,
                           max.infected=100,
                           init.individuals=3,
@@ -34,7 +34,7 @@ test_that("Error messages on NosoiSim", {
   )
 
   expect_error(
-    test.nosoiC <- nosoiSim(type="single",structure="YES",
+    test.nosoiC <- nosoiSim(type="single", popStructure="multiple",
                             length=40,
                             max.infected=100,
                             init.individuals=3,
@@ -46,7 +46,7 @@ test_that("Error messages on NosoiSim", {
                             pExit=p_Exit_fct,
                             param.pExit = list(pExit.param1=p_exit_param1)
     ),
-    "Unrecognized parameters for population structure, should be TRUE or FALSE."
+    "Unrecognized parameters for population structure, should be 'none,'discrete' or 'continuous'."
   )
 
 })
@@ -68,7 +68,7 @@ test_that("Error messages on SanityCheck", {
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   expect_error(
-    nosoiSim(type="single",structure=FALSE,
+    nosoiSim(type="single", popStructure="none",
                             length=1,
                             max.infected=100,
                             init.individuals=3,
@@ -84,7 +84,7 @@ test_that("Error messages on SanityCheck", {
   )
 
   expect_error(
-    test.nosoiC <- nosoiSim(type="single",structure=FALSE,
+    test.nosoiC <- nosoiSim(type="single", popStructure="none",
                             length=100,
                             max.infected=NA,
                             init.individuals=3,
@@ -100,7 +100,7 @@ test_that("Error messages on SanityCheck", {
   )
 
   expect_error(
-    test.nosoiC <- nosoiSim(type="single",structure=FALSE,
+    test.nosoiC <- nosoiSim(type="single",  popStructure="none",
                             length=100,
                             max.infected=100,
                             init.individuals=NA,
@@ -140,7 +140,7 @@ test_that("Error messages on MatrixSanityCheck", {
 
   set.seed(805)
   expect_error(
-    test.nosoiA <- nosoiSim(type="dual",structure=TRUE,
+    test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
                           length.sim=20,
                           max.infected.A=1000,
                           max.infected.B=1000,
@@ -187,10 +187,7 @@ test_that("Error messages on MatrixSanityCheck", {
                                               t_incub=t_incub_fct),
                           timeDep.pTrans.B=FALSE,
                           diff.pTrans.B=FALSE,
-                          prefix.host.B="V",
-
-                          progress.bar=TRUE,
-                          print.step=10),
+                          prefix.host.B="V"),
   "init.structure should be a state present in structure.matrix.")
 
 
@@ -227,7 +224,7 @@ test_that("Error messages on RasterSanityCheck", {
   start.pos <- c(0,0)
   bad.start.pos <- c(100,100)
 
-  expect_error(nosoiSim(type="single", structure=TRUE, continuous = TRUE,
+  expect_error(nosoiSim(type="single", popStructure="continuous",
                           length=200,
                           max.infected=500,
                           init.individuals=1,
@@ -248,7 +245,7 @@ test_that("Error messages on RasterSanityCheck", {
                           param.pExit=NA),
   "structure.raster must be a raster (class RasterLayer).", fixed=TRUE)
 
-  expect_error(nosoiSim(type="single", structure=TRUE, continuous = TRUE,
+  expect_error(nosoiSim(type="single", popStructure="continuous",
                         length=200,
                         max.infected=500,
                         init.individuals=1,
@@ -272,7 +269,7 @@ test_that("Error messages on RasterSanityCheck", {
 
   set.seed(805)
   expect_error(
-    nosoiSim(type="dual",structure=TRUE, continuous = TRUE,
+    nosoiSim(type="dual", popStructure="continuous",
                           length.sim=200,
                           max.infected.A=500,
                           max.infected.B=500,
@@ -327,10 +324,7 @@ test_that("Error messages on RasterSanityCheck", {
                                               t_incub=t_incub_fct),
                           timeDep.pTrans.B=FALSE,
                           diff.pTrans.B=FALSE,
-                          prefix.host.B="V",
-
-                          progress.bar=TRUE,
-                          print.step=10),
+                          prefix.host.B="V"),
     "Your starting position (init.structure) should be on the raster.",fixed=TRUE)
   })
 

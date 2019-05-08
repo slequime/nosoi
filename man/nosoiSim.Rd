@@ -4,14 +4,12 @@
 \alias{nosoiSim}
 \title{Top-level function to use Nosoi}
 \usage{
-nosoiSim(type = "single", structure = FALSE, continuous = FALSE, ...)
+nosoiSim(type = "single", popStructure = "none", ...)
 }
 \arguments{
 \item{type}{specifies which type of pathogen we are interested in, either "single" or "dual"-host (e.g. arboviruses).}
 
-\item{structure}{specifies if the population in which the transmission is to occur is structured (discrete variable).}
-
-\item{continuous}{specifies if the spread is to occur in a continuous space (continuous diffusion).}
+\item{popStructure}{specifies if the population in which the transmission is to occur is structured ("none", "discrete" or "continuous").}
 
 \item{...}{arguments to be passed on to the simulator (see below).}
 }
@@ -21,5 +19,5 @@ Top-level function to use Nosoi
 \details{
 This function determines which general settings the user wants to use for his simulation.
 
-All other arguments are passed down to the chosen simulator itself, such as \code{\link{singleNone}}, \code{\link{singleDiscrete}}, \code{\link{singleContinuous}}, \code{\link{dualNone}} or \code{\link{dualDiscrete}}.
+All other arguments are passed down to the chosen simulator itself, such as \code{\link{singleNone}}, \code{\link{singleDiscrete}}, \code{\link{singleContinuous}}, \code{\link{dualNone}}, \code{\link{dualDiscrete}} or \code{\link{dualContinuous}}..
 }

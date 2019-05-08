@@ -18,7 +18,7 @@ test_that("Error message pops up when structure.matrix or init.structure is badl
   transition.matrix = c("A","B")
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                             length=20,
                             max.infected=100,
                             init.individuals=1,
@@ -40,7 +40,7 @@ test_that("Error message pops up when structure.matrix or init.structure is badl
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0,0.8,0.1,0.3),nrow = 3, ncol = 4,dimnames=list(c("A","B","C"),c("A","B","C","D")))
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                             length=20,
                             max.infected=100,
                             init.individuals=1,
@@ -62,7 +62,7 @@ test_that("Error message pops up when structure.matrix or init.structure is badl
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","D")))
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                             length=20,
                             max.infected=100,
                             init.individuals=1,
@@ -84,7 +84,7 @@ test_that("Error message pops up when structure.matrix or init.structure is badl
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.8,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                             length=20,
                             max.infected=100,
                             init.individuals=1,
@@ -106,7 +106,7 @@ test_that("Error message pops up when structure.matrix or init.structure is badl
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                             length=20,
                             max.infected=100,
                             init.individuals=1,
@@ -145,7 +145,7 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(805)
-  test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                           length=20,
                           max.infected=100,
                           init.individuals=1,
@@ -202,7 +202,7 @@ test_that("Movement is coherent with single introduction, complex pMove", {
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(750)
-  test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                           length=20,
                           max.infected=1000,
                           init.individuals=1,
@@ -270,7 +270,7 @@ test_that("Movement is coherent with single introduction, constant but different
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(750)
-  test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                           length=20,
                           max.infected=10000,
                           init.individuals=1,
@@ -323,7 +323,7 @@ test_that("Error message pops up if different pMove poorly formated", {
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                             length=20,
                             max.infected=10000,
                             init.individuals=1,
@@ -370,7 +370,7 @@ test_that("Movement is coherent with single introduction, complex and different 
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(750)
-  test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                           length=20,
                           max.infected=10000,
                           init.individuals=1,
@@ -423,7 +423,7 @@ test_that("Error message pops out when missing state in diff functions", {
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   expect_error(
-  test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                           length=20,
                           max.infected=1000,
                           init.individuals=1,
@@ -453,7 +453,7 @@ test_that("Error message pops out when missing state in diff functions", {
   }
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                             length=20,
                             max.infected=1000,
                             init.individuals=1,
@@ -488,7 +488,7 @@ test_that("Error message pops out when missing state in diff functions", {
   }
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+    test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                             length=20,
                             max.infected=1000,
                             init.individuals=1,
@@ -533,7 +533,7 @@ time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
 set.seed(805)
-test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                         length=20,
                         max.infected=1000,
                         init.individuals=1,
@@ -597,7 +597,7 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(805)
-  test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                           length=20,
                           max.infected=1000,
                           init.individuals=1,
@@ -658,7 +658,7 @@ test_that("Movement is coherent with single introduction, constant pMove, diff n
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(805)
-  test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                           length=20,
                           max.infected=1000,
                           init.individuals=1,
@@ -747,7 +747,7 @@ test_that("Movement is coherent with single introduction, all parameters are dif
   # transition.matrix = matrix(c(0,2,3,4,5,0,7,8,9,10,0,12,13,14,15,0),nrow = 4, ncol = 4,dimnames=list(c("A","B","C","D"),c("A","B","C","D")))
 
   set.seed(186)
-  test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                           length=40,
                           max.infected=1000,
                           init.individuals=1,
@@ -806,7 +806,7 @@ test_that("Epidemic dying out", {
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(10)
-  test.nosoiA <- nosoiSim(type="single",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
                           length=20,
                           max.infected=100,
                           init.individuals=1,

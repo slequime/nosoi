@@ -6,7 +6,7 @@
 #' @param Host.count.A number of infected hosts of host A.
 #' @param Host.count.B number of infected hosts of host B.
 #' @param pres.time current time of the simulation
-#' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
+#' @param print.step if print.progress is TRUE, step with which the progress message will be printed.
 #' @param length.sim the length (in unit of time) over which the simulation should be run.
 #' @param max.infected.A the maximum number of hosts that can be infected in the simulation for host A.
 #' @param max.infected.B the maximum number of hosts that can be infected in the simulation for host B.
@@ -54,7 +54,7 @@ endMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, type="single"
 #' Creates a \code{nosoiSim} object.
 #'
 #' @param pres.time current time of the simulation
-#' @param popStructure population structure (one of "single or "dual)
+#' @param type population structure (one of "single or "dual)
 #' @param pop.A an object of class \code{nosoiSimOne} for population A
 #' @param pop.B an object of class \code{nosoiSimOne} for population B
 #'
@@ -65,14 +65,14 @@ endMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, type="single"
 ##
 
 nosoiSimConstructor <- function(total.time,
-                                popStructure = c("single", "dual"),
+                                type = c("single", "dual"),
                                 pop.A,
                                 pop.B = NULL) {
 
-  popStructure <- match.arg(popStructure)
+  type <- match.arg(type)
 
   res <- list(total.time = total.time,
-              popStructure = popStructure,
+              type = type,
               host.info.A = pop.A,
               host.info.B = pop.B)
 
@@ -90,22 +90,22 @@ nosoiSimConstructor <- function(total.time,
 #' @param N.infected number of infected hosts
 #' @param table.hosts data.table of hosts
 #' @param table.state data.table of hosts movement
-#' @param geoStructure geographical structure (one of "none, "discrete" or "continuous")
+#' @param popStructure geographical structure (one of "none, "discrete" or "continuous")
 #'
 #' @return An object of class \code{nosoiSimOne}
 #'
 #' @keywords internal
 ##
 nosoiSimOneConstructor <- function(N.infected, table.hosts, table.state, prefix.host,
-                                   geoStructure = c("none", "discrete", "continuous")) {
+                                   popStructure = c("none", "discrete", "continuous")) {
 
-  geoStructure <- match.arg(geoStructure)
+  popStructure <- match.arg(popStructure)
 
   res <- list(N.infected = N.infected,
               table.hosts = table.hosts,
               table.state = table.state,
               prefix.host = prefix.host,
-              geoStructure = geoStructure)
+              popStructure = popStructure)
 
   class(res) <- "nosoiSimOne"
 
@@ -119,16 +119,16 @@ nosoiSimOneConstructor <- function(N.infected, table.hosts, table.state, prefix.
 #' Creates a \code{nosoiSim} object.
 #'
 #' @param res an object of class \code{nosoiSim}
-#' @param what the information to get. One of "table.hosts", "N.infected", "table.state", "geoStructure
+#' @param what the information to get. One of "table.hosts", "N.infected", "table.state", "popStructure"
 #' @param pop the population to be extracted (one of "A" or "B")
 #'
 #' @return a data.table with host informations
 #'
-#' @keywords internal
+#' @export
 #'
 ##
 getHostInfo <- function(res,
-                        what = c("table.hosts", "N.infected", "table.state", "geoStructure"),
+                        what = c("table.hosts", "N.infected", "table.state", "popStructure"),
                         pop = "A") {
 
   what <- match.arg(what)
@@ -189,10 +189,10 @@ getTableState <- function(res, pop = "A") {
 #' @keywords internal
 ##
 getPositionInfected <- function(nosoiSim, df.meetTransmit, i) {
-  if (nosoiSim$geoStructure == "none") return(NA)
-  if (nosoiSim$geoStructure == "discrete") return(df.meetTransmit[i, ]$current.in)
-  if (nosoiSim$geoStructure == "continuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
-  stop(paste0("Geographical structure ", nosoiSim$geoStructure, " is not implemented."))
+  if (nosoiSim$popStructure == "none") return(NA)
+  if (nosoiSim$popStructure == "discrete") return(df.meetTransmit[i, ]$current.in)
+  if (nosoiSim$popStructure == "continuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
+  stop(paste0("Geographical structure ", nosoiSim$popStructure, " is not implemented."))
 }
 
 #' @title Should we build the table.host table
@@ -204,10 +204,10 @@ getPositionInfected <- function(nosoiSim, df.meetTransmit, i) {
 #' @keywords internal
 ##
 keepState <- function(nosoiSim) {
-  if (nosoiSim$geoStructure == "none") return(FALSE)
-  if (nosoiSim$geoStructure == "discrete") return(TRUE)
-  if (nosoiSim$geoStructure == "continuous") return(TRUE)
-  stop(paste0("Geographical structure \"", nosoiSim$geoStructure, "\" is not implemented."))
+  if (nosoiSim$popStructure == "none") return(FALSE)
+  if (nosoiSim$popStructure == "discrete") return(TRUE)
+  if (nosoiSim$popStructure == "continuous") return(TRUE)
+  stop(paste0("Geographical structure \"", nosoiSim$popStructure, "\" is not implemented."))
 }
 
 #' @title Param concatenator

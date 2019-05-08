@@ -59,8 +59,8 @@
 #' @param diff.pTrans.B is pTrans different between states of the structured population (TRUE/FALSE) for host B.
 #' @param prefix.host.B character(s) to be used as a prefix for the host B identification number.
 #'
-#' @param progress.bar if TRUE, displays a progress bar (current time/length.sim).
-#' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
+#' @param print.progress if TRUE, displays a progress bar (current time/length.sim).
+#' @param print.step print.progress is TRUE, step with which the progress message will be printed.
 #'
 #' @export dualContinuous
 
@@ -120,7 +120,7 @@ dualContinuous <- function(length.sim,
                            diff.pTrans.B=FALSE,
                            prefix.host.B="V",
 
-                           progress.bar=TRUE,
+                           print.progress=TRUE,
                            print.step=10){
 
   #Sanity check---------------------------------------------------------------------------------------------------------------------------
@@ -179,19 +179,19 @@ dualContinuous <- function(length.sim,
   #Creation of initial data ----------------------------------------------------------
 
   res <- nosoiSimConstructor(total.time = 1,
-                             popStructure = "dual",
+                             type = "dual",
                              pop.A = nosoiSimOneConstructor(
                                N.infected = init.individuals.A,
                                table.hosts = iniTable(init.individuals.A, init.structure.A, prefix.host.A, ParamHost.A, current.environmental.value = start.env.A),
                                table.state = iniTableState(init.individuals.A, init.structure.A, prefix.host.A, current.environmental.value = start.env.A),
                                prefix.host = prefix.host.A,
-                               geoStructure = "continuous"),
+                               popStructure = "continuous"),
                              pop.B = nosoiSimOneConstructor(
                                N.infected = init.individuals.B,
                                table.hosts = iniTable(init.individuals.B, init.structure.B, prefix.host.B, ParamHost.B, current.environmental.value = start.env.B),
                                table.state = iniTableState(init.individuals.B, init.structure.B, prefix.host.B, current.environmental.value = start.env.B),
                                prefix.host = prefix.host.B,
-                               geoStructure = "continuous"))
+                               popStructure = "continuous"))
 
   # Running the simulation ----------------------------------------
   message(" running ...")
@@ -243,7 +243,7 @@ dualContinuous <- function(length.sim,
     df.meetTransmit.B <- meetTransmit(res$host.info.B, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value"), nContactParsed.B, pTransParsed.B)
     res$host.info.A <- writeInfected(df.meetTransmit.B, res$host.info.A, pres.time, ParamHost.A)
 
-    if (progress.bar == TRUE) progressMessage(Host.count.A=res$host.info.A$N.infected, Host.count.B=res$host.info.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")
+    if (print.progress == TRUE) progressMessage(Host.count.A=res$host.info.A$N.infected, Host.count.B=res$host.info.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")
     if (res$host.info.A$N.infected > max.infected.A || res$host.info.B$N.infected > max.infected.B) {break}
   }
 

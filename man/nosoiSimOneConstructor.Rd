@@ -5,7 +5,7 @@
 \title{nosoiSimOne Constructor}
 \usage{
 nosoiSimOneConstructor(N.infected, table.hosts, table.state, prefix.host,
-  geoStructure = c("none", "discrete", "continuous"))
+  popStructure = c("none", "discrete", "continuous"))
 }
 \arguments{
 \item{N.infected}{number of infected hosts}
@@ -14,7 +14,7 @@ nosoiSimOneConstructor(N.infected, table.hosts, table.state, prefix.host,
 
 \item{table.state}{data.table of hosts movement}
 
-\item{geoStructure}{geographical structure (one of "none, "discrete" or "continuous")}
+\item{popStructure}{geographical structure (one of "none, "discrete" or "continuous")}
 }
 \value{
 An object of class \code{nosoiSimOne}

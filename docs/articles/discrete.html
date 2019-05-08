@@ -153,7 +153,7 @@
       <h1>Spread of a pathogen in a discrete structured population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-05-07</h4>
+            <h4 class="date">2019-05-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/discrete.Rmd"><code>vignettes/discrete.Rmd</code></a></small>
       <div class="hidden name"><code>discrete.Rmd</code></div>
@@ -186,8 +186,8 @@
 <code>structure.matrix</code> rows represents departure state and columns arrival states, the value is the probability from going from departure state to arrival state if movement is undergone, and should thus sum up to 1.</li>
 </ul>
 <p>##Setting up the simulation</p>
-<p>As we have seen <a href="none.html#setting-up-the-simulation">before</a> , the wrapper function <code>nosoiSim</code> takes all the arguments that will be passed down to the core function, in the case of this tutorial: <code>singleDiscrete</code> (for “single host, discrete population structure”). We thus start by providing the options <code>type="single"</code> and <code>structure=TRUE</code> to set up the analysis:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">SimulationB &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">TRUE</span>, ...)</a></code></pre></div>
+<p>As we have seen <a href="none.html#setting-up-the-simulation">before</a> , the wrapper function <code>nosoiSim</code> takes all the arguments that will be passed down to the core function, in the case of this tutorial: <code>singleDiscrete</code> (for “single host, discrete population structure”). We thus start by providing the options <code>type="single"</code> and <code>popStructure="discrete"</code> to set up the analysis:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">SimulationB &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"discrete"</span>, ...)</a></code></pre></div>
 <p>This simulation (<code>singleNone</code>) type takes several arguments or options to be able to run, namely:</p>
 <ul>
 <li><code>length.sim</code></li>
@@ -208,7 +208,7 @@
 <code>pTrans</code> with <code>param.pTrans</code>, <code>diff.pTrans</code> and <code>timeDep.pTrans</code>
 </li>
 <li><code>prefix.host</code></li>
-<li><code>progress.bar</code></li>
+<li><code>print.progress</code></li>
 <li><code>print.step</code></li>
 </ul>
 <p>All the <code>param</code> elements provide individual-level parameters to be taken into account; the <code>diff</code> elements inform the simulator if there is a differential probability according to the state the host is currently in and the <code>timeDep</code> elements inform the simulator if the “absolute” simulation time should be taken into account.</p>
@@ -218,7 +218,7 @@
 <p><code>length.sim</code> and <code>max.infected</code> are general parameters that define the simulation: <code>length.sim</code> is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run, whereas <code>max.infected</code> is the maximum number of individuals that can be infected during the simulation. The simulation will thus run until either the time limit or the maximum number of infected individuals is reached.</p>
 <p><code>init.individuals</code> and <code>init.structure</code> are the “seeding parameters”. <code>init.individuals</code> defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain and <code>init.structure</code> their original location in the structured population (has to be the same original location for all starting individuals). Keep in mind that you will have as many transmission chains as initial individuals, which is equivalent as launching two independant <code>nosoi</code> simulations. The location provided in <code>init.structure</code> should of course be present in the <code>structure.matrix</code>.</p>
 <p>Here, we will run a simulation starting with 1 individual in state “A”, for a maximum of 1.000 infected individuals and a maximum time of 300 days.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">TRUE</span>,</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"discrete"</span>,</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">                        <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, <span class="dt">init.structure=</span><span class="st">"A"</span>, ...)</a></code></pre></div>
 </div>
 <div id="core-functions" class="section level3">
@@ -315,7 +315,7 @@
 <p>In any case, the functions for <code>pTrans</code> parameters have to be wrapped into a list, called <code>param.pTrans</code>. The name of each function in the list has to have the same name as the parameter it is sampling for <code>pTrans</code>. Here, it will look like:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct, <span class="dt">t_incub=</span>t_incub_fct)</a></code></pre></div>
 <p>At this step, the <code>nosoi</code> function should look something like this:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">TRUE</span>,</a>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"discrete"</span>,</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">                        <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, <span class="dt">init.structure=</span><span class="st">"A"</span>, </a>
 <a class="sourceLine" id="cb15-3" data-line-number="3">                        </a>
 <a class="sourceLine" id="cb15-4" data-line-number="4">                        <span class="dt">diff.pExit=</span><span class="ot">FALSE</span>,</a>
@@ -345,7 +345,7 @@
 <h3 class="hasAnchor">
 <a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
 <p><code>prefix.host</code> allows you to define the first character(s) for the hosts’ unique ID. It will be followed by a hyphen and a unique number. By default, <code>prefix.host</code> is “H” for “Host”.</p>
-<p><code>progress.bar</code> allows you to get some information printed on the screen about the simulation while running. It will print something every <code>print.step</code>. By default, <code>progress.bar</code> is activated, with a <code>print.step = 10</code> (that you can change), but you may want to deactivate it by providing <code>progress.bar == FALSE</code>.</p>
+<p><code>print.progress</code> allows you to get some information printed on the screen about the simulation while running. It will print something every <code>print.step</code>. By default, <code>print.progress</code> is activated, with a <code>print.step = 10</code> (that you can change), but you may want to deactivate it by providing <code>print.progress == FALSE</code>.</p>
 </div>
 </div>
 <div id="running-nosoi" class="section level2">
@@ -376,7 +376,7 @@
 <a class="sourceLine" id="cb16-22" data-line-number="22">transition.matrix &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="dv">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="dv">0</span>),<span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>,<span class="dt">dimnames=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>),<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>)))</a>
 <a class="sourceLine" id="cb16-23" data-line-number="23"></a>
 <a class="sourceLine" id="cb16-24" data-line-number="24"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">846</span>)</a>
-<a class="sourceLine" id="cb16-25" data-line-number="25">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">structure=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb16-25" data-line-number="25">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"discrete"</span>,</a>
 <a class="sourceLine" id="cb16-26" data-line-number="26">                        <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">300</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, <span class="dt">init.structure=</span><span class="st">"A"</span>, </a>
 <a class="sourceLine" id="cb16-27" data-line-number="27">                        </a>
 <a class="sourceLine" id="cb16-28" data-line-number="28">                        <span class="dt">structure.matrix=</span>transition.matrix,</a>
@@ -403,7 +403,7 @@
 <a class="sourceLine" id="cb16-49" data-line-number="49">                        <span class="dt">timeDep.pTrans=</span><span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb16-50" data-line-number="50">                      </a>
 <a class="sourceLine" id="cb16-51" data-line-number="51">                        <span class="dt">prefix.host=</span><span class="st">"H"</span>,</a>
-<a class="sourceLine" id="cb16-52" data-line-number="52">                        <span class="dt">progress.bar=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb16-52" data-line-number="52">                        <span class="dt">print.progress=</span><span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb16-53" data-line-number="53">                        <span class="dt">print.step=</span><span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb16-54" data-line-number="54"><span class="co">#&gt; Starting the simulation</span></a>
 <a class="sourceLine" id="cb16-55" data-line-number="55"><span class="co">#&gt; Initializing ...</span></a>
@@ -416,7 +416,7 @@
 <h2 class="hasAnchor">
 <a href="#nosoi-output" class="anchor"></a>Nosoi output</h2>
 <p><code>nosoi</code> gives as its output a list contaning a <code>data.table</code> (a more efficient version of a <code>data.frame</code>) called <code>table.hosts</code> with the following structure:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(SimulationA<span class="op">$</span>table.hosts)</a>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../reference/getTableHosts.html">getTableHosts</a></span>(SimulationA))</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co">#&gt;    hosts.ID inf.by inf.in current.in inf.time out.time active     p_max</span></a>
 <a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co">#&gt; 1:      H-1   NA-1      A          B        0       15      0 0.8305929</span></a>
 <a class="sourceLine" id="cb17-4" data-line-number="4"><span class="co">#&gt; 2:     H-10    H-6      C          C       33       40      0 0.6069331</span></a>
@@ -433,7 +433,7 @@
 <a class="sourceLine" id="cb17-15" data-line-number="15"><span class="co">#&gt; 6: 4.733850</span></a></code></pre></div>
 <p>Each individual host that was or is infected during the course of the simulation is a line in the data.table. <code>hosts.ID</code> is the unique identifier of the host, while <code>inf.by</code> indicates which host infected it. As you can see, host <code>H-1</code> has been infected by <code>NA</code>; <code>H-1</code> is the individual that started the transmission chain. <code>inf.in</code> indicates where the host has been infected, and <code>current.in</code> indicates where the host is at his end of the simulation (either when it exited the simulation or the simulation ended). <code>inf.time</code> is the time (in simulation units of time) when the host has been infected, and <code>out.time</code> is the time (in simulation units of time) when it left the simulation. Here in the top 6 lines, no host has left the simulation (it ran only for 13 units of time). <code>active</code> indicates if the host is still active in the simulation. <code>p_max</code> and <code>t_incub</code> are the individually sampled parameters for <code>pTrans</code>.</p>
 <p>The output also contains a <code>data.table</code> (a more efficient version of a <code>data.frame</code>) called <code>table.state</code>, containing the full transition history for each hosts between the states. It has the following structure:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(SimulationA<span class="op">$</span>table.state)</a>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../reference/getTableState.html">getTableState</a></span>(SimulationA))</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2"><span class="co">#&gt;    hosts.ID state time.from time.to</span></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co">#&gt; 1:      H-1     A         0       7</span></a>
 <a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">#&gt; 2:      H-1     C         7      13</span></a>
@@ -454,7 +454,7 @@
 <a class="sourceLine" id="cb19-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co"># To show the graph, we need to invert column 1 and 2, and discard the first line (i.e. the first host, </span></a>
 <a class="sourceLine" id="cb19-7" data-line-number="7"><span class="co"># because it shows "NA" as infecting host). We then provide *Nosoi* output as elements for the vertices (nodes).</span></a>
-<a class="sourceLine" id="cb19-8" data-line-number="8">graph.simA &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/graph_from_data_frame">graph.data.frame</a></span>(SimulationA<span class="op">$</span>table.hosts[<span class="op">-</span><span class="dv">1</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">1</span>)],<span class="dt">directed=</span>T,<span class="dt">vertices =</span> SimulationA<span class="op">$</span>table.hosts)</a>
+<a class="sourceLine" id="cb19-8" data-line-number="8">graph.simA &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/graph_from_data_frame">graph.data.frame</a></span>(<span class="kw"><a href="../reference/getTableHosts.html">getTableHosts</a></span>(SimulationA)[<span class="op">-</span><span class="dv">1</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">1</span>)],<span class="dt">directed=</span>T,<span class="dt">vertices =</span> <span class="kw"><a href="../reference/getTableHosts.html">getTableHosts</a></span>(SimulationA))</a>
 <a class="sourceLine" id="cb19-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb19-10" data-line-number="10">graph.simA.network =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggnetwork/topics/ggnetwork">ggnetwork</a></span>(graph.simA, <span class="dt">layout =</span> <span class="st">"kamadakawai"</span>, <span class="dt">cell.jitter =</span> <span class="fl">0.75</span>) <span class="co">#using ggnetwork to provide the layout</span></a>
 <a class="sourceLine" id="cb19-11" data-line-number="11"></a>
@@ -487,7 +487,7 @@
 <a class="sourceLine" id="cb20-20" data-line-number="20"></a>
 <a class="sourceLine" id="cb20-21" data-line-number="21"><span class="co">#Loading data from the simulation</span></a>
 <a class="sourceLine" id="cb20-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb20-23" data-line-number="23">test =<span class="st"> </span>SimulationA<span class="op">$</span>table.state</a>
+<a class="sourceLine" id="cb20-23" data-line-number="23">test =<span class="st"> </span><span class="kw"><a href="../reference/getTableState.html">getTableState</a></span>(SimulationA)</a>
 <a class="sourceLine" id="cb20-24" data-line-number="24"></a>
 <a class="sourceLine" id="cb20-25" data-line-number="25"><span class="co">#Loop to get the number of infected in each state per unit of time</span></a>
 <a class="sourceLine" id="cb20-26" data-line-number="26">results=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>()</a>

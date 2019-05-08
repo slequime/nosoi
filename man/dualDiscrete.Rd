@@ -18,7 +18,7 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
   param.nContact.B, timeDep.nContact.B = FALSE,
   diff.nContact.B = FALSE, pTrans.B, param.pTrans.B,
   timeDep.pTrans.B = FALSE, diff.pTrans.B = FALSE,
-  prefix.host.B = "V", progress.bar = TRUE, print.step = 10)
+  prefix.host.B = "V", print.progress = TRUE, print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -107,9 +107,9 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{prefix.host.B}{character(s) to be used as a prefix for the host B identification number.}
 
-\item{progress.bar}{if TRUE, displays a progress bar (current time/length.sim).}
+\item{print.progress}{if TRUE, displays a progress bar (current time/length.sim).}
 
-\item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
+\item{print.step}{print.progress is TRUE, step with which the progress message will be printed.}
 }
 \description{
 This function runs a dual-host transmission chain simulation, with discrete structure features. The simulation stops either at

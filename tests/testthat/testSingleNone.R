@@ -10,7 +10,7 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
-  test.nosoiA <- nosoiSim(type="single",structure=FALSE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="none",
                           length=40,
                           max.infected=100,
                           init.individuals=1,
@@ -44,7 +44,7 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
-  test.nosoiA <- nosoiSim(type="single",structure=FALSE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="none",
                           length=40,
                           max.infected=100,
                           init.individuals=1,
@@ -79,7 +79,7 @@ test_that("Transmission is coherent with single introduction, simple pExit and p
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
-  test.nosoiB <- nosoiSim(type="single",structure=FALSE,
+  test.nosoiB <- nosoiSim(type="single", popStructure="none",
                           length=40,
                           max.infected=100,
                           init.individuals=1,
@@ -117,7 +117,7 @@ test_that("Transmission is coherent with single introduction, complex pExit and 
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
-  test.nosoiC <- nosoiSim(type="single",structure=FALSE,
+  test.nosoiC <- nosoiSim(type="single", popStructure="none",
                           length=40,
                           max.infected=100,
                           init.individuals=1,
@@ -153,7 +153,7 @@ test_that("Transmission is coherent with multiple introductions, constant pExit 
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
-  test.nosoiA <- nosoiSim(type="single",structure=FALSE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="none",
                           length=40,
                           max.infected=100,
                           init.individuals=3,
@@ -189,7 +189,7 @@ test_that("Transmission is coherent with multiple introductions, simple pExit an
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
-  test.nosoiB <- nosoiSim(type="single",structure=FALSE,
+  test.nosoiB <- nosoiSim(type="single", popStructure="none",
                           length=40,
                           max.infected=100,
                           init.individuals=3,
@@ -226,7 +226,7 @@ test_that("Transmission is coherent with multiple introductions, complex pExit a
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(805)
-  test.nosoiC <- nosoiSim(type="single",structure=FALSE,
+  test.nosoiC <- nosoiSim(type="single", popStructure="none",
                           length=40,
                           max.infected=100,
                           init.individuals=3,
@@ -260,7 +260,7 @@ test_that("Dying out epidemic", {
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(111)
-  test.nosoiA <- nosoiSim(type="single",structure=FALSE,
+  test.nosoiA <- nosoiSim(type="single", popStructure="none",
                           length=40,
                           max.infected=100,
                           init.individuals=1,

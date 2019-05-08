@@ -14,7 +14,7 @@ progressMessage(Host.count.A, Host.count.B = NULL, pres.time, print.step,
 
 \item{pres.time}{current time of the simulation}
 
-\item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
+\item{print.step}{if print.progress is TRUE, step with which the progress message will be printed.}
 
 \item{length.sim}{the length (in unit of time) over which the simulation should be run.}
 

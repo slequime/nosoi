@@ -26,7 +26,7 @@ test_that("Distribution of the number of active individuals - surcritic", {
   for (rep in 1:nrep) {
     # Sim
     test.nosoi <- suppressMessages(
-      nosoiSim(type="single",structure=FALSE,
+      nosoiSim(type="single", popStructure="none",
                length = max_time,
                max.infected = 10000,
                init.individuals = 1,
@@ -34,8 +34,7 @@ test_that("Distribution of the number of active individuals - surcritic", {
                pTrans = proba,
                param.pTrans = list(p_max=p_max_fct),
                pExit = p_Exit_fct,
-               param.pExit = NA,
-               progress.bar = FALSE
+               param.pExit = NA
       )
     )
     # Save active pop
@@ -79,7 +78,7 @@ test_that("Distribution of the number of active individuals - subcritic", {
   for (rep in 1:nrep) {
     # Sim
     test.nosoi <- suppressMessages(
-      nosoiSim(type="single",structure=FALSE,
+      nosoiSim(type="single", popStructure="none",
                length = max_time,
                max.infected = 10000,
                init.individuals = 1,
@@ -87,8 +86,7 @@ test_that("Distribution of the number of active individuals - subcritic", {
                pTrans = proba,
                param.pTrans = list(p_max=p_max_fct),
                pExit = p_Exit_fct,
-               param.pExit = NA,
-               progress.bar = FALSE
+               param.pExit = NA
       )
     )
     # Save active pop

@@ -7,7 +7,7 @@
 singleNone(length.sim, max.infected, init.individuals, pExit, param.pExit,
   timeDep.pExit = FALSE, nContact, param.nContact,
   timeDep.nContact = FALSE, pTrans, param.pTrans,
-  timeDep.pTrans = FALSE, prefix.host = "H", progress.bar = TRUE,
+  timeDep.pTrans = FALSE, prefix.host = "H", print.progress = TRUE,
   print.step = 10)
 }
 \arguments{
@@ -37,9 +37,9 @@ singleNone(length.sim, max.infected, init.individuals, pExit, param.pExit,
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
-\item{progress.bar}{if TRUE, displays a progress bar (current time/length.sim).}
+\item{print.progress}{if TRUE, displays a progress bar (current time/length.sim).}
 
-\item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
+\item{print.step}{print.progress is TRUE, step with which the progress message will be printed.}
 }
 \description{
 This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at

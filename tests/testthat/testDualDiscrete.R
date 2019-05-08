@@ -22,7 +22,7 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(805)
-  test.nosoiA <- nosoiSim(type="dual",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
                           length.sim=20,
                           max.infected.A=1000,
                           max.infected.B=1000,
@@ -69,10 +69,7 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
                                               t_incub=t_incub_fct),
                           timeDep.pTrans.B=FALSE,
                           diff.pTrans.B=FALSE,
-                          prefix.host.B="V",
-
-                          progress.bar=TRUE,
-                          print.step=10)
+                          prefix.host.B="V")
 
   full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
   full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
@@ -93,9 +90,9 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   expect_equal(test.nosoiA$host.info.A$N.infected, 75)
   expect_equal(test.nosoiA$host.info.B$N.infected, 67)
 
-  expect_equal(test.nosoiA$popStructure, "dual")
-  expect_equal(test.nosoiA$host.info.A$geoStructure, "discrete")
-  expect_equal(test.nosoiA$host.info.B$geoStructure, "discrete")
+  expect_equal(test.nosoiA$type, "dual")
+  expect_equal(test.nosoiA$host.info.A$popStructure, "discrete")
+  expect_equal(test.nosoiA$host.info.B$popStructure, "discrete")
 
   #Movement
   expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "H-3")),2)
@@ -150,7 +147,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(6262)
-  test.nosoiA <- nosoiSim(type="dual",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
                           length.sim=40,
                           max.infected.A=100,
                           max.infected.B=200,
@@ -274,7 +271,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(6262)
-  test.nosoiA <- nosoiSim(type="dual",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
                           length.sim=40,
                           max.infected.A=100,
                           max.infected.B=200,
@@ -353,7 +350,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(subset(Where.when.exit.B, current.in == "B")$N,25)
 
   expect_error(
-    test.nosoiA <- nosoiSim(type="dual",structure=TRUE,
+    test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
                             length.sim=40,
                             max.infected.A=100,
                             max.infected.B=200,
@@ -441,7 +438,7 @@ test_that("Epidemics dying out", {
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(101)
-  test.nosoiA <- nosoiSim(type="dual",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
                           length.sim=40,
                           max.infected.A=100,
                           max.infected.B=200,
@@ -551,7 +548,7 @@ test_that("start with host B", {
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(101)
-  test.nosoiA <- nosoiSim(type="dual",structure=TRUE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
                           length.sim=40,
                           max.infected.A=100,
                           max.infected.B=200,

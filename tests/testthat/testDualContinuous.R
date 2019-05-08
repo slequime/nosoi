@@ -31,7 +31,7 @@ test_that("Both hosts move", {
 
 
   set.seed(805)
-  test.nosoiA <- nosoiSim(type="dual",structure=TRUE, continuous = TRUE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="continuous",
                           length.sim=200,
                           max.infected.A=500,
                           max.infected.B=500,
@@ -86,10 +86,7 @@ test_that("Both hosts move", {
                                               t_incub=t_incub_fct),
                           timeDep.pTrans.B=FALSE,
                           diff.pTrans.B=FALSE,
-                          prefix.host.B="V",
-
-                          progress.bar=TRUE,
-                          print.step=10)
+                          prefix.host.B="V")
 
   full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
   full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
@@ -110,9 +107,9 @@ test_that("Both hosts move", {
   expect_equal(test.nosoiA$host.info.A$N.infected, 326)
   expect_equal(test.nosoiA$host.info.B$N.infected, 579)
 
-  expect_equal(test.nosoiA$popStructure, "dual")
-  expect_equal(test.nosoiA$host.info.A$geoStructure, "continuous")
-  expect_equal(test.nosoiA$host.info.B$geoStructure, "continuous")
+  expect_equal(test.nosoiA$type, "dual")
+  expect_equal(test.nosoiA$host.info.A$popStructure, "continuous")
+  expect_equal(test.nosoiA$host.info.B$popStructure, "continuous")
 
   #Movement
   expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "H-1")),2)
@@ -151,7 +148,7 @@ test_that("One host (A) moves", {
 
 
   set.seed(805)
-  test.nosoiA <- nosoiSim(type="dual",structure=TRUE, continuous = TRUE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="continuous",
                           length.sim=200,
                           max.infected.A=500,
                           max.infected.B=500,
@@ -206,10 +203,7 @@ test_that("One host (A) moves", {
                                               t_incub=t_incub_fct),
                           timeDep.pTrans.B=FALSE,
                           diff.pTrans.B=FALSE,
-                          prefix.host.B="V",
-
-                          progress.bar=TRUE,
-                          print.step=10)
+                          prefix.host.B="V")
 
   full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
   full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
@@ -233,9 +227,9 @@ test_that("One host (A) moves", {
   expect_equal(test.nosoiA$host.info.A$N.infected, 682)
   expect_equal(test.nosoiA$host.info.B$N.infected, 606)
 
-  expect_equal(test.nosoiA$popStructure, "dual")
-  expect_equal(test.nosoiA$host.info.A$geoStructure, "continuous")
-  expect_equal(test.nosoiA$host.info.B$geoStructure, "continuous")
+  expect_equal(test.nosoiA$type, "dual")
+  expect_equal(test.nosoiA$host.info.A$popStructure, "continuous")
+  expect_equal(test.nosoiA$host.info.B$popStructure, "continuous")
 
   #Movement
 
@@ -275,7 +269,7 @@ test_that("One host (B) moves", {
   start.pos <- c(0,0)
 
   set.seed(19)
-  test.nosoiA <- nosoiSim(type="dual",structure=TRUE, continuous = TRUE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="continuous",
                           length.sim=200,
                           max.infected.A=500,
                           max.infected.B=500,
@@ -330,10 +324,7 @@ test_that("One host (B) moves", {
                                               t_incub=t_incub_fct),
                           timeDep.pTrans.B=FALSE,
                           diff.pTrans.B=FALSE,
-                          prefix.host.B="V",
-
-                          progress.bar=TRUE,
-                          print.step=10)
+                          prefix.host.B="V")
 
   full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
   full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
@@ -357,9 +348,9 @@ test_that("One host (B) moves", {
   expect_equal(test.nosoiA$host.info.A$N.infected, 627)
   expect_equal(test.nosoiA$host.info.B$N.infected, 520)
 
-  expect_equal(test.nosoiA$popStructure, "dual")
-  expect_equal(test.nosoiA$host.info.A$geoStructure, "continuous")
-  expect_equal(test.nosoiA$host.info.B$geoStructure, "continuous")
+  expect_equal(test.nosoiA$type, "dual")
+  expect_equal(test.nosoiA$host.info.A$popStructure, "continuous")
+  expect_equal(test.nosoiA$host.info.B$popStructure, "continuous")
 
   #Movement
 
@@ -399,7 +390,7 @@ test_that("Epidemic dies out", {
   start.pos <- c(0,0)
 
   set.seed(1000)
-  test.nosoiA <- nosoiSim(type="dual",structure=TRUE, continuous = TRUE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="continuous",
                           length.sim=200,
                           max.infected.A=500,
                           max.infected.B=500,
@@ -454,10 +445,7 @@ test_that("Epidemic dies out", {
                                               t_incub=t_incub_fct),
                           timeDep.pTrans.B=FALSE,
                           diff.pTrans.B=FALSE,
-                          prefix.host.B="V",
-
-                          progress.bar=TRUE,
-                          print.step=10)
+                          prefix.host.B="V")
 
   full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
   full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
@@ -470,9 +458,9 @@ test_that("Epidemic dies out", {
 
   expect_equal(test.nosoiA$host.info.B$N.infected, 1)
 
-  expect_equal(test.nosoiA$popStructure, "dual")
-  expect_equal(test.nosoiA$host.info.A$geoStructure, "continuous")
-  expect_equal(test.nosoiA$host.info.B$geoStructure, "continuous")
+  expect_equal(test.nosoiA$type, "dual")
+  expect_equal(test.nosoiA$host.info.A$popStructure, "continuous")
+  expect_equal(test.nosoiA$host.info.B$popStructure, "continuous")
 
   #Movement
 
@@ -511,7 +499,7 @@ test_that("Error if no host move", {
 
   set.seed(1000)
   expect_error(
-    nosoiSim(type="dual",structure=TRUE, continuous = TRUE,
+    nosoiSim(type="dual", popStructure="continuous",
              length.sim=200,
              max.infected.A=500,
              max.infected.B=500,
@@ -566,9 +554,6 @@ test_that("Error if no host move", {
                                  t_incub=t_incub_fct),
              timeDep.pTrans.B=FALSE,
              diff.pTrans.B=FALSE,
-             prefix.host.B="V",
-
-             progress.bar=TRUE,
-             print.step=10),
+             prefix.host.B="V"),
     "At least one host must move.")
 })

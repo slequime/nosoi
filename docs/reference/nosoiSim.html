@@ -197,7 +197,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>nosoiSim</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"single"</span>, <span class='kw'>structure</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>continuous</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>nosoiSim</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"single"</span>, <span class='kw'>popStructure</span> <span class='kw'>=</span> <span class='st'>"none"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -207,12 +207,8 @@
       <td><p>specifies which type of pathogen we are interested in, either "single" or "dual"-host (e.g. arboviruses).</p></td>
     </tr>
     <tr>
-      <th>structure</th>
-      <td><p>specifies if the population in which the transmission is to occur is structured (discrete variable).</p></td>
-    </tr>
-    <tr>
-      <th>continuous</th>
-      <td><p>specifies if the spread is to occur in a continuous space (continuous diffusion).</p></td>
+      <th>popStructure</th>
+      <td><p>specifies if the population in which the transmission is to occur is structured ("none", "discrete" or "continuous").</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -223,7 +219,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function determines which general settings the user wants to use for his simulation.</p>
-<p>All other arguments are passed down to the chosen simulator itself, such as <code><a href='singleNone.html'>singleNone</a></code>, <code><a href='singleDiscrete.html'>singleDiscrete</a></code>, <code><a href='singleContinuous.html'>singleContinuous</a></code>, <code><a href='dualNone.html'>dualNone</a></code> or <code><a href='dualDiscrete.html'>dualDiscrete</a></code>.</p>
+<p>All other arguments are passed down to the chosen simulator itself, such as <code><a href='singleNone.html'>singleNone</a></code>, <code><a href='singleDiscrete.html'>singleDiscrete</a></code>, <code><a href='singleContinuous.html'>singleContinuous</a></code>, <code><a href='dualNone.html'>dualNone</a></code>, <code><a href='dualDiscrete.html'>dualDiscrete</a></code> or <code><a href='dualContinuous.html'>dualContinuous</a></code>..</p>
     
 
   </div>

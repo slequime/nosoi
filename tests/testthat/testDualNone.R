@@ -15,7 +15,7 @@ test_that("Transmission is coherent with single introduction (host A) same for b
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(66)
-  test.nosoiA <- nosoiSim(type="dual",structure=FALSE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="none",
                           length.sim=40,
                           max.infected.A=100,
                           max.infected.B=100,
@@ -65,9 +65,9 @@ test_that("Transmission is coherent with single introduction (host A) same for b
   expect_equal(getHostInfo(test.nosoiA, "N.infected", "A"), 126)
   expect_equal(getHostInfo(test.nosoiA, "N.infected", "B"), 87)
 
-  expect_equal(test.nosoiA$popStructure, "dual")
-  expect_equal(getHostInfo(test.nosoiA, "geoStructure", "A"), "none")
-  expect_equal(getHostInfo(test.nosoiA, "geoStructure", "B"), "none")
+  expect_equal(test.nosoiA$type, "dual")
+  expect_equal(getHostInfo(test.nosoiA, "popStructure", "A"), "none")
+  expect_equal(getHostInfo(test.nosoiA, "popStructure", "B"), "none")
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter", {
@@ -105,7 +105,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   time_contact_B = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(150)
-  test.nosoiA <- nosoiSim(type="dual",structure=FALSE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="none",
                           length.sim=40,
                           max.infected.A=100,
                           max.infected.B=200,
@@ -192,7 +192,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   time_contact_B = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(90)
-  test.nosoiA <- nosoiSim(type="dual",structure=FALSE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="none",
                           length.sim=40,
                           max.infected.A=100,
                           max.infected.B=200,
@@ -258,7 +258,7 @@ test_that("Epidemic dying out", {
   time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
   set.seed(2)
-  test.nosoiA <- nosoiSim(type="dual",structure=FALSE,
+  test.nosoiA <- nosoiSim(type="dual", popStructure="none",
                           length.sim=40,
                           max.infected.A=100,
                           max.infected.B=100,
@@ -291,15 +291,13 @@ test_that("Epidemic dying out", {
 
   expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
   expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 5)
 
   expect_equal(getHostInfo(test.nosoiA, "N.infected", "A"), 1)
   expect_equal(getHostInfo(test.nosoiA, "N.infected", "B"), 0)
 
-  expect_equal(test.nosoiA$popStructure, "dual")
-  expect_equal(getHostInfo(test.nosoiA, "geoStructure", "A"), "none")
-  expect_equal(getHostInfo(test.nosoiA, "geoStructure", "B"), "none")
+  expect_equal(test.nosoiA$type, "dual")
+  expect_equal(getHostInfo(test.nosoiA, "popStructure", "A"), "none")
+  expect_equal(getHostInfo(test.nosoiA, "popStructure", "B"), "none")
 })

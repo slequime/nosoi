@@ -31,8 +31,8 @@
 #' @param pExit function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).
 #' @param param.pExit parameter names (list of functions) for the pExit.
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
-#' @param progress.bar if TRUE, print message on simulation state to screen.
-#' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
+#' @param print.progress if TRUE, print message on simulation state to screen.
+#' @param print.step print.progress is TRUE, step with which the progress message will be printed.
 #'
 #' @export singleContinuous
 
@@ -63,7 +63,7 @@ singleContinuous <- function(length.sim,
                              pExit,
                              param.pExit,
                              prefix.host="H",
-                             progress.bar=TRUE,
+                             print.progress=TRUE,
                              print.step=10){
 
   #Sanity checks---------------------------------------------------------------------------------------------------------------------------
@@ -104,13 +104,13 @@ singleContinuous <- function(length.sim,
   #Creation of initial data ----------------------------------------------------------
 
   res <- nosoiSimConstructor(total.time = 1,
-                             popStructure = "single",
+                             type = "single",
                              pop.A = nosoiSimOneConstructor(
                                N.infected = init.individuals,
                                table.hosts = iniTable(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value = start.env),
                                table.state = iniTableState(init.individuals, init.structure, prefix.host, current.environmental.value = start.env),
                                prefix.host = prefix.host,
-                               geoStructure = "continuous"))
+                               popStructure = "continuous"))
 
   # Running the simulation ----------------------------------------
   message(" running ...")
@@ -148,7 +148,7 @@ singleContinuous <- function(length.sim,
     res$host.info.A <- writeInfected(df.meetTransmit, res$host.info.A, pres.time, ParamHost)
 
 
-    if (progress.bar == TRUE) progressMessage(Host.count.A = res$host.info.A$N.infected, pres.time = pres.time, print.step = print.step, length.sim = length.sim, max.infected.A = max.infected)
+    if (print.progress == TRUE) progressMessage(Host.count.A = res$host.info.A$N.infected, pres.time = pres.time, print.step = print.step, length.sim = length.sim, max.infected.A = max.infected)
     if (res$host.info.A$N.infected > max.infected) {break}
   }
 

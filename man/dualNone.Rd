@@ -10,8 +10,8 @@ dualNone(length.sim, max.infected.A, max.infected.B, init.individuals.A,
   param.pTrans.A, timeDep.pTrans.A = FALSE, prefix.host.A = "H",
   pExit.B, param.pExit.B, timeDep.pExit.B = FALSE, nContact.B,
   param.nContact.B, timeDep.nContact.B = FALSE, pTrans.B, param.pTrans.B,
-  timeDep.pTrans.B = FALSE, prefix.host.B = "V", progress.bar = TRUE,
-  print.step = 10)
+  timeDep.pTrans.B = FALSE, prefix.host.B = "V",
+  print.progress = TRUE, print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -64,9 +64,9 @@ dualNone(length.sim, max.infected.A, max.infected.B, init.individuals.A,
 
 \item{prefix.host.B}{character(s) to be used as a prefix for the host B identification number.}
 
-\item{progress.bar}{if TRUE, displays a progress bar (current time/length.sim).}
+\item{print.progress}{if TRUE, displays a progress bar (current time/length.sim).}
 
-\item{print.step}{progress.bar is TRUE, step with which the progress message will be printed.}
+\item{print.step}{print.progress is TRUE, step with which the progress message will be printed.}
 }
 \description{
 This function runs a dual-host transmission chain simulation, without any spatial features. The simulation stops either at

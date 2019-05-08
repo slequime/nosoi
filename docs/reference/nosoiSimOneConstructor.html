@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Single-host without structured host population — singleNone • nosoi</title>
+<title>nosoiSimOne Constructor — nosoiSimOneConstructor • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,9 @@
 
 
 
-<meta property="og:title" content="Single-host without structured host population — singleNone" />
+<meta property="og:title" content="nosoiSimOne Constructor — nosoiSimOneConstructor" />
 
-<meta property="og:description" content="This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed." />
+<meta property="og:description" content="Creates a nosoiSim object." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -187,88 +186,44 @@ the end of given time (specified by length.sim) or when the number of hosts infe
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Single-host without structured host population</h1>
-    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/single-none.R'><code>R/single-none.R</code></a></small>
-    <div class="hidden name"><code>singleNone.Rd</code></div>
+    <h1>nosoiSimOne Constructor</h1>
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/nosoi_utilityFunctions.R'><code>R/nosoi_utilityFunctions.R</code></a></small>
+    <div class="hidden name"><code>nosoiSimOneConstructor.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.</p>
+    <p>Creates a <code>nosoiSim</code> object.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>singleNone</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
-  <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact</span>, <span class='no'>param.nContact</span>,
-  <span class='kw'>timeDep.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>,
-  <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>nosoiSimOneConstructor</span>(<span class='no'>N.infected</span>, <span class='no'>table.hosts</span>, <span class='no'>table.state</span>, <span class='no'>prefix.host</span>,
+  <span class='kw'>popStructure</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"discrete"</span>, <span class='st'>"continuous"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>length.sim</th>
-      <td><p>specifies the length (in unit of time) over which the simulation should be run.</p></td>
+      <th>N.infected</th>
+      <td><p>number of infected hosts</p></td>
     </tr>
     <tr>
-      <th>max.infected</th>
-      <td><p>specifies the maximum number of hosts that can be infected in the simulation.</p></td>
+      <th>table.hosts</th>
+      <td><p>data.table of hosts</p></td>
     </tr>
     <tr>
-      <th>init.individuals</th>
-      <td><p>number of initially infected individuals.</p></td>
+      <th>table.state</th>
+      <td><p>data.table of hosts movement</p></td>
     </tr>
     <tr>
-      <th>pExit</th>
-      <td><p>function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).</p></td>
-    </tr>
-    <tr>
-      <th>param.pExit</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
-    </tr>
-    <tr>
-      <th>timeDep.pExit</th>
-      <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
-    </tr>
-    <tr>
-      <th>nContact</th>
-      <td><p>function that gives the number of potential transmission events per unit of time.</p></td>
-    </tr>
-    <tr>
-      <th>param.nContact</th>
-      <td><p>parameter names (list of functions) for param.nContact.</p></td>
-    </tr>
-    <tr>
-      <th>timeDep.nContact</th>
-      <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
-    </tr>
-    <tr>
-      <th>pTrans</th>
-      <td><p>function that gives the probability of transmit a pathogen as a function of time since infection.</p></td>
-    </tr>
-    <tr>
-      <th>param.pTrans</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
-    </tr>
-    <tr>
-      <th>timeDep.pTrans</th>
-      <td><p>is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
-    </tr>
-    <tr>
-      <th>prefix.host</th>
-      <td><p>character(s) to be used as a prefix for the hosts identification number.</p></td>
-    </tr>
-    <tr>
-      <th>print.progress</th>
-      <td><p>if TRUE, displays a progress bar (current time/length.sim).</p></td>
-    </tr>
-    <tr>
-      <th>print.step</th>
-      <td><p>print.progress is TRUE, step with which the progress message will be printed.</p></td>
+      <th>popStructure</th>
+      <td><p>geographical structure (one of "none, "discrete" or "continuous")</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An object of class <code>nosoiSimOne</code></p>
     
 
   </div>
@@ -276,7 +231,9 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

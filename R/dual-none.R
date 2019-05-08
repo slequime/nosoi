@@ -31,8 +31,8 @@
 #' @param timeDep.pTrans.B is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.
 #' @param prefix.host.B character(s) to be used as a prefix for the host B identification number.
 #'
-#' @param progress.bar if TRUE, displays a progress bar (current time/length.sim).
-#' @param print.step progress.bar is TRUE, step with which the progress message will be printed.
+#' @param print.progress if TRUE, displays a progress bar (current time/length.sim).
+#' @param print.step print.progress is TRUE, step with which the progress message will be printed.
 #'
 #' @export dualNone
 
@@ -64,7 +64,7 @@ dualNone <- function(length.sim,
                      timeDep.pTrans.B=FALSE,
                      prefix.host.B="V",
 
-                     progress.bar=TRUE,
+                     print.progress=TRUE,
                      print.step=10){
 
   #Sanity check---------------------------------------------------------------------------------------------------------------------------
@@ -94,19 +94,19 @@ dualNone <- function(length.sim,
   #Creation of initial data ----------------------------------------------------------
 
   res <- nosoiSimConstructor(total.time = 1,
-                             popStructure = "dual",
+                             type = "dual",
                              pop.A = nosoiSimOneConstructor(
                                N.infected = init.individuals.A,
                                table.hosts = iniTable(init.individuals.A, NA, prefix.host.A, ParamHost.A),
                                table.state = NA,
                                prefix.host = prefix.host.A,
-                               geoStructure = "none"),
+                               popStructure = "none"),
                              pop.B = nosoiSimOneConstructor(
                                N.infected = init.individuals.B,
                                table.hosts = iniTable(init.individuals.B, NA, prefix.host.B, ParamHost.B),
                                table.state = NA,
                                prefix.host = prefix.host.B,
-                               geoStructure = "none"))
+                               popStructure = "none"))
 
   # Running the simulation ----------------------------------------
   message(" running ...")
@@ -134,7 +134,7 @@ dualNone <- function(length.sim,
     df.meetTransmit.B <- meetTransmit(res$host.info.B, pres.time, positions = NULL, nContactParsed.B, pTransParsed.B)
     res$host.info.A <- writeInfected(df.meetTransmit.B, res$host.info.A, pres.time, ParamHost.A)
 
-    if (progress.bar == TRUE) progressMessage(Host.count.A=res$host.info.A$N.infected, Host.count.B=res$host.info.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")
+    if (print.progress == TRUE) progressMessage(Host.count.A=res$host.info.A$N.infected, Host.count.B=res$host.info.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")
     if (res$host.info.A$N.infected > max.infected.A || res$host.info.B$N.infected > max.infected.B) {break}
   }
 
