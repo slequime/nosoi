@@ -9,7 +9,7 @@ writeInfected(df.meetTransmit, res, pres.time, ParamHost)
 \arguments{
 \item{df.meetTransmit}{table with active transmission events, coming from \code{meetTransmit}}
 
-\item{res}{an object of class \code{nosoiSim}.}
+\item{res}{an object of class \code{nosoiSimOne}.}
 
 \item{ParamHost}{list of individual based parameters.}
 }

@@ -3,6 +3,8 @@
 export(dualContinuous)
 export(dualDiscrete)
 export(dualNone)
+export(getTableHosts)
+export(getTableState)
 export(nosoiSim)
 export(nosoiSummary)
 export(singleContinuous)

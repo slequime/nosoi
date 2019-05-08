@@ -244,7 +244,7 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 `nosoi` gives as its output a list contaning a `data.table` (a more efficient version of a `data.frame`) called `table.hosts` with the following structure:
 
 ```{r output}
-head(SimulationA$table.hosts)
+head(getTableHosts(SimulationA))
 ```
 
 Each individual host that was or is infected during the course of the simulation is a line in the data.table.
@@ -269,7 +269,7 @@ library(ggnetwork)
 
 # To show the graph, we need to invert column 1 and 2, and discard the first line (i.e. the first host, 
 # because it shows "NA" as infecting host). We then provide *Nosoi* output as elements for the vertices (nodes).
-graph.simA <- graph.data.frame(SimulationA$table.hosts[-1,c(2,1)],directed=T,vertices = SimulationA$table.hosts)
+graph.simA <- graph.data.frame(getTableHosts(SimulationA)[-1,c(2,1)],directed=T,vertices = getTableHosts(SimulationA))
 
 graph.simA.network = ggnetwork(graph.simA, layout = "kamadakawai", cell.jitter = 0.75) #using ggnetwork to provide the layout
 

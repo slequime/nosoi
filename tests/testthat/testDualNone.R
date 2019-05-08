@@ -47,7 +47,7 @@ test_that("Transmission is coherent with single introduction (host A) same for b
                        prefix.host.B="V")
 
 
-  full.results.nosoi <- rbindlist(list(test.nosoiA$table.hosts_A,test.nosoiA$table.hosts_B))
+  full.results.nosoi <- rbindlist(list(getHostInfo(test.nosoiA, "table.host", "A"),getHostInfo(test.nosoiA, "table.host", "B")))
 
   g <- graph.data.frame(full.results.nosoi[inf.by != "NA-1",c(1,2)],directed=F)
 
@@ -55,17 +55,19 @@ test_that("Transmission is coherent with single introduction (host A) same for b
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
 
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 20)
 
-  expect_equal(test.nosoiA$N.infected_A, 126)
-  expect_equal(test.nosoiA$N.infected_B, 87)
+  expect_equal(getHostInfo(test.nosoiA, "N.infected", "A"), 126)
+  expect_equal(getHostInfo(test.nosoiA, "N.infected", "B"), 87)
 
-  expect_equal(test.nosoiA$type, "dualNone")
+  expect_equal(test.nosoiA$popStructure, "dual")
+  expect_equal(getHostInfo(test.nosoiA, "geoStructure", "A"), "none")
+  expect_equal(getHostInfo(test.nosoiA, "geoStructure", "B"), "none")
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter", {
@@ -134,7 +136,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
                           prefix.host.B="V")
 
 
-  full.results.nosoi <- rbindlist(list(test.nosoiA$table.hosts_A[,c(1,2)],test.nosoiA$table.hosts_B[,c(1,2)]))
+  full.results.nosoi <- rbindlist(list(getHostInfo(test.nosoiA, "table.host", "A")[,c(1,2)],getHostInfo(test.nosoiA, "table.host", "B")[,c(1,2)]))
 
   g <- graph.data.frame(full.results.nosoi[inf.by != "NA-1",c(1,2)],directed=F)
 
@@ -142,17 +144,17 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 10)
 
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 17)
 
-  expect_equal(test.nosoiA$N.infected_A, 105)
-  expect_equal(test.nosoiA$N.infected_B, 226)
+  expect_equal(getHostInfo(test.nosoiA, "N.infected", "A"), 105)
+  expect_equal(getHostInfo(test.nosoiA, "N.infected", "B"), 226)
 
-  expect_equal(colnames(test.nosoiA$table.hosts_A)[6],"t_infectA")
+  expect_equal(colnames(getHostInfo(test.nosoiA, "table.host", "A"))[6],"t_infectA")
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, time dependancy for host B pExit", {
@@ -221,7 +223,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
                           prefix.host.B="V")
 
 
-  full.results.nosoi <- rbindlist(list(test.nosoiA$table.hosts_A[,c(1,2)],test.nosoiA$table.hosts_B[,c(1,2)]))
+  full.results.nosoi <- rbindlist(list(getHostInfo(test.nosoiA, "table.host", "A")[,c(1,2)],getHostInfo(test.nosoiA, "table.host", "B")[,c(1,2)]))
 
   g <- graph.data.frame(full.results.nosoi[inf.by != "NA-1",c(1,2)],directed=F)
 
@@ -229,15 +231,15 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 12)
 
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 39)
 
-  expect_equal(test.nosoiA$N.infected_A, 71)
-  expect_equal(test.nosoiA$N.infected_B, 221)
+  expect_equal(getHostInfo(test.nosoiA, "N.infected", "A"), 71)
+  expect_equal(getHostInfo(test.nosoiA, "N.infected", "B"), 221)
 
 })
 
@@ -287,15 +289,17 @@ test_that("Epidemic dying out", {
                           timeDep.pTrans.B=FALSE,
                           prefix.host.B="V")
 
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(getHostInfo(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 5)
 
-  expect_equal(test.nosoiA$N.infected_A, 1)
-  expect_equal(test.nosoiA$N.infected_B, 0)
+  expect_equal(getHostInfo(test.nosoiA, "N.infected", "A"), 1)
+  expect_equal(getHostInfo(test.nosoiA, "N.infected", "B"), 0)
 
-  expect_equal(test.nosoiA$type, "dualNone")
+  expect_equal(test.nosoiA$popStructure, "dual")
+  expect_equal(getHostInfo(test.nosoiA, "geoStructure", "A"), "none")
+  expect_equal(getHostInfo(test.nosoiA, "geoStructure", "B"), "none")
 })

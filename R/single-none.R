@@ -59,12 +59,14 @@ singleNone <- function(length.sim,
 
   #Creation of initial data ----------------------------------------------------------
 
-  res <- nosoiSimConstructor(N.infected = init.individuals,
-                             total.time = 1,
-                             table.hosts = iniTable(init.individuals, NA, prefix.host, ParamHost),
-                             table.state = NA,
-                             prefix.host = prefix.host,
-                             type = "singleNone")
+  res <- nosoiSimConstructor(total.time = 1,
+                             popStructure = "single",
+                             pop.A = nosoiSimOneConstructor(
+                               N.infected = init.individuals,
+                               table.hosts = iniTable(init.individuals, NA, prefix.host, ParamHost),
+                               table.state = NA,
+                               prefix.host = prefix.host,
+                               geoStructure = "none"))
 
   # Running the simulation ----------------------------------------
   message(" running ...")
@@ -72,24 +74,24 @@ singleNone <- function(length.sim,
   for (pres.time in 1:length.sim) {
 
     #Step 0: Active hosts ----------------------------------------------------------
-    exiting.full <- getExitingMoving(res, pres.time, pExitParsed)
+    exiting.full <- getExitingMoving(res$host.info.A, pres.time, pExitParsed)
 
-    res$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
-                                    active = 0)]
+    res$host.info.A$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
+                                        active = 0)]
 
-    if (all(res$table.hosts[["active"]] == 0)) {break}
+    if (all(res$host.info.A$table.hosts[["active"]] == 0)) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
 
-    df.meetTransmit <- meetTransmit(res, pres.time, positions = NULL, nContactParsed, pTransParsed)
+    df.meetTransmit <- meetTransmit(res$host.info.A, pres.time, positions = NULL, nContactParsed, pTransParsed)
 
-    res <- writeInfected(df.meetTransmit, res, pres.time, ParamHost)
+    res$host.info.A <- writeInfected(df.meetTransmit, res$host.info.A, pres.time, ParamHost)
 
-    if (progress.bar == TRUE) progressMessage(Host.count.A = res$N.infected, pres.time = pres.time, print.step = print.step, length.sim = length.sim, max.infected.A = max.infected)
-    if (res$N.infected > max.infected) {break}
+    if (progress.bar == TRUE) progressMessage(Host.count.A = res$host.info.A$N.infected, pres.time = pres.time, print.step = print.step, length.sim = length.sim, max.infected.A = max.infected)
+    if (res$host.info.A$N.infected > max.infected) {break}
   }
 
-  endMessage(Host.count.A = res$N.infected, pres.time = pres.time)
+  endMessage(Host.count.A = res$host.info.A$N.infected, pres.time = pres.time)
 
   res$total.time <- pres.time
 

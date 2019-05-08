@@ -163,16 +163,16 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   )
 
   #Structure
-  g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.hosts")[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-3")),3)
-  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-3")$state,c("A","C","B"))
+  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-3")),3)
+  expect_equal(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-3")$state,c("A","C","B"))
 
-  Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+  Where.at.end = getHostInfo(test.nosoiA, "table.hosts") %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.at.end, current.in == "A")$N,62)
   expect_equal(subset(Where.at.end, current.in == "B")$N,17)
@@ -220,16 +220,16 @@ test_that("Movement is coherent with single introduction, complex pMove", {
   )
 
   #Structure
-  g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.hosts")[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),11)
-  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C","A","C","A","B","C","B","C","A","C"))
+  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")),11)
+  expect_equal(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")$state,c("A","C","A","C","A","B","C","B","C","A","C"))
 
-  Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+  Where.at.end = getHostInfo(test.nosoiA, "table.hosts") %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.at.end, current.in == "A")$N,83)
   expect_equal(subset(Where.at.end, current.in == "B")$N,19)
@@ -289,16 +289,16 @@ test_that("Movement is coherent with single introduction, constant but different
   )
 
   #Structure
-  g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.hosts")[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),2)
-  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C"))
+  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")),2)
+  expect_equal(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")$state,c("A","C"))
 
-  Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+  Where.at.end = getHostInfo(test.nosoiA, "table.hosts") %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
   expect_equal(subset(Where.at.end, current.in == "C")$N,138)
 })
 
@@ -389,16 +389,16 @@ test_that("Movement is coherent with single introduction, complex and different 
   )
 
   #Structure
-  g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.hosts")[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),2)
-  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C"))
+  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")),2)
+  expect_equal(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")$state,c("A","C"))
 
-  Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+  Where.at.end = getHostInfo(test.nosoiA, "table.hosts") %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
   expect_equal(subset(Where.at.end, current.in == "C")$N,52)
 })
 
@@ -552,16 +552,16 @@ test.nosoiA <- nosoiSim(type="single",structure=TRUE,
 )
 
 #Structure
-g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)], directed = F)
+g <- graph.data.frame(getHostInfo(test.nosoiA, "table.hosts")[,c(1,2)], directed = F)
 expect_equal(transitivity(g, type="global"), 0)
 expect_equal(clusters(g, "weak")$no, 1)
 expect_equal(diameter(g, directed=F, weights=NA), 7)
 
 #Movement
-expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-3")),2)
-expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-3")$state,c("A","C"))
+expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-3")),2)
+expect_equal(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-3")$state,c("A","C"))
 
-Where.when.exit = subset(test.nosoiA$table.hosts,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+Where.when.exit = subset(getHostInfo(test.nosoiA, "table.hosts"),active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
 expect_equal(subset(Where.when.exit, current.in == "A")$N,integer(0))
 expect_equal(subset(Where.when.exit, current.in == "B")$N,44)
@@ -616,16 +616,16 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   )
 
   #Structure
-  g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.hosts")[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 7)
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-3")),2)
-  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-3")$state,c("A","C"))
+  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-3")),2)
+  expect_equal(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-3")$state,c("A","C"))
 
-  Where.when.infected = subset(test.nosoiA$table.hosts,active==0) %>% group_by(inf.in) %>% summarise(N=length(hosts.ID))
+  Where.when.infected = subset(getHostInfo(test.nosoiA, "table.hosts"),active==0) %>% group_by(inf.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.when.infected, inf.in == "B")$N,integer(0))
   expect_equal(subset(Where.when.infected, inf.in == "A")$N,56)
@@ -677,18 +677,18 @@ test_that("Movement is coherent with single introduction, constant pMove, diff n
   )
 
   #Structure
-  g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.hosts")[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 8)
 
-  expect_equal(nrow(test.nosoiA$table.hosts),612)
+  expect_equal(nrow(getHostInfo(test.nosoiA, "table.hosts")),612)
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-3")),2)
-  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-3")$state,c("A","C"))
+  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-3")),2)
+  expect_equal(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-3")$state,c("A","C"))
 
-  Where.when.infected = subset(test.nosoiA$table.hosts,active==0) %>% group_by(inf.in) %>% summarise(N=length(hosts.ID))
+  Where.when.infected = subset(getHostInfo(test.nosoiA, "table.hosts"),active==0) %>% group_by(inf.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.when.infected, inf.in == "B")$N,integer(0))
   expect_equal(subset(Where.when.infected, inf.in == "A")$N,27)
@@ -769,21 +769,21 @@ test_that("Movement is coherent with single introduction, all parameters are dif
   )
 
   #Structure
-  g <- graph.data.frame(test.nosoiA$table.hosts[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.hosts")[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 12)
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),3)
-  expect_equal(subset(test.nosoiA$table.state, hosts.ID == "H-1")$state,c("A","C","A"))
+  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
+  expect_equal(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")$state,c("A","C","A"))
 
-  Where.when.infected = test.nosoiA$table.hosts %>% group_by(inf.in) %>% summarise(N=length(hosts.ID))
+  Where.when.infected = getHostInfo(test.nosoiA, "table.hosts") %>% group_by(inf.in) %>% summarise(N=length(hosts.ID))
   expect_equal(subset(Where.when.infected, inf.in == "B")$N,integer(0))
   expect_equal(subset(Where.when.infected, inf.in == "A")$N,1)
   expect_equal(subset(Where.when.infected, inf.in == "C")$N,968)
 
-  Where.when.died = subset(test.nosoiA$table.hosts,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+  Where.when.died = subset(getHostInfo(test.nosoiA, "table.hosts"),active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
   expect_equal(subset(Where.when.died, current.in == "C")$N,integer(0))
   expect_equal(subset(Where.when.died, current.in == "D")$N,207)
 })
@@ -824,10 +824,10 @@ test_that("Epidemic dying out", {
   )
 
   #Movement
-  expect_equal(nrow(subset(test.nosoiA$table.state, hosts.ID == "H-1")),1)
+  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")),1)
   expect_equal(test.nosoiA$total.time,4)
 
-  Where.at.end = test.nosoiA$table.hosts %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+  Where.at.end = getHostInfo(test.nosoiA, "table.hosts") %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.at.end, current.in == "A")$N,1)
 })

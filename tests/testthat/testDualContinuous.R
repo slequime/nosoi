@@ -91,8 +91,8 @@ test_that("Both hosts move", {
                           progress.bar=TRUE,
                           print.step=10)
 
-  full.results.nosoi <- rbindlist(list(test.nosoiA$table.hosts_A,test.nosoiA$table.hosts_B))
-  full.results.nosoi.state <- rbindlist(list(test.nosoiA$table.state_A,test.nosoiA$table.state_B))
+  full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
+  full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
 
   g <- graph.data.frame(full.results.nosoi[inf.by != "NA-1",c(1,2)],directed=F)
 
@@ -100,17 +100,19 @@ test_that("Both hosts move", {
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 8)
 
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 22)
 
-  expect_equal(test.nosoiA$N.infected_A, 326)
-  expect_equal(test.nosoiA$N.infected_B, 579)
+  expect_equal(test.nosoiA$host.info.A$N.infected, 326)
+  expect_equal(test.nosoiA$host.info.B$N.infected, 579)
 
-  expect_equal(test.nosoiA$type, "dualContinuous")
+  expect_equal(test.nosoiA$popStructure, "dual")
+  expect_equal(test.nosoiA$host.info.A$geoStructure, "continuous")
+  expect_equal(test.nosoiA$host.info.B$geoStructure, "continuous")
 
   #Movement
   expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "H-1")),2)
@@ -128,117 +130,119 @@ test_that("One host (A) moves", {
   test.raster[] <- runif(10000, -80, 180)
   test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
 
-library(igraph)
-t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
-p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-p_Move_fct  <- function(t){return(0.1)}
+  library(igraph)
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Move_fct  <- function(t){return(0.1)}
 
-sdMove_fct = function(t,current.env.value){return(100/(current.env.value+1))}
+  sdMove_fct = function(t,current.env.value){return(100/(current.env.value+1))}
 
-p_Exit_fct  <- function(t){return(0.08)}
+  p_Exit_fct  <- function(t){return(0.08)}
 
-proba <- function(t,p_max,t_incub){
-  if(t <= t_incub){p=0}
-  if(t >= t_incub){p=p_max}
-  return(p)
-}
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
 
-time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
-start.pos <- c(0,0)
-
-
-set.seed(805)
-test.nosoiA <- nosoiSim(type="dual",structure=TRUE, continuous = TRUE,
-                        length.sim=200,
-                        max.infected.A=500,
-                        max.infected.B=500,
-                        init.individuals.A=1,
-                        init.individuals.B=0,
-                        init.structure.A=start.pos,
-                        init.structure.B=NA,
-                        structure.raster.A=test.raster,
-                        structure.raster.B=test.raster,
-
-                        pExit.A=p_Exit_fct,
-                        param.pExit.A=NA,
-                        timeDep.pExit.A=FALSE,
-                        diff.pExit.A=FALSE,
-                        pMove.A=p_Move_fct,
-                        param.pMove.A=NA,
-                        timeDep.pMove.A=FALSE,
-                        diff.pMove.A=FALSE,
-                        diff.sdMove.A=TRUE,
-                        sdMove.A=sdMove_fct,
-                        param.sdMove.A=NA,
-                        attracted.by.raster.A=TRUE,
-                        nContact.A=time_contact,
-                        param.nContact.A=NA,
-                        timeDep.nContact.A=FALSE,
-                        diff.nContact.A=FALSE,
-                        pTrans.A=proba,
-                        param.pTrans.A=list(p_max=p_max_fct,
-                                            t_incub=t_incub_fct),
-                        timeDep.pTrans.A=FALSE,
-                        diff.pTrans.A=FALSE,
-                        prefix.host.A="H",
-
-                        pExit.B=p_Exit_fct,
-                        param.pExit.B=NA,
-                        timeDep.pExit.B=FALSE,
-                        diff.pExit.B=FALSE,
-                        pMove.B=NA,
-                        param.pMove.B=NA,
-                        timeDep.pMove.B=FALSE,
-                        diff.pMove.B=FALSE,
-                        diff.sdMove.B=FALSE,
-                        sdMove.B=NA,
-                        param.sdMove.B=NA,
-                        attracted.by.raster.B=FALSE,
-                        nContact.B=time_contact,
-                        param.nContact.B=NA,
-                        timeDep.nContact.B=FALSE,
-                        diff.nContact.B=FALSE,
-                        pTrans.B=proba,
-                        param.pTrans.B=list(p_max=p_max_fct,
-                                            t_incub=t_incub_fct),
-                        timeDep.pTrans.B=FALSE,
-                        diff.pTrans.B=FALSE,
-                        prefix.host.B="V",
-
-                        progress.bar=TRUE,
-                        print.step=10)
-
- full.results.nosoi <- rbindlist(list(test.nosoiA$table.hosts_A,test.nosoiA$table.hosts_B))
- full.results.nosoi.state <- rbindlist(list(test.nosoiA$table.state_A,test.nosoiA$table.state_B))
-
-g <- graph.data.frame(full.results.nosoi[inf.by != "NA-1",c(1,2)],directed=F)
-
-expect_equal(transitivity(g, type="global"), 0)
-expect_equal(clusters(g, "weak")$no, 1)
-expect_equal(diameter(g, directed=F, weights=NA), 10)
-
-expect_equal(all(str_detect(test.nosoiA$table.hosts_A$inf.by,"H-") == FALSE),TRUE)
-expect_equal(all(str_detect(test.nosoiA$table.hosts_A[-1]$inf.by,"V-") == TRUE),TRUE)
-expect_equal(all(str_detect(test.nosoiA$table.hosts_B$inf.by,"V-") == FALSE),TRUE)
-expect_equal(all(str_detect(test.nosoiA$table.hosts_B[-1]$inf.by,"H-") == TRUE),TRUE)
+  start.pos <- c(0,0)
 
 
-expect_equal(nrow(test.nosoiA$table.hosts_B), nrow(test.nosoiA$table.state_B))
+  set.seed(805)
+  test.nosoiA <- nosoiSim(type="dual",structure=TRUE, continuous = TRUE,
+                          length.sim=200,
+                          max.infected.A=500,
+                          max.infected.B=500,
+                          init.individuals.A=1,
+                          init.individuals.B=0,
+                          init.structure.A=start.pos,
+                          init.structure.B=NA,
+                          structure.raster.A=test.raster,
+                          structure.raster.B=test.raster,
 
-expect_equal(test.nosoiA$total.time, 24)
+                          pExit.A=p_Exit_fct,
+                          param.pExit.A=NA,
+                          timeDep.pExit.A=FALSE,
+                          diff.pExit.A=FALSE,
+                          pMove.A=p_Move_fct,
+                          param.pMove.A=NA,
+                          timeDep.pMove.A=FALSE,
+                          diff.pMove.A=FALSE,
+                          diff.sdMove.A=TRUE,
+                          sdMove.A=sdMove_fct,
+                          param.sdMove.A=NA,
+                          attracted.by.raster.A=TRUE,
+                          nContact.A=time_contact,
+                          param.nContact.A=NA,
+                          timeDep.nContact.A=FALSE,
+                          diff.nContact.A=FALSE,
+                          pTrans.A=proba,
+                          param.pTrans.A=list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          timeDep.pTrans.A=FALSE,
+                          diff.pTrans.A=FALSE,
+                          prefix.host.A="H",
 
-expect_equal(test.nosoiA$N.infected_A, 682)
-expect_equal(test.nosoiA$N.infected_B, 606)
+                          pExit.B=p_Exit_fct,
+                          param.pExit.B=NA,
+                          timeDep.pExit.B=FALSE,
+                          diff.pExit.B=FALSE,
+                          pMove.B=NA,
+                          param.pMove.B=NA,
+                          timeDep.pMove.B=FALSE,
+                          diff.pMove.B=FALSE,
+                          diff.sdMove.B=FALSE,
+                          sdMove.B=NA,
+                          param.sdMove.B=NA,
+                          attracted.by.raster.B=FALSE,
+                          nContact.B=time_contact,
+                          param.nContact.B=NA,
+                          timeDep.nContact.B=FALSE,
+                          diff.nContact.B=FALSE,
+                          pTrans.B=proba,
+                          param.pTrans.B=list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          timeDep.pTrans.B=FALSE,
+                          diff.pTrans.B=FALSE,
+                          prefix.host.B="V",
 
-expect_equal(test.nosoiA$type, "dualContinuous")
+                          progress.bar=TRUE,
+                          print.step=10)
 
-#Movement
+  full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
+  full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
 
-H1_moves <- subset(full.results.nosoi.state, hosts.ID == "H-1")
+  g <- graph.data.frame(full.results.nosoi[inf.by != "NA-1",c(1,2)],directed=F)
 
-expect_equal(nrow(H1_moves),5)
-expect_equal(H1_moves$current.env.value[1] < H1_moves$current.env.value[5],TRUE)
+  expect_equal(transitivity(g, type="global"), 0)
+  expect_equal(clusters(g, "weak")$no, 1)
+  expect_equal(diameter(g, directed=F, weights=NA), 10)
+
+  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+
+
+  expect_equal(nrow(test.nosoiA$host.info.B$table.hosts), nrow(test.nosoiA$host.info.B$table.state))
+
+  expect_equal(test.nosoiA$total.time, 24)
+
+  expect_equal(test.nosoiA$host.info.A$N.infected, 682)
+  expect_equal(test.nosoiA$host.info.B$N.infected, 606)
+
+  expect_equal(test.nosoiA$popStructure, "dual")
+  expect_equal(test.nosoiA$host.info.A$geoStructure, "continuous")
+  expect_equal(test.nosoiA$host.info.B$geoStructure, "continuous")
+
+  #Movement
+
+  H1_moves <- subset(full.results.nosoi.state, hosts.ID == "H-1")
+
+  expect_equal(nrow(H1_moves),5)
+  expect_equal(H1_moves$current.env.value[1] < H1_moves$current.env.value[5],TRUE)
 })
 
 test_that("One host (B) moves", {
@@ -331,8 +335,8 @@ test_that("One host (B) moves", {
                           progress.bar=TRUE,
                           print.step=10)
 
-  full.results.nosoi <- rbindlist(list(test.nosoiA$table.hosts_A,test.nosoiA$table.hosts_B))
-  full.results.nosoi.state <- rbindlist(list(test.nosoiA$table.state_A,test.nosoiA$table.state_B))
+  full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
+  full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
 
   g <- graph.data.frame(full.results.nosoi[inf.by != "NA-1",c(1,2)],directed=F)
 
@@ -340,20 +344,22 @@ test_that("One host (B) moves", {
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 10)
 
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_A[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$table.hosts_B[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
 
 
-  expect_equal(nrow(test.nosoiA$table.hosts_A), nrow(test.nosoiA$table.state_A))
+  expect_equal(nrow(test.nosoiA$host.info.A$table.hosts), nrow(test.nosoiA$host.info.A$table.state))
 
   expect_equal(test.nosoiA$total.time, 26)
 
-  expect_equal(test.nosoiA$N.infected_A, 627)
-  expect_equal(test.nosoiA$N.infected_B, 520)
+  expect_equal(test.nosoiA$host.info.A$N.infected, 627)
+  expect_equal(test.nosoiA$host.info.B$N.infected, 520)
 
-  expect_equal(test.nosoiA$type, "dualContinuous")
+  expect_equal(test.nosoiA$popStructure, "dual")
+  expect_equal(test.nosoiA$host.info.A$geoStructure, "continuous")
+  expect_equal(test.nosoiA$host.info.B$geoStructure, "continuous")
 
   #Movement
 
@@ -453,18 +459,20 @@ test_that("Epidemic dies out", {
                           progress.bar=TRUE,
                           print.step=10)
 
-  full.results.nosoi <- rbindlist(list(test.nosoiA$table.hosts_A,test.nosoiA$table.hosts_B))
-  full.results.nosoi.state <- rbindlist(list(test.nosoiA$table.state_A,test.nosoiA$table.state_B))
+  full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
+  full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
 
-  expect_equal(nrow(test.nosoiA$table.hosts_A), nrow(test.nosoiA$table.state_A))
+  expect_equal(nrow(test.nosoiA$host.info.A$table.hosts), nrow(test.nosoiA$host.info.A$table.state))
 
   expect_equal(test.nosoiA$total.time, 4)
 
-  expect_equal(test.nosoiA$N.infected_A, 0)
+  expect_equal(test.nosoiA$host.info.A$N.infected, 0)
 
-  expect_equal(test.nosoiA$N.infected_B, 1)
+  expect_equal(test.nosoiA$host.info.B$N.infected, 1)
 
-  expect_equal(test.nosoiA$type, "dualContinuous")
+  expect_equal(test.nosoiA$popStructure, "dual")
+  expect_equal(test.nosoiA$host.info.A$geoStructure, "continuous")
+  expect_equal(test.nosoiA$host.info.B$geoStructure, "continuous")
 
   #Movement
 

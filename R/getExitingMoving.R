@@ -3,7 +3,7 @@
 #' @description
 #' Return a vector of exiting individuals.
 #'
-#' @param res an object of class \code{nosoiSim}.
+#' @param res an object of class \code{nosoiSimOne}.
 #' @param pres.time current time
 #' @param pasedFunction parsed exit/moving function
 #'
@@ -35,7 +35,7 @@ getExitingMoving <- function(res, pres.time, pasedFunction) {
 #' @description
 #' Return a vector of the results of the function
 #'
-#' @param res an object of class \code{nosoiSim}.
+#' @param res an object of class \code{nosoiSimOne}.
 #' @param pres.time current time
 #' @param pasedFunction parsed exit/moving function
 #' @param active.hosts a boolean vector of active hosts
@@ -56,7 +56,7 @@ applyFunctionToHosts <- function(res, pres.time, pasedFunction, active.hosts) {
 #' @description
 #' Return a vector of exiting individuals.
 #'
-#' @param res an object of class \code{nosoiSim}.
+#' @param res an object of class \code{nosoiSimOne}.
 #' @param exiting a vector (TRUE/FALSE) of exiting individuals
 #' @param pres.time current time
 #'

@@ -4,7 +4,7 @@
 #' Perform the tasks related to creating new lines of hosts in relevant tables.
 #'
 #' @param df.meetTransmit table with active transmission events, coming from \code{meetTransmit}
-#' @param res an object of class \code{nosoiSim}.
+#' @param res an object of class \code{nosoiSimOne}.
 #' @inheritParams newLine
 #' @inheritParams newLineState
 #'

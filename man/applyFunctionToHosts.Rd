@@ -7,7 +7,7 @@
 applyFunctionToHosts(res, pres.time, pasedFunction, active.hosts)
 }
 \arguments{
-\item{res}{an object of class \code{nosoiSim}.}
+\item{res}{an object of class \code{nosoiSimOne}.}
 
 \item{pres.time}{current time}
 

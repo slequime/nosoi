@@ -7,7 +7,7 @@
 getExitingMoving(res, pres.time, pasedFunction)
 }
 \arguments{
-\item{res}{an object of class \code{nosoiSim}.}
+\item{res}{an object of class \code{nosoiSimOne}.}
 
 \item{pres.time}{current time}
 

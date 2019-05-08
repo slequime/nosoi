@@ -7,7 +7,7 @@
 meetTransmit(res, pres.time, positions, nContactParsed, pTransParsed)
 }
 \arguments{
-\item{res}{an object of class \code{nosoiSim}.}
+\item{res}{an object of class \code{nosoiSimOne}.}
 }
 \value{
 A table with active transmission events

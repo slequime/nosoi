@@ -93,19 +93,20 @@ dualNone <- function(length.sim,
 
   #Creation of initial data ----------------------------------------------------------
 
-  res.A <- nosoiSimConstructor(N.infected = init.individuals.A,
-                               total.time = 1,
+  res <- nosoiSimConstructor(total.time = 1,
+                             popStructure = "dual",
+                             pop.A = nosoiSimOneConstructor(
+                               N.infected = init.individuals.A,
                                table.hosts = iniTable(init.individuals.A, NA, prefix.host.A, ParamHost.A),
                                table.state = NA,
                                prefix.host = prefix.host.A,
-                               type = "dualNone")
-
-  res.B <- nosoiSimConstructor(N.infected = init.individuals.B,
-                               total.time = 1,
+                               geoStructure = "none"),
+                             pop.B = nosoiSimOneConstructor(
+                               N.infected = init.individuals.B,
                                table.hosts = iniTable(init.individuals.B, NA, prefix.host.B, ParamHost.B),
                                table.state = NA,
                                prefix.host = prefix.host.B,
-                               type = "dualNone")
+                               geoStructure = "none"))
 
   # Running the simulation ----------------------------------------
   message(" running ...")
@@ -113,44 +114,33 @@ dualNone <- function(length.sim,
   for (pres.time in 1:length.sim) {
 
     #Step 0: Active hosts ----------------------------------------------------------
-    exiting.full.A <- getExitingMoving(res.A, pres.time, pExitParsed.A)
-    exiting.full.B <- getExitingMoving(res.B, pres.time, pExitParsed.B)
+    exiting.full.A <- getExitingMoving(res$host.info.A, pres.time, pExitParsed.A)
+    exiting.full.B <- getExitingMoving(res$host.info.B, pres.time, pExitParsed.B)
 
-    res.A$table.hosts[exiting.full.A, `:=` (out.time = as.numeric(pres.time),
-                                            active = 0)]
-    res.B$table.hosts[exiting.full.B, `:=` (out.time = as.numeric(pres.time),
-                                            active = 0)]
+    res$host.info.A$table.hosts[exiting.full.A, `:=` (out.time = as.numeric(pres.time),
+                                                      active = 0)]
+    res$host.info.B$table.hosts[exiting.full.B, `:=` (out.time = as.numeric(pres.time),
+                                                      active = 0)]
 
-    if (all(c((res.A$table.hosts[["active"]] == 0),(res.B$table.hosts[["active"]] == 0)))) {break}
+    if (all(c((res$host.info.A$table.hosts[["active"]] == 0),(res$host.info.B$table.hosts[["active"]] == 0)))) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
 
     #Transmission from A to B
-    df.meetTransmit.A <- meetTransmit(res.A, pres.time, positions = NULL, nContactParsed.A, pTransParsed.A)
-    res.B <- writeInfected(df.meetTransmit.A, res.B, pres.time, ParamHost.B)
+    df.meetTransmit.A <- meetTransmit(res$host.info.A, pres.time, positions = NULL, nContactParsed.A, pTransParsed.A)
+    res$host.info.B <- writeInfected(df.meetTransmit.A, res$host.info.B, pres.time, ParamHost.B)
 
     #Transmission from B to A
-    df.meetTransmit.B <- meetTransmit(res.B, pres.time, positions = NULL, nContactParsed.B, pTransParsed.B)
-    res.A <- writeInfected(df.meetTransmit.B, res.A, pres.time, ParamHost.A)
+    df.meetTransmit.B <- meetTransmit(res$host.info.B, pres.time, positions = NULL, nContactParsed.B, pTransParsed.B)
+    res$host.info.A <- writeInfected(df.meetTransmit.B, res$host.info.A, pres.time, ParamHost.A)
 
-    if (progress.bar == TRUE) progressMessage(Host.count.A=res.A$N.infected, Host.count.B=res.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")
-    if (res.A$N.infected > max.infected.A || res.B$N.infected > max.infected.B) {break}
+    if (progress.bar == TRUE) progressMessage(Host.count.A=res$host.info.A$N.infected, Host.count.B=res$host.info.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")
+    if (res$host.info.A$N.infected > max.infected.A || res$host.info.B$N.infected > max.infected.B) {break}
   }
 
-  endMessage(Host.count.A=res.A$N.infected, Host.count.B=res.B$N.infected, pres.time, type="dual")
-
-  names(res.A) <- paste(names(res.A),"A",sep="_")
-  names(res.B) <- paste(names(res.B),"B",sep="_")
-  res <- c(res.A,res.B)
+  endMessage(Host.count.A=res$host.info.A$N.infected, Host.count.B=res$host.info.B$N.infected, pres.time, type="dual")
 
   res$total.time <- pres.time
-  res$type <- res$type_A
-
-  res[["total.time_A"]] = NULL
-  res[["total.time_B"]] = NULL
-  res[["type_A"]] = NULL
-  res[["type_B"]] = NULL
-
 
   return(res)
 }

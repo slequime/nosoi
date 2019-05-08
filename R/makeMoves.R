@@ -3,7 +3,7 @@
 #' @description
 #' Makes the move.
 #'
-#' @param res an object of class \code{nosoiSim}.
+#' @param res an object of class \code{nosoiSimOne}.
 #' @param pres.time current time
 #' @inheritParams singleDiscrete
 #' @inheritParams singleContinuous
@@ -17,11 +17,9 @@ makeMoves <- function(res, pres.time, moving.full,
                       sdMoveParsed = NA, structure.raster = NA,
                       attracted.by.raster = NA, max.raster = NA) {
 
-  moveFunction <-  switch(res$type,
-                          singleDiscrete = moveFunction.singleDiscrete,
-                          singleContinuous = moveFunction.singleContinuous,
-                          dualDiscrete = moveFunction.singleDiscrete,
-                          dualContinuous = moveFunction.singleContinuous)
+  moveFunction <-  switch(res$geoStructure,
+                          discrete = moveFunction.discrete,
+                          continuous = moveFunction.continuous)
 
   Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
 
@@ -38,7 +36,7 @@ makeMoves <- function(res, pres.time, moving.full,
 #' @description
 #' Makes the discrete move.
 #'
-#' @param res an object of class \code{nosoiSim}.
+#' @param res an object of class \code{nosoiSimOne}.
 #' @param pres.time current time
 #' @inheritParams singleDiscrete
 #'
@@ -46,7 +44,7 @@ makeMoves <- function(res, pres.time, moving.full,
 #'
 #' @keywords internal
 ##
-moveFunction.singleDiscrete <- function(res, pres.time, Move.ID, structure.matrix, ...) {
+moveFunction.discrete <- function(res, pres.time, Move.ID, structure.matrix, ...) {
 
   #melting the matrix go get from -> to in one line with probability
   melted.structure.matrix <- reshape2::melt(structure.matrix,
@@ -83,7 +81,7 @@ moveFunction.singleDiscrete <- function(res, pres.time, Move.ID, structure.matri
 #' @description
 #' Makes the continuous move.
 #'
-#' @param res an object of class \code{nosoiSim}.
+#' @param res an object of class \code{nosoiSimOne}.
 #' @param pres.time current time
 #' @inheritParams singleContinuous
 #'
@@ -91,9 +89,9 @@ moveFunction.singleDiscrete <- function(res, pres.time, Move.ID, structure.matri
 #'
 #' @keywords internal
 ##
-moveFunction.singleContinuous <- function(res, pres.time, moving.full,
-                                          sdMoveParsed, structure.raster,
-                                          attracted.by.raster, max.raster, ...) {
+moveFunction.continuous <- function(res, pres.time, moving.full,
+                                    sdMoveParsed, structure.raster,
+                                    attracted.by.raster, max.raster, ...) {
 
   Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
 

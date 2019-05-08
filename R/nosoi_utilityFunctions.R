@@ -53,33 +53,126 @@ endMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, type="single"
 #' @description
 #' Creates a \code{nosoiSim} object.
 #'
-#' @param N.infected number of infected hosts
 #' @param pres.time current time of the simulation
-#' @param table.hosts data.table of hosts
-#' @param table.state data.table of hosts movement
-#' @param type name of the diffusion
+#' @param popStructure population structure (one of "single or "dual)
+#' @param pop.A an object of class \code{nosoiSimOne} for population A
+#' @param pop.B an object of class \code{nosoiSimOne} for population B
+#'
 #'
 #' @return An object of class \code{nosoiSim}
 #'
 #' @keywords internal
 ##
 
-nosoiSimConstructor <- function(N.infected, total.time, table.hosts, table.state, prefix.host,
-                                type = c("singleNone", "singleDiscrete", "singleContinuous","dualNone","dualDiscrete", "dualContinuous")) {
+nosoiSimConstructor <- function(total.time,
+                                popStructure = c("single", "dual"),
+                                pop.A,
+                                pop.B = NULL) {
 
-  type <- match.arg(type)
+  popStructure <- match.arg(popStructure)
 
   res <- list(total.time = total.time,
-              N.infected = N.infected,
-              table.hosts = table.hosts,
-              table.state = table.state,
-              prefix.host = prefix.host,
-              type = type)
+              popStructure = popStructure,
+              host.info.A = pop.A,
+              host.info.B = pop.B)
 
   class(res) <- "nosoiSim"
 
   return(res)
 
+}
+
+#' @title nosoiSimOne Constructor
+#'
+#' @description
+#' Creates a \code{nosoiSim} object.
+#'
+#' @param N.infected number of infected hosts
+#' @param table.hosts data.table of hosts
+#' @param table.state data.table of hosts movement
+#' @param geoStructure geographical structure (one of "none, "discrete" or "continuous")
+#'
+#' @return An object of class \code{nosoiSimOne}
+#'
+#' @keywords internal
+##
+nosoiSimOneConstructor <- function(N.infected, table.hosts, table.state, prefix.host,
+                                   geoStructure = c("none", "discrete", "continuous")) {
+
+  geoStructure <- match.arg(geoStructure)
+
+  res <- list(N.infected = N.infected,
+              table.hosts = table.hosts,
+              table.state = table.state,
+              prefix.host = prefix.host,
+              geoStructure = geoStructure)
+
+  class(res) <- "nosoiSimOne"
+
+  return(res)
+
+}
+
+#' @title get host info
+#'
+#' @description
+#' Creates a \code{nosoiSim} object.
+#'
+#' @param res an object of class \code{nosoiSim}
+#' @param what the information to get. One of "table.hosts", "N.infected", "table.state", "geoStructure
+#' @param pop the population to be extracted (one of "A" or "B")
+#'
+#' @return a data.table with host informations
+#'
+#' @keywords internal
+#'
+##
+getHostInfo <- function(res,
+                        what = c("table.hosts", "N.infected", "table.state", "geoStructure"),
+                        pop = "A") {
+
+  what <- match.arg(what)
+
+  if (pop == "A") return(res$host.info.A[[what]])
+  if (pop == "B") return(res$host.info.B[[what]])
+
+  stop(paste0("Population ", pop, " is not recognized"))
+}
+
+#' @title Get table hosts
+#'
+#' @description
+#' Get "table.hosts"
+#' TODO: describe the table
+#'
+#' @param res an object of class \code{nosoiSim}
+#' @param pop the population to be extracted (one of "A" or "B")
+#'
+#' @return a data.table with hosts table informations
+#'
+#' @export
+#'
+##
+getTableHosts <- function(res, pop = "A") {
+  return(getHostInfo(res, "table.hosts", pop))
+}
+
+#' @title Get table states
+#'
+#' @description
+#' Get "table.state"
+#' TODO: describe the table
+#'
+#' @param res an object of class \code{nosoiSim}
+#' @param pop the population to be extracted (one of "A" or "B")
+#'
+#' @return a data.table with state table informations
+#'
+#' @export
+#'
+##
+getTableState <- function(res, pop = "A") {
+  return(getHostInfo(res, "table.state", pop))
 }
 
 #' @title get Position Infected
@@ -96,12 +189,10 @@ nosoiSimConstructor <- function(N.infected, total.time, table.hosts, table.state
 #' @keywords internal
 ##
 getPositionInfected <- function(nosoiSim, df.meetTransmit, i) {
-  if (nosoiSim$type == "singleNone") return(NA)
-  if (nosoiSim$type == "singleDiscrete") return(df.meetTransmit[i, ]$current.in)
-  if (nosoiSim$type == "singleContinuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
-  if (nosoiSim$type == "dualNone") return(NA)
-  if (nosoiSim$type == "dualDiscrete") return(df.meetTransmit[i, ]$current.in)
-  if (nosoiSim$type == "dualContinuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
+  if (nosoiSim$geoStructure == "none") return(NA)
+  if (nosoiSim$geoStructure == "discrete") return(df.meetTransmit[i, ]$current.in)
+  if (nosoiSim$geoStructure == "continuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
+  stop(paste0("Geographical structure ", nosoiSim$geoStructure, " is not implemented."))
 }
 
 #' @title Should we build the table.host table
@@ -113,12 +204,10 @@ getPositionInfected <- function(nosoiSim, df.meetTransmit, i) {
 #' @keywords internal
 ##
 keepState <- function(nosoiSim) {
-  if (nosoiSim$type == "singleNone") return(FALSE)
-  if (nosoiSim$type == "singleDiscrete") return(TRUE)
-  if (nosoiSim$type == "singleContinuous") return(TRUE)
-  if (nosoiSim$type == "dualNone") return(FALSE)
-  if (nosoiSim$type == "dualDiscrete") return(TRUE)
-  if (nosoiSim$type == "dualContinuous") return(TRUE)
+  if (nosoiSim$geoStructure == "none") return(FALSE)
+  if (nosoiSim$geoStructure == "discrete") return(TRUE)
+  if (nosoiSim$geoStructure == "continuous") return(TRUE)
+  stop(paste0("Geographical structure \"", nosoiSim$geoStructure, "\" is not implemented."))
 }
 
 #' @title Param concatenator
@@ -134,7 +223,7 @@ keepState <- function(nosoiSim) {
 ##
 
 paramConstructor <- function(param.pExit, param.pMove, param.nContact, param.pTrans,
-                                param.sdMove) {
+                             param.sdMove) {
 
   checkna <- function(param){return((length(param) == 1) && is.na(param))}
 

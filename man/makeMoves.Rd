@@ -9,7 +9,7 @@ makeMoves(res, pres.time, moving.full, structure.matrix = NA,
   max.raster = NA)
 }
 \arguments{
-\item{res}{an object of class \code{nosoiSim}.}
+\item{res}{an object of class \code{nosoiSimOne}.}
 
 \item{pres.time}{current time}
 

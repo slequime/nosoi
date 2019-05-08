@@ -55,53 +55,53 @@
 #' @export dualDiscrete
 
 dualDiscrete <- function(length.sim,
-                     max.infected.A,
-                     max.infected.B,
-                     init.individuals.A,
-                     init.individuals.B,
-                     init.structure.A,
-                     init.structure.B,
-                     structure.matrix.A,
-                     structure.matrix.B,
+                         max.infected.A,
+                         max.infected.B,
+                         init.individuals.A,
+                         init.individuals.B,
+                         init.structure.A,
+                         init.structure.B,
+                         structure.matrix.A,
+                         structure.matrix.B,
 
-                     pExit.A,
-                     param.pExit.A,
-                     timeDep.pExit.A=FALSE,
-                     diff.pExit.A=FALSE,
-                     pMove.A,
-                     param.pMove.A,
-                     timeDep.pMove.A=FALSE,
-                     diff.pMove.A=FALSE,
-                     nContact.A,
-                     param.nContact.A,
-                     timeDep.nContact.A=FALSE,
-                     diff.nContact.A=FALSE,
-                     pTrans.A,
-                     param.pTrans.A,
-                     timeDep.pTrans.A=FALSE,
-                     diff.pTrans.A=FALSE,
-                     prefix.host.A="H",
+                         pExit.A,
+                         param.pExit.A,
+                         timeDep.pExit.A=FALSE,
+                         diff.pExit.A=FALSE,
+                         pMove.A,
+                         param.pMove.A,
+                         timeDep.pMove.A=FALSE,
+                         diff.pMove.A=FALSE,
+                         nContact.A,
+                         param.nContact.A,
+                         timeDep.nContact.A=FALSE,
+                         diff.nContact.A=FALSE,
+                         pTrans.A,
+                         param.pTrans.A,
+                         timeDep.pTrans.A=FALSE,
+                         diff.pTrans.A=FALSE,
+                         prefix.host.A="H",
 
-                     pExit.B,
-                     param.pExit.B,
-                     timeDep.pExit.B=FALSE,
-                     diff.pExit.B=FALSE,
-                     pMove.B,
-                     param.pMove.B,
-                     timeDep.pMove.B=FALSE,
-                     diff.pMove.B=FALSE,
-                     nContact.B,
-                     param.nContact.B,
-                     timeDep.nContact.B=FALSE,
-                     diff.nContact.B=FALSE,
-                     pTrans.B,
-                     param.pTrans.B,
-                     timeDep.pTrans.B=FALSE,
-                     diff.pTrans.B=FALSE,
-                     prefix.host.B="V",
+                         pExit.B,
+                         param.pExit.B,
+                         timeDep.pExit.B=FALSE,
+                         diff.pExit.B=FALSE,
+                         pMove.B,
+                         param.pMove.B,
+                         timeDep.pMove.B=FALSE,
+                         diff.pMove.B=FALSE,
+                         nContact.B,
+                         param.nContact.B,
+                         timeDep.nContact.B=FALSE,
+                         diff.nContact.B=FALSE,
+                         pTrans.B,
+                         param.pTrans.B,
+                         timeDep.pTrans.B=FALSE,
+                         diff.pTrans.B=FALSE,
+                         prefix.host.B="V",
 
-                     progress.bar=TRUE,
-                     print.step=10){
+                         progress.bar=TRUE,
+                         print.step=10){
 
   #Sanity check---------------------------------------------------------------------------------------------------------------------------
   #This section checks if the arguments of the function are in a correct format for the function to run properly
@@ -143,19 +143,20 @@ dualDiscrete <- function(length.sim,
 
   #Creation of initial data ----------------------------------------------------------
 
-  res.A <- nosoiSimConstructor(N.infected = init.individuals.A,
-                               total.time = 1,
+  res <- nosoiSimConstructor(total.time = 1,
+                             popStructure = "dual",
+                             pop.A = nosoiSimOneConstructor(
+                               N.infected = init.individuals.A,
                                table.hosts = iniTable(init.individuals.A, init.structure.A, prefix.host.A, ParamHost.A),
                                table.state = iniTableState(init.individuals.A, init.structure.A, prefix.host.A),
                                prefix.host = prefix.host.A,
-                               type = "dualDiscrete")
-
-  res.B <- nosoiSimConstructor(N.infected = init.individuals.B,
-                               total.time = 1,
+                               geoStructure = "discrete"),
+                             pop.B = nosoiSimOneConstructor(
+                               N.infected = init.individuals.B,
                                table.hosts = iniTable(init.individuals.B, init.structure.B, prefix.host.B, ParamHost.B),
                                table.state = iniTableState(init.individuals.B, init.structure.B, prefix.host.B),
                                prefix.host = prefix.host.B,
-                               type = "dualDiscrete")
+                               geoStructure = "discrete"))
 
   # Running the simulation ----------------------------------------
   message(" running ...")
@@ -163,58 +164,48 @@ dualDiscrete <- function(length.sim,
   for (pres.time in 1:length.sim) {
 
     #Step 0: Active hosts ----------------------------------------------------------
-    exiting.full.A <- getExitingMoving(res.A, pres.time, pExitParsed.A)
-    exiting.full.B <- getExitingMoving(res.B, pres.time, pExitParsed.B)
+    exiting.full.A <- getExitingMoving(res$host.info.A, pres.time, pExitParsed.A)
+    exiting.full.B <- getExitingMoving(res$host.info.B, pres.time, pExitParsed.B)
 
-    res.A$table.hosts[exiting.full.A, `:=` (out.time = as.numeric(pres.time),
-                                            active = 0)]
-    res.B$table.hosts[exiting.full.B, `:=` (out.time = as.numeric(pres.time),
-                                            active = 0)]
+    res$host.info.A$table.hosts[exiting.full.A, `:=` (out.time = as.numeric(pres.time),
+                                                      active = 0)]
+    res$host.info.B$table.hosts[exiting.full.B, `:=` (out.time = as.numeric(pres.time),
+                                                      active = 0)]
 
-    res.A <- updateTableState(res.A, exiting.full.A, pres.time)
-    res.B <- updateTableState(res.B, exiting.full.B, pres.time)
+    res$host.info.A <- updateTableState(res$host.info.A, exiting.full.A, pres.time)
+    res$host.info.B <- updateTableState(res$host.info.B, exiting.full.B, pres.time)
 
-    if (all(c((res.A$table.hosts[["active"]] == 0),(res.B$table.hosts[["active"]] == 0)))) {break}
+    if (all(c((res$host.info.A$table.hosts[["active"]] == 0),(res$host.info.B$table.hosts[["active"]] == 0)))) {break}
 
     #Step 1: Moving ----------------------------------------------------
 
     #step 1.1 which hosts are moving
 
-    if(is.function(pMove.A)) moving.full.A <- getExitingMoving(res.A, pres.time, pMoveParsed.A)
-    if(is.function(pMove.B)) moving.full.B <- getExitingMoving(res.B, pres.time, pMoveParsed.B)
+    if(is.function(pMove.A)) moving.full.A <- getExitingMoving(res$host.info.A, pres.time, pMoveParsed.A)
+    if(is.function(pMove.B)) moving.full.B <- getExitingMoving(res$host.info.B, pres.time, pMoveParsed.B)
 
     #step 1.2 if moving, where are they going?
 
-    if(is.function(pMove.A)) res.A <- makeMoves(res.A, pres.time, moving.full.A, structure.matrix = structure.matrix.A)
-    if(is.function(pMove.B)) res.B <- makeMoves(res.B, pres.time, moving.full.B, structure.matrix = structure.matrix.B)
+    if(is.function(pMove.A)) res$host.info.A <- makeMoves(res$host.info.A, pres.time, moving.full.A, structure.matrix = structure.matrix.A)
+    if(is.function(pMove.B)) res$host.info.B <- makeMoves(res$host.info.B, pres.time, moving.full.B, structure.matrix = structure.matrix.B)
 
     #Step 2: Meeting & transmission ----------------------------------------------------
 
     #Transmission from A to B
-    df.meetTransmit.A <- meetTransmit(res.A, pres.time, positions = c("current.in"), nContactParsed.A, pTransParsed.A)
-    res.B <- writeInfected(df.meetTransmit.A, res.B, pres.time, ParamHost.B)
+    df.meetTransmit.A <- meetTransmit(res$host.info.A, pres.time, positions = c("current.in"), nContactParsed.A, pTransParsed.A)
+    res$host.info.B <- writeInfected(df.meetTransmit.A, res$host.info.B, pres.time, ParamHost.B)
 
     #Transmission from B to A
-    df.meetTransmit.B <- meetTransmit(res.B, pres.time, positions = c("current.in"), nContactParsed.B, pTransParsed.B)
-    res.A <- writeInfected(df.meetTransmit.B, res.A, pres.time, ParamHost.A)
+    df.meetTransmit.B <- meetTransmit(res$host.info.B, pres.time, positions = c("current.in"), nContactParsed.B, pTransParsed.B)
+    res$host.info.A <- writeInfected(df.meetTransmit.B, res$host.info.A, pres.time, ParamHost.A)
 
-    if (progress.bar == TRUE) progressMessage(Host.count.A=res.A$N.infected, Host.count.B=res.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")
-    if (res.A$N.infected > max.infected.A || res.B$N.infected > max.infected.B) {break}
+    if (progress.bar == TRUE) progressMessage(Host.count.A=res$host.info.A$N.infected, Host.count.B=res$host.info.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")
+    if (res$host.info.A$N.infected > max.infected.A || res$host.info.B$N.infected > max.infected.B) {break}
   }
 
-  endMessage(Host.count.A=res.A$N.infected, Host.count.B=res.B$N.infected, pres.time, type="dual")
-
-  names(res.A) <- paste(names(res.A),"A",sep="_")
-  names(res.B) <- paste(names(res.B),"B",sep="_")
-  res <- c(res.A,res.B)
+  endMessage(Host.count.A=res$host.info.A$N.infected, Host.count.B=res$host.info.B$N.infected, pres.time, type="dual")
 
   res$total.time <- pres.time
-  res$type <- res$type_A
-
-  res[["total.time_A"]] = NULL
-  res[["total.time_B"]] = NULL
-  res[["type_A"]] = NULL
-  res[["type_B"]] = NULL
 
   return(res)
 }

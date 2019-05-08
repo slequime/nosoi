@@ -4,18 +4,15 @@
 \alias{nosoiSimConstructor}
 \title{nosoiSim Constructor}
 \usage{
-nosoiSimConstructor(N.infected, total.time, table.hosts, table.state,
-  prefix.host, type = c("singleNone", "singleDiscrete",
-  "singleContinuous", "dualNone", "dualDiscrete", "dualContinuous"))
+nosoiSimConstructor(total.time, popStructure = c("single", "dual"),
+  pop.A, pop.B = NULL)
 }
 \arguments{
-\item{N.infected}{number of infected hosts}
+\item{popStructure}{population structure (one of "single or "dual)}
 
-\item{table.hosts}{data.table of hosts}
+\item{pop.A}{an object of class \code{nosoiSimOne} for population A}
 
-\item{table.state}{data.table of hosts movement}
-
-\item{type}{name of the diffusion}
+\item{pop.B}{an object of class \code{nosoiSimOne} for population B}
 
 \item{pres.time}{current time of the simulation}
 }

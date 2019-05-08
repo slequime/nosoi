@@ -7,7 +7,7 @@
 updateTableState(res, exiting, pres.time)
 }
 \arguments{
-\item{res}{an object of class \code{nosoiSim}.}
+\item{res}{an object of class \code{nosoiSimOne}.}
 
 \item{exiting}{a vector (TRUE/FALSE) of exiting individuals}
 

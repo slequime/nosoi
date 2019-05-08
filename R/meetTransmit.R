@@ -3,7 +3,7 @@
 #' @description
 #' Perform the tasks related to meeting and transmission events.
 #'
-#' @param res an object of class \code{nosoiSim}.
+#' @param res an object of class \code{nosoiSimOne}.
 #' @inheritParams newLine
 #' @inheritParams newLineState
 #'

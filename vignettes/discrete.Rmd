@@ -348,7 +348,7 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 `nosoi` gives as its output a list contaning a `data.table` (a more efficient version of a `data.frame`) called `table.hosts` with the following structure:
 
 ```{r output}
-head(SimulationA$table.hosts)
+head(getTableHosts(SimulationA))
 ```
 
 Each individual host that was or is infected during the course of the simulation is a line in the data.table.
@@ -363,7 +363,7 @@ Here in the top 6 lines, no host has left the simulation (it ran only for 13 uni
 The output also contains a `data.table` (a more efficient version of a `data.frame`) called `table.state`, containing the full transition history for each hosts between the states. It has the following structure:
 
 ```{r output2}
-head(SimulationA$table.state)
+head(getTableState(SimulationA))
 ```
 
 `hosts.ID` is the unique identifier of the host. If we take the example of the host "H-1", we can see that it was present at `state` "A" (the initial state), from time 0 (`time.from`) to 7 (`time.to`), then it moved to state "C" where it stayed until time 13 and then it moved to state "B" where it stayed until time 15. The previous table (`table.hosts`), informs us that the host "H-1" exited the simulation at time 15.
@@ -382,7 +382,7 @@ library(ggnetwork)
 
 # To show the graph, we need to invert column 1 and 2, and discard the first line (i.e. the first host, 
 # because it shows "NA" as infecting host). We then provide *Nosoi* output as elements for the vertices (nodes).
-graph.simA <- graph.data.frame(SimulationA$table.hosts[-1,c(2,1)],directed=T,vertices = SimulationA$table.hosts)
+graph.simA <- graph.data.frame(getTableHosts(SimulationA)[-1,c(2,1)],directed=T,vertices = getTableHosts(SimulationA))
 
 graph.simA.network = ggnetwork(graph.simA, layout = "kamadakawai", cell.jitter = 0.75) #using ggnetwork to provide the layout
 
@@ -418,7 +418,7 @@ layout = ggnetwork(graph.Matrix, layout = "circle",arrow.gap=0.18)[c(1:3),c(1,2,
 
 #Loading data from the simulation
 
-test = SimulationA$table.state
+test = getTableState(SimulationA)
 
 #Loop to get the number of infected in each state per unit of time
 results=data.frame()
