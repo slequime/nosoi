@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Aside from the simple simulation set up, explored in [another tutorial](none.html), where hosts are "not structured", `nosoi` can take into account a population structured either in discrete states or in a continuous layout. We will here focuse on a discrete state structuration (for the continuous structuration, see [this tutorial](continuous.html)).
+Aside from the simple simulation set up, explored in [another tutorial](none.html), where hosts are "not structured", `nosoi` can take into account a population structured either in discrete states or in a continuous space. We will here focus on a discrete state structuration (for the continuous structuration, see [this tutorial](continuous.html)).
 
 The discrete structuration is intended to allow the simulation to take place into a geographical context between discrete states such as countries, regions, islands, cities. However, other kind of structure could be taken into account (high risk/low risk, etc). This also allows parameter values to change according to the host's current location among the available states. This tutorial will focus on setting up a `nosoi` simulation for a pathogen whose host population is structured between different locations.
 
@@ -89,7 +89,7 @@ All the `param` elements provide individual-level parameters to be taken into ac
 
 `length.sim`, `max.infected` and `init.individuals` are general parameters that define the simulation.
 `length.sim` is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run, whereas `max.infected` is the maximum number of individuals that can be infected during the simulation.
-`init.individuals` and `init.structure` are the “seeding parameters”. `init.individuals` defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain and `init.structure` their original location in the structured population (has to be the same original location for all starting individuals). Keep in mind that you will have as many transmission chains as initial individuals, which is equivalent as launching two independant nosoi simulations. The location provided in init.structure should of course be present in the `structure.matrix`.
+`init.individuals` and `init.structure` are the “seeding parameters”. `init.individuals` defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain and `init.structure` their original location in the structured population (has to be the same original location for all starting individuals). Keep in mind that you will have as many transmission chains as initial individuals, which is equivalent as launching two independant nosoi simulations. The location provided in `init.structure` should of course be present in the `structure.matrix`.
 
 Here, we will run a simulation starting with 1 individual, for a maximum of 1.000 infected individuals and a maximum time of 300 days.
 
@@ -103,7 +103,7 @@ SimulationA <- nosoiSim(type="single", popStructure="none",
 The core functions `pExit`, `pMove`, `nContact` and `pTrans` each follow the [same principles to be set up](nosoi.html#setting-up-the-core-functions). 
 To accommodate several scenarios, they can be constant, time-dependent (relative time since infection for each individual or "absolute"" time of the simulation), state-dependent, or even individually parameterized, to include some stochasticity at the individual-host level.
 In every case, the function provided, like all other core function in `nosoi`, has to be expressed as function of time `t`, even if time is not used to compute the probability.
-In case the function uses individual-based parameters, you have to specify a list of functions (called `param.pExit`, `param.pMove`, `param.nContact` or `param.pTrans`) ( [see Get started](nosoi.html#parameters) ). If no individual-based parameter is used, then `param.pExit` is `NA`.
+In case the function uses individual-based parameters, you have to specify a list of functions (called `param.pExit`, `param.pMove`, `param.nContact` or `param.pTrans`) ( [see Get started](nosoi.html#parameters) ). If no individual-based parameter is used, then they are set to `NA`.
 
 > Keep in mind that `pExit`, `pMove`, and `pTrans` have to give back a probability (i.e. a number between 0 and 1) while `nContact` should give back a positive natural number (positive integer).
 
@@ -228,6 +228,7 @@ The distribution of `nContact` looks like this:
 ```{r nContact2, echo=FALSE}
 library(ggplot2)
 library(dplyr)
+set.seed(900)
 data = data.frame(N=abs(round(rnorm(200, 0.5, 1), 0)))
 
 data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
@@ -264,6 +265,8 @@ Taken together, the profile for pTrans for a subset of 200 individuals in the po
 ```{r pTrans3, echo=FALSE}
 library(ggplot2)
 library(dplyr)
+
+set.seed(506)
 
 p_Trans_fct <- function(t, p_max, t_incub){
     if(t < t_incub){p=0}
@@ -408,6 +411,7 @@ The distribution of `nContact.B` looks like this:
 ```{r nContact2.B, echo=FALSE}
 library(ggplot2)
 library(dplyr)
+set.seed(6059)
 data = data.frame(N=sample(c(0,1,2),200,replace=TRUE,prob=c(0.6,0.3,0.1)))
 
 data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
@@ -440,6 +444,7 @@ Taken together, the profile for pTrans for a subset of 200 individuals in the po
 ```{r pTrans3.B, echo=FALSE}
 library(ggplot2)
 library(dplyr)
+set.seed(6609)
 
 p_Trans_fct <- function(t, max.time){
   dnorm(t, mean=max.time, sd=2)*5

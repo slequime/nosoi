@@ -60,7 +60,7 @@ SimulationA <- nosoiSim(type="single", popStructure="none",
 The core functions `pExit`, `nContact` and `pTrans` each follow the [same principles to be set up](nosoi.html#setting-up-the-core-functions). 
 To accommodate several scenarios, they can be constant, time-dependent (relative time since infection for each individual or "absolute"" time of the simulation) or even individually parameterized, to include some stochasticity at the individual-host level.
 In every case, the function provided, like all other core function in `nosoi`, has to be expressed as function of time `t`, even if time is not used to compute the probability.
-In case the function uses individual-based parameters, you have to specify a list of functions (called `param.pExit`, `param.nContact` or `param.pTrans`) ( [see Get started](nosoi.html#parameters) ). If no individual-based parameter is used, then `param.pExit` is `NA`.
+In case the function uses individual-based parameters, you have to specify a list of functions (called `param.pExit`, `param.nContact` or `param.pTrans`) ( [see Get started](nosoi.html#parameters) ). If no individual-based parameter is used, then they are set to `NA`.
 
 > Keep in mind that `pExit` and `pTrans` have to give back a probability (i.e. a number between 0 and 1) while `nContact` should give back a positive natural number (positive integer).
 
@@ -154,6 +154,7 @@ The distribution of `nContact` looks like this:
 ```{r nContact2, echo=FALSE}
 library(ggplot2)
 library(dplyr)
+set.seed(4099)
 data = data.frame(N=abs(round(rnorm(200, 0.5, 1), 0)))
 
 data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
@@ -190,6 +191,7 @@ Taken together, the profile for pTrans for a subset of 200 individuals in the po
 ```{r pTrans3, echo=FALSE}
 library(ggplot2)
 library(dplyr)
+set.seed(99)
 
 p_Trans_fct <- function(t, p_max, t_incub){
     if(t < t_incub){p=0}
@@ -300,6 +302,7 @@ The distribution of `nContact.B` looks like this:
 ```{r nContact2.B, echo=FALSE}
 library(ggplot2)
 library(dplyr)
+set.seed(9898)
 data = data.frame(N=sample(c(0,1,2),200,replace=TRUE,prob=c(0.6,0.3,0.1)))
 
 data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
@@ -332,6 +335,7 @@ Taken together, the profile for pTrans for a subset of 200 individuals in the po
 ```{r pTrans3.B, echo=FALSE}
 library(ggplot2)
 library(dplyr)
+set.seed(7979)
 
 p_Trans_fct <- function(t, max.time){
   dnorm(t, mean=max.time, sd=2)*5
