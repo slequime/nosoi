@@ -333,3 +333,9 @@ test_that("Error messages on RasterSanityCheck", {
                           print.step=10),
     "Your starting position (init.structure) should be on the raster.",fixed=TRUE)
   })
+
+test_that("Error messages on drawBernouilli", {
+  test = data.frame(A=0.5,B=0.6,C=0.1)
+  expect_error(drawBernouilli(test),
+               "Function 'drawBernouilli' should be applied to a vector.")
+})
