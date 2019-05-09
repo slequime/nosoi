@@ -390,7 +390,7 @@ Since `pExit.B` is dependent of the simulation's time, do not forget to turn `ti
 
 ### pMove.B
 
-We will assume here that hosts B do not move. `pMove.B` will then be set to `NA`
+We will assume here that hosts B do not move. `pMove.B` will then be set to `NA`.
 
 ```{r pMove.B, eval = FALSE}
 p_Move_fct.B  <- NA
@@ -419,7 +419,7 @@ data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
 ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact.B",y="Frequency")
 ```
 
-At each time and for each infected host, `nContact.B` will be drawn anew. Remember that `nContact.B`, like the other core function has to be function of `t`, even if `t` is not used. Since `nContact.B` is constant here, there is no use of the "absolute" time of the simulation, the hosts location, nor individual-based parameters. So `param.nContact.B = NA`, `timeDep.nContact.B=FALSE` and `diff.nContact.B=FALSE`
+At each time and for each infected host, `nContact.B` will be drawn anew. Remember that `nContact.B`, like the other core function has to be function of `t`, even if `t` is not used. Since `nContact.B` is constant here, there is no use of the "absolute" time of the simulation, the hosts location, nor individual-based parameters. So `param.nContact.B = NA`, `timeDep.nContact.B=FALSE` and `diff.nContact.B=FALSE`.
 
 ### pTrans.B
 
@@ -439,7 +439,7 @@ max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 
 Note again that here `max.time` is function of `x` and not `t` (not core function but individual-based parameters), and `x` enters the function as the number of draws to make.
 
-Taken together, the profile for pTrans for a subset of 200 individuals in the population will look like this:
+Taken together, the profile for `pTrans` for a subset of 200 individuals in the population will look like this:
 
 ```{r pTrans3.B, echo=FALSE}
 library(ggplot2)
@@ -472,7 +472,6 @@ max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 
 param_pTrans.B = list(max.time=max.time_fct)
 ```
-
 
 ### Running
 
@@ -596,6 +595,6 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 
 To analyse and visualise your `nosoi` simulation output, you can have a look on [this page](viz_stat.html).
 
-A practical example using a dual host type of simulation without population structure is also available: 
+A practical example using a dual host type of simulation with a discrete population structure is also available: 
 
 - [Spread of dengue virus in a discrete space](dengue.html).

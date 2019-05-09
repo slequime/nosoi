@@ -159,7 +159,7 @@
       <h1>Spread of a pathogen in a discrete structured population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-05-08</h4>
+            <h4 class="date">2019-05-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/discrete.Rmd"><code>vignettes/discrete.Rmd</code></a></small>
       <div class="hidden name"><code>discrete.Rmd</code></div>
@@ -480,7 +480,7 @@
 <div id="pmove-b" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pmove-b" class="anchor"></a>pMove.B</h3>
-<p>We will assume here that hosts B do not move. <code>pMove.B</code> will then be set to <code>NA</code></p>
+<p>We will assume here that hosts B do not move. <code>pMove.B</code> will then be set to <code>NA</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">p_Move_fct.B  &lt;-<span class="st"> </span><span class="ot">NA</span></a></code></pre></div>
 <p>Since <code>pMove.B</code> is not dependent on the location, <code>diff.pMove.B=FALSE</code>. Similarly, there is no use of the “absolute” time of the simulation nor individual-based parameters, so <code>param.pMove.B = NA</code>, and <code>timeDep.pMove.B=FALSE</code>.</p>
 </div>
@@ -491,7 +491,7 @@
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">n_contact_fct.B =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.6</span>,<span class="fl">0.3</span>,<span class="fl">0.1</span>))}</a></code></pre></div>
 <p>The distribution of <code>nContact.B</code> looks like this:</p>
 <p><img src="discrete_files/figure-html/nContact2.B-1.png" width="700"></p>
-<p>At each time and for each infected host, <code>nContact.B</code> will be drawn anew. Remember that <code>nContact.B</code>, like the other core function has to be function of <code>t</code>, even if <code>t</code> is not used. Since <code>nContact.B</code> is constant here, there is no use of the “absolute” time of the simulation, the hosts location, nor individual-based parameters. So <code>param.nContact.B = NA</code>, <code>timeDep.nContact.B=FALSE</code> and <code>diff.nContact.B=FALSE</code></p>
+<p>At each time and for each infected host, <code>nContact.B</code> will be drawn anew. Remember that <code>nContact.B</code>, like the other core function has to be function of <code>t</code>, even if <code>t</code> is not used. Since <code>nContact.B</code> is constant here, there is no use of the “absolute” time of the simulation, the hosts location, nor individual-based parameters. So <code>param.nContact.B = NA</code>, <code>timeDep.nContact.B=FALSE</code> and <code>diff.nContact.B=FALSE</code>.</p>
 </div>
 <div id="ptrans-b" class="section level3">
 <h3 class="hasAnchor">
@@ -503,7 +503,7 @@
 <p>Because each host is here also different (slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, and hence probability of transmission over time. Thus, <code>max.time</code> will be sampled for each host individually according to a certain distribution. `<code>max.time</code> will be sampled from a normal distribution of parameters <span class="math inline">\(mean\)</span> 5 and <span class="math inline">\(sd\)</span> 1.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a></code></pre></div>
 <p>Note again that here <code>max.time</code> is function of <code>x</code> and not <code>t</code> (not core function but individual-based parameters), and <code>x</code> enters the function as the number of draws to make.</p>
-<p>Taken together, the profile for pTrans for a subset of 200 individuals in the population will look like this:</p>
+<p>Taken together, the profile for <code>pTrans</code> for a subset of 200 individuals in the population will look like this:</p>
 <p><img src="discrete_files/figure-html/pTrans3.B-1.png" width="700"></p>
 <p>Since <code>pTrans.B</code> is not dependent of the “absolute” time of the simulation nor the hosts’ location, <code>timeDep.pTrans.B=FALSE</code> and <code>diff.pTrans.B=FALSE</code>. However, since we have ever individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The names of each element of the list should have the same name that the core function (<code>pTrans.B</code> here) uses as argument, such as here:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
@@ -634,7 +634,7 @@
 <h1 class="hasAnchor">
 <a href="#going-further" class="anchor"></a>Going further</h1>
 <p>To analyse and visualise your <code>nosoi</code> simulation output, you can have a look on <a href="viz_stat.html">this page</a>.</p>
-<p>A practical example using a dual host type of simulation without population structure is also available:</p>
+<p>A practical example using a dual host type of simulation with a discrete population structure is also available:</p>
 <ul>
 <li>
 <a href="dengue.html">Spread of dengue virus in a discrete space</a>.</li>
