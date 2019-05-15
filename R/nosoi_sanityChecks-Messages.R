@@ -1,3 +1,5 @@
+#This file holds all the function directly related to SanityChecks and messages to the user.
+
 #' @title Checks if the simulator can start
 #'
 #' @description
@@ -111,12 +113,62 @@ RasterSanityChecks <- function(structure.raster, init.structure, none.at.start=N
   }
 
   if(!is.null(none.at.start) && !none.at.start){
-  start.env <- raster::extract(structure.raster,cbind(init.structure[1],init.structure[2]))
-  if(is.na(start.env)) stop("Your starting position (init.structure) should be on the raster.")
+    start.env <- raster::extract(structure.raster,cbind(init.structure[1],init.structure[2]))
+    if(is.na(start.env)) stop("Your starting position (init.structure) should be on the raster.")
   }
 
   if(!is.null(none.at.start) && none.at.start){
     start.env <- NA
   }
 
+}
+
+#' @title Progress bar
+#'
+#' @description
+#' Echos the state of the simulation at any given time step provided by the user.
+#'
+#' @param Host.count.A number of infected hosts of host A.
+#' @param Host.count.B number of infected hosts of host B.
+#' @param pres.time current time of the simulation
+#' @param print.step if print.progress is TRUE, step with which the progress message will be printed.
+#' @param length.sim the length (in unit of time) over which the simulation should be run.
+#' @param max.infected.A the maximum number of hosts that can be infected in the simulation for host A.
+#' @param max.infected.B the maximum number of hosts that can be infected in the simulation for host B.
+#' @param type either single/dual host
+#'
+#' @keywords internal
+##
+
+progressMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, print.step, length.sim, max.infected.A, max.infected.B=NULL, type="single") {
+
+  if(type == "single"){
+    if (pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: ", Host.count.A," (",round((Host.count.A/max.infected.A)*100,digits=0),"% of maximum infected hosts).")}
+  }
+
+  if(type == "dual"){
+    if (pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: (A) ", Host.count.A," (",round((Host.count.A/max.infected.A)*100,digits=0),"% of maximum infected hosts); (B) ", Host.count.B," (",round((Host.count.B/max.infected.B)*100,digits=0),"% of maximum infected hosts).")}
+  }
+}
+
+#' @title End message
+#'
+#' @description
+#' Message that ends the simulation
+#'
+#' @param Host.count.A number of infected hosts (host A)
+#' @param Host.count.B number of infected hosts (host B)
+#' @param pres.time current time of the simulation
+#' @param type either single/dual host
+#'
+#' @keywords internal
+##
+
+endMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, type="single") {
+  if(type == "single"){
+    message("done. \nThe simulation has run for ",pres.time," units of time and a total of ",Host.count.A," hosts have been infected.")
+  }
+  if(type == "dual"){
+    message("done. \nThe simulation has run for ",pres.time," units of time and a total of ",Host.count.A," (A) and ",Host.count.B, " (B) hosts have been infected.")
+  }
 }

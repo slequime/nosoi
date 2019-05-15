@@ -177,6 +177,24 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   expect_equal(subset(Where.at.end, current.in == "A")$N,62)
   expect_equal(subset(Where.at.end, current.in == "B")$N,17)
   expect_equal(subset(Where.at.end, current.in == "C")$N,43)
+
+  #Summary
+  test <- nosoiSummary(test.nosoiA)
+
+  expect_equal(test$R0$N.inactive, 31)
+  expect_equal(test$dynamics[21]$t, 14)
+  expect_equal(test$dynamics[21]$Count, 4)
+  expect_equal(test$dynamics[21]$type, "H")
+  expect_equal(test$dynamics[21]$state, "B")
+
+  #Get host table
+  test.hostTable.A <- getTableHosts(test.nosoiA)
+  expect_equal(test.hostTable.A[35]$out.time, 14)
+
+  #Get state table
+  test.stateTable.A <- getTableState(test.nosoiA)
+  expect_equal(test.stateTable.A[52]$hosts.ID, "H-26")
+
 })
 
 #--------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,178 +1,81 @@
-#' @title Progress bar
+
+#' @title Parse function for later use
 #'
 #' @description
-#' Echos the state of the simulation at any given time step provided by the user.
+#' Parse a user-provided function to get the vectorized version.
 #'
-#' @param Host.count.A number of infected hosts of host A.
-#' @param Host.count.B number of infected hosts of host B.
-#' @param pres.time current time of the simulation
-#' @param print.step if print.progress is TRUE, step with which the progress message will be printed.
-#' @param length.sim the length (in unit of time) over which the simulation should be run.
-#' @param max.infected.A the maximum number of hosts that can be infected in the simulation for host A.
-#' @param max.infected.B the maximum number of hosts that can be infected in the simulation for host B.
-#' @param type either single/dual host
+#' @param pFunc a function
+#' @param param.pFunc a named list of arguments
+#' @param name the name of the function
+#' @param diff is the function differential according to state/env.variable? (TRUE/FALSE)
+#' @param timeDep is the function differential according to absolute time? (TRUE/FALSE)
+#' @param continuous is the function to be used in a continuous space? (TRUE/FALSE)
+#' @param stateNames name of the states (vector) in case of discrete structure.
+#'
+#' @return list of parsed quantities:
+#' \itemize{
+#'  \item{"vect"}{Vectorized version of the function.}
+#'  \item{"vectArgs"}{Vector of arguments for the vectorized function.}
+#' }
 #'
 #' @keywords internal
 ##
 
-progressMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, print.step, length.sim, max.infected.A, max.infected.B=NULL, type="single") {
+parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE, continuous=FALSE, stateNames=NA) {
 
-  if(type == "single"){
-    if (pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: ", Host.count.A," (",round((Host.count.A/max.infected.A)*100,digits=0),"% of maximum infected hosts).")}
+  FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, continuous, stateNames)
+
+  pFunc <- match.fun(pFunc)
+
+  if (timeDep == FALSE){
+    pFunc_eval <- function(prestime, inf.time,...) {
+      t = prestime - inf.time
+      x <- list(...)
+      do.call(pFunc, c(list(t = t), x))
+    }
+
+    pFunc_eval_args = c(formalArgs(pFunc_eval),formalArgs(pFunc)[-1])
   }
 
-  if(type == "dual"){
-    if (pres.time%%print.step == 0) {message("Time: ", pres.time ," (",round((pres.time/length.sim)*100,digits=0),"% of maximum length). Hosts count: (A) ", Host.count.A," (",round((Host.count.A/max.infected.A)*100,digits=0),"% of maximum infected hosts); (B) ", Host.count.B," (",round((Host.count.B/max.infected.B)*100,digits=0),"% of maximum infected hosts).")}
+  if (timeDep == TRUE){
+    pFunc_eval <- function(prestime, inf.time,...) {
+      t = prestime - inf.time
+      x <- list(...)
+      do.call(pFunc, c(list(t = t),list(prestime=prestime), x))
+
+    }
+    pFunc_eval_args = c(formalArgs(pFunc_eval),formalArgs(pFunc)[c(-1,-2)])
   }
+
+  pFunc_eval_args = subset(pFunc_eval_args, pFunc_eval_args != "...")
+
+  pFunc_vect_args = pFunc_eval_args[-1]
+
+  pFunc_vect <- function(prestime, parameters) {
+    do.call(pFunc_eval, c(list(prestime = prestime), parameters))
+  }
+
+  return(list(vect = pFunc_vect,
+              vectArgs = pFunc_vect_args))
 }
 
-#' @title End message
+## Draw K bernouillis with probas p1, ..., pK
+
+#' @title Draw newly infected
 #'
 #' @description
-#' Message that ends the simulation
+#' For each encounter, simulate wether a new individual is infected.
 #'
-#' @param Host.count.A number of infected hosts (host A)
-#' @param Host.count.B number of infected hosts (host B)
-#' @param pres.time current time of the simulation
-#' @param type either single/dual host
+#' @param p vector of size K, giving the probability that each encounter
+#' leads to an infection.
 #'
+#' @return Boolean vector giving the newly infected individuals.
 #' @keywords internal
 ##
 
-endMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, type="single") {
-  if(type == "single"){
-    message("done. \nThe simulation has run for ",pres.time," units of time and a total of ",Host.count.A," hosts have been infected.")
-  }
-  if(type == "dual"){
-    message("done. \nThe simulation has run for ",pres.time," units of time and a total of ",Host.count.A," (A) and ",Host.count.B, " (B) hosts have been infected.")
-  }
-}
-
-#' @title nosoiSim Constructor
-#'
-#' @description
-#' Creates a \code{nosoiSim} object.
-#'
-#' @param pres.time current time of the simulation
-#' @param type population structure (one of "single or "dual)
-#' @param pop.A an object of class \code{nosoiSimOne} for population A
-#' @param pop.B an object of class \code{nosoiSimOne} for population B
-#'
-#'
-#' @return An object of class \code{nosoiSim}
-#'
-#' @keywords internal
-##
-
-nosoiSimConstructor <- function(total.time,
-                                type = c("single", "dual"),
-                                pop.A,
-                                pop.B = NULL) {
-
-  type <- match.arg(type)
-
-  res <- list(total.time = total.time,
-              type = type,
-              host.info.A = pop.A,
-              host.info.B = pop.B)
-
-  class(res) <- "nosoiSim"
-
-  return(res)
-
-}
-
-#' @title nosoiSimOne Constructor
-#'
-#' @description
-#' Creates a \code{nosoiSim} object.
-#'
-#' @param N.infected number of infected hosts
-#' @param table.hosts data.table of hosts
-#' @param table.state data.table of hosts movement
-#' @param popStructure geographical structure (one of "none, "discrete" or "continuous")
-#'
-#' @return An object of class \code{nosoiSimOne}
-#'
-#' @keywords internal
-##
-nosoiSimOneConstructor <- function(N.infected, table.hosts, table.state, prefix.host,
-                                   popStructure = c("none", "discrete", "continuous")) {
-
-  popStructure <- match.arg(popStructure)
-
-  res <- list(N.infected = N.infected,
-              table.hosts = table.hosts,
-              table.state = table.state,
-              prefix.host = prefix.host,
-              popStructure = popStructure)
-
-  class(res) <- "nosoiSimOne"
-
-  return(res)
-
-}
-
-#' @title get host info
-#'
-#' @description
-#' Creates a \code{nosoiSim} object.
-#'
-#' @param res an object of class \code{nosoiSim}
-#' @param what the information to get. One of "table.hosts", "N.infected", "table.state", "popStructure"
-#' @param pop the population to be extracted (one of "A" or "B")
-#'
-#' @return a data.table with host informations
-#'
-#' @export
-#'
-##
-getHostInfo <- function(res,
-                        what = c("table.hosts", "N.infected", "table.state", "popStructure"),
-                        pop = "A") {
-
-  what <- match.arg(what)
-
-  if (pop == "A") return(res$host.info.A[[what]])
-  if (pop == "B") return(res$host.info.B[[what]])
-
-  stop(paste0("Population ", pop, " is not recognized"))
-}
-
-#' @title Get table hosts
-#'
-#' @description
-#' Get "table.hosts"
-#' TODO: describe the table
-#'
-#' @param res an object of class \code{nosoiSim}
-#' @param pop the population to be extracted (one of "A" or "B")
-#'
-#' @return a data.table with hosts table informations
-#'
-#' @export
-#'
-##
-getTableHosts <- function(res, pop = "A") {
-  return(getHostInfo(res, "table.hosts", pop))
-}
-
-#' @title Get table states
-#'
-#' @description
-#' Get "table.state"
-#' TODO: describe the table
-#'
-#' @param res an object of class \code{nosoiSim}
-#' @param pop the population to be extracted (one of "A" or "B")
-#'
-#' @return a data.table with state table informations
-#'
-#' @export
-#'
-##
-getTableState <- function(res, pop = "A") {
-  return(getHostInfo(res, "table.state", pop))
+drawBernouilli <- function(p) {
+  if (!is.vector(p)) stop("Function 'drawBernouilli' should be applied to a vector.")
+  return(runif(length(p), 0, 1) < p)
 }
 
 #' @title get Position Infected
@@ -241,3 +144,57 @@ paramConstructor <- function(param.pExit, param.pMove, param.nContact, param.pTr
 
   return(ParamHost)
 }
+
+#' @title Apply a function to table.host
+#'
+#' @description
+#' Return a vector of the results of the function
+#'
+#' @param res an object of class \code{nosoiSimOne}.
+#' @param pres.time current time
+#' @param pasedFunction parsed exit/moving function
+#' @param active.hosts a boolean vector of active hosts
+#'
+#' @return result vector
+#'
+#' @keywords internal
+##
+applyFunctionToHosts <- function(res, pres.time, pasedFunction, active.hosts) {
+  fun <- function(z) {
+    pasedFunction$vect(prestime = pres.time, z[, pasedFunction$vectArgs, with = FALSE])
+  }
+  return(res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]])
+}
+
+#' @title Get Exiting or Moving individuals
+#'
+#' @description
+#' Return a vector of exiting individuals.
+#'
+#' @param res an object of class \code{nosoiSimOne}.
+#' @param pres.time current time
+#' @param pasedFunction parsed exit/moving function
+#'
+#' @return Boolean vector
+#'
+#' @keywords internal
+##
+getExitingMoving <- function(res, pres.time, pasedFunction) {
+
+  active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
+
+  if (any(active.hosts)) {
+
+    p.exitMove.values <- applyFunctionToHosts(res, pres.time, pasedFunction, active.hosts)
+
+    exitMove <- drawBernouilli(p.exitMove.values) #Draws K bernouillis with various probability (see function for more detail)
+  }
+
+  if(all(active.hosts == FALSE)) exitMove <- FALSE
+
+  exitMove.full <- active.hosts
+  exitMove.full[exitMove.full] <- exitMove
+
+  return(exitMove.full)
+}
+

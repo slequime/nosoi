@@ -26,6 +26,7 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 12)
+
 })
 
 
@@ -61,6 +62,29 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
+
+  test <- nosoiSummary(test.nosoiA)
+
+  expect_equal(test$R0$N.inactive, 16)
+  expect_equal(test$R0$R0.mean, 0)
+  expect_equal(test$dynamics[12]$t, 11)
+  expect_equal(test$dynamics[12]$Count, 39)
+  expect_equal(test$dynamics[12]$type, "H")
+  expect_equal(test$cumulative[14]$t, 13)
+  expect_equal(test$cumulative[14]$Count, 89)
+  expect_equal(test$cumulative[14]$type, "H")
+
+  #get Tables
+  #Get host table
+  test.hostTable.A <- getTableHosts(test.nosoiA)
+  expect_equal(test.hostTable.A[35]$out.time, 10)
+
+  #Check errors
+  expect_error(test.stateTable.A <- getTableState(test.nosoiA),
+               "There is no state information kept when the host population A has no structure.")
+
+  expect_error(test.stateTable.A <- getTableHosts(test.nosoiA, pop="B"),
+               "There are no other hosts than 'A' in a single-host simulation.")
 
 })
 

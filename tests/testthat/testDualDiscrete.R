@@ -103,6 +103,34 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   expect_equal(subset(Where.when.exit, current.in == "A")$N,integer(0))
   expect_equal(subset(Where.when.exit, current.in == "B")$N,21)
   expect_equal(subset(Where.when.exit, current.in == "C")$N,29)
+
+  #Test output
+
+  test <- nosoiSummary(test.nosoiA)
+
+  expect_equal(test$R0$N.inactive.A, 26)
+  expect_equal(test$dynamics[21]$t, 12)
+  expect_equal(test$dynamics[21]$Count, 11)
+  expect_equal(test$dynamics[21]$type, "H")
+  expect_equal(test$dynamics[21]$state, "A")
+
+  #Get host table
+  test.hostTable.A <- getTableHosts(test.nosoiA, pop="A")
+  expect_equal(test.hostTable.A[35]$inf.by, "V-11")
+
+  test.hostTable.B <- getTableHosts(test.nosoiA, pop="B")
+  expect_equal(test.hostTable.B[35]$inf.by, "H-16")
+
+  #Get state table
+  test.stateTable.A <- getTableState(test.nosoiA, pop="A")
+  expect_equal(test.stateTable.A[52]$hosts.ID, "H-40")
+
+  test.stateTable.B <- getTableState(test.nosoiA, pop="B")
+  expect_equal(test.stateTable.B[52]$hosts.ID, "V-44")
+
+  expect_error(test.stateTable.A <- getTableHosts(test.nosoiA, pop="Z"),
+               "Population Z is not recognized.")
+
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter", {

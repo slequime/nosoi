@@ -1,0 +1,367 @@
+---
+title: "Epidemiological impact of mosquito vector competence variation"
+author: "Sebastian Lequime"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+---
+
+# Introduction
+
+Vector competence (VC) defines the intrinsic ability of a vector to carry and transmit a pathogen. VC is usually scored experimentally as a prevalence of infected and infectious vectors at given times post-pathogen exposure. Each year, numerous experimental studies aim to evaluate vector species or local population’s competence for vector-borne pathogens, ultimately intending to understand epidemiology and assess local risk of transmission for potentially introduced vector-borne pathogens. 
+
+These experimental data however usually remain purely descriptive and poorly reflect the dynamic nature of VC. `nosoi` can be used to easily translate such empirically observed within-host dynamics into their impact in a epidemic process through simulations, without the use of advanced mathematics. The epidemic process can be tailored to mimic known parameters of a particular place of interest, or can be "fixed" to allow an easy comparison of one or several key variables.
+
+This example aims to illustrate how to use `nosoi` to perform such study. We will use data derived from this following published article:
+
+> A. Fontaine, S. Lequime, I. Moltini-Conclois, D. Jiolle, I. Leparc-Goffart, R. C. Reiner Jr. & L. Lambrechts (2018) *Epidemiological significance of dengue virus genetic variation in mosquito infection dynamics*. **PLoS Pathog.** 14(7): e1007187. [Link](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1007187)
+
+In this paper, Fontaine *et al.* explore the impact of variation of within-host dynamics of dengue virus 1 in *Aedes aegypti* mosquitoes on a simulated epidemic process. They compare, in the same population of *Aedes aegypti* from Thailand, the dynamics of 8 viral isolates. In this example, we will compare three of these, called Laos2012, Haiti2012 and Thai2010b using `nosoi` simulated epidemic processes. Most of the parameters of this set of simulation will be derived from Fontaine *et al.* paper, especially [supplementary table 1](https://journals.plos.org/plospathogens/article/file?type=supplementary&id=info:doi/10.1371/journal.ppat.1007187.s006).
+
+# Setting up the simulation framework
+
+We will keep here the simulation relatively simple, as the idea is to compare three viral isolate under the same set of parameters except the ones linked to vector competence in the mosquito. Time steps will be in days. We will of course be in the case of dual-host pathogen, but we will not use any spatial or population structure (for more details on this type of simulation, see the [relevant tutorial](nosoi.html#setting-up-the-core-functions)). Thus only 3 core functions of `nosoi` need to be parameterized for each host:
+
+- the daily probability to exit the simulation (`pExit`), either curing the disease for a human or dying for a mosquito.
+- the daily number of infectious contacts with different potential hosts (`nContact`), which would be the number of time per day a human is bitten by a sensitive mosquito, or the number of times per day a mosquito is biting a different human.
+- the probability to transmit the virus once an infecttious contact occurs (`pTrans`). This will be dependent on the within-host dynamics in each hosts, and will be the place where vector competence will influence the epidemic process.
+
+## Host A: Humans
+
+### `pExit`
+
+In Fontaine *et al.*, humans do not die from the dengue infection, but exit the simulation when they transmission probability approaches 0 on its way down (see below). To approximate that, we will use one of the parameters used in `pTrans`, called  `Md_human`, which is the time since infection at which `pTrans` equals 50% of its maximum value. We will assume here that after three time this period, an infected humans can not transmit the virus anymore and will thus exit the simulation.
+
+```{r pExit1, eval = FALSE}
+p_Exit_fct_human <- function(t,Md_human){
+  if(t < 3*Md_human){p=0}
+  if(t >= 3*Md_human){p=1}
+  return(p)
+}
+
+param.pExit_human <- list(Md_human=Md_human_fct)
+
+```
+
+### `nContact`
+This parameter was not determined in Fontaine *et al.*, as unlike in `nosoi`, each mosquito in the simulation was simulated. Since the daily probability of a mosquito to bite is 0.3 and the relative density of mosquito compared to human was 3, we can estimated that the daily probability to get bitten by a mosquito is around 0.9. Of course, this should correspond to a distribution of integer number (such as 0, 1, 2). We will therefore make draws in a Poisson distribution of parameter $\lambda$ 0.9.
+
+```{r nContact1, eval = FALSE}
+n_contact_fct_human <- function(t){rpois(1,0.9)}
+```
+
+```{r nContact2, echo = FALSE}
+#plot the distribution of bitten
+```
+### `pTrans`
+
+Fontaine *et al.* model the transmission probability of a human to a mosquito using a 5-parameter equation based on two logistic functions, allowing the value of `pTrans` to go up in time, reach a plateau and then decrease over time.
+
+```{r pTrans1, eval = FALSE}
+p_Trans_fct_human <- function(t, K_human, Mg_human, Bg_human, Md_human, Bd_human) {
+  K_human*1/2*((1+tanh((t-Mg_human)/Bg_human))-(1+tanh((t-Md_human)/Bd_human)))
+}
+```
+
+Each parameter, except `t` (time since infection), corresponds to individually set parameters, mimicking heterogeneity among hosts:
+
+- $K_{human}$ (`K_human`), the maximum probability of transmission.
+- $M\gamma$ (`Mg_human`), the time when 50% $K_{human}$ is reached during ascending phase.
+- $B\gamma$ (`Bg_human`), slope of the ascending curve.
+- $M\delta$ (`Md_human`), the time when 50% $K_{human}$ is reached during descending phase.
+- $B\delta$ (`Bd_human`), slope of the descending curve.
+
+```{r pTrans2, eval = FALSE}
+#Dynamics of viremia in vertebrate (see EIP paper for justification)
+
+K_human_fct <- function(x){rbeta(x,0.98,0.002)}
+  
+Mg_human_fct <- function(x){rnorm(x,4.844,0.5)}
+Bg_human_fct <- function(x){rnorm(x,2.536,0.2)}
+
+Md_human_fct <- function(x){rnorm(x,8.392,0.5)}
+Bd_human_fct <- function(x){rnorm(x,4.038,0.2)}
+
+param.pTrans_human <- list(K_human=K_human_fct, Mg_human=Mg_human_fct, Bg_human=Bg_human_fct, Md_human=Md_human_fct, Bd_human=Bd_human_fct) 
+```
+
+The profile over time since infection of 150 unique hosts will look like this (red is the mean values for each parameter):
+```{r pTrans3, echo = FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+#Dynamics of viremia in vertebrate (see EIP paper for justification)
+
+K_human_fct <- function(x){rbeta(x,0.98,0.002)}
+  
+Mg_human_fct <- function(x){rnorm(x,4.844,0.5)}
+Bg_human_fct <- function(x){rnorm(x,2.536,0.2)}
+
+Md_human_fct <- function(x){rnorm(x,8.392,0.5)}
+Bd_human_fct <- function(x){rnorm(x,4.038,0.2)}
+
+test.data = data.frame(Hosts.ID=paste0("H-",1:150), K=K_human_fct(150),Mg=Mg_human_fct(150),Bg=Bg_human_fct(150),Md=Md_human_fct(150),Bd=Bd_human_fct(150))
+
+p_Trans_fct_humans <- function(t, K_human, Mg_human, Bg_human, Md_human, Bd_human) {
+  K_human*1/2*((1+tanh((t-Mg_human)/Bg_human))-(1+tanh((t-Md_human)/Bd_human)))
+}
+
+curve.df = NULL
+curve.ideal = NULL
+for(t in 1:20){
+  temp.data = test.data %>% group_by(Hosts.ID) %>% mutate(pTrans=p_Trans_fct_humans(t, K, Mg, Bg, Md, Bd))
+  temp.data$t = t
+  curve.df = rbind(curve.df,temp.data)
+
+  temp.ideal = data.frame(t=t, pTrans=p_Trans_fct_humans(t, 0.98, 4.844, 2.536, 8.392, 4.038))
+  curve.ideal = rbind(curve.ideal,temp.ideal)
+}
+
+ggplot() + geom_line(data=curve.df, aes(x=t,y=pTrans,group=Hosts.ID), alpha=0.5) + 
+  geom_line(data=curve.ideal, aes(x=t,y=pTrans), color="red") + theme_minimal()
+```
+
+## Host B: Mosquitoes
+
+### `pExit`
+
+In Fontaine *et al.* the daily survival probability of a mosquito is 0.85, so its `pExit` is 1-0.85:
+
+```{r pExit1.B, eval = FALSE}
+p_Exit_fct_mosquito <- function(t){return(0.15)}
+```
+
+### `nContact`
+
+In Fontaine *et al.* the daily biting probability of a mosquito is 0.3. We assume that if a mosquito bites, it bites only one human:
+
+```{r nContact.B, eval = FALSE}
+nContact_fct_mosquito <- function(t){sample(c(0,1),1,prob=c(0.7,0.3))}
+```
+
+### `pTrans`
+
+In Fontaine *et al.* the probability of transmission from a mosquito to a human is approximated by their measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that `pTrans` is in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (`t_EIP`), and after that time, it will transmit with a certain (constant) probability (we will call `p_max`). This function will be dependant of the time since the mosquito's infection `t`.
+
+```{r pTrans.B0, echo = FALSE}
+p_Trans_fct <- function(t, p_max, t_EIP){
+    if(t < t_EIP){p=0}
+    if(t >= t_EIP){p=p_max}
+    return(p)
+}
+```
+
+`pTrans` will of course vary according the the viral isolate studied. EIP was measured dynamically over time as a proportion of mosquitoes with disseminated viral infection. This experimental measure is then a mean of the whole population and follows a logistic function characterized by three parameters:
+
+- $K_{mosquito}$ (`K_mosquito`), the maximum probability of transmission.
+- $M_{mosquito}$ (`M_mosquito`), the time when 50% $K_{mosquito}$ is reached during ascending phase.
+- $B_{mosquito}$ (`B_mosquito`), slope of the ascending curve.
+
+```{r pTrans.B, echo = FALSE}
+data.viruses = data.frame(isolates=c("Laos2012", "Haiti2012", "Thai2010b"),
+           K=c(1,0.94,0.98),
+           B=c(2.37,0.92,1.24),
+           M=c(4.90,7.36,5.15),
+           coord.x=c(11,11,11),
+           coord.y=c(0.45,0.35,0.25))
+
+viral.mos.Laos = function(x) {1/(1+exp(-2.37*(x-4.90)))}
+viral.mos.Haiti = function(x) {0.94/(1+exp(-0.92*(x-7.36)))}
+viral.mos.Thai = function(x) {0.98/(1+exp(-1.24*(x-5.15)))}
+
+ggplot(data=data.frame(x=0), aes(x=x)) + stat_function(fun=viral.mos.Laos, color="firebrick2") + theme_minimal() + labs(x="Time since infection (t)",y="Proportion of individual with disseminated virus") + stat_function(fun=viral.mos.Haiti, color="dodgerblue3", show.legend = TRUE) + stat_function(fun=viral.mos.Thai, color="chartreuse4") + xlim(0,15) + geom_text(data=data.viruses, aes(x=coord.x,y=coord.y,label=isolates,color=isolates)) + scale_color_manual(guide=FALSE,values = c("dodgerblue3","firebrick2", "chartreuse4"))
+```
+
+According to our initial hypothesis, these population curves are actually formed by an heterogenous population of mosquito "switching" from infected to infectious, thus, `t_EIP` is individually set and can be extracted from the logistic curve of the population, representing the probability distribution, and `p_max` is actually 1 for most of the mosquitoes, but can be 0 (some will never transmit despite being infected) for a few others.
+
+```{r pTrans.B-params, eval = FALSE}
+p_max_fct_Laos <- function(x){rbinom(x,1, 1)}
+t_EIP_Laos <- function(x){rlogis(x, location = 4.9, scale = 1/2.37)}
+
+param_pTrans_mosquito_Laos <- list(p_max=p_max_fct_Laos,t_EIP=t_EIP_Laos)
+
+p_max_fct_Haiti <- function(x){rbinom(x,1, 0.94)}
+t_EIP_Haiti <- function(x){rlogis(x, location = 7.36, scale = 1/0.92)}
+
+param_pTrans_mosquito_Haiti <- list(p_max=p_max_fct_Haiti,t_EIP=t_EIP_Haiti)
+
+p_max_fct_Thai <- function(x){rbinom(x,1, 0.98)}
+t_EIP_Thai <- function(x){rlogis(x, location = 5.15, scale = 1/1.24)}
+
+param_pTrans_mosquito_Thai <- list(p_max=p_max_fct_Thai,t_EIP=t_EIP_Thai)
+```
+
+Here is what this looks like for 150 mosquitoes with each isolate:
+
+```{r popDemo, echo = FALSE}
+p_max_fct_Laos <- function(x){rbinom(x,1, 1)}
+t_EIP_Laos <- function(x){rlogis(x, location = 4.9, scale = 1/2.37)}
+
+p_max_fct_Haiti <- function(x){rbinom(x,1, 0.94)}
+t_EIP_Haiti <- function(x){rlogis(x, location = 7.36, scale = 1/0.92)}
+
+p_max_fct_Thai <- function(x){rbinom(x,1, 0.98)}
+t_EIP_Thai <- function(x){rlogis(x, location = 5.15, scale = 1/1.24)}
+
+n=150
+
+df.Laos = data.frame(pmax=p_max_fct_Laos(n),EIP=t_EIP_Laos(n)) %>% subset(pmax > 0)
+df.Haiti = data.frame(pmax=p_max_fct_Haiti(n),EIP=t_EIP_Haiti(n)) %>% subset(pmax > 0)
+df.Thai = data.frame(pmax=p_max_fct_Thai(n),EIP=t_EIP_Thai(n)) %>% subset(pmax > 0)
+
+data.pop.mos=NULL
+for (t in 0:15){
+  temp.data = data.frame(t=t,
+             isolate=c("Laos2012", "Haiti2012", "Thai2010b"),
+             prop=c(nrow(subset(df.Laos, EIP < t))/n,nrow(subset(df.Haiti, EIP < t))/n,nrow(subset(df.Thai, EIP < t))/n))
+  data.pop.mos = rbind(data.pop.mos,temp.data)
+}
+
+ggplot() + geom_line(data=data.pop.mos, aes(x=t,y=prop,group=isolate,color=isolate)) + theme_minimal() + scale_color_manual(values = c("dodgerblue3","firebrick2", "chartreuse4")) + labs(x="Time since infection", y="Proportion of mosquitoes transmitting")
+```
+
+As we can see, this perfectly mimicks the observed population pattern for each virus.
+
+# Running `nosoi`
+
+Since all core functions have been set, we can not proceed with the simulation. We will set a total length of 400 unit of time maximum, as in Fontaine *et al.*, with a maximum of 10,000 infected humans, and 1,000,000 infected mosquitoes (to be sure the total number of mosquitoes will not be a limiting factor). The epidemic will start with one infected human. The `nosoi` script will then look like:
+
+```{r setupF.B, eval=FALSE}
+library(nosoi)
+
+#HostA, Humans ------------------------------------
+
+#pExit
+p_Exit_fct_human <- function(t,Md_human){
+  if(t < 3*Md_human){p=0}
+  if(t >= 3*Md_human){p=1}
+  return(p)
+}
+
+Md_human_fct <- function(x){rnorm(x,8.392,0.5)}
+param.pExit_human <- list(Md_human=Md_human_fct)
+
+#nContact
+n_contact_fct_human <- function(t){rpois(1,0.9)}
+
+#pTrans
+p_Trans_fct_human <- function(t, K_human, Mg_human, Bg_human, Md_human, Bd_human) {
+  K_human*1/2*((1+tanh((t-Mg_human)/Bg_human))-(1+tanh((t-Md_human)/Bd_human)))
+}
+
+K_human_fct <- function(x){rbeta(x,0.98,0.002)}
+  
+Mg_human_fct <- function(x){rnorm(x,4.844,0.5)}
+Bg_human_fct <- function(x){rnorm(x,2.536,0.2)}
+
+# Md_human_fct <- function(x){rnorm(x,8.392,0.5)} (specified before)
+Bd_human_fct <- function(x){rnorm(x,4.038,0.2)}
+
+param.pTrans_human <- list(K_human=K_human_fct, Mg_human=Mg_human_fct, Bg_human=Bg_human_fct, Md_human=Md_human_fct, Bd_human=Bd_human_fct) 
+
+#Host B, Mosquitoes ------------------------------------
+
+#pExit
+p_Exit_fct_mosquito <- function(t){return(0.15)}
+
+#nContact
+nContact_fct_mosquito <- function(t){sample(c(0,1),1,prob=c(0.7,0.3))}
+
+#pTrans
+p_Trans_fct_mosquito <- function(t, p_max, t_EIP){
+    if(t < t_EIP){p=0}
+    if(t >= t_EIP){p=p_max}
+    return(p)
+}
+
+#Parameters for pTrans for each isolate:
+p_max_fct_Laos <- function(x){rbinom(x,1, 1)}
+t_EIP_Laos <- function(x){rlogis(x, location = 4.9, scale = 1/2.37)}
+
+param_pTrans_mosquito_Laos <- list(p_max=p_max_fct_Laos,t_EIP=t_EIP_Laos)
+
+p_max_fct_Haiti <- function(x){rbinom(x,1, 0.94)}
+t_EIP_Haiti <- function(x){rlogis(x, location = 7.36, scale = 1/0.92)}
+
+param_pTrans_mosquito_Haiti <- list(p_max=p_max_fct_Haiti,t_EIP=t_EIP_Haiti)
+
+p_max_fct_Thai <- function(x){rbinom(x,1, 0.98)}
+t_EIP_Thai <- function(x){rlogis(x, location = 5.15, scale = 1/1.24)}
+
+param_pTrans_mosquito_Thai <- list(p_max=p_max_fct_Thai,t_EIP=t_EIP_Thai)
+
+# Starting the simulation ------------------------------------
+
+SimulationDual <- nosoiSim(type="dual", popStructure="none",
+                        length.sim=400, 
+                        max.infected.A=10000, 
+                        max.infected.B=1000000, 
+                        
+                        init.individuals.A=1, 
+                        init.individuals.B=0, 
+                        
+                        pExit.A=p_Exit_fct_human,
+                        param.pExit.A=param.pExit_human,
+                        timeDep.pExit.A=FALSE,
+                        nContact.A=n_contact_fct_human,
+                        param.nContact.A=NA,
+                        timeDep.nContact.A=FALSE,
+                        pTrans.A=p_Trans_fct_human,
+                        param.pTrans.A=param.pTrans_human,
+                        timeDep.pTrans.A=FALSE,
+                        prefix.host.A="H",
+                        
+                        pExit.B=p_Exit_fct_mosquito,
+                        param.pExit.B=NA,
+                        timeDep.pExit.B=FALSE,
+                        nContact.B=nContact_fct_mosquito,
+                        param.nContact.B=NA,
+                        timeDep.nContact.B=FALSE,
+                        pTrans.B=p_Trans_fct_mosquito,
+                        param.pTrans.B=param_pTrans_mosquito_Laos,
+                        timeDep.pTrans.B=FALSE,
+                        prefix.host.B="M",
+                        
+                        print.progress=FALSE)
+```
+
+# Analyzing the results
+
+```{r Output1, message=FALSE}
+load("/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Haiti.RData")
+load("/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Thai2.RData")
+load("/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Laos.RData")
+
+
+results =NULL
+for (rep in 1:100){
+  temp1=data.frame(N=results.list.Haiti[[rep]]$host.info.A$N.infected, rep=rep, isolate="Haiti2012")
+  temp2=data.frame(N=results.list.Thai[[rep]]$host.info.A$N.infected, rep=rep, isolate="Thai2010b")
+  temp3=data.frame(N=results.list.Laos[[rep]]$host.info.A$N.infected, rep=rep, isolate="Laos2012")
+
+  results = rbind(results, temp1,temp2,temp3)
+}
+
+
+results2 = results %>% group_by(isolate) %>% mutate(type=ifelse(N > 100, "BIG",
+                                                                 ifelse(N == 1, "FAIL",
+                                                                        "SMALL"))) %>% group_by(type, isolate) %>% summarise(N=length(type))
+
+results2$type <- factor(results2$type, levels = c("FAIL","SMALL", "BIG"))
+results2$isolate <- factor(results2$isolate, levels = c("Laos2012","Thai2010b", "Haiti2012"))
+plotF = ggplot(results2, aes(x = as.factor(isolate) , y =N , alpha= as.factor(type),fill=isolate)) +
+  geom_histogram(stat="identity") + coord_flip() +  scale_fill_brewer(palette="Set2", guide=FALSE) +
+  scale_alpha_discrete(name="Number of secondary \n human infections",
+                       breaks=c("BIG", "SMALL", "FAIL"),
+                       labels=c("≥ 100", "< 100", "None"))+
+  scale_x_discrete(expression('Isolate'), expand = c(0.01, 0)) +
+  scale_y_continuous("Percentage of simulations") +
+  theme_minimal(base_size = 12) + theme(strip.text=element_text(face="bold"), axis.text.x=element_text(angle=45, vjust=1.2,hjust=1), axis.text.y = element_text(vjust = 0))
+plotF
+
+
+```
+
+# Conclusions
+
+
+
+

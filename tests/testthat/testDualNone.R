@@ -68,6 +68,27 @@ test_that("Transmission is coherent with single introduction (host A) same for b
   expect_equal(test.nosoiA$type, "dual")
   expect_equal(getHostInfo(test.nosoiA, "popStructure", "A"), "none")
   expect_equal(getHostInfo(test.nosoiA, "popStructure", "B"), "none")
+
+  #Test output
+
+  test <- nosoiSummary(test.nosoiA)
+
+  expect_equal(test$R0$N.inactive.A, 20)
+  expect_equal(test$R0$N.inactive.B, 7)
+  expect_equal(test$R0$R0.hostA.mean, 0.0952381)
+  expect_equal(test$R0$R0.hostB.mean, 0)
+  expect_equal(test$dynamics[21]$t, 10)
+  expect_equal(test$dynamics[21]$Count, 1)
+  expect_equal(test$dynamics[21]$type, "H")
+  expect_equal(test$cumulative[26]$t, 12)
+  expect_equal(test$cumulative[26]$Count, 9)
+  expect_equal(test$cumulative[26]$type, "V")
+
+
+  #Check errors
+  expect_error(test.stateTable.A <- getTableState(test.nosoiA, pop="B"),
+               "There is no state information kept when the host population B has no structure.")
+
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter", {
