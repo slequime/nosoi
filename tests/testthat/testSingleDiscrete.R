@@ -195,6 +195,23 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   test.stateTable.A <- getTableState(test.nosoiA)
   expect_equal(test.stateTable.A[52]$hosts.ID, "H-26")
 
+  ## transmission tree
+  ttreedata <- getTransmissionTree(test.nosoiA)
+  ttree <- ttreedata@phylo
+  tdata <- ttreedata@data
+  # total time
+  expect_equal(max(diag(ape::vcv(ttree))) + ttree$root.edge, test.nosoiA$total.time)
+  # hosts
+  nHosts <- nrow(test.hostTable.A)
+  for (i in 2:nrow(test.hostTable.A)) {
+    expect_equal(subset(tdata, node == nHosts + test.hostTable.A$indNodes[i] - 1)$host,
+                 test.hostTable.A$inf.by[i])
+  }
+  # number of descendants
+  for (i in 2:nrow(test.hostTable.A)) {
+    expect_equal(length(tidytree::child(ttree, nHosts + test.hostTable.A$indNodes[i] - 1)),
+                 sum(test.hostTable.A$indNodes == test.hostTable.A$indNodes[i]) + 1)
+  }
 })
 
 #--------------------------------------------------------------------------------------------------------------------------------------------

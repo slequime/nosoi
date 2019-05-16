@@ -18,6 +18,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
+biocViews:
 Depends: 
     data.table (>= 1.12.0),
     R (>= 3.5.0)
@@ -42,5 +43,8 @@ Suggests:
     viridis,
     gganimate,
     gifski,
-    png
+    png,
+    ape (>= 5.3),
+    tidytree (>= 0.2.4),
+    treeio (>= 1.6.2)
 VignetteBuilder: knitr
