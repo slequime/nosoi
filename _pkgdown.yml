@@ -21,17 +21,17 @@ navbar:
       - text: Spread of a pathogen in a continuous space
         href: articles/continuous.html
       - text: nosoi output and visualization
-        href: articles/viz_stat.html
+        href: articles/examples/viz_stat.html
     examples:
       text: Examples
       icon: fas fa-file
       menu:
       - text: Spread of dengue virus in a discrete space
-        href: articles/dengue.html
+        href: articles/examples/dengue.html
       - text: Spread of Ebola virus in a continuous space
-        href: articles/ebola.html
+        href: articles/examples/ebola.html
       - text: Epidemiological impact of mosquito vector competence
-        href: articles/vector-competence.html
+        href: articles/examples/vector-competence.html
     reference:
       text: Reference
       icon: fa-file-code-o

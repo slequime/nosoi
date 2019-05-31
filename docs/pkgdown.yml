@@ -3,11 +3,11 @@ pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
   continuous: continuous.html
-  dengue: dengue.html
   discrete: discrete.html
-  ebola: ebola.html
+  dengue: examples/dengue.html
+  ebola: examples/ebola.html
+  vector-competence: examples/vector-competence.html
+  viz_stat: examples/viz_stat.html
   none: none.html
   nosoi: nosoi.html
-  vector-competence: vector-competence.html
-  viz_stat: viz_stat.html
 
