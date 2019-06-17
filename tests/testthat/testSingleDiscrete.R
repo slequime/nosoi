@@ -212,6 +212,20 @@ test_that("Movement is coherent with single introduction, constant pMove", {
     expect_equal(length(tidytree::child(ttree, nHosts + test.hostTable.A$indNodes[i] - 1)),
                  sum(test.hostTable.A$indNodes == test.hostTable.A$indNodes[i]) + 1)
   }
+
+  ## Extract some samples from the transmission tree
+  samples <- tibble::tibble(hosts = c("H-1", "H-7", "H-15", "H-100"),
+                            times = c(5.2, 9.3, 10.2, 16),
+                            labels = paste0(hosts, "-s"))
+
+  sampledTree <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
+  # plot(sampledTree@phylo)
+
+  sttree <- sampledTree@phylo
+  stdata <- sampledTree@data
+  # total time
+  expect_equal(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
+  # DO MORE TESTS
 })
 
 #--------------------------------------------------------------------------------------------------------------------------------------------
