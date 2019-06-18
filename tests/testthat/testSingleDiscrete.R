@@ -214,9 +214,9 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   }
 
   ## Extract some samples from the transmission tree
-  samples <- tibble::tibble(hosts = c("H-1", "H-7", "H-15", "H-100"),
-                            times = c(5.2, 9.3, 10.2, 16),
-                            labels = paste0(hosts, "-s"))
+  samples <- data.table(hosts = c("H-1", "H-7", "H-15", "H-100"),
+                        times = c(5.2, 9.3, 10.2, 16),
+                        labels = paste0(c("H-1", "H-7", "H-15", "H-100"), "-s"))
 
   sampledTree <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
   # plot(sampledTree@phylo)
@@ -226,6 +226,12 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   # total time
   expect_equal(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
   # DO MORE TESTS
+
+  ## Sampling from the deads
+  sampledDeadTree <- sampleTransmissionTreeFromTheDead(ttreedata, paste0("H-", c(1, 3, 22, 100, 105)))
+  # plot(sampledDeadTree@phylo)
+
+  # DO SOME TESTS
 })
 
 #--------------------------------------------------------------------------------------------------------------------------------------------

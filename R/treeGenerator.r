@@ -1,84 +1,32 @@
-# treeGenerator = function(transmission_matrix, samples, sampling_times)
-# {
-#   output_format = "tree"; nberOfTraits = dim(transmission_matrix)[2]-3; trait_names = c()
-#   for (i in 4:dim(transmission_matrix)[2]) trait_names = c(trait_names, colnames(transmission_matrix)[i])
-#   nodes = samples; times = sampling_times; clades = nodes
-#   for (i in 1:length(nodes))
-#   {
-#     clade = paste0(nodes[i],"[&ind=",nodes[i])
-#     for (j in 1:nberOfTraits)
-#     {
-#       index = which(transmission_matrix[,"hosts.ID"]==nodes[i])
-#       clade = paste0(clade,",",trait_names[j],"=",transmission_matrix[index,trait_names[j]])
-#     }
-#     clades[i] = paste0(as.character(clade),"]")
-#   }
-#   t0 = max(sampling_times)
-#   for (t in t0:0)
-#   {
-#     newNodes = c(); newTimes = c(); newClades = c()
-#     indices1 = rep(NA, length(nodes)); infDates = rep(NA, length(nodes)); ancestors = rep(NA, length(nodes))
-#     for (i in 1:length(nodes))
-#     {
-#       indices1[i] = which(transmission_matrix[,"hosts.ID"]==nodes[i])
-#       infDates[i] = transmission_matrix[indices1[i], "inf.time"]
-#       ancestors[i] = transmission_matrix[indices1[i], "inf.by"]
-#     }
-#     indices2 = which(infDates==t)
-#     for (i in 1:length(indices2))
-#     {
-#       nodes[indices2[i]] = ancestors[indices2[i]]
-#     }
-#     indices_already_used = c()
-#     for (i in 1:length(nodes))
-#     {
-#       if (!i%in%indices_already_used)
-#       {
-#         indices3 = which(nodes==nodes[i])
-#         indices3 = indices3[which(indices3!=i)]
-#         if (length(indices3) > 0)
-#         {
-#           t1 = times[i]-t
-#           clade = paste0("(",clades[[i]],":",t1)
-#           for (j in c(indices3))
-#           {
-#             t2 = times[j]-t
-#             clade = paste0(clade,",",clades[[j]],":",t2)
-#           }
-#           clade = paste0(clade,")")
-#           ancestor = nodes[i]
-#           traits = paste0("[&ind=",ancestor)
-#           for (j in 1:nberOfTraits)
-#           {
-#             index = which(transmission_matrix[,"hosts.ID"]==nodes[i])
-#             traits = paste0(traits,",",trait_names[j],"=",transmission_matrix[index,trait_names[j]])
-#           }
-#           clade = paste0(clade,traits,"]")
-#           newNodes = c(newNodes, nodes[i])
-#           newTimes = c(newTimes, t)
-#           newClades = c(newClades, clade)
-#           indices_already_used = c(indices_already_used, i, indices3)
-#         }	else		{
-#           newNodes = c(newNodes, nodes[i])
-#           newTimes = c(newTimes, times[i])
-#           newClades = c(newClades, clades[i])
-#         }
-#       }
-#     }
-#     nodes = newNodes; times = newTimes; clades = newClades; print(length(nodes))
-#   }
-#   if (output_format == "tree") tree = read.tree(text=paste0(clades[[1]],";"))
-#   if (output_format == "text") tree = paste0(clades[[1]],";")
-#   return(tree)
-# }
-
-getTransmissionTree <- function(nosoiInf) {
+##
+#' @title  Get full transmission tree
+#'
+#' @description
+#'  From a simulated epidemics, this function extract the full transmission tree.
+#'
+#' @details
+#'  This function uses packages \pkg{tidytree} and \pkg{treeio},
+#'  that rely on \code{\link[ape:ape-package]{ape}}.
+#'
+#' @param nosoiInf an object of class \code{\link{nosoiSim}}
+#' @param pop the population to be considered (one of "A" or "B")
+#'
+#' @return A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
+#' phylogenetic tree and the mapped data at all the nodes.
+#'
+#' @seealso For exporting the annotated tree to other softwares, see functions
+#' in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
+#'
+#' To sub-sample this tree, see function \code{\link{sampleTransmissionTree}}
+#'
+##
+getTransmissionTree <- function(nosoiInf, pop = "A") {
   if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
     stop("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.",
          call. = FALSE)
   }
 
-  table.hosts <- nosoiInf$host.info.A$table.hosts
+  table.hosts <- getTableHosts(nosoiInf, pop = pop)
   setorder(table.hosts, "inf.time")
 
   # Indicators for tips and nodes
@@ -167,34 +115,82 @@ getTransmissionTree <- function(nosoiInf) {
   class(treeTable) <- c("tbl_tree", class(treeTable))
   resTree <- tidytree::as.treedata(treeTable)
   resTree@phylo$root.edge <- treeTable[[1, "branch.length"]]
+  resTree@info <- list(pop = pop)
   return(resTree)
 }
 
-## Get infos
-get_node <- function(tree, host, time) {
+#' @title Get Node
+#'
+#' @description
+#'  Find the node descending from the branch where the host lies at a given
+#'  time on the transmission tree.
+#'
+#' @param tdata a tibble extracted from a \code{treedata} object.
+#' @param host host id
+#' @param time time at which to sample the host
+#'
+#' @return number of the node in the transmission tree descending from the
+#' host at given time.
+#'
+#' @seealso \code{\link{get_position}}
+#'
+#' @keywords internal
+##
+get_node <- function(tdata, host, time) {
   # Host
-  node_bool_host <- (tree@data$host == host)
+  node_bool_host <- (tdata$host == host)
   if (sum(node_bool_host) < 1) stop(paste0("There are no node with host ", host, " in the tree."))
   # Time
-  node_bool <- node_bool_host & (tree@data$time > time) & (tree@data$time.parent <= time)
+  node_bool <- node_bool_host & (tdata$time > time) & (tdata$time.parent <= time)
   if (sum(node_bool) < 1) {
     # Tip case
-    node_bool <- node_bool_host & (tree@data$time >= time) & (tree@data$time.parent <= time)
+    node_bool <- node_bool_host & (tdata$time >= time) & (tdata$time.parent <= time)
     if (sum(node_bool) < 1) {
       stop(paste0("Host ", host, " is not alive at time ", time, "."))
     }
     if (sum(node_bool) > 1) {
-      return(min(tree@data$node[node_bool])) # get the tip if ambiguity
+      return(min(tdata$node[node_bool])) # get the tip if ambiguity
     }
   }
   # Return node number
-  return(tree@data$node[node_bool])
+  return(tdata$node[node_bool])
 }
 
-get_position <- function(tree, node, time) {
-  return(tree@data[tree@data$node == node, "time", drop = TRUE] - time)
+#' @title Get Position on branch
+#'
+#' @description
+#'  Find the position on the branch above the node of the times sample.
+#'  Warning: The node needs to be extracted with \code{\link{get_node}}.
+#'  Result of this function is to be used in \code{\link[ape]{bind.tree}}
+#'
+#' @param tdata a tibble extracted from a \code{treedata} object.
+#' @param node node below the sampling event
+#' @param time time of the sampling event
+#'
+#' @return time between the node and the sampling event.
+#'
+#' @seealso \code{\link{get_node}}
+#'
+#' @keywords internal
+##
+get_position <- function(tdata, node, time) {
+  return(tdata[tdata$node == node, "time", drop = TRUE] - time)
 }
 
+#' @title Get State at sampling time
+#'
+#' @description
+#'  Find the state of the host at the sampling time
+#'
+#' @param table.state data.table of hosts movement, extracted from a \code{nosoi} object
+#' @param host ID of the host
+#' @param time time of the sampling event
+#' @param total.time total time of the epidemics, extracted from the \code{nosoi} object
+#'
+#' @return state of the host
+#'
+#' @keywords internal
+##
 get_state <- function(table.state, host, time, total.time) {
   if (time > total.time) stop(paste0("Time ", time, " is larger than total time ", total.time, " for the epidemic."))
   table.state$time.to[is.na(table.state$time.to)] <- Inf
@@ -210,10 +206,30 @@ get_state <- function(table.state, host, time, total.time) {
 }
 
 ## Add one tip
-add_node_tip <- function(tree, node, label, time, host, state) {
-  # parameters
+#' @title Add one tip
+#'
+#' @description
+#'  Add a tip to the transmission tree corresponding to the sampled individual.
+#'
+#' @param tree transmission tree of class \code{treedata}, result of \code{\link{getTransmissionTree}}
+#' @param host ID of the host
+#' @param time time of the sampling event
+#' @param label label of the new tip to be added
+#' @param state state of the sampled individual
+#'
+#' @return modified tree, with on extra tip of length zero at the right place of the tree
+#'
+#' @keywords internal
+##
+add_node_tip <- function(tree, host, time, label, state) {
+  # Tree info
+  node <- get_node(tree@data, host, time)
   oldTree <- tree@phylo
   oldData <- tidytree::as_tibble(tree)
+  # Check label
+  if (label %in% c(oldTree$tip.label, oldTree$node.label)) {
+    stop(paste0("Label ", label, " is invalid: please choose a label that is unique."))
+  }
   # new tip
   tip <- list(edge = matrix(c(2,1),1,2),
               tip.label = label,
@@ -227,7 +243,7 @@ add_node_tip <- function(tree, node, label, time, host, state) {
                          time.parent = c(time, oldData[oldData$node == node, "time.parent", drop = TRUE]),
                          time = c(time, time))
   # bind ape objects
-  newTree <- ape::bind.tree(oldTree, tip, node, get_position(tree, node, time))
+  newTree <- ape::bind.tree(oldTree, tip, node, get_position(tree@data, node, time))
   newTree$node.label[is.na(newTree$node.label)] <- tip$node.label
   newTreeTibble <- tidytree::as_tibble(newTree)
   # bind data objects
@@ -241,20 +257,58 @@ add_node_tip <- function(tree, node, label, time, host, state) {
   return(resTree)
 }
 
+## Vectorized version
+draw_one_sample <- function(table.states, total.time, tree, sample) {
+  state <- get_state(table.states, sample$hosts, sample$times, total.time)
+  return(add_node_tip(tree,
+                      sample$hosts,
+                      sample$times,
+                      sample$labels,
+                      state))
+}
 
 ## Sample the tree
+##
+#' @title  Sample the transmission tree
+#'
+#' @description
+#'  Sample a full transmission tree. This function allows for sampling multiple
+#'  times on the same lineage. When this happens, the sampled anscestor is
+#'  a tip with length zero.
+#'
+#' @details
+#'  The tree needs to be produced by function \code{\link{getTransmissionTree}}
+#'  applied on the same \code{nosioSim} object.
+#'
+#' @param nosoiInf an object of class \code{\link{nosoiSim}}
+#' @param tree a \code{\link[tidytree:treedata]{treedata}} object created by function \code{\link{getTransmissionTree}}
+#' @param samples a \code{\link[data.table:data.table-package]{data.table}} object with the following entries:
+#' \describe{
+#'   \item{hosts}{Host ID of the individuals to be sampled}
+#'   \item{times}{Times at which each host is sampled}
+#'   \item{labels}{label for the corresponding tip in the tree}
+#' }
+#'
+#' @return A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
+#' phylogenetic tree and the mapped data at all the nodes.
+#'
+#' @seealso For exporting the annotated tree to other softwares, see functions
+#' in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
+#'
+#' For sampling only dead individuals, see \code{\link{sampleTransmissionTreeFromTheDead}}.
+#'
+##
 sampleTransmissionTree <- function(nosoiInf, tree, samples) {
+  ## Extract table state
+  pop <- tree@info$pop
+  if (is.null(pop) || !(pop == "A" || pop == "B")){
+    stop("The tree object has an incorect format. It should be produced by function 'getTransmissionTree'. See documentation.")
+  }
+  table.states <- getTableState(nosoiInf, pop = pop)
+  tottime <- nosoiInf$total.time
   ## Add all tips
   for (i in 1:nrow(samples)) {
-    node <- get_node(tree, samples$hosts[i], samples$times[i])
-    state <- get_state(nosoiInf$host.info.A$table.state, samples$hosts[i], samples$times[i], nosoiInf$total.time)
-
-    tree <- add_node_tip(tree,
-                         node,
-                         samples$labels[i],
-                         samples$times[i],
-                         samples$hosts[i],
-                         state)
+    tree <- draw_one_sample(table.states, tottime, tree, samples[i, ])
   }
 
   resTree <- treeio::drop.tip(tree, tree@phylo$tip.label[-match(samples$labels, tree@phylo$tip.label)])
@@ -262,20 +316,105 @@ sampleTransmissionTree <- function(nosoiInf, tree, samples) {
   return(resTree)
 }
 
-# ## Trim all the tips below a given node
-# trim_tree <- function(tree, node, label, relative_time) {
-#   # Clade under the node
-#   sub_tree <- tree_subset(tree = tree, node = node, levels_back = 0)
-#   tips <- get.tree(sub_tree)$tip.label
-#   # Add node as tip
-#   add_tip(tree)
-#   # Trim the whole clade
-#   ttree <- drop.tip.treedata(tree, tips, subtree = TRUE)
-#   # Label the new tip
-#   new_tip_int <- grep("\\[.*\\]", get.tree(ttree)$tip.label)
-#   get.tree(ttree)$tip.label[new_tip_int] <- label
-#   # Cut to right time
-#   new_tip_edge <- get.tree(ttree)$edge[, 2] == new_tip_int
-#   get.tree(ttree)$edge.length[new_tip_edge] <- relative_time * get.tree(ttree)$edge.length[new_tip_edge]
-#   return(ttree)
+##
+#' @title  Sample the transmission tree among the dead
+#'
+#' @description
+#'  Sample a full transmission tree. This function allows for sampling only dead
+#'  individuals (the sampling procedure is destructive).
+#'
+#' @details
+#'  The tree needs to be produced by function \code{\link{getTransmissionTree}}
+#'  applied on the same \code{nosioSim} object.
+#'
+#' @param tree a \code{\link[tidytree:treedata-class]{treedata}} object created by function \code{\link{getTransmissionTree}}
+#' @param hosts a vector of dead hosts to sample
+#'
+#' @return A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
+#' phylogenetic tree and the mapped data at all the nodes.
+#'
+#' @seealso For exporting the annotated tree to other softwares, see functions
+#' in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
+#'
+#' For sampling non-dead individuals, see \code{\link{sampleTransmissionTree}}.
+#'
+##
+sampleTransmissionTreeFromTheDead <- function(tree, hosts) {
+  resTree <- treeio::drop.tip(tree, tree@phylo$tip.label[-match(hosts, tree@phylo$tip.label)])
+  resTree@phylo$root.edge <- tree@phylo$root.edge
+  return(resTree)
+}
+
+# treeGenerator = function(transmission_matrix, samples, sampling_times)
+# {
+#   output_format = "tree"; nberOfTraits = dim(transmission_matrix)[2]-3; trait_names = c()
+#   for (i in 4:dim(transmission_matrix)[2]) trait_names = c(trait_names, colnames(transmission_matrix)[i])
+#   nodes = samples; times = sampling_times; clades = nodes
+#   for (i in 1:length(nodes))
+#   {
+#     clade = paste0(nodes[i],"[&ind=",nodes[i])
+#     for (j in 1:nberOfTraits)
+#     {
+#       index = which(transmission_matrix[,"hosts.ID"]==nodes[i])
+#       clade = paste0(clade,",",trait_names[j],"=",transmission_matrix[index,trait_names[j]])
+#     }
+#     clades[i] = paste0(as.character(clade),"]")
+#   }
+#   t0 = max(sampling_times)
+#   for (t in t0:0)
+#   {
+#     newNodes = c(); newTimes = c(); newClades = c()
+#     indices1 = rep(NA, length(nodes)); infDates = rep(NA, length(nodes)); ancestors = rep(NA, length(nodes))
+#     for (i in 1:length(nodes))
+#     {
+#       indices1[i] = which(transmission_matrix[,"hosts.ID"]==nodes[i])
+#       infDates[i] = transmission_matrix[indices1[i], "inf.time"]
+#       ancestors[i] = transmission_matrix[indices1[i], "inf.by"]
+#     }
+#     indices2 = which(infDates==t)
+#     for (i in 1:length(indices2))
+#     {
+#       nodes[indices2[i]] = ancestors[indices2[i]]
+#     }
+#     indices_already_used = c()
+#     for (i in 1:length(nodes))
+#     {
+#       if (!i%in%indices_already_used)
+#       {
+#         indices3 = which(nodes==nodes[i])
+#         indices3 = indices3[which(indices3!=i)]
+#         if (length(indices3) > 0)
+#         {
+#           t1 = times[i]-t
+#           clade = paste0("(",clades[[i]],":",t1)
+#           for (j in c(indices3))
+#           {
+#             t2 = times[j]-t
+#             clade = paste0(clade,",",clades[[j]],":",t2)
+#           }
+#           clade = paste0(clade,")")
+#           ancestor = nodes[i]
+#           traits = paste0("[&ind=",ancestor)
+#           for (j in 1:nberOfTraits)
+#           {
+#             index = which(transmission_matrix[,"hosts.ID"]==nodes[i])
+#             traits = paste0(traits,",",trait_names[j],"=",transmission_matrix[index,trait_names[j]])
+#           }
+#           clade = paste0(clade,traits,"]")
+#           newNodes = c(newNodes, nodes[i])
+#           newTimes = c(newTimes, t)
+#           newClades = c(newClades, clade)
+#           indices_already_used = c(indices_already_used, i, indices3)
+#         }	else		{
+#           newNodes = c(newNodes, nodes[i])
+#           newTimes = c(newTimes, times[i])
+#           newClades = c(newClades, clades[i])
+#         }
+#       }
+#     }
+#     nodes = newNodes; times = newTimes; clades = newClades; print(length(nodes))
+#   }
+#   if (output_format == "tree") tree = read.tree(text=paste0(clades[[1]],";"))
+#   if (output_format == "text") tree = paste0(clades[[1]],";")
+#   return(tree)
 # }
