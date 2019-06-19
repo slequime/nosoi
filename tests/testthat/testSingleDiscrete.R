@@ -194,44 +194,6 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   #Get state table
   test.stateTable.A <- getTableState(test.nosoiA)
   expect_equal(test.stateTable.A[52]$hosts.ID, "H-26")
-
-  ## transmission tree
-  ttreedata <- getTransmissionTree(test.nosoiA)
-  ttree <- ttreedata@phylo
-  tdata <- ttreedata@data
-  # total time
-  expect_equal(max(diag(ape::vcv(ttree))) + ttree$root.edge, test.nosoiA$total.time)
-  # hosts
-  nHosts <- nrow(test.hostTable.A)
-  for (i in 2:nrow(test.hostTable.A)) {
-    expect_equal(subset(tdata, node == nHosts + test.hostTable.A$indNodes[i] - 1)$host,
-                 test.hostTable.A$inf.by[i])
-  }
-  # number of descendants
-  for (i in 2:nrow(test.hostTable.A)) {
-    expect_equal(length(tidytree::child(ttree, nHosts + test.hostTable.A$indNodes[i] - 1)),
-                 sum(test.hostTable.A$indNodes == test.hostTable.A$indNodes[i]) + 1)
-  }
-
-  ## Extract some samples from the transmission tree
-  samples <- data.table(hosts = c("H-1", "H-7", "H-15", "H-100"),
-                        times = c(5.2, 9.3, 10.2, 16),
-                        labels = paste0(c("H-1", "H-7", "H-15", "H-100"), "-s"))
-
-  sampledTree <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
-  # plot(sampledTree@phylo)
-
-  sttree <- sampledTree@phylo
-  stdata <- sampledTree@data
-  # total time
-  expect_equal(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
-  # DO MORE TESTS
-
-  ## Sampling from the deads
-  sampledDeadTree <- sampleTransmissionTreeFromTheDead(ttreedata, paste0("H-", c(1, 3, 22, 100, 105)))
-  # plot(sampledDeadTree@phylo)
-
-  # DO SOME TESTS
 })
 
 #--------------------------------------------------------------------------------------------------------------------------------------------

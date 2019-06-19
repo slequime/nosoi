@@ -197,12 +197,12 @@ get_state <- function(table.state, host, time, total.time) {
   node_bool_host <- (table.state$hosts.ID == host)
   if (sum(node_bool_host) < 1) stop(paste0("There are no host named ", host, " in the chain."))
   # Time
-  node_bool <- node_bool_host & (table.state$time.to > time) & (table.state$time.from <= time)
+  node_bool <- node_bool_host & (table.state$time.to >= time) & (table.state$time.from <= time)
   if (sum(node_bool) < 1) {
     stop(paste0("Host ", host, " is not alive at time ", time, "."))
   }
   # Return node number
-  return(table.state$state[node_bool])
+  return(table.state$state[node_bool][length(table.state$state[node_bool])]) # get last row if ambiguity
 }
 
 ## Add one tip
