@@ -46,7 +46,8 @@ getTransmissionTree <- function(nosoiInf, pop = "A") {
 
   # Initialize the tree
   treeTable <- tidytree::tibble(parent = NA_integer_, node = NA_integer_, branch.length = NA,
-                                label = NA_character_, host = NA, state = NA,
+                                label = NA_character_, host = NA,
+                                state = NA, state.x = NA, state.y = NA,
                                 time.parent = NA, time = NA,
                                 .rows = nEdges)
 
@@ -78,7 +79,9 @@ getTransmissionTree <- function(nosoiInf, pop = "A") {
                                   branch.length = t_child - t_parent,
                                   label = paste0(sst[["inf.by"]], "_", counter),
                                   host = sst[["inf.by"]],
-                                  state = table.hosts[child, "inf.in"],
+                                  state = safeGet(table.hosts, child, "inf.in"),
+                                  state.x = safeGet(table.hosts, child, "inf.in.x"),
+                                  state.y = safeGet(table.hosts, child, "inf.in.y"),
                                   time.parent = t_parent,
                                   time = t_child)
       } else {
@@ -87,7 +90,9 @@ getTransmissionTree <- function(nosoiInf, pop = "A") {
                                   branch.length = t_child - t_parent,
                                   label = paste0(sst[["inf.by"]], "_", counter),
                                   host = sst[["inf.by"]],
-                                  state = table.hosts[child, "inf.in"],
+                                  state = safeGet(table.hosts, child, "inf.in"),
+                                  state.x = safeGet(table.hosts, child, "inf.in.x"),
+                                  state.y = safeGet(table.hosts, child, "inf.in.y"),
                                   time.parent = t_parent,
                                   time = t_child)
       }
@@ -105,18 +110,34 @@ getTransmissionTree <- function(nosoiInf, pop = "A") {
                               branch.length = t_child - t_parent,
                               label = hosts[curentHost],
                               host = hosts[curentHost],
-                              state = table.hosts[curentHost, "current.in"],
+                              state = safeGet(table.hosts, curentHost, "current.in"),
+                              state.x = safeGet(table.hosts, curentHost, "current.in.x"),
+                              state.y = safeGet(table.hosts, curentHost, "current.in.y"),
                               time.parent = t_parent,
                               time = t_child)
     counter <- counter + 1
 
   }
+  # Remove NAs
+  popStructure <- getHostInfo(nosoiInf, "popStructure", pop = pop)
+  switch(popStructure,
+         discrete = treeTable$state.x <- treeTable$state.y <- NULL,
+         continuous = treeTable$state <- NULL)
+
   # Get correct object
   class(treeTable) <- c("tbl_tree", class(treeTable))
   resTree <- tidytree::as.treedata(treeTable)
   resTree@phylo$root.edge <- treeTable[[1, "branch.length"]]
   resTree@info <- list(pop = pop)
   return(resTree)
+}
+
+## Utility functions to get entries in the table, returning NA if does not exist.
+is.error <- function(x) inherits(x, "try-error")
+safeGet <- function(dt, i, name) {
+  res <- try(dt[i, name, with = FALSE], silent = TRUE)
+  if (is.error(res)) return(NA);
+  return(res)
 }
 
 #' @title Get Node
@@ -202,7 +223,9 @@ get_state <- function(table.state, host, time, total.time) {
     stop(paste0("Host ", host, " is not alive at time ", time, "."))
   }
   # Return node number
-  return(table.state$state[node_bool][length(table.state$state[node_bool])]) # get last row if ambiguity
+  return(c(state = table.state$state[node_bool][length(table.state$state[node_bool])], # get last row if ambiguity
+           state.x = table.state$state.x[node_bool][length(table.state$state.x[node_bool])],
+           state.y = table.state$state.y[node_bool][length(table.state$state.y[node_bool])]))
 }
 
 ## Add one tip
@@ -239,9 +262,14 @@ add_node_tip <- function(tree, host, time, label, state) {
   class(tip) <- "phylo"
   df <- tidytree::tibble(label = c(label, paste0("node_", label)),
                          host = c(host, host),
-                         state = c(state, state),
                          time.parent = c(time, oldData[oldData$node == node, "time.parent", drop = TRUE]),
                          time = c(time, time))
+  if (length(state) == 1) {
+    df$state <- c(state, state)
+  } else {
+    df$state.x <- c(state["state.x"], state["state.x"])
+    df$state.y <- c(state["state.y"], state["state.y"])
+  }
   # bind ape objects
   newTree <- ape::bind.tree(oldTree, tip, node, get_position(tree@data, node, time))
   newTree$node.label[is.na(newTree$node.label)] <- tip$node.label
