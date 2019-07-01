@@ -19,6 +19,8 @@
 #'
 #' To sub-sample this tree, see function \code{\link{sampleTransmissionTree}}
 #'
+#' @export getTransmissionTree
+#'
 ##
 getTransmissionTree <- function(nosoiInf, pop = "A") {
   if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
@@ -325,6 +327,8 @@ draw_one_sample <- function(table.states, total.time, tree, sample) {
 #'
 #' For sampling only dead individuals, see \code{\link{sampleTransmissionTreeFromTheDead}}.
 #'
+#' @export sampleTransmissionTree
+#'
 ##
 sampleTransmissionTree <- function(nosoiInf, tree, samples) {
   ## Extract table state
@@ -365,6 +369,8 @@ sampleTransmissionTree <- function(nosoiInf, tree, samples) {
 #' in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
 #'
 #' For sampling non-dead individuals, see \code{\link{sampleTransmissionTree}}.
+#'
+#' @export sampleTransmissionTreeFromTheDead
 #'
 ##
 sampleTransmissionTreeFromTheDead <- function(tree, hosts) {
