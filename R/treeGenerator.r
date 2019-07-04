@@ -273,7 +273,19 @@ add_node_tip <- function(tree, host, time, label, state) {
     df$state.y <- c(state["state.y"], state["state.y"])
   }
   # bind ape objects
-  newTree <- ape::bind.tree(oldTree, tip, node, get_position(tree@data, node, time))
+  position_tip <- get_position(tree@data, node, time)
+  if (position_tip == 0 && node <= length(oldTree$tip.label)) {
+    ## Special case when trying to add a tip to a tip
+    ed <- which(oldTree$edge[, 2] == node)
+    ed_l <- oldTree$edge.length[ed]
+    node_label <- oldTree$tip.label[node]
+    oldTree$edge.length[ed] <- ed_l + 1 ## Add one at the tip
+    newTree <- ape::bind.tree(oldTree, tip, node, 1) ## Bind the new tip there
+    new_node <- which(newTree$tip.label == node_label)
+    oldTree$edge.length[which(oldTree$edge[, 2] == new_node)] <- ed_l - 1 ## Remove one ot the tip
+  } else {
+    newTree <- ape::bind.tree(oldTree, tip, node, position_tip)
+  }
   newTree$node.label[is.na(newTree$node.label)] <- tip$node.label
   newTreeTibble <- tidytree::as_tibble(newTree)
   # bind data objects

@@ -188,9 +188,9 @@ test_that("Single, continuous", {
                tolerance = 1.0e-6)
 
   ## Full extraction
-  samples <- data.table(hosts = c("H-1", "H-3", "H-5", "H-85"),
-                        times = c(5.2, 9.3, 10.2, 20),
-                        labels = paste0(c("H-1", "H-3", "H-5", "H-85"), "-s"))
+  samples <- data.table(hosts = c("H-1", "H-3", "H-85", "H-5"),
+                        times = c(5.2, 9.3, 20, 10.2),
+                        labels = paste0(c("H-1", "H-3", "H-85", "H-5"), "-s"))
 
   sampledTree <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
   # plot(sampledTree@phylo)
