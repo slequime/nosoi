@@ -127,9 +127,11 @@ getTransmissionTree <- function(nosoiInf, pop = "A") {
          continuous = treeTable$state <- NULL)
 
   # Get correct object
+  root_length <- treeTable[[1, "branch.length"]]
+  treeTable <- dplyr::arrange(treeTable, node)
   class(treeTable) <- c("tbl_tree", class(treeTable))
   resTree <- tidytree::as.treedata(treeTable)
-  resTree@phylo$root.edge <- treeTable[[1, "branch.length"]]
+  resTree@phylo$root.edge <- root_length
   resTree@info <- list(pop = pop)
   return(resTree)
 }
@@ -264,7 +266,7 @@ add_node_tip <- function(tree, host, time, label, state) {
   class(tip) <- "phylo"
   df <- tidytree::tibble(label = c(label, paste0("node_", label)),
                          host = c(host, host),
-                         time.parent = c(time, oldData[oldData$node == node, "time.parent", drop = TRUE]),
+                         time.parent = c(oldData[oldData$node == node, "time.parent", drop = TRUE], oldData[oldData$node == node, "time.parent", drop = TRUE]),
                          time = c(time, time))
   if (length(state) == 1) {
     df$state <- c(state, state)
@@ -282,7 +284,7 @@ add_node_tip <- function(tree, host, time, label, state) {
     oldTree$edge.length[ed] <- ed_l + 1 ## Add one at the tip
     newTree <- ape::bind.tree(oldTree, tip, node, 1) ## Bind the new tip there
     new_node <- which(newTree$tip.label == node_label)
-    oldTree$edge.length[which(oldTree$edge[, 2] == new_node)] <- ed_l - 1 ## Remove one ot the tip
+    newTree$edge.length[which(newTree$edge[, 2] == new_node)] <- ed_l - 1 ## Remove one ot the tip
   } else {
     newTree <- ape::bind.tree(oldTree, tip, node, position_tip)
   }
@@ -290,7 +292,7 @@ add_node_tip <- function(tree, host, time, label, state) {
   newTreeTibble <- tidytree::as_tibble(newTree)
   # bind data objects
   oldData <- oldData[-c(1, 2, 3)]
-  newData <- rbind(oldData, df)
+  newData <- rbind(df, oldData)
   # Create new treedata
   newTibbleTree <- tidytree::full_join(newTreeTibble, newData, by = "label")
   # New Object
@@ -355,8 +357,9 @@ sampleTransmissionTree <- function(nosoiInf, tree, samples) {
     tree <- draw_one_sample(table.states, tottime, tree, samples[i, ])
   }
 
-  resTree <- treeio::drop.tip(tree, tree@phylo$tip.label[-match(samples$labels, tree@phylo$tip.label)])
-  resTree@phylo$root.edge <- tree@phylo$root.edge
+  # resTree <- treeio::drop.tip(tree, tree@phylo$tip.label[-match(samples$labels, tree@phylo$tip.label)])
+  # resTree@phylo$root.edge <- tree@phylo$root.edge
+  resTree <- keep.tip.treedata(tree, samples$labels)
   return(resTree)
 }
 
@@ -386,8 +389,43 @@ sampleTransmissionTree <- function(nosoiInf, tree, samples) {
 #'
 ##
 sampleTransmissionTreeFromTheDead <- function(tree, hosts) {
-  resTree <- treeio::drop.tip(tree, tree@phylo$tip.label[-match(hosts, tree@phylo$tip.label)])
-  resTree@phylo$root.edge <- tree@phylo$root.edge
+  # resTree <- treeio::drop.tip(tree, tree@phylo$tip.label[-match(hosts, tree@phylo$tip.label)])
+  # resTree@phylo$root.edge <- tree@phylo$root.edge
+  resTree <- keep.tip.treedata(tree, hosts)
+  return(resTree)
+}
+
+##
+#' @title  Keep tips
+#'
+#' @description
+#'  Keep the tips in the list. See \code{\link[ape:keep.tip]{keep.tip}}
+#'
+#' @keywords internal
+#'
+##
+keep.tip.treedata <- function(tree, tip) {
+  # Tree info
+  oldTree <- tree@phylo
+  oldData <- tidytree::as_tibble(tree)
+  # keep.tip ape objects
+  newTree <- ape::keep.tip(oldTree, tip)
+  # mrca
+  pos <- oldTree$edge[, 2] == ape::getMRCA(oldTree, tip)
+  if (any(pos)) {
+    root_length <- oldTree$edge.length[pos]
+  } else {
+    root_length <- oldTree$root.edge
+  }
+  # tible
+  newTreeTibble <- tidytree::as_tibble(newTree)
+  # bind data objects
+  oldData <- oldData[-c(1, 2, 3)]
+  # Create new treedata
+  newTibbleTree <- dplyr::left_join(newTreeTibble, oldData, by = "label")
+  # New Object
+  resTree <- tidytree::as.treedata(newTibbleTree)
+  resTree@phylo$root.edge <- root_length
   return(resTree)
 }
 

@@ -88,9 +88,10 @@ test_that("Single, discrete", {
   expect_equal(get_position(tdata, 127, 7.5), 0.5)
 
   ## Full extraction
-  samples <- data.table(hosts = c("H-1", "H-7", "H-15", "H-100"),
+  hID <- c("H-1", "H-7", "H-15", "H-100")
+  samples <- data.table(hosts = hID,
                         times = c(5.2, 9.3, 10.2, 16),
-                        labels = paste0(c("H-1", "H-7", "H-15", "H-100"), "-s"))
+                        labels = paste0(hID, "-s"))
 
   sampledTree <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
   # plot(sampledTree@phylo)
@@ -102,10 +103,22 @@ test_that("Single, discrete", {
   # DO MORE TESTS
 
   ## Sampling from the deads
-  sampledDeadTree <- sampleTransmissionTreeFromTheDead(ttreedata, paste0("H-", c(1, 7, 15, 100)))
+  sampledDeadTree <- sampleTransmissionTreeFromTheDead(ttreedata, hID)
   # plot(sampledDeadTree@phylo)
+  sampledDeadTreeData <- tidytree::as_tibble(sampledDeadTree)
+  sampledDeadTreeData[1:length(hID), ] <- sampledDeadTreeData[match(hID, sampledDeadTreeData$label), ]
 
-  # DO SOME TESTS
+  # Check that the two methods give the same results
+  samples <- data.table(hosts = hID,
+                        times = thostTable[match(hID, thostTable$host), "out.time"],
+                        labels = paste0(hID, "-s"))
+  sampledTreeDeadBis <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
+  sampledTreeDeadBisData <- tidytree::as_tibble(sampledTreeDeadBis)
+
+  expect_equal(sampledDeadTreeData$state, sampledTreeDeadBisData$state)
+  expect_equal(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
+  expect_equal(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
+  expect_equal(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
 })
 
 test_that("Single, continuous", {
@@ -188,9 +201,10 @@ test_that("Single, continuous", {
                tolerance = 1.0e-6)
 
   ## Full extraction
-  samples <- data.table(hosts = c("H-1", "H-3", "H-85", "H-5"),
+  hID <- c("H-1", "H-3", "H-85", "H-5")
+  samples <- data.table(hosts = hID,
                         times = c(5.2, 9.3, 20, 10.2),
-                        labels = paste0(c("H-1", "H-3", "H-85", "H-5"), "-s"))
+                        labels = paste0(hID, "-s"))
 
   sampledTree <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
   # plot(sampledTree@phylo)
@@ -202,8 +216,23 @@ test_that("Single, continuous", {
   # DO MORE TESTS
 
   ## Sampling from the deads
-  sampledDeadTree <- sampleTransmissionTreeFromTheDead(ttreedata, paste0("H-", c(1, 3, 5, 85)))
+  sampledDeadTree <- sampleTransmissionTreeFromTheDead(ttreedata, hID)
   # plot(sampledDeadTree@phylo)
+  sampledDeadTreeData <- tidytree::as_tibble(sampledDeadTree)
+  sampledDeadTreeData[1:length(hID), ] <- sampledDeadTreeData[match(hID, sampledDeadTreeData$label), ]
 
-  # DO SOME TESTS
+  # Check that the two methods give the same results
+  samples <- data.table(hosts = hID,
+                        times = thostTable[match(hID, thostTable$host), "out.time"],
+                        labels = paste0(hID, "-s"))
+  sampledTreeDeadBis <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
+  sampledTreeDeadBisData <- tidytree::as_tibble(sampledTreeDeadBis)
+
+  expect_equal(sampledDeadTreeData$state.x, sampledTreeDeadBisData$state.x)
+  expect_equal(sampledDeadTreeData$state.y, sampledTreeDeadBisData$state.y)
+  expect_equal(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
+  expect_equal(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
+  expect_equal(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
+
 })
+
