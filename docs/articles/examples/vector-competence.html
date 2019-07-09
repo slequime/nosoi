@@ -123,16 +123,19 @@
       <a href="../../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
     </li>
     <li>
-      <a href="../../articles/examples/ebola.html">Spread of Ebola virus in a continuous space</a>
+      <a href="../../articles/examples/ebola.html">Spread of an Ebola-like virus in a continuous space</a>
     </li>
     <li>
       <a href="../../articles/examples/vector-competence.html">Epidemiological impact of mosquito vector competence variation</a>
     </li>
     <li>
-      <a href="../../articles/examples/viz_stat.html">`nosoi` output and visualization</a>
+      <a href="../../articles/examples/viz.html">Visualization tips</a>
     </li>
     <li>
       <a href="../../articles/none.html">Spread of a pathogen in a homogeneous population</a>
+    </li>
+    <li>
+      <a href="../../articles/output.html">`nosoi` output and summarisation</a>
     </li>
   </ul>
 </li>
@@ -159,7 +162,7 @@
       <h1>Epidemiological impact of mosquito vector competence variation</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-05-13</h4>
+            <h4 class="date">2019-07-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/vector-competence.Rmd"><code>vignettes/examples/vector-competence.Rmd</code></a></small>
       <div class="hidden name"><code>vector-competence.Rmd</code></div>
@@ -401,46 +404,15 @@
 <a class="sourceLine" id="cb8-95" data-line-number="95">                        </a>
 <a class="sourceLine" id="cb8-96" data-line-number="96">                        <span class="dt">print.progress=</span><span class="ot">FALSE</span>)</a></code></pre></div>
 </div>
-<div id="analyzing-the-results" class="section level1">
+<div id="analyzing-the-results-and-conclusions" class="section level1">
 <h1 class="hasAnchor">
-<a href="#analyzing-the-results" class="anchor"></a>Analyzing the results</h1>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/load">load</a></span>(<span class="st">"/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Haiti.RData"</span>)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/load">load</a></span>(<span class="st">"/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Thai2.RData"</span>)</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/load">load</a></span>(<span class="st">"/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Laos.RData"</span>)</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">results =<span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="cf">for</span> (rep <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>){</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">  temp1=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">N=</span>results.list.Haiti[[rep]]<span class="op">$</span>host.info.A<span class="op">$</span>N.infected, <span class="dt">rep=</span>rep, <span class="dt">isolate=</span><span class="st">"Haiti2012"</span>)</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">  temp2=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">N=</span>results.list.Thai[[rep]]<span class="op">$</span>host.info.A<span class="op">$</span>N.infected, <span class="dt">rep=</span>rep, <span class="dt">isolate=</span><span class="st">"Thai2010b"</span>)</a>
-<a class="sourceLine" id="cb9-10" data-line-number="10">  temp3=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">N=</span>results.list.Laos[[rep]]<span class="op">$</span>host.info.A<span class="op">$</span>N.infected, <span class="dt">rep=</span>rep, <span class="dt">isolate=</span><span class="st">"Laos2012"</span>)</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">  results =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(results, temp1,temp2,temp3)</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13">}</a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16">results2 =<span class="st"> </span>results <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(isolate) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">type=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(N <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span>, <span class="st">"BIG"</span>,</a>
-<a class="sourceLine" id="cb9-17" data-line-number="17">                                                                 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(N <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">"FAIL"</span>,</a>
-<a class="sourceLine" id="cb9-18" data-line-number="18">                                                                        <span class="st">"SMALL"</span>))) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(type, isolate) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">N=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(type))</a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20">results2<span class="op">$</span>type &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">factor</a></span>(results2<span class="op">$</span>type, <span class="dt">levels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"FAIL"</span>,<span class="st">"SMALL"</span>, <span class="st">"BIG"</span>))</a>
-<a class="sourceLine" id="cb9-21" data-line-number="21">results2<span class="op">$</span>isolate &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">factor</a></span>(results2<span class="op">$</span>isolate, <span class="dt">levels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Laos2012"</span>,<span class="st">"Thai2010b"</span>, <span class="st">"Haiti2012"</span>))</a>
-<a class="sourceLine" id="cb9-22" data-line-number="22">plotF =<span class="st"> </span><span class="kw">ggplot</span>(results2, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(isolate) , <span class="dt">y =</span>N , <span class="dt">alpha=</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(type),<span class="dt">fill=</span>isolate)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">stat=</span><span class="st">"identity"</span>) <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>() <span class="op">+</span><span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">"Set2"</span>, <span class="dt">guide=</span><span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="st">  </span><span class="kw">scale_alpha_discrete</span>(<span class="dt">name=</span><span class="st">"Number of secondary </span><span class="ch">\n</span><span class="st"> human infections"</span>,</a>
-<a class="sourceLine" id="cb9-25" data-line-number="25">                       <span class="dt">breaks=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"BIG"</span>, <span class="st">"SMALL"</span>, <span class="st">"FAIL"</span>),</a>
-<a class="sourceLine" id="cb9-26" data-line-number="26">                       <span class="dt">labels=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"≥ 100"</span>, <span class="st">"&lt; 100"</span>, <span class="st">"None"</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expression">expression</a></span>(<span class="st">'Isolate'</span>), <span class="dt">expand =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.01</span>, <span class="dv">0</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-28" data-line-number="28"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="st">"Percentage of simulations"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-29" data-line-number="29"><span class="st">  </span><span class="kw">theme_minimal</span>(<span class="dt">base_size =</span> <span class="dv">12</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">strip.text=</span><span class="kw">element_text</span>(<span class="dt">face=</span><span class="st">"bold"</span>), <span class="dt">axis.text.x=</span><span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">45</span>, <span class="dt">vjust=</span><span class="fl">1.2</span>,<span class="dt">hjust=</span><span class="dv">1</span>), <span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">vjust =</span> <span class="dv">0</span>))</a></code></pre></div>
+<a href="#analyzing-the-results-and-conclusions" class="anchor"></a>Analyzing the results and conclusions</h1>
+<p>To analyse the results here, we classify each simulation into 3 categories based on the number of humans infected: over 100 infected, below 100 infected and no secondary case (just one infected). We then plot the results:</p>
 <pre><code>## Warning: Ignoring unknown parameters: binwidth, bins, pad</code></pre>
 <pre><code>## Warning: Using alpha for a discrete variable is not advised.</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">plotF</a></code></pre></div>
 <p><img src="vector-competence_files/figure-html/Output1-1.png" width="700"></p>
-</div>
-<div id="conclusions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#conclusions" class="anchor"></a>Conclusions</h1>
+<p>As we can see, the isolate Haiti2012 yielded less “big outbreaks” (&gt; 100 humans infected) compared to the two other isolates, which is coherent with its slower within-host dynamics. This result is similar to the one obtained in the original paper which used an earlier version of <code>nosoi</code> in a closed population.</p>
+<p>With a set of simulated transmission chain and its metadata anchoring them in time, and sometime space, <code>nosoi</code> offers a perfect setting to explore how within-host dynamics can drastically influence a pathogen epidemiology. Changes in any of the parameters are easy to implement, including drastic changes on how a certain probability or number is computed, allowing for a maximum flexibility.</p>
 </div>
   </div>
 
@@ -457,8 +429,7 @@
       </ul>
 </li>
       <li><a href="#running-nosoi">Running <code>nosoi</code></a></li>
-      <li><a href="#analyzing-the-results">Analyzing the results</a></li>
-      <li><a href="#conclusions">Conclusions</a></li>
+      <li><a href="#analyzing-the-results-and-conclusions">Analyzing the results and conclusions</a></li>
       </ul>
 </div>
       </div>

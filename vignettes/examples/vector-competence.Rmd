@@ -323,13 +323,14 @@ SimulationDual <- nosoiSim(type="dual", popStructure="none",
                         print.progress=FALSE)
 ```
 
-# Analyzing the results
+# Analyzing the results and conclusions
 
-```{r Output1, message=FALSE}
+To analyse the results here, we classify each simulation into 3 categories based on the number of humans infected: over 100 infected, below 100 infected and no secondary case (just one infected). We then plot the results:
+
+```{r Output1, echo = FALSE, message=FALSE}
 load("/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Haiti.RData")
 load("/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Thai2.RData")
 load("/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Laos.RData")
-
 
 results =NULL
 for (rep in 1:100){
@@ -339,7 +340,6 @@ for (rep in 1:100){
 
   results = rbind(results, temp1,temp2,temp3)
 }
-
 
 results2 = results %>% group_by(isolate) %>% mutate(type=ifelse(N > 100, "BIG",
                                                                  ifelse(N == 1, "FAIL",
@@ -356,12 +356,8 @@ plotF = ggplot(results2, aes(x = as.factor(isolate) , y =N , alpha= as.factor(ty
   scale_y_continuous("Percentage of simulations") +
   theme_minimal(base_size = 12) + theme(strip.text=element_text(face="bold"), axis.text.x=element_text(angle=45, vjust=1.2,hjust=1), axis.text.y = element_text(vjust = 0))
 plotF
-
-
 ```
 
-# Conclusions
+As we can see, the isolate Haiti2012 yielded less "big outbreaks" (> 100 humans infected) compared to the two other isolates, which is coherent with its slower within-host dynamics. This result is similar to the one obtained in the original paper which used an earlier version of `nosoi` in a closed population.
 
-
-
-
+With a set of simulated transmission chain and its metadata anchoring them in time, and sometime space, `nosoi` offers a perfect setting to explore how within-host dynamics can drastically influence a pathogen epidemiology. Changes in any of the parameters are easy to implement, including drastic changes on how a certain probability or number is computed, allowing for a maximum flexibility.
