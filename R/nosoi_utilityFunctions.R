@@ -160,10 +160,10 @@ paramConstructor <- function(param.pExit, param.pMove, param.nContact, param.pTr
 #' @keywords internal
 ##
 applyFunctionToHosts <- function(res, pres.time, pasedFunction, active.hosts) {
-  fun <- function(z) {
-    pasedFunction$vect(prestime = pres.time, z[, pasedFunction$vectArgs, with = FALSE])
-  }
-  return(res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]])
+  return(res$table.hosts[active.hosts,
+                         pasedFunction$vect(prestime = pres.time, .SD),
+                         by="hosts.ID",
+                         .SDcols = pasedFunction$vectArgs][["V1"]])
 }
 
 #' @title Get Exiting or Moving individuals
