@@ -326,6 +326,27 @@ test_that("Error messages on RasterSanityCheck", {
                           diff.pTrans.B=FALSE,
                           prefix.host.B="V"),
     "Your starting position (init.structure) should be on the raster.",fixed=TRUE)
+
+  expect_error(
+    test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
+                            length=100,
+                            max.infected=200,
+                            init.individuals=1,
+                            init.structure="A",
+                            structure.matrix=transition.matrix,
+                            pMove=p_Move_fct,
+                            param.pMove=NA,
+                            diff.nContact=FALSE,
+                            hostCount.nContact=TRUE,
+                            nContact=time_contact,
+                            param.nContact=NA,
+                            pTrans = proba,
+                            param.pTrans = list(p_max=p_max_fct,
+                                                t_incub=t_incub_fct),
+                            pExit=p_Exit_fct,
+                            param.pExit=NA
+    ),
+    "diff.nContact should be TRUE to use hostCount.nContact.")
   })
 
 test_that("Error messages on drawBernouilli", {

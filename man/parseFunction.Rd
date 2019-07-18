@@ -5,7 +5,7 @@
 \title{Parse function for later use}
 \usage{
 parseFunction(pFunc, param.pFunc, name, diff = FALSE, timeDep = FALSE,
-  continuous = FALSE, stateNames = NA)
+  hostCount = FALSE, continuous = FALSE, stateNames = NA)
 }
 \arguments{
 \item{pFunc}{a function}
@@ -17,6 +17,8 @@ parseFunction(pFunc, param.pFunc, name, diff = FALSE, timeDep = FALSE,
 \item{diff}{is the function differential according to state/env.variable? (TRUE/FALSE)}
 
 \item{timeDep}{is the function differential according to absolute time? (TRUE/FALSE)}
+
+\item{hostCount}{is the function differential according to host count? (TRUE/FALSE)}
 
 \item{continuous}{is the function to be used in a continuous space? (TRUE/FALSE)}
 

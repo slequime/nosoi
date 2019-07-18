@@ -15,7 +15,7 @@ meetTransmit <- function(res,
                          pres.time,
                          positions,
                          nContactParsed, pTransParsed) {
-  #To avoids nodes (use of dplyr functions)
+  #To avoids notes (use of dplyr functions)
   hosts.ID <- NULL
 
   active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
@@ -80,12 +80,16 @@ writeInfected <- function(df.meetTransmit, res,
                                  infected.in = getPositionInfected(res, df.meetTransmit, i),
                                  pres.time,
                                  ParamHost,
-                                 current.environmental.value = df.meetTransmit[i,]$current.env.value)
+                                 current.environmental.value = df.meetTransmit[i,]$current.env.value,
+                                 current.cell.number.raster = df.meetTransmit[i,]$current.cell.raster,
+                                 current.count = df.meetTransmit[i,]$host.count,
+                                 current.count.B = df.meetTransmit[i,]$host.count.B)
       if (keepHistory) {
         table.state.temp[[i]] <- newLineState(hosts.ID,
                                               state.pres = getPositionInfected(res, df.meetTransmit, i),
                                               pres.time,
-                                              current.environmental.value = df.meetTransmit[i,]$current.env.value)
+                                              current.environmental.value = df.meetTransmit[i,]$current.env.value,
+                                              current.cell.number.raster = df.meetTransmit[i,]$current.cell.raster)
       }
     }
 

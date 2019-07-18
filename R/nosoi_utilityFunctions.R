@@ -9,6 +9,7 @@
 #' @param name the name of the function
 #' @param diff is the function differential according to state/env.variable? (TRUE/FALSE)
 #' @param timeDep is the function differential according to absolute time? (TRUE/FALSE)
+#' @param hostCount is the function differential according to host count? (TRUE/FALSE)
 #' @param continuous is the function to be used in a continuous space? (TRUE/FALSE)
 #' @param stateNames name of the states (vector) in case of discrete structure.
 #'
@@ -21,9 +22,9 @@
 #' @keywords internal
 ##
 
-parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE, continuous=FALSE, stateNames=NA) {
+parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE, hostCount=FALSE, continuous=FALSE, stateNames=NA) {
 
-  FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, continuous, stateNames)
+  FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, hostCount, continuous, stateNames)
 
   pFunc <- match.fun(pFunc)
 
@@ -160,10 +161,10 @@ paramConstructor <- function(param.pExit, param.pMove, param.nContact, param.pTr
 #' @keywords internal
 ##
 applyFunctionToHosts <- function(res, pres.time, pasedFunction, active.hosts) {
-  fun <- function(z) {
-    pasedFunction$vect(prestime = pres.time, z[, pasedFunction$vectArgs, with = FALSE])
-  }
-  return(res$table.hosts[active.hosts, fun(.SD), by="hosts.ID"][["V1"]])
+  return(res$table.hosts[active.hosts,
+                         pasedFunction$vect(prestime = pres.time, .SD),
+                         by="hosts.ID",
+                         .SDcols = pasedFunction$vectArgs][["V1"]])
 }
 
 #' @title Get Exiting or Moving individuals
@@ -198,3 +199,91 @@ getExitingMoving <- function(res, pres.time, pasedFunction) {
   return(exitMove.full)
 }
 
+#' @title Summarise position of hosts in a discrete or discretized (raster) space
+#'
+#' @description
+#' Returns a table of the number of hosts per discrete or discretized (raster cells) states.
+#'
+#' @param res an object of class \code{nosoiSimOne}.
+#'
+#' @return data.table containing state.ID (col1) and count (col2)
+#'
+#' @keywords internal
+##
+
+updateHostCount <- function(res, res.B=NULL, type) {
+
+  #To avoid notes (use of data.table shortcuts)
+  count.A <- NULL
+  count.B <- NULL
+  current.cell.raster <- NULL
+  current.in <- NULL
+
+  #New IDEA: create count table for both A & B at same time with both needed states => merge
+
+  #Step 1: count Table
+  active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
+  if(type == "discrete"){host.table.count.A <- as.data.table(table(res$table.hosts[active.hosts]$current.in))}
+  if(type == "continuous"){host.table.count.A <- as.data.table(table(res$table.hosts[active.hosts]$current.cell.raster))}
+  host.table.count.A$V1 = as.character(host.table.count.A$V1)
+  colnames(host.table.count.A) = c("state.ID","count")
+
+  if(!is.null(res.B)){
+    active.hosts.B <- res.B$table.hosts[["active"]] == 1 #active hosts (boolean vector)
+
+    if(type == "discrete"){host.table.count.B <- as.data.table(table(res.B$table.hosts[active.hosts.B]$current.in))}
+    if(type == "continuous"){host.table.count.B <- as.data.table(table(res.B$table.hosts[active.hosts.B]$current.cell.raster))}
+    host.table.count.B$V1 = as.character(host.table.count.B$V1)
+    colnames(host.table.count.B) = c("state.ID","count")
+  }
+
+  if(is.null(res.B)) {host.table.count.B = data.table(V1=0,N=0)[-1]
+  host.table.count.B$V1 = as.character(host.table.count.B$V1)
+  colnames(host.table.count.B) = c("state.ID","count")}
+
+  host.table.count.tot = merge(host.table.count.A,host.table.count.B,by="state.ID", all=TRUE, suffixes = c(".A",".B"))
+  setkey(host.table.count.tot,"state.ID")
+
+  #Change NA into 0
+  host.table.count.tot[is.na(count.B), `:=` (count.B = 0)]
+  host.table.count.tot[is.na(count.A), `:=` (count.A = 0)]
+
+  #Step 2: update counts
+
+  if(type == "discrete"){
+    if(is.null(res.B)){
+      for (i in host.table.count.tot$state.ID){
+        res$table.hosts[(active.hosts & current.in == i), `:=` (host.count = host.table.count.tot[i][["count.A"]])]
+      }
+    }
+
+    if(!is.null(res.B)){
+      for (i in host.table.count.tot$state.ID){
+
+        res$table.hosts[(active.hosts & current.in == i), `:=` (host.count = host.table.count.tot[i][["count.A"]],
+                                                                host.count.B = host.table.count.tot[i][["count.B"]])]
+
+        res.B$table.hosts[(active.hosts.B & current.in == i), `:=` (host.count = host.table.count.tot[i][["count.A"]],
+                                                                    host.count.B = host.table.count.tot[i][["count.B"]])]
+      }
+    }
+  }
+
+  if(type == "continuous"){
+    if(is.null(res.B)){
+      for (i in host.table.count.tot$state.ID){
+        res$table.hosts[(active.hosts & current.cell.raster == i), `:=` (host.count = host.table.count.tot[as.character(i)][["count.A"]])]
+      }
+    }
+
+    if(!is.null(res.B)){
+      for (i in host.table.count.tot$state.ID){
+        res$table.hosts[(active.hosts & current.cell.raster == i), `:=` (host.count = host.table.count.tot[as.character(i)][["count.A"]],
+                                                                host.count.B = host.table.count.tot[as.character(i)][["count.B"]])]
+
+        res.B$table.hosts[(active.hosts.B & current.cell.raster == i), `:=` (host.count = host.table.count.tot[as.character(i)][["count.A"]],
+                                                                             host.count.B = host.table.count.tot[as.character(i)][["count.B"]])]
+      }
+    }
+  }
+}

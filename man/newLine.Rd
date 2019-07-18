@@ -5,7 +5,9 @@
 \title{Creates a new line to be added to the table when new host is infected (internal fonction)}
 \usage{
 newLine(hosts.ID, infected.by, infected.in, time.is, ParamHost,
-  current.environmental.value = NULL)
+  current.environmental.value = NULL,
+  current.cell.number.raster = NULL, current.count = NULL,
+  current.count.B = NULL)
 }
 \arguments{
 \item{hosts.ID}{unique ID for the new host}
@@ -17,6 +19,14 @@ newLine(hosts.ID, infected.by, infected.in, time.is, ParamHost,
 \item{time.is}{time in the simulation, when the infection takes place}
 
 \item{ParamHost}{list of individual based parameters.}
+
+\item{current.environmental.value}{current environmental value}
+
+\item{current.cell.number.raster}{unique number of the raster cell where the host is}
+
+\item{current.count}{current count of host A}
+
+\item{current.count.B}{current count of host B}
 
 \item{current.in}{state in which the host currently is}
 }

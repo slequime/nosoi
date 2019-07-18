@@ -11,23 +11,28 @@
 #' @param structure.raster raster object defining the environmental variable.
 #' @param diff.pMove is pMove different between states of the structured population (TRUE/FALSE)
 #' @param timeDep.pMove is pMove dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param hostCount.pMove does pMove varies with the host count? (TRUE/FALSE); diff.pMove should be TRUE.
 #' @param pMove function that gives the probability of a host moving as a function of time.
 #' @param param.pMove parameter names (list of functions) for the pMove.
 #' @param diff.sdMove is sdMove dependant on the environmental value (TRUE/FALSE).
 #' @param timeDep.sdMove is sdMove dependant on the absolute time of the simulation (TRUE/FALSE).
+#' @param hostCount.sdMove does sdMove varies with the host count? (TRUE/FALSE); diff.sdMove should be TRUE.
 #' @param sdMove function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.
 #' @param param.sdMove parameter names (list of functions) for sdMove
 #' @param attracted.by.raster should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)
 #' @param diff.nContact is nContact different between states of the structured population (TRUE/FALSE)
 #' @param timeDep.nContact is nContact dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param hostCount.nContact does nContact varies with the host count? (TRUE/FALSE); diff.nContact should be TRUE.
 #' @param nContact function that gives the number of potential transmission events per unit of time.
 #' @param param.nContact parameter names (list of functions) for nContact.
 #' @param diff.pTrans is pTrans different between states of the structured population (TRUE/FALSE)
 #' @param timeDep.pTrans is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param hostCount.pTrans does pTrans varies with the host count? (TRUE/FALSE); diff.pTrans should be TRUE.
 #' @param pTrans function that gives the probability of transmit a pathogen as a function of time since infection.
 #' @param param.pTrans parameter names (list of functions) for the pTrans.
 #' @param diff.pExit is pExit different between states of the structured population (TRUE/FALSE)
 #' @param timeDep.pExit is pExit dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param hostCount.pExit does pExit varies with the host count? (TRUE/FALSE); diff.pExit should be TRUE.
 #' @param pExit function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).
 #' @param param.pExit parameter names (list of functions) for the pExit.
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
@@ -43,23 +48,28 @@ singleContinuous <- function(length.sim,
                              structure.raster,
                              diff.pMove=FALSE,
                              timeDep.pMove=FALSE,
+                             hostCount.pMove=FALSE,
                              pMove,
                              param.pMove,
                              diff.sdMove=FALSE,
                              timeDep.sdMove=FALSE,
+                             hostCount.sdMove=FALSE,
                              sdMove,
                              param.sdMove,
                              attracted.by.raster=FALSE,
                              diff.nContact=FALSE,
                              timeDep.nContact=FALSE,
+                             hostCount.nContact=FALSE,
                              nContact,
                              param.nContact,
                              diff.pTrans=FALSE,
                              timeDep.pTrans=FALSE,
+                             hostCount.pTrans=FALSE,
                              pTrans,
                              param.pTrans,
                              diff.pExit=FALSE,
                              timeDep.pExit=FALSE,
+                             hostCount.pExit=FALSE,
                              pExit,
                              param.pExit,
                              prefix.host="H",
@@ -72,29 +82,33 @@ singleContinuous <- function(length.sim,
   CoreSanityChecks(length.sim, max.infected, init.individuals)
 
   #Parsing nContact
-  nContactParsed <- parseFunction(nContact, param.nContact, as.character(quote(nContact)),diff=diff.nContact, timeDep = timeDep.nContact, continuous=TRUE)
+  nContactParsed <- parseFunction(nContact, param.nContact, as.character(quote(nContact)),diff=diff.nContact, timeDep = timeDep.nContact, hostCount = hostCount.nContact, continuous=TRUE)
 
   #Parsing sdMove
-  sdMoveParsed <- parseFunction(sdMove, param.sdMove, as.character(quote(sdMove)),diff=diff.sdMove, timeDep = timeDep.sdMove, continuous=TRUE)
+  sdMoveParsed <- parseFunction(sdMove, param.sdMove, as.character(quote(sdMove)),diff=diff.sdMove, timeDep = timeDep.sdMove, hostCount= hostCount.sdMove, continuous=TRUE)
 
   #Parsing pTrans
-  pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=diff.pTrans, timeDep = timeDep.pTrans, continuous=TRUE)
+  pTransParsed <- parseFunction(pTrans, param.pTrans, as.character(quote(pTrans)),diff=diff.pTrans, timeDep = timeDep.pTrans, hostCount= hostCount.pTrans, continuous=TRUE)
 
   #Parsing pExit
-  pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=diff.pExit, timeDep = timeDep.pExit, continuous=TRUE)
+  pExitParsed <- parseFunction(pExit, param.pExit, as.character(quote(pExit)),diff=diff.pExit, timeDep = timeDep.pExit, hostCount= hostCount.pExit, continuous=TRUE)
 
   #Continuous states sanity checks -------------------------------------------------------------------------------------------------------------------
 
   #Extract environmental value at origin:
   RasterSanityChecks(structure.raster,init.structure)
-  start.env <- raster::extract(structure.raster,cbind(init.structure[1],init.structure[2]))
+  start.cell <- raster::cellFromXY(structure.raster,cbind(init.structure[1],init.structure[2]))
+  start.env <- raster::extract(structure.raster,start.cell)
   max.raster <- max(structure.raster[], na.rm=T)
 
   #Parse pMove (same as pExit !!attention if diff)
-  pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=diff.pMove, timeDep = timeDep.pMove, continuous=TRUE)
+  pMoveParsed <- parseFunction(pMove, param.pMove, as.character(quote(pMove)),diff=diff.pMove, timeDep = timeDep.pMove, hostCount= hostCount.pMove,  continuous=TRUE)
 
   #Parsing all parameters
   ParamHost <- paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans, param.sdMove)
+
+  #Are hosts to be counted?
+  countingHosts <- any(c(hostCount.pExit, hostCount.pMove, hostCount.sdMove, hostCount.nContact, hostCount.pTrans))
 
   #START OF THE SIMULATION --------------------------------------------------------------------------------------------------------
 
@@ -107,8 +121,8 @@ singleContinuous <- function(length.sim,
                              type = "single",
                              pop.A = nosoiSimOneConstructor(
                                N.infected = init.individuals,
-                               table.hosts = iniTable(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value = start.env),
-                               table.state = iniTableState(init.individuals, init.structure, prefix.host, current.environmental.value = start.env),
+                               table.hosts = iniTable(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value = start.env, current.cell.number.raster = start.cell, current.count = init.individuals),
+                               table.state = iniTableState(init.individuals, init.structure, prefix.host, current.environmental.value = start.env, current.cell.number.raster = start.cell),
                                prefix.host = prefix.host,
                                popStructure = "continuous"))
 
@@ -127,6 +141,9 @@ singleContinuous <- function(length.sim,
 
     if (all(res$host.info.A$table.hosts[["active"]] == 0)) {break}
 
+    #update host.count
+    if(countingHosts) updateHostCount(res$host.info.A, type="continuous")
+
     #Step 1: Moving ----------------------------------------------------
 
     #step 1.1 which hosts are moving
@@ -141,12 +158,18 @@ singleContinuous <- function(length.sim,
                                  attracted.by.raster = attracted.by.raster,
                                  max.raster = max.raster)
 
+    #step 1.3 - count number of hosts per cells
+    #update host.count
+    if(countingHosts) updateHostCount(res$host.info.A, type="continuous")
+
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
-    df.meetTransmit <- meetTransmit(res$host.info.A, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value"), nContactParsed, pTransParsed)
+    df.meetTransmit <- meetTransmit(res$host.info.A, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value","current.cell.raster","host.count"), nContactParsed, pTransParsed)
 
     res$host.info.A <- writeInfected(df.meetTransmit, res$host.info.A, pres.time, ParamHost)
 
+    #update host.count
+    if(countingHosts) updateHostCount(res$host.info.A, type="continuous")
 
     if (print.progress == TRUE) progressMessage(Host.count.A = res$host.info.A$N.infected, pres.time = pres.time, print.step = print.step, length.sim = length.sim, max.infected.A = max.infected)
     if (res$host.info.A$N.infected > max.infected) {break}

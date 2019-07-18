@@ -4,8 +4,8 @@
 \alias{FunctionSanityChecks}
 \title{Checks if a function is properly formated}
 \usage{
-FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, continuous,
-  stateNames)
+FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, hostCount,
+  continuous, stateNames)
 }
 \arguments{
 \item{pFunc}{a function}
@@ -17,6 +17,8 @@ FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, continuous,
 \item{timeDep}{is the function differential according to absolute time? (TRUE/FALSE)}
 
 \item{diff}{is the function differential according to state/env.variable? (TRUE/FALSE)}
+
+\item{hostCount}{is the function differential according to host count? (TRUE/FALSE)}
 
 \item{continuous}{is the function to be used in a continuous space? (TRUE/FALSE)}
 

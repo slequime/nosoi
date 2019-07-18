@@ -5,7 +5,9 @@
 \title{Generates initial table to start the simulation (internal fonction)}
 \usage{
 iniTable(init.individuals, init.structure, prefix.host, ParamHost,
-  current.environmental.value = NULL)
+  current.environmental.value = NULL,
+  current.cell.number.raster = NULL, current.count = NULL,
+  current.count.B = NULL)
 }
 \arguments{
 \item{init.individuals}{number of initially infected individuals (i.e. number of lines at time 0).}
@@ -17,6 +19,12 @@ iniTable(init.individuals, init.structure, prefix.host, ParamHost,
 \item{ParamHost}{list of individual based parameters.}
 
 \item{current.environmental.value}{current value of the environemental variable provided by the raster according to its position in init.structure.}
+
+\item{current.cell.number.raster}{unique number of the raster cell where the host is}
+
+\item{current.count}{current count of host A}
+
+\item{current.count.B}{current count of host B}
 }
 \description{
 This function creates the initial table for the host.

@@ -12,6 +12,10 @@
 #' @param current.in state in which the host currently is
 #' @param time.is time in the simulation, when the infection takes place
 #' @param ParamHost list of individual based parameters.
+#' @param current.environmental.value current environmental value
+#' @param current.cell.number.raster unique number of the raster cell where the host is
+#' @param current.count current count of host A
+#' @param current.count.B current count of host B
 #'
 #' @return a list with the new line to add.
 #'
@@ -20,7 +24,7 @@
 newLine <- function(hosts.ID,
                     infected.by, infected.in,
                     time.is,
-                    ParamHost, current.environmental.value = NULL) {
+                    ParamHost, current.environmental.value = NULL, current.cell.number.raster = NULL, current.count = NULL, current.count.B = NULL) {
 
   if (length(infected.in) == 1) {
     if (is.na(infected.in)) infected.in <- NULL
@@ -28,6 +32,8 @@ newLine <- function(hosts.ID,
              inf.by = infected.by,
              inf.in = infected.in,
              current.in = infected.in,
+             host.count = current.count,
+             host.count.B = current.count.B,
              inf.time = time.is,
              out.time = NA_real_,
              active = 1,
@@ -45,6 +51,9 @@ newLine <- function(hosts.ID,
              current.in.x = infected.in[1],
              current.in.y = infected.in[2],
              current.env.value = current.environmental.value,
+             current.cell.raster = current.cell.number.raster,
+             host.count = current.count,
+             host.count.B = current.count.B,
              inf.time = time.is,
              out.time = NA_real_,
              active = 1,
@@ -63,10 +72,12 @@ newLine <- function(hosts.ID,
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
 #' @param ParamHost list of individual based parameters.
 #' @param current.environmental.value current value of the environemental variable provided by the raster according to its position in init.structure.
-#'
+#' @param current.cell.number.raster unique number of the raster cell where the host is
+#' @param current.count current count of host A
+#' @param current.count.B current count of host B
 #' @keywords internal
 
-iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value=NULL){
+iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value=NULL, current.cell.number.raster=NULL, current.count = NULL, current.count.B = NULL){
 
   if (init.individuals >= 1){
     list.init <- vector("list", init.individuals)
@@ -77,7 +88,10 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, c
                                     infected.in = init.structure,
                                     time.is = 0,
                                     ParamHost = ParamHost,
-                                    current.environmental.value=current.environmental.value)
+                                    current.environmental.value=current.environmental.value,
+                                    current.cell.number.raster = current.cell.number.raster,
+                                    current.count = current.count,
+                                    current.count.B = current.count.B)
     }
     table.hosts <- data.table::rbindlist(list.init)
   }
@@ -92,7 +106,10 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, c
                                     infected.in = init.structure,
                                     time.is = 0,
                                     ParamHost = ParamHost,
-                                    current.environmental.value=current.environmental.value)
+                                    current.environmental.value=current.environmental.value,
+                                    current.cell.number.raster = current.cell.number.raster,
+                                    current.count = current.count,
+                                    current.count.B = current.count.B)
     }
     table.hosts <- data.table::rbindlist(list.init)
     table.hosts <- table.hosts[-1]
@@ -114,12 +131,12 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, c
 #' @param state.pres state in which host currently is
 #' @param time.is time in the simulation, when the infection takes place
 #' @param current.environmental.value current value of environemental variable (from raster) according to coordinates in current.in.
-#'
+#' @param current.cell.number.raster unique number of the raster cell where the host is
 #' @return a list with the new line to add.
 #'
 #' @keywords internal
 
-newLineState <- function(hosts.ID, state.pres, time.is, current.environmental.value=NA) {
+newLineState <- function(hosts.ID, state.pres, time.is, current.environmental.value=NA,current.cell.number.raster=NA) {
 
   if (length(state.pres) == 1){
     return(list(hosts.ID = hosts.ID,
@@ -135,6 +152,7 @@ newLineState <- function(hosts.ID, state.pres, time.is, current.environmental.va
                 state.x = state.pres[1],
                 state.y = state.pres[2],
                 current.env.value = current.environmental.value,
+                current.cell.raster = current.cell.number.raster,
                 time.from = time.is,
                 time.to = NA_real_
     )
@@ -150,10 +168,11 @@ newLineState <- function(hosts.ID, state.pres, time.is, current.environmental.va
 #' @param init.structure State of the initially infected individuals.
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
 #' @param current.environmental.value current value of the environemental variable provided by the raster according to its position in init.structure.
+#' @param current.cell.number.raster unique number of the raster cell where the host is
 #'
 #' @keywords internal
 
-iniTableState <- function(init.individuals, init.structure, prefix.host, current.environmental.value=NULL){
+iniTableState <- function(init.individuals, init.structure, prefix.host, current.environmental.value=NULL,current.cell.number.raster=NA){
 
   if (init.individuals >= 1){
     list.init <- vector("list", init.individuals)
@@ -162,7 +181,8 @@ iniTableState <- function(init.individuals, init.structure, prefix.host, current
       list.init[[indiv]] <- newLineState(hosts.ID = paste(prefix.host,indiv,sep="-"),
                                          state.pres = init.structure,
                                          time.is = 0,
-                                         current.environmental.value=current.environmental.value)
+                                         current.environmental.value=current.environmental.value,
+                                         current.cell.number.raster=current.cell.number.raster)
     }
 
     table.mov <- data.table::rbindlist(list.init)
@@ -177,7 +197,8 @@ iniTableState <- function(init.individuals, init.structure, prefix.host, current
       list.init[[indiv]] <- newLineState(hosts.ID = paste(prefix.host,indiv,sep="-"),
                                          state.pres = init.structure,
                                          time.is = 0,
-                                         current.environmental.value=current.environmental.value)
+                                         current.environmental.value=current.environmental.value,
+                                         current.cell.number.raster=current.cell.number.raster)
     }
     table.mov <- data.table::rbindlist(list.init)
     table.mov <- table.mov[-1]
@@ -202,7 +223,7 @@ iniTableState <- function(init.individuals, init.structure, prefix.host, current
 ##
 
 updateTableState <- function(res, exiting, pres.time) {
-  #To avoids nodes (use of dplyr functions)
+  #To avoids notes (use of dplyr functions)
   time.to <- NULL
   hosts.ID <- NULL
 

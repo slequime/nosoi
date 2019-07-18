@@ -17,46 +17,56 @@
 #' @param param.pExit.A parameter names (list of functions) for the pExit for host A.
 #' @param timeDep.pExit.A is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.
 #' @param diff.pExit.A is pExit different between states of the structured population (TRUE/FALSE) for host A.
+#' @param hostCount.pExit.A  does pExit varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pExit.A should be TRUE.
 #' @param pMove.A function that gives the probability of a host moving as a function of time for host A.
 #' @param param.pMove.A parameter names (list of functions) for the pMove for host A.
 #' @param timeDep.pMove.A is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.
 #' @param diff.pMove.A is pMove different between states of the structured population (TRUE/FALSE) for host A.
+#' @param hostCount.pMove.A does pMove varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pMove.A should be TRUE.
 #' @param sdMove.A function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion for host A.
 #' @param param.sdMove.A parameter names (list of functions) for sdMove for host A
 #' @param diff.sdMove.A is sdMove dependant on the environmental value (TRUE/FALSE) for host A.
 #' @param timeDep.sdMove.A is sdMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.
+#' @param hostCount.sdMove.A does sdMove varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pMove.A should be TRUE.
 #' @param attracted.by.raster.A should the hosts A be attracted by high values in the environmental raster? (TRUE/FALSE)
 #' @param nContact.A function that gives the number of potential transmission events per unit of time  for host A.
 #' @param param.nContact.A parameter names (list of functions) for param.nContact  for host A.
 #' @param timeDep.nContact.A is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.
 #' @param diff.nContact.A is nContact different between states of the structured population (TRUE/FALSE) for host A.
+#' @param hostCount.nContact.A  does nContact varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.nContact.A should be TRUE.
 #' @param pTrans.A function that gives the probability of transmit a pathogen as a function of time since infection  for host A.
 #' @param param.pTrans.A parameter names (list of functions) for the pExit  for host A.
 #' @param timeDep.pTrans.A is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.
 #' @param diff.pTrans.A is pTrans different between states of the structured population (TRUE/FALSE) for host A.
+#' @param hostCount.pTrans.A does pTrans varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pTrans.A should be TRUE.
 #' @param prefix.host.A character(s) to be used as a prefix for the host A identification number.
 #'
 #' @param pExit.B function that gives the probability to exit the simulation for an infected host B (either moving out, dying, etc.).
 #' @param param.pExit.B parameter names (list of functions) for the pExit for host B.
 #' @param timeDep.pExit.B is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.
 #' @param diff.pExit.B is pExit different between states of the structured population (TRUE/FALSE) for host B.
+#' @param hostCount.pExit.B does pExit varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pExit.B should be TRUE.
 #' @param pMove.B function that gives the probability of a host moving as a function of time for host B.
 #' @param param.pMove.B parameter names (list of functions) for the pMove for host B.
 #' @param timeDep.pMove.B is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host B.
+#' @param diff.pMove.B is pMove different between states of the structured population (TRUE/FALSE) for host B.
+#' @param hostCount.pMove.B does pMove varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pMove.B should be TRUE.
 #' @param sdMove.B function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion for host A.
 #' @param param.sdMove.B parameter names (list of functions) for sdMove for host A
 #' @param diff.sdMove.B is sdMove dependant on the environmental value (TRUE/FALSE) for host A.
 #' @param timeDep.sdMove.B is sdMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.
+#' @param hostCount.sdMove.B does sdMove varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pMove.B should be TRUE.
 #' @param attracted.by.raster.B should the hosts A be attracted by high values in the environmental raster? (TRUE/FALSE)
-#' @param diff.pMove.B is pMove different between states of the structured population (TRUE/FALSE) for host B.
 #' @param nContact.B function that gives the number of potential transmission events per unit of time  for host B.
 #' @param param.nContact.B parameter names (list of functions) for param.nContact  for host B.
 #' @param timeDep.nContact.B is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.
 #' @param diff.nContact.B is nContact different between states of the structured population (TRUE/FALSE) for host B.
+#' @param hostCount.nContact.B does nContact varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.nContact.B should be TRUE.
 #' @param pTrans.B function that gives the probability of transmit a pathogen as a function of time since infection  for host B.
 #' @param param.pTrans.B parameter names (list of functions) for the pExit  for host B.
 #' @param timeDep.pTrans.B is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.
 #' @param diff.pTrans.B is pTrans different between states of the structured population (TRUE/FALSE) for host B.
+#' @param hostCount.pTrans.B does pTrans varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pTrans.B should be TRUE.
 #' @param prefix.host.B character(s) to be used as a prefix for the host B identification number.
 #'
 #' @param print.progress if TRUE, displays a progress bar (current time/length.sim).
@@ -78,46 +88,56 @@ dualContinuous <- function(length.sim,
                            param.pExit.A,
                            timeDep.pExit.A=FALSE,
                            diff.pExit.A=FALSE,
+                           hostCount.pExit.A=FALSE,
                            pMove.A,
                            param.pMove.A,
                            timeDep.pMove.A=FALSE,
                            diff.pMove.A=FALSE,
+                           hostCount.pMove.A=FALSE,
                            sdMove.A,
                            param.sdMove.A,
                            diff.sdMove.A=FALSE,
                            timeDep.sdMove.A=FALSE,
+                           hostCount.sdMove.A=FALSE,
                            attracted.by.raster.A=FALSE,
                            nContact.A,
                            param.nContact.A,
                            timeDep.nContact.A=FALSE,
                            diff.nContact.A=FALSE,
+                           hostCount.nContact.A=FALSE,
                            pTrans.A,
                            param.pTrans.A,
                            timeDep.pTrans.A=FALSE,
                            diff.pTrans.A=FALSE,
+                           hostCount.pTrans.A=FALSE,
                            prefix.host.A="H",
 
                            pExit.B,
                            param.pExit.B,
                            timeDep.pExit.B=FALSE,
                            diff.pExit.B=FALSE,
+                           hostCount.pExit.B=FALSE,
                            pMove.B,
                            param.pMove.B,
                            timeDep.pMove.B=FALSE,
                            diff.pMove.B=FALSE,
+                           hostCount.pMove.B=FALSE,
                            sdMove.B,
                            param.sdMove.B,
                            diff.sdMove.B=FALSE,
                            timeDep.sdMove.B=FALSE,
+                           hostCount.sdMove.B=FALSE,
                            attracted.by.raster.B=FALSE,
                            nContact.B,
                            param.nContact.B,
                            timeDep.nContact.B=FALSE,
                            diff.nContact.B=FALSE,
+                           hostCount.nContact.B=FALSE,
                            pTrans.B,
                            param.pTrans.B,
                            timeDep.pTrans.B=FALSE,
                            diff.pTrans.B=FALSE,
+                           hostCount.pTrans.B=FALSE,
                            prefix.host.B="V",
 
                            print.progress=TRUE,
@@ -136,16 +156,16 @@ dualContinuous <- function(length.sim,
   if((!is.function(pMove.A)) && (!is.function(pMove.B))) stop("At least one host must move.")
 
   #Parsing nContact
-  nContactParsed.A <- parseFunction(nContact.A, param.nContact.A, as.character(quote(nContact.A)), diff=diff.nContact.A, timeDep = timeDep.nContact.A, continuous=TRUE)
-  nContactParsed.B <- parseFunction(nContact.B, param.nContact.B, as.character(quote(nContact.B)), diff=diff.nContact.B, timeDep = timeDep.nContact.B, continuous=TRUE)
+  nContactParsed.A <- parseFunction(nContact.A, param.nContact.A, as.character(quote(nContact.A)), diff=diff.nContact.A, timeDep = timeDep.nContact.A, hostCount=hostCount.nContact.A,continuous=TRUE)
+  nContactParsed.B <- parseFunction(nContact.B, param.nContact.B, as.character(quote(nContact.B)), diff=diff.nContact.B, timeDep = timeDep.nContact.B, hostCount=hostCount.nContact.B, continuous=TRUE)
 
   #Parsing pTrans
-  pTransParsed.A <- parseFunction(pTrans.A, param.pTrans.A, as.character(quote(pTrans.A)), diff=diff.pTrans.A, timeDep = timeDep.pTrans.A, continuous=TRUE)
-  pTransParsed.B <- parseFunction(pTrans.B, param.pTrans.B, as.character(quote(pTrans.B)), diff=diff.pTrans.B, timeDep = timeDep.pTrans.B, continuous=TRUE)
+  pTransParsed.A <- parseFunction(pTrans.A, param.pTrans.A, as.character(quote(pTrans.A)), diff=diff.pTrans.A, timeDep = timeDep.pTrans.A, hostCount=hostCount.pTrans.A, continuous=TRUE)
+  pTransParsed.B <- parseFunction(pTrans.B, param.pTrans.B, as.character(quote(pTrans.B)), diff=diff.pTrans.B, timeDep = timeDep.pTrans.B, hostCount=hostCount.pTrans.B, continuous=TRUE)
 
   #Parsing pExit
-  pExitParsed.A <- parseFunction(pExit.A, param.pExit.A, as.character(quote(pExit.A)), diff=diff.pExit.A, timeDep = timeDep.pExit.A, continuous=TRUE)
-  pExitParsed.B <- parseFunction(pExit.B, param.pExit.B, as.character(quote(pExit.B)), diff=diff.pExit.B, timeDep = timeDep.pExit.B, continuous=TRUE)
+  pExitParsed.A <- parseFunction(pExit.A, param.pExit.A, as.character(quote(pExit.A)), diff=diff.pExit.A, timeDep = timeDep.pExit.A, hostCount=hostCount.pExit.A, continuous=TRUE)
+  pExitParsed.B <- parseFunction(pExit.B, param.pExit.B, as.character(quote(pExit.B)), diff=diff.pExit.B, timeDep = timeDep.pExit.B, hostCount=hostCount.pExit.B, continuous=TRUE)
 
   #Continuous move sanity checks -------------------------------------------------------------------------------------------------------------------
 
@@ -153,25 +173,45 @@ dualContinuous <- function(length.sim,
   RasterSanityChecks(structure.raster.A,init.structure.A, none.at.start.A)
   RasterSanityChecks(structure.raster.B,init.structure.B, none.at.start.B)
 
-  if(!none.at.start.A) start.env.A <- raster::extract(structure.raster.A,cbind(init.structure.A[1],init.structure.A[2]))
-  if(none.at.start.A) start.env.A <- NA
+
+  if(!none.at.start.A) {
+    start.cell.A <-  raster::cellFromXY(structure.raster.A,cbind(init.structure.A[1],init.structure.A[2]))
+    start.env.A <- raster::extract(structure.raster.A,start.cell.A)
+  }
+
+  if(none.at.start.A) {
+    start.cell.A <- NA
+    start.env.A <- NA
+  }
+
   max.raster.A <- max(structure.raster.A[], na.rm=T)
 
-  if(!none.at.start.B) start.env.B <- raster::extract(structure.raster.B,cbind(init.structure.B[1],init.structure.B[2]))
-  if(none.at.start.B) start.env.B <- NA
+  if(!none.at.start.B) {
+    start.cell.B <-  raster::cellFromXY(structure.raster.B,cbind(init.structure.B[1],init.structure.B[2]))
+    start.env.B <- raster::extract(structure.raster.B,start.cell.B)
+  }
+
+  if(none.at.start.B) {
+    start.cell.B <- NA
+    start.env.B <- NA
+  }
+
   max.raster.B <- max(structure.raster.B[], na.rm=T)
 
   #Parse pMove (same as pExit !!attention if diff)
-  if(is.function(pMove.A)) pMoveParsed.A <- parseFunction(pMove.A, param.pMove.A, as.character(quote(pMove.A)), diff=diff.pMove.A, timeDep = timeDep.pMove.A, continuous=TRUE)
-  if(is.function(pMove.B)) pMoveParsed.B <- parseFunction(pMove.B, param.pMove.B, as.character(quote(pMove.B)), diff=diff.pMove.B, timeDep = timeDep.pMove.B, continuous=TRUE)
+  if(is.function(pMove.A)) pMoveParsed.A <- parseFunction(pMove.A, param.pMove.A, as.character(quote(pMove.A)), diff=diff.pMove.A, timeDep = timeDep.pMove.A, hostCount=hostCount.pMove.A, continuous=TRUE)
+  if(is.function(pMove.B)) pMoveParsed.B <- parseFunction(pMove.B, param.pMove.B, as.character(quote(pMove.B)), diff=diff.pMove.B, timeDep = timeDep.pMove.B, hostCount=hostCount.pMove.B, continuous=TRUE)
 
   #Parsing sdMove
-  if(is.function(pMove.A)) sdMoveParsed.A <- parseFunction(sdMove.A, param.sdMove.A, as.character(quote(sdMove.A)),diff=diff.sdMove.A, timeDep = timeDep.sdMove.A, continuous=TRUE)
-  if(is.function(pMove.B)) sdMoveParsed.B <- parseFunction(sdMove.B, param.sdMove.B, as.character(quote(sdMove.B)),diff=diff.sdMove.B, timeDep = timeDep.sdMove.B, continuous=TRUE)
+  if(is.function(pMove.A)) sdMoveParsed.A <- parseFunction(sdMove.A, param.sdMove.A, as.character(quote(sdMove.A)),diff=diff.sdMove.A, timeDep = timeDep.sdMove.A, hostCount=hostCount.sdMove.A, continuous=TRUE)
+  if(is.function(pMove.B)) sdMoveParsed.B <- parseFunction(sdMove.B, param.sdMove.B, as.character(quote(sdMove.B)),diff=diff.sdMove.B, timeDep = timeDep.sdMove.B, hostCount=hostCount.sdMove.B, continuous=TRUE)
 
   #Parsing all parameters
   ParamHost.A <- paramConstructor(param.pExit.A, param.pMove=param.pMove.A, param.nContact.A, param.pTrans.A, param.sdMove=param.sdMove.A)
   ParamHost.B <- paramConstructor(param.pExit.B, param.pMove=param.pMove.B, param.nContact.B, param.pTrans.B, param.sdMove=param.sdMove.B)
+
+  #Are hosts to be counted?
+  countingHosts <- any(c(hostCount.pExit.A, hostCount.pMove.A, hostCount.nContact.A, hostCount.pTrans.A),c(hostCount.pExit.B, hostCount.pMove.B, hostCount.nContact.B, hostCount.pTrans.B))
 
   # Init
   message("Starting the simulation\nInitializing ...", appendLF = FALSE)
@@ -182,14 +222,14 @@ dualContinuous <- function(length.sim,
                              type = "dual",
                              pop.A = nosoiSimOneConstructor(
                                N.infected = init.individuals.A,
-                               table.hosts = iniTable(init.individuals.A, init.structure.A, prefix.host.A, ParamHost.A, current.environmental.value = start.env.A),
-                               table.state = iniTableState(init.individuals.A, init.structure.A, prefix.host.A, current.environmental.value = start.env.A),
+                               table.hosts = iniTable(init.individuals.A, init.structure.A, prefix.host.A, ParamHost.A, current.environmental.value = start.env.A, current.cell.number.raster = start.cell.A, current.count = init.individuals.A, current.count.B = init.individuals.B),
+                               table.state = iniTableState(init.individuals.A, init.structure.A, prefix.host.A, current.environmental.value = start.env.A, current.cell.number.raster = start.cell.A),
                                prefix.host = prefix.host.A,
                                popStructure = "continuous"),
                              pop.B = nosoiSimOneConstructor(
                                N.infected = init.individuals.B,
-                               table.hosts = iniTable(init.individuals.B, init.structure.B, prefix.host.B, ParamHost.B, current.environmental.value = start.env.B),
-                               table.state = iniTableState(init.individuals.B, init.structure.B, prefix.host.B, current.environmental.value = start.env.B),
+                               table.hosts = iniTable(init.individuals.B, init.structure.B, prefix.host.B, ParamHost.B, current.environmental.value = start.env.B,current.cell.number.raster =start.cell.B, current.count = init.individuals.A, current.count.B = init.individuals.B),
+                               table.state = iniTableState(init.individuals.B, init.structure.B, prefix.host.B, current.environmental.value = start.env.B,current.cell.number.raster =start.cell.B),
                                prefix.host = prefix.host.B,
                                popStructure = "continuous"))
 
@@ -212,6 +252,9 @@ dualContinuous <- function(length.sim,
 
     if (all(c((res$host.info.A$table.hosts[["active"]] == 0),(res$host.info.B$table.hosts[["active"]] == 0)))) {break}
 
+    #update host.count
+    if(countingHosts) updateHostCount(res$host.info.A, res.B=res$host.info.B, type="continuous")
+
     #Step 1: Moving ----------------------------------------------------
 
     #step 1.1 which hosts are moving
@@ -233,15 +276,21 @@ dualContinuous <- function(length.sim,
                                                           attracted.by.raster = attracted.by.raster.B,
                                                           max.raster = max.raster.B)
 
+    #update host.count
+    if(countingHosts) updateHostCount(res$host.info.A, res.B=res$host.info.B, type="continuous")
+
     #Step 2: Meeting & transmission ----------------------------------------------------
 
     #Transmission from A to B
-    df.meetTransmit.A <- meetTransmit(res$host.info.A, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value"), nContactParsed.A, pTransParsed.A)
+    df.meetTransmit.A <- meetTransmit(res$host.info.A, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value","current.cell.raster","host.count","host.count.B"), nContactParsed.A, pTransParsed.A)
     res$host.info.B <- writeInfected(df.meetTransmit.A, res$host.info.B, pres.time, ParamHost.B)
 
     #Transmission from B to A
-    df.meetTransmit.B <- meetTransmit(res$host.info.B, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value"), nContactParsed.B, pTransParsed.B)
+    df.meetTransmit.B <- meetTransmit(res$host.info.B, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value","current.cell.raster","host.count","host.count.B"), nContactParsed.B, pTransParsed.B)
     res$host.info.A <- writeInfected(df.meetTransmit.B, res$host.info.A, pres.time, ParamHost.A)
+
+    #update host.count
+    if(countingHosts) updateHostCount(res$host.info.A, res.B=res$host.info.B, type="continuous")
 
     if (print.progress == TRUE) progressMessage(Host.count.A=res$host.info.A$N.infected, Host.count.B=res$host.info.B$N.infected, pres.time=pres.time, print.step=print.step, length.sim=length.sim, max.infected.A=max.infected.A, max.infected.B=max.infected.B, type="dual")
     if (res$host.info.A$N.infected > max.infected.A || res$host.info.B$N.infected > max.infected.B) {break}

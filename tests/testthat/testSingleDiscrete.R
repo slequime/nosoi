@@ -848,3 +848,76 @@ test_that("Epidemic dying out", {
 
   expect_equal(subset(Where.at.end, current.in == "A")$N,1)
 })
+
+
+test_that("Movement is coherent with single introduction, no pMove, no die, diff nContact with hostCount needed", {
+  library(igraph)
+
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Move_fct  <- function(t){return(0.1)}
+
+  p_Exit_fct  <- function(t){return(0.05)}
+
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact <- function(t, current.in, host.count){
+
+    temp.val = 30 - host.count
+
+    if(temp.val <= 0) {
+      return(0)
+    }
+    if(temp.val >= 0) {
+      if(current.in=="A"){
+        return(round((temp.val/30)*rnorm(1, 3, 1), 0))}
+      if(current.in=="B"){return(0)}
+      if(current.in=="C"){
+        return(round((temp.val/30)*rnorm(1, 6, 1), 0))}
+    }
+  }
+
+  transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+
+  set.seed(1050)
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
+                          length=100,
+                          max.infected=200,
+                          init.individuals=1,
+                          init.structure="A",
+                          structure.matrix=transition.matrix,
+                          pMove=p_Move_fct,
+                          param.pMove=NA,
+                          diff.nContact=TRUE,
+                          hostCount.nContact=TRUE,
+                          nContact=time_contact,
+                          param.nContact=NA,
+                          pTrans = proba,
+                          param.pTrans = list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          pExit=p_Exit_fct,
+                          param.pExit=NA
+  )
+
+  #Structure
+  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.hosts")[,c(1,2)],directed=F)
+  expect_equal(transitivity(g, type="global"), 0)
+  expect_equal(clusters(g, "weak")$no, 1)
+  expect_equal(diameter(g, directed=F, weights=NA), 10)
+
+  expect_equal(nrow(getHostInfo(test.nosoiA, "table.hosts")),204)
+
+  #Movement
+  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-2")),5)
+  expect_equal(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-2")$state,c("A","C","A","C","B"))
+
+  #Number of host at each loc at each time
+  out = getDynamic(test.nosoiA) #  ggplot(out, aes(x=t,y=Count,color=state)) + geom_line() + geom_hline(yintercept=30)
+  expect_equal(subset(out,state=="C" & t==26)$Count,30)
+  expect_equal(subset(out,state=="B" & t==26)$Count,17)
+  expect_equal(subset(out,state=="A" & t==25)$Count,32)
+})

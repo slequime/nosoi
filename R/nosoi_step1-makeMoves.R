@@ -125,7 +125,8 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
           angle = (2*base::pi)*runif(1)
           newP = moveRotateContinuous(c(as.numeric(current.move.pos.x),as.numeric(current.move.pos.y)), dX, dY,angle)
 
-          temp.env.value = raster::extract(structure.raster,cbind(newP[1],newP[2]))
+          temp.cell.number = raster::cellFromXY(structure.raster, cbind(newP[1],newP[2]))
+          temp.env.value = raster::extract(structure.raster,temp.cell.number)
 
           if (!is.na(temp.env.value)){
 
@@ -133,8 +134,10 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
               res$table.hosts[Move.ID[i], `:=` (current.in.x = newP[1])]
               res$table.hosts[Move.ID[i], `:=` (current.in.y = newP[2])]
               res$table.hosts[Move.ID[i], `:=` (current.env.value = temp.env.value)]
+              res$table.hosts[Move.ID[i], `:=` (current.cell.raster = temp.cell.number)]
 
-              table.state.temp[[i]] <- newLineState(Move.ID[i],newP,pres.time,current.environmental.value=temp.env.value)
+              table.state.temp[[i]] <- newLineState(Move.ID[i],newP,pres.time,current.environmental.value=temp.env.value,
+                                                    current.cell.number.raster=temp.cell.number)
 
               positionFound2 = TRUE
               positionFound1 = TRUE
@@ -148,8 +151,10 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
                 res$table.hosts[Move.ID[i], `:=` (current.in.x = newP[1])]
                 res$table.hosts[Move.ID[i], `:=` (current.in.y = newP[2])]
                 res$table.hosts[Move.ID[i], `:=` (current.env.value = temp.env.value)]
+                res$table.hosts[Move.ID[i], `:=` (current.cell.raster = temp.cell.number)]
 
-                table.state.temp[[i]] <- newLineState(Move.ID[i],newP,pres.time,current.environmental.value=temp.env.value)
+                table.state.temp[[i]] <- newLineState(Move.ID[i],newP,pres.time,current.environmental.value=temp.env.value,
+                                                      current.cell.number.raster=temp.cell.number)
 
                 positionFound2 = TRUE
                 positionFound1 = TRUE

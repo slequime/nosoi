@@ -103,14 +103,14 @@ test_that("Single, discrete", {
   # DO MORE TESTS
 
   ## Sampling from the deads
-  sampledDeadTree <- sampleTransmissionTreeFromTheDead(ttreedata, hID)
+  sampledDeadTree <- sampleTransmissionTreeFromExiting(ttreedata, hID)
   # plot(sampledDeadTree@phylo)
   sampledDeadTreeData <- tidytree::as_tibble(sampledDeadTree)
   sampledDeadTreeData[1:length(hID), ] <- sampledDeadTreeData[match(hID, sampledDeadTreeData$label), ]
 
   # Check that the two methods give the same results
   samples <- data.table(hosts = hID,
-                        times = thostTable[match(hID, thostTable$host), "out.time"],
+                        times = thostTable[match(hID, thostTable$hosts.ID), "out.time"],
                         labels = paste0(hID, "-s"))
   sampledTreeDeadBis <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
   sampledTreeDeadBisData <- tidytree::as_tibble(sampledTreeDeadBis)
@@ -216,14 +216,14 @@ test_that("Single, continuous", {
   # DO MORE TESTS
 
   ## Sampling from the deads
-  sampledDeadTree <- sampleTransmissionTreeFromTheDead(ttreedata, hID)
+  sampledDeadTree <- sampleTransmissionTreeFromExiting(ttreedata, hID)
   # plot(sampledDeadTree@phylo)
   sampledDeadTreeData <- tidytree::as_tibble(sampledDeadTree)
   sampledDeadTreeData[1:length(hID), ] <- sampledDeadTreeData[match(hID, sampledDeadTreeData$label), ]
 
   # Check that the two methods give the same results
   samples <- data.table(hosts = hID,
-                        times = thostTable[match(hID, thostTable$host), "out.time"],
+                        times = thostTable[match(hID, thostTable$hosts.ID), "out.time"],
                         labels = paste0(hID, "-s"))
   sampledTreeDeadBis <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
   sampledTreeDeadBisData <- tidytree::as_tibble(sampledTreeDeadBis)

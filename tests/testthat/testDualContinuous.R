@@ -557,3 +557,138 @@ test_that("Error if no host move", {
              prefix.host.B="V"),
     "At least one host must move.")
 })
+
+
+test_that("One host (B) moves, host count", {
+  library(raster)
+
+  #Generating a raster the for movement
+  set.seed(860)
+
+  test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
+  test.raster[] <- runif(10000, -80, 180)
+  test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
+
+  library(igraph)
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Move_fct  <- function(t){return(0.1)}
+
+  sdMove_fct = function(t,current.env.value){return(100/(current.env.value+1))}
+
+  p_Exit_fct  <- function(t){return(0.08)}
+
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact_A = function(t){round(rnorm(1, 3, 1), 0)}
+
+  time_contact_B <- function(t, current.env.value, host.count){
+
+    temp.val = round(((current.env.value-host.count)/current.env.value)*rnorm(1, 3, 1), 0)
+
+    if(length(temp.val) == 0 || temp.val <= 0) {
+      return(0)
+    }
+    if(temp.val >= 0) {
+      return(temp.val)
+    }
+  }
+
+  start.pos <- c(0,0)
+
+  set.seed(19)
+  test.nosoiA <- nosoiSim(type="dual", popStructure="continuous",
+                          length.sim=200,
+                          max.infected.A=500,
+                          max.infected.B=500,
+                          init.individuals.A=1,
+                          init.individuals.B=0,
+                          init.structure.A=start.pos,
+                          init.structure.B=NA,
+                          structure.raster.A=test.raster,
+                          structure.raster.B=test.raster,
+
+                          pExit.A=p_Exit_fct,
+                          param.pExit.A=NA,
+                          timeDep.pExit.A=FALSE,
+                          diff.pExit.A=FALSE,
+                          pMove.A=NA,
+                          param.pMove.A=NA,
+                          timeDep.pMove.A=FALSE,
+                          diff.pMove.A=FALSE,
+                          diff.sdMove.A=TRUE,
+                          sdMove.A=NA,
+                          param.sdMove.A=NA,
+                          attracted.by.raster.A=TRUE,
+                          nContact.A=time_contact_A,
+                          param.nContact.A=NA,
+                          timeDep.nContact.A=FALSE,
+                          diff.nContact.A=FALSE,
+                          pTrans.A=proba,
+                          param.pTrans.A=list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          timeDep.pTrans.A=FALSE,
+                          diff.pTrans.A=FALSE,
+                          prefix.host.A="H",
+
+                          pExit.B=p_Exit_fct,
+                          param.pExit.B=NA,
+                          timeDep.pExit.B=FALSE,
+                          diff.pExit.B=FALSE,
+                          pMove.B=p_Move_fct,
+                          param.pMove.B=NA,
+                          timeDep.pMove.B=FALSE,
+                          diff.pMove.B=FALSE,
+                          diff.sdMove.B=TRUE,
+                          sdMove.B=sdMove_fct,
+                          param.sdMove.B=NA,
+                          attracted.by.raster.B=FALSE,
+                          nContact.B=time_contact_B,
+                          param.nContact.B=NA,
+                          timeDep.nContact.B=FALSE,
+                          hostCount.nContact.B=TRUE,
+                          diff.nContact.B=TRUE,
+                          pTrans.B=proba,
+                          param.pTrans.B=list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          timeDep.pTrans.B=FALSE,
+                          diff.pTrans.B=FALSE,
+                          prefix.host.B="V")
+
+  full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
+  full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
+
+  g <- graph.data.frame(full.results.nosoi[inf.by != "NA-1",c(1,2)],directed=F)
+
+  expect_equal(transitivity(g, type="global"), 0)
+  expect_equal(clusters(g, "weak")$no, 1)
+  expect_equal(diameter(g, directed=F, weights=NA), 9)
+
+  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+
+
+  expect_equal(nrow(test.nosoiA$host.info.A$table.hosts), nrow(test.nosoiA$host.info.A$table.state))
+
+  expect_equal(test.nosoiA$total.time, 25)
+
+  expect_equal(test.nosoiA$host.info.A$N.infected, 280)
+  expect_equal(test.nosoiA$host.info.B$N.infected, 540)
+
+  expect_equal(test.nosoiA$type, "dual")
+  expect_equal(test.nosoiA$host.info.A$popStructure, "continuous")
+  expect_equal(test.nosoiA$host.info.B$popStructure, "continuous")
+
+  #Movement
+
+  H1_moves <- subset(full.results.nosoi.state, hosts.ID == "V-1")
+
+  expect_equal(nrow(H1_moves),6)
+  expect_equal(H1_moves$current.env.value[1] < H1_moves$current.env.value[2],TRUE)
+})

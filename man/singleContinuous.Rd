@@ -6,12 +6,14 @@
 \usage{
 singleContinuous(length.sim, max.infected, init.individuals,
   init.structure, structure.raster, diff.pMove = FALSE,
-  timeDep.pMove = FALSE, pMove, param.pMove, diff.sdMove = FALSE,
-  timeDep.sdMove = FALSE, sdMove, param.sdMove,
+  timeDep.pMove = FALSE, hostCount.pMove = FALSE, pMove, param.pMove,
+  diff.sdMove = FALSE, timeDep.sdMove = FALSE,
+  hostCount.sdMove = FALSE, sdMove, param.sdMove,
   attracted.by.raster = FALSE, diff.nContact = FALSE,
-  timeDep.nContact = FALSE, nContact, param.nContact,
-  diff.pTrans = FALSE, timeDep.pTrans = FALSE, pTrans, param.pTrans,
-  diff.pExit = FALSE, timeDep.pExit = FALSE, pExit, param.pExit,
+  timeDep.nContact = FALSE, hostCount.nContact = FALSE, nContact,
+  param.nContact, diff.pTrans = FALSE, timeDep.pTrans = FALSE,
+  hostCount.pTrans = FALSE, pTrans, param.pTrans, diff.pExit = FALSE,
+  timeDep.pExit = FALSE, hostCount.pExit = FALSE, pExit, param.pExit,
   prefix.host = "H", print.progress = TRUE, print.step = 10)
 }
 \arguments{
@@ -29,6 +31,8 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{timeDep.pMove}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE)}
 
+\item{hostCount.pMove}{does pMove varies with the host count? (TRUE/FALSE); diff.pMove should be TRUE.}
+
 \item{pMove}{function that gives the probability of a host moving as a function of time.}
 
 \item{param.pMove}{parameter names (list of functions) for the pMove.}
@@ -36,6 +40,8 @@ singleContinuous(length.sim, max.infected, init.individuals,
 \item{diff.sdMove}{is sdMove dependant on the environmental value (TRUE/FALSE).}
 
 \item{timeDep.sdMove}{is sdMove dependant on the absolute time of the simulation (TRUE/FALSE).}
+
+\item{hostCount.sdMove}{does sdMove varies with the host count? (TRUE/FALSE); diff.sdMove should be TRUE.}
 
 \item{sdMove}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.}
 
@@ -47,6 +53,8 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)}
 
+\item{hostCount.nContact}{does nContact varies with the host count? (TRUE/FALSE); diff.nContact should be TRUE.}
+
 \item{nContact}{function that gives the number of potential transmission events per unit of time.}
 
 \item{param.nContact}{parameter names (list of functions) for nContact.}
@@ -55,6 +63,8 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)}
 
+\item{hostCount.pTrans}{does pTrans varies with the host count? (TRUE/FALSE); diff.pTrans should be TRUE.}
+
 \item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
 
 \item{param.pTrans}{parameter names (list of functions) for the pTrans.}
@@ -62,6 +72,8 @@ singleContinuous(length.sim, max.infected, init.individuals,
 \item{diff.pExit}{is pExit different between states of the structured population (TRUE/FALSE)}
 
 \item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)}
+
+\item{hostCount.pExit}{does pExit varies with the host count? (TRUE/FALSE); diff.pExit should be TRUE.}
 
 \item{pExit}{function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).}
 

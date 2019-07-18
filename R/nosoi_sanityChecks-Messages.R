@@ -28,6 +28,7 @@ CoreSanityChecks <- function(length.sim, max.infected, init.individuals) {
 #' @param param.pFunc a named list of arguments
 #' @param timeDep is the function differential according to absolute time? (TRUE/FALSE)
 #' @param diff is the function differential according to state/env.variable? (TRUE/FALSE)
+#' @param hostCount is the function differential according to host count? (TRUE/FALSE)
 #' @param structure is the function to be used in a structured population? (TRUE/FALSE)
 #' @param continuous is the function to be used in a continuous space? (TRUE/FALSE)
 #' @param stateNames name of the states (vector) in case of discrete structure.
@@ -35,17 +36,21 @@ CoreSanityChecks <- function(length.sim, max.infected, init.individuals) {
 #' @keywords internal
 ##
 
-FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, continuous, stateNames) {
+FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, hostCount, continuous, stateNames) {
 
   if (!is.function(pFunc)) stop("You must specify ",name, " as a function.")
 
   pFunc <- match.fun(pFunc)
   if (!formalArgs(pFunc)[1] == "t") stop(name, " must be a function of 't', placed as a first argument of the function.")
 
+  if(hostCount == TRUE && diff == FALSE) stop("diff.", name, " should be TRUE to use hostCount.", name, ".")
+
   if ((diff == FALSE && timeDep == FALSE && length(formalArgs(pFunc)) > 1)
-      || (diff == TRUE && timeDep == FALSE && length(formalArgs(pFunc)) > 2)
+      || (diff == TRUE && timeDep == FALSE && hostCount == FALSE && length(formalArgs(pFunc)) > 2)
+      || (diff == TRUE && timeDep == FALSE && hostCount == TRUE && length(formalArgs(pFunc)) > 3)
       || (diff == FALSE && timeDep == TRUE && length(formalArgs(pFunc)) > 2)
-      || (diff == TRUE && timeDep==TRUE && length(formalArgs(pFunc)) > 3)) {
+      || (diff == TRUE && timeDep==TRUE && hostCount == FALSE && length(formalArgs(pFunc)) > 3)
+      || (diff == TRUE && timeDep==TRUE && hostCount == TRUE && length(formalArgs(pFunc)) > 4)) {
     if (!is.list(param.pFunc) && is.na(param.pFunc)) {
       stop("There is a probleme with your function ", name, ": you should provide a parameter list named param.", name, ".")
     }

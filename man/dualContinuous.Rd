@@ -8,20 +8,26 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
   init.individuals.A, init.individuals.B, init.structure.A,
   init.structure.B, structure.raster.A, structure.raster.B, pExit.A,
   param.pExit.A, timeDep.pExit.A = FALSE, diff.pExit.A = FALSE,
-  pMove.A, param.pMove.A, timeDep.pMove.A = FALSE,
-  diff.pMove.A = FALSE, sdMove.A, param.sdMove.A,
+  hostCount.pExit.A = FALSE, pMove.A, param.pMove.A,
+  timeDep.pMove.A = FALSE, diff.pMove.A = FALSE,
+  hostCount.pMove.A = FALSE, sdMove.A, param.sdMove.A,
   diff.sdMove.A = FALSE, timeDep.sdMove.A = FALSE,
-  attracted.by.raster.A = FALSE, nContact.A, param.nContact.A,
-  timeDep.nContact.A = FALSE, diff.nContact.A = FALSE, pTrans.A,
+  hostCount.sdMove.A = FALSE, attracted.by.raster.A = FALSE,
+  nContact.A, param.nContact.A, timeDep.nContact.A = FALSE,
+  diff.nContact.A = FALSE, hostCount.nContact.A = FALSE, pTrans.A,
   param.pTrans.A, timeDep.pTrans.A = FALSE, diff.pTrans.A = FALSE,
-  prefix.host.A = "H", pExit.B, param.pExit.B, timeDep.pExit.B = FALSE,
-  diff.pExit.B = FALSE, pMove.B, param.pMove.B,
-  timeDep.pMove.B = FALSE, diff.pMove.B = FALSE, sdMove.B,
-  param.sdMove.B, diff.sdMove.B = FALSE, timeDep.sdMove.B = FALSE,
-  attracted.by.raster.B = FALSE, nContact.B, param.nContact.B,
-  timeDep.nContact.B = FALSE, diff.nContact.B = FALSE, pTrans.B,
+  hostCount.pTrans.A = FALSE, prefix.host.A = "H", pExit.B,
+  param.pExit.B, timeDep.pExit.B = FALSE, diff.pExit.B = FALSE,
+  hostCount.pExit.B = FALSE, pMove.B, param.pMove.B,
+  timeDep.pMove.B = FALSE, diff.pMove.B = FALSE,
+  hostCount.pMove.B = FALSE, sdMove.B, param.sdMove.B,
+  diff.sdMove.B = FALSE, timeDep.sdMove.B = FALSE,
+  hostCount.sdMove.B = FALSE, attracted.by.raster.B = FALSE,
+  nContact.B, param.nContact.B, timeDep.nContact.B = FALSE,
+  diff.nContact.B = FALSE, hostCount.nContact.B = FALSE, pTrans.B,
   param.pTrans.B, timeDep.pTrans.B = FALSE, diff.pTrans.B = FALSE,
-  prefix.host.B = "V", print.progress = TRUE, print.step = 10)
+  hostCount.pTrans.B = FALSE, prefix.host.B = "V",
+  print.progress = TRUE, print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -50,6 +56,8 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{diff.pExit.A}{is pExit different between states of the structured population (TRUE/FALSE) for host A.}
 
+\item{hostCount.pExit.A}{does pExit varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pExit.A should be TRUE.}
+
 \item{pMove.A}{function that gives the probability of a host moving as a function of time for host A.}
 
 \item{param.pMove.A}{parameter names (list of functions) for the pMove for host A.}
@@ -58,6 +66,8 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{diff.pMove.A}{is pMove different between states of the structured population (TRUE/FALSE) for host A.}
 
+\item{hostCount.pMove.A}{does pMove varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pMove.A should be TRUE.}
+
 \item{sdMove.A}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion for host A.}
 
 \item{param.sdMove.A}{parameter names (list of functions) for sdMove for host A}
@@ -65,6 +75,8 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 \item{diff.sdMove.A}{is sdMove dependant on the environmental value (TRUE/FALSE) for host A.}
 
 \item{timeDep.sdMove.A}{is sdMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.}
+
+\item{hostCount.sdMove.A}{does sdMove varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pMove.A should be TRUE.}
 
 \item{attracted.by.raster.A}{should the hosts A be attracted by high values in the environmental raster? (TRUE/FALSE)}
 
@@ -76,6 +88,8 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{diff.nContact.A}{is nContact different between states of the structured population (TRUE/FALSE) for host A.}
 
+\item{hostCount.nContact.A}{does nContact varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.nContact.A should be TRUE.}
+
 \item{pTrans.A}{function that gives the probability of transmit a pathogen as a function of time since infection  for host A.}
 
 \item{param.pTrans.A}{parameter names (list of functions) for the pExit  for host A.}
@@ -83,6 +97,8 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 \item{timeDep.pTrans.A}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
 
 \item{diff.pTrans.A}{is pTrans different between states of the structured population (TRUE/FALSE) for host A.}
+
+\item{hostCount.pTrans.A}{does pTrans varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pTrans.A should be TRUE.}
 
 \item{prefix.host.A}{character(s) to be used as a prefix for the host A identification number.}
 
@@ -94,6 +110,8 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{diff.pExit.B}{is pExit different between states of the structured population (TRUE/FALSE) for host B.}
 
+\item{hostCount.pExit.B}{does pExit varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pExit.B should be TRUE.}
+
 \item{pMove.B}{function that gives the probability of a host moving as a function of time for host B.}
 
 \item{param.pMove.B}{parameter names (list of functions) for the pMove for host B.}
@@ -102,6 +120,8 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{diff.pMove.B}{is pMove different between states of the structured population (TRUE/FALSE) for host B.}
 
+\item{hostCount.pMove.B}{does pMove varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pMove.B should be TRUE.}
+
 \item{sdMove.B}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion for host A.}
 
 \item{param.sdMove.B}{parameter names (list of functions) for sdMove for host A}
@@ -109,6 +129,8 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 \item{diff.sdMove.B}{is sdMove dependant on the environmental value (TRUE/FALSE) for host A.}
 
 \item{timeDep.sdMove.B}{is sdMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.}
+
+\item{hostCount.sdMove.B}{does sdMove varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pMove.B should be TRUE.}
 
 \item{attracted.by.raster.B}{should the hosts A be attracted by high values in the environmental raster? (TRUE/FALSE)}
 
@@ -120,6 +142,8 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{diff.nContact.B}{is nContact different between states of the structured population (TRUE/FALSE) for host B.}
 
+\item{hostCount.nContact.B}{does nContact varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.nContact.B should be TRUE.}
+
 \item{pTrans.B}{function that gives the probability of transmit a pathogen as a function of time since infection  for host B.}
 
 \item{param.pTrans.B}{parameter names (list of functions) for the pExit  for host B.}
@@ -127,6 +151,8 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 \item{timeDep.pTrans.B}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
 
 \item{diff.pTrans.B}{is pTrans different between states of the structured population (TRUE/FALSE) for host B.}
+
+\item{hostCount.pTrans.B}{does pTrans varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pTrans.B should be TRUE.}
 
 \item{prefix.host.B}{character(s) to be used as a prefix for the host B identification number.}
 

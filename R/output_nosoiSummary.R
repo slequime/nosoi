@@ -149,7 +149,7 @@ getDynamic  <- function(table.nosoi) {
   #get type and pop structure
   #single
 
-  if (table.nosoi$type == "single" && (table.nosoi$host.info.A$popStructure == "none" || table.nosoi$host.info.A$popStructure == "continuous")){
+  if (table.nosoi$type == "single" & (table.nosoi$host.info.A$popStructure == "none" | table.nosoi$host.info.A$popStructure == "continuous")){
     results.dynamic=data.table()
     for(t in 0:(table.nosoi$total.time +1)){
       temp <- list(t=t, Count = numberInfected(table.nosoi$host.info.A$table.hosts, t),type=table.nosoi$host.info.A$prefix.host)
@@ -157,7 +157,7 @@ getDynamic  <- function(table.nosoi) {
     }
   }
 
-  if (table.nosoi$type == "single" && table.nosoi$host.info.A$popStructure == "discrete"){
+  if (table.nosoi$type == "single" & table.nosoi$host.info.A$popStructure == "discrete"){
     results.dynamic=data.table()
     for(t in 0:(table.nosoi$total.time +1)){
       table.state.temp <- subset(table.nosoi$host.info.A$table.state, (time.from < t & (is.na(time.to)|time.to >= t))) %>% group_by(state) %>% dplyr::summarise(Count=length(hosts.ID)) %>% dplyr::mutate(type=table.nosoi$host.info.A$prefix.host,  t=t ) %>% data.table()
@@ -167,7 +167,7 @@ getDynamic  <- function(table.nosoi) {
   }
 
   #dual
-  if (table.nosoi$type == "dual" && (table.nosoi$host.info.A$popStructure == "none" || table.nosoi$host.info.A$popStructure == "continuous") &&
+  if (table.nosoi$type == "dual" && (table.nosoi$host.info.A$popStructure == "none" | table.nosoi$host.info.A$popStructure == "continuous") &&
       (table.nosoi$host.info.B$popStructure == "none" || table.nosoi$host.info.B$popStructure == "continuous")){
     results.dynamic=data.table()
     for(t in 0:(table.nosoi$total.time +1)){
@@ -182,7 +182,7 @@ getDynamic  <- function(table.nosoi) {
     for(t in 0:(table.nosoi$total.time +1)){
       table.state.tempA <- subset(table.nosoi$host.info.A$table.state, (time.from < t & (is.na(time.to)|time.to >= t))) %>% dplyr::group_by(state) %>% dplyr::summarise(Count=length(hosts.ID)) %>% dplyr::mutate(type=table.nosoi$host.info.A$prefix.host,  t=t ) %>% data.table()
 
-      table.state.tempB <- subset(table.nosoi$host.info.A$table.state, (time.from < t & (is.na(time.to)|time.to >= t))) %>% dplyr::group_by(state) %>% dplyr::summarise(Count=length(hosts.ID)) %>% dplyr::mutate(type=table.nosoi$host.info.B$prefix.host,  t=t ) %>% data.table()
+      table.state.tempB <- subset(table.nosoi$host.info.B$table.state, (time.from < t & (is.na(time.to)|time.to >= t))) %>% dplyr::group_by(state) %>% dplyr::summarise(Count=length(hosts.ID)) %>% dplyr::mutate(type=table.nosoi$host.info.B$prefix.host,  t=t ) %>% data.table()
 
       results.dynamic <- rbindlist(list(results.dynamic,table.state.tempA,table.state.tempB))
     }
