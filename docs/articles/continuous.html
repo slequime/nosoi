@@ -194,7 +194,7 @@
 <h2 class="hasAnchor">
 <a href="#continuous-space" class="anchor"></a>Continuous space</h2>
 <p>In the continuous space, the simulation will take place on a map defined by its coordinates. This map is actually a raster, called <code>structure.raster</code>, that also holds an environmental value of interest that may influence the epidemic process. Areas were hosts cannot move (water, unaccessible areas, etc) must be defined by the value <code>NA</code>.</p>
-<p>Here, we will generate a random raster for the purpose of this tutorial, but you can use a “real” world raster and simulate your epidemic on it ( <a href="ebola.html">see this example</a> ).</p>
+<p>Here, we will generate a random raster for the purpose of this tutorial, but you can use a “real” world raster and simulate your epidemic on it ( <a href="example/ebola.html">see this example</a> ).</p>
 <details><p><summary>Code used to create the random raster used in this tutorial</summary></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">860</span>)</a>
@@ -208,7 +208,7 @@
 <a href="#movement-kernel" class="anchor"></a>Movement kernel</h2>
 <p>Movements in <code>nosoi</code> are basically described by a random walk (Brownian motion), that can be attracted by the underlying environmental variable (<code>attracted.by.raster</code>). In any case, the movement cannot land into areas out of the raster nor into areas of the raster with no value (<code>NA</code>).</p>
 <p>The user provides a core function <code>sdMove</code> that give the standard deviation of this Brownian motion. This function, <a href="nosoi.html#setting-up-the-core-functions">like the other core functions</a>, can be dependent of time since infection, absolute time of the simulation, location (value of the environmental variable) or individual-based parameters. This standard deviation is in your coordinate space, so the actual distance travelled by the host may actually vary according to your space.</p>
-<p>In the case where hosts are attracted by the raster, hosts will tend to go to positions with high environmental values. Internally, once a new position is proposed, its environmental value is extracted and normalized (against the highest environmental value). This normalized number represents its probability of acceptance. Up to 30 draws can be made until one is accepted (by default the 30th move is always accepted). #GB: why/how was the upper limit of 30 chosen?</p>
+<p>In the case where hosts are attracted by the raster, hosts will tend to go to positions with high environmental values. Internally, once a new position is proposed, its environmental value is extracted and normalized (against the highest environmental value). This normalized number represents its probability of acceptance. Up to 30 draws can be made until one is accepted (by default the 30<span class="math inline">\(^{th}\)</span> move is always accepted; this value was empirically set to allow enough exploration without being stuck in a time consumming search).</p>
 <p>The figure below shows a movement on a simple gradient raster, with or without an attraction (<code>sdMove</code> is a constant fixed at 0.01, time is 1000 units of time, maximum value of the environmental variable is 300). The red point represents the starting position.</p>
 <p><img src="continuous_files/figure-html/RW-1-1.png" width="700"></p>
 </div>
@@ -216,7 +216,7 @@
 <div id="setting-up-the-simulation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#setting-up-the-simulation" class="anchor"></a>Setting up the simulation</h1>
-<p>The wrapper function <code>nosoiSim</code> takes all the arguments that will be passed down to the simulator, in the case of this tutorial <code>singleContinuous</code> (for “single host, continuous space”). #GB: should ‘takes’ be replaced with ‘requires’? We thus start by providing the options <code>type="single"</code> and <code>popStructure="continuous"</code> to set up the analysis:</p>
+<p>The wrapper function <code>nosoiSim</code> requires all the arguments that will be passed down to the simulator, in the case of this tutorial <code>singleContinuous</code> (for “single host, continuous space”). We thus start by providing the options <code>type="single"</code> and <code>popStructure="continuous"</code> to set up the analysis:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"continuous"</span>, ...)</a></code></pre></div>
 <p>This simulation type takes several arguments or options to be able to run, namely:</p>
 <ul>
@@ -226,26 +226,26 @@
 <li><code>init.structure</code></li>
 <li><code>structure.raster</code></li>
 <li>
-<code>pExit</code> with <code>param.pExit</code>, <code>timeDep.pExit</code> and <code>diff.pExit</code>
+<code>pExit</code> with <code>param.pExit</code>, <code>timeDep.pExit</code>, <code>diff.pExit</code> and <code>hostCount.pExit</code>
 </li>
 <li>
-<code>pMove</code> with <code>param.pMove</code>, <code>timeDep.pMove</code> and <code>diff.pMove</code>
+<code>pMove</code> with <code>param.pMove</code>, <code>timeDep.pMove</code>, <code>diff.pMove</code> and <code>hostCount.pMove</code>
 </li>
 <li>
-<code>sdMove</code> with <code>param.sdMove</code>, <code>timeDep.sdMove</code> and <code>diff.sdMove</code>
+<code>sdMove</code> with <code>param.sdMove</code>, <code>timeDep.sdMove</code>, <code>diff.sdMove</code> and <code>hostCount.sdMove</code>
 </li>
 <li><code>attracted.by.raster</code></li>
 <li>
-<code>nContact</code> with <code>param.nContact</code>, <code>timeDep.nContact</code> and <code>diff.nContact</code>
+<code>nContact</code> with <code>param.nContact</code>, <code>timeDep.nContact</code>, <code>diff.nContact</code> and <code>hostCount.nContact</code>
 </li>
 <li>
-<code>pTrans</code> with <code>param.pTrans</code>, <code>timeDep.pTrans</code> and <code>diff.pTrans</code>
+<code>pTrans</code> with <code>param.pTrans</code>, <code>timeDep.pTrans</code>, <code>diff.pTrans</code> and <code>hostCount.pTrans</code>
 </li>
 <li><code>prefix.host.A</code></li>
 <li><code>print.progress</code></li>
 <li><code>print.step</code></li>
 </ul>
-<p>All the <code>param</code> elements provide individual-level parameters to be taken into account, while the <code>timeDep</code> elements inform the simulator if the “absolute” simulation time should be taken into account. The <code>diff</code> elements inform the simulator if there is a differential probability according to the state the host is currently in.</p>
+<p>All the <code>param</code> elements provide individual-level parameters to be taken into account, while the <code>timeDep</code> elements inform the simulator if the “absolute” simulation time should be taken into account. The <code>diff</code> elements inform the simulator if there is a differential probability according to the state the host is currently in, and the <code>hostCount</code> elements inform the simulator if the number of host in each raster cell (based on the environmental raster provided) has to be taken into account. All parameters must be provided, although <code>timeDep</code>, <code>diff</code> and <code>hostCount</code> have default values set to <code>FALSE</code>; if you do not want to use these options, then you do not have to explicitly provide a value.</p>
 <div id="general-parameters" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-parameters" class="anchor"></a>General parameters</h2>
@@ -257,50 +257,49 @@
 <div id="core-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#core-functions" class="anchor"></a>Core functions</h2>
-<p>#GB: for my comments on all these descriptions, please have a look at my comments for the discrete tutorial</p>
 <p>The core functions <code>pExit</code>, <code>pMove</code>, <code>sdMove</code>, <code>nContact</code> and <code>pTrans</code> each follow the <a href="nosoi.html#setting-up-the-core-functions">same principles to be set up</a>. To accommodate several scenarios, they can be constant, time-dependent (relative time since infection for each individual or “absolute”" time of the simulation), location dependent in the continuous space (value of the environmental variable), or even individually parameterized, to include some stochasticity at the individual-host level. In every case, the function provided, like all other core functions in <code>nosoi</code>, has to be expressed as function of time <code>t</code>, even if time is not used to compute the probability. In case the function uses individual-based parameters, you have to specify a list of functions (called <code>param.pExit</code>, <code>param.pMove</code>, <code>param.sdMove</code>,<code>param.nContact</code> or <code>param.pTrans</code>) ( <a href="nosoi.html#parameters">see Get started</a> ). If no individual-based parameter is used, then they are set to <code>NA</code>.</p>
 <blockquote>
 <p>Keep in mind that <code>pExit</code>, <code>pMove</code>, and <code>pTrans</code> have to give back a probability (i.e. a number between 0 and 1) while <code>nContact</code> should give back a positive natural number (positive integer) and <code>sdMove</code> a positive number.</p>
 </blockquote>
 <p>You can combine the influence of several parameters, such as time since infection, “absolute” time of the simulation, location (in the continuous space), and individual-based parameters within the same function.</p>
 <blockquote>
-<p>In any case, time since infection, “absolute” time, and current location should ALWAYS be designated by <code>t</code>, <code>prestime</code> and <code>current.env.value</code> respectively, and be in that order and before of the individual-based parameters.</p>
+<p><code>nosoi</code> can be flexible in what it allows as parameters in your function, but a common general structure should be observed. The argument of the function should be (in that order): (1) time since infection <code>t</code> (obligatory); (2) “absolute” time <code>prestime</code> (optional); (3) current state <code>current.in</code> (optional); (4) host count in state <code>host.count</code> (optional); (5) other individual-based parameter(s), provided in <code>param.function</code>. If one of the argument is not used (except <code>t</code>), then you do not have to provide it and can continue with the next argument.</p>
 </blockquote>
-<div id="pexit-param-pexit-timedep-pexit-and-diff-pexit" class="section level3">
+<div id="pexit-param-pexit-timedep-pexit-diff-pexit-and-hostcount-pexit" class="section level3">
 <h3 class="hasAnchor">
-<a href="#pexit-param-pexit-timedep-pexit-and-diff-pexit" class="anchor"></a><code>pExit</code>, <code>param.pExit</code>, <code>timeDep.pExit</code> and <code>diff.pExit</code>
+<a href="#pexit-param-pexit-timedep-pexit-diff-pexit-and-hostcount-pexit" class="anchor"></a><code>pExit</code>, <code>param.pExit</code>, <code>timeDep.pExit</code>, <code>diff.pExit</code> and <code>hostCount.pExit</code>
 </h3>
-<p><code>pExit</code> is the first required fundamental parameter and provides a daily probability for a host to leave the simulation (either cured, died, etc.). <code>param.pExit</code> is the list of function need to individually paramterize <code>pExit</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>pExit</code>. <code>timeDep.pExit</code> allows for <code>pExit</code> to be dependent of the “absolute” time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, <code>timeDep.pExit</code> is set to <code>FALSE</code>. <code>diff.pExit</code> allows <code>pExit</code> to be different according to the current environemental value of the location where the host is located. By default, <code>diff.pExit</code> is set to <code>FALSE</code>.</p>
+<p><code>pExit</code> is the first required fundamental parameter and provides a daily probability for a host to leave the simulation (either cured, died, etc.). <code>param.pExit</code> is the list of function need to individually paramterize <code>pExit</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>pExit</code>. <code>timeDep.pExit</code> allows for <code>pExit</code> to be dependent of the “absolute” time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, <code>timeDep.pExit</code> is set to <code>FALSE</code>. <code>diff.pExit</code> allows <code>pExit</code> to be different according to the current environemental value of the location where the host is located. By default, <code>diff.pExit</code> is set to <code>FALSE</code>. <code>hostCount.pExit</code> allows <code>pExit</code> to differ according to the number of hosts currently in a raster cell. By default, <code>hostCount.pExit</code> is set to <code>FALSE</code>. To use <code>hostCount.pExit</code>, <code>diff.pExit</code> has to be set to <code>TRUE</code> too.</p>
 </div>
-<div id="pmove-param-pmove-timedep-pmove-and-diff-pmove" class="section level3">
+<div id="pmove-param-pmove-timedep-pmove-diff-pmove-and-hostcount-pmove" class="section level3">
 <h3 class="hasAnchor">
-<a href="#pmove-param-pmove-timedep-pmove-and-diff-pmove" class="anchor"></a><code>pMove</code>, <code>param.pMove</code>, <code>timeDep.pMove</code> and <code>diff.pMove</code>
+<a href="#pmove-param-pmove-timedep-pmove-diff-pmove-and-hostcount-pmove" class="anchor"></a><code>pMove</code>, <code>param.pMove</code>, <code>timeDep.pMove</code>, <code>diff.pMove</code> and <code>hostCount.pMove</code>
 </h3>
-<p><code>pMove</code> is the probability (per unit of time) for a host to move on the map. It should not be confused with the distance the host will travel linked to <code>sdMove</code> (see below). <code>param.pMove</code> is the list of function need to individually paramterize <code>pMove</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>pMove</code>. <code>timeDep.pMove</code> allows for <code>pMove</code> to be dependent of the “absolute” time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, <code>timeDep.pMove</code> is set to <code>FALSE</code>. <code>diff.pMove</code> allows <code>pMove</code> to be different according to the current environemental value of the location where the host is located. By default, <code>diff.pMove</code> is set to <code>FALSE</code>.</p>
+<p><code>pMove</code> is the probability (per unit of time) for a host to move on the map. It should not be confused with the distance the host will travel linked to <code>sdMove</code> (see below). <code>param.pMove</code> is the list of function need to individually paramterize <code>pMove</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>pMove</code>. <code>timeDep.pMove</code> allows for <code>pMove</code> to be dependent of the “absolute” time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, <code>timeDep.pMove</code> is set to <code>FALSE</code>. <code>diff.pMove</code> allows <code>pMove</code> to be different according to the current environemental value of the location where the host is located. By default, <code>diff.pMove</code> is set to <code>FALSE</code>. <code>hostCount.pMove</code> allows <code>pMove</code> to differ according to the number of hosts currently in a raster cell. By default, <code>hostCount.pMove</code> is set to <code>FALSE</code>. To use <code>hostCount.pMove</code>, <code>diff.pMove</code> has to be set to <code>TRUE</code> too.</p>
 </div>
-<div id="sdmove-param-sdmove-timedep-sdmove-and-diff-sdmove" class="section level3">
+<div id="sdmove-param-sdmove-timedep-sdmove-diff-sdmove-and-hostcount-sdmove" class="section level3">
 <h3 class="hasAnchor">
-<a href="#sdmove-param-sdmove-timedep-sdmove-and-diff-sdmove" class="anchor"></a><code>sdMove</code>, <code>param.sdMove</code>, <code>timeDep.sdMove</code> and <code>diff.sdMove</code>
+<a href="#sdmove-param-sdmove-timedep-sdmove-diff-sdmove-and-hostcount-sdmove" class="anchor"></a><code>sdMove</code>, <code>param.sdMove</code>, <code>timeDep.sdMove</code>, <code>diff.sdMove</code> and <code>hostCount.sdMove</code>
 </h3>
-<p><code>sdMove</code> represents the standard deviation of the Brownian motion movement when a host undergo a move (set by <code>pMove</code>). <code>param.sdMove</code> is the list of function need to individually paramterize <code>sdMove</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>sdMove</code>. <code>timeDep.sdMove</code> allows for <code>sdMove</code> to be dependent of the “absolute” time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, <code>timeDep.sdMove</code> is set to <code>FALSE</code>. <code>diff.sdMove</code> allows <code>sdMove</code> to be different according to the current environemental value of the location where the host is located. By default, <code>diff.sdMove</code> is set to <code>FALSE</code>.</p>
+<p><code>sdMove</code> represents the standard deviation of the Brownian motion movement when a host undergo a move (set by <code>pMove</code>). <code>param.sdMove</code> is the list of function need to individually paramterize <code>sdMove</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>sdMove</code>. <code>timeDep.sdMove</code> allows for <code>sdMove</code> to be dependent of the “absolute” time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, <code>timeDep.sdMove</code> is set to <code>FALSE</code>. <code>diff.sdMove</code> allows <code>sdMove</code> to be different according to the current environemental value of the location where the host is located. By default, <code>diff.sdMove</code> is set to <code>FALSE</code>. <code>hostCount.sdMove</code> allows <code>sdMove</code> to differ according to the number of hosts currently in a raster cell. By default, <code>hostCount.sdMove</code> is set to <code>FALSE</code>. To use <code>hostCount.sdMove</code>, <code>diff.sdMove</code> has to be set to <code>TRUE</code> too.</p>
 </div>
-<div id="ncontact-param-ncontact-timedep-ncontact-and-diff-ncontact" class="section level3">
+<div id="ncontact-param-ncontact-timedep-ncontact-diff-ncontact-and-hostcount-ncontact" class="section level3">
 <h3 class="hasAnchor">
-<a href="#ncontact-param-ncontact-timedep-ncontact-and-diff-ncontact" class="anchor"></a><code>nContact</code>, <code>param.nContact</code>, <code>timeDep.nContact</code> and <code>diff.nContact</code>
+<a href="#ncontact-param-ncontact-timedep-ncontact-diff-ncontact-and-hostcount-ncontact" class="anchor"></a><code>nContact</code>, <code>param.nContact</code>, <code>timeDep.nContact</code>, <code>diff.nContact</code> and <code>hostCount.nContact</code>
 </h3>
-<p><code>nContact</code> represents the number (a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation. The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero. <code>param.nContact</code> is the list of function need to individually paramterize <code>nContact</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>nContact</code>. <code>timeDep.nContact</code> allows for <code>nContact</code> to be dependent of the “absolute” time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, <code>timeDep.nContact</code> is set to <code>FALSE</code>. <code>diff.nContact</code> allows <code>nContact</code> to be different according to the current environemental value of the location where the host is located. By default, <code>diff.nContact</code> is set to <code>FALSE</code>.</p>
+<p><code>nContact</code> represents the number (a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation. The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero. <code>param.nContact</code> is the list of function need to individually paramterize <code>nContact</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>nContact</code>. <code>timeDep.nContact</code> allows for <code>nContact</code> to be dependent of the “absolute” time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, <code>timeDep.nContact</code> is set to <code>FALSE</code>. <code>diff.nContact</code> allows <code>nContact</code> to be different according to the current environemental value of the location where the host is located. By default, <code>diff.nContact</code> is set to <code>FALSE</code>. <code>hostCount.nContact</code> allows <code>nContact</code> to differ according to the number of hosts currently in a raster cell. This can be useful to adjust the number of contact to the number of potentially susceptible hosts if the infected population is close to the maximum size of the population in a raster cell. By default, <code>hostCount.nContact</code> is set to <code>FALSE</code>. To use <code>hostCount.nContact</code>, <code>diff.nContact</code> has to be set to <code>TRUE</code> too.</p>
 </div>
-<div id="ptrans-param-ptrans-timedep-ptrans-and-diff-ptrans" class="section level3">
+<div id="ptrans-param-ptrans-timedep-ptransdiff-ptrans-and-hostcount-ptrans" class="section level3">
 <h3 class="hasAnchor">
-<a href="#ptrans-param-ptrans-timedep-ptrans-and-diff-ptrans" class="anchor"></a><code>pTrans</code>, <code>param.pTrans</code>, <code>timeDep.pTrans</code> and <code>diff.pTrans</code>
+<a href="#ptrans-param-ptrans-timedep-ptransdiff-ptrans-and-hostcount-ptrans" class="anchor"></a><code>pTrans</code>, <code>param.pTrans</code>, <code>timeDep.pTrans</code>,<code>diff.pTrans</code> and <code>hostCount.pTrans</code>
 </h3>
-<p><code>pTrans</code> is the heart of the transmission process and represents the probability of transmission over time (when a contact occurs). <code>param.pTrans</code> is the list of function need to individually paramterize <code>pTrans</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>pTrans</code>. <code>timeDep.pTrans</code> allows for <code>pTrans</code> to be dependent of the “absolute” time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, <code>timeDep.pTrans</code> is set to <code>FALSE</code>. <code>diff.pTrans</code> allows <code>pTrans</code> to be different according to the current environemental value of the location where the host is located. By default, <code>diff.pTrans</code> is set to <code>FALSE</code>.</p>
+<p><code>pTrans</code> is the heart of the transmission process and represents the probability of transmission over time (when a contact occurs). <code>param.pTrans</code> is the list of function need to individually paramterize <code>pTrans</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>pTrans</code>. <code>timeDep.pTrans</code> allows for <code>pTrans</code> to be dependent of the “absolute” time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, <code>timeDep.pTrans</code> is set to <code>FALSE</code>. <code>diff.pTrans</code> allows <code>pTrans</code> to be different according to the current environemental value of the location where the host is located. By default, <code>diff.pTrans</code> is set to <code>FALSE</code>. <code>hostCount.pTrans</code> allows <code>pTrans</code> to differ according to the number of hosts currently in a raster cell. By default, <code>hostCount.pTrans</code> is set to <code>FALSE</code>. To use <code>hostCount.pTrans</code>, <code>diff.pTrans</code> has to be set to <code>TRUE</code> too.</p>
 </div>
 </div>
 <div id="miscellaneous" class="section level2">
 <h2 class="hasAnchor">
 <a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
-<p><code>prefix.host</code> allows you to define the first character(s) for the hosts’ unique ID. It will be followed by a hyphen and a unique number. By default, <code>prefix.host</code> is “H” for “Host”.</p>
+<p><code>prefix.host</code> allows you to define the first character(s) for the host’s unique ID. It will be followed by a hyphen and a unique number. By default, <code>prefix.host</code> is “H” for “Host”.</p>
 <p><code>print.progress</code> allows you to get some information printed on the screen about the simulation while running. It will print something every <code>print.step</code>. By default, <code>print.progress</code> is activated, with a <code>print.step = 10</code> (that you can change), but you may want to deactivate it by providing <code>print.progress == FALSE</code>.</p>
 </div>
 <div id="dual-host" class="section level2">
@@ -320,37 +319,37 @@
 <li><code>structure.raster.A</code></li>
 <li><code>structure.raster.B</code></li>
 <li>
-<code>pExit.A</code> with <code>param.pExit.A</code>, <code>timeDep.pExit.A</code> and <code>diff.pExit.A</code>
+<code>pExit.A</code> with <code>param.pExit.A</code>, <code>timeDep.pExit.A</code>, <code>diff.pExit.A</code> and <code>hostCount.pExit.A</code>
 </li>
 <li>
-<code>pMove.A</code> with <code>param.pMove.A</code>, <code>timeDep.pMove.A</code> and <code>diff.pMove.A</code>
+<code>pMove.A</code> with <code>param.pMove.A</code>, <code>timeDep.pMove.A</code>, <code>diff.pMove.A</code> and <code>hostCount.pMove.A</code>
 </li>
 <li>
-<code>sdMove.A</code> with <code>param.sdMove.A</code>, <code>timeDep.sdMove.A</code> and <code>diff.sdMove.A</code>
+<code>sdMove.A</code> with <code>param.sdMove.A</code>, <code>timeDep.sdMove.A</code>, <code>diff.sdMove.A</code> and <code>hostCount.sdMove.A</code>
 </li>
 <li><code>attracted.by.raster.A</code></li>
 <li>
-<code>nContact.A</code> with <code>param.nContact.A</code>, <code>timeDep.nContact.A</code> and <code>diff.nContact.A</code>
+<code>nContact.A</code> with <code>param.nContact.A</code>, <code>timeDep.nContact.A</code>, <code>diff.nContact.A</code> and <code>hostCount.nContact.A</code>
 </li>
 <li>
-<code>pTrans.A</code> with <code>param.pTrans.A</code>, <code>timeDep.pTrans.A</code> and <code>diff.pTrans.A</code>
+<code>pTrans.A</code> with <code>param.pTrans.A</code>, <code>timeDep.pTrans.A</code>, <code>diff.pTrans.A</code> and <code>hostCount.pTrans.A</code>
 </li>
 <li><code>prefix.host.A</code></li>
 <li>
-<code>pExit.B</code> with <code>param.pExit.B</code>, <code>timeDep.pExit.B</code> and <code>diff.pExit.B</code>
+<code>pExit.B</code> with <code>param.pExit.B</code>, <code>timeDep.pExit.B</code>, <code>diff.pExit.B</code> and <code>hostCount.pExit.B</code>
 </li>
 <li>
-<code>pMove.B</code> with <code>param.pMove.B</code>, <code>timeDep.pMove.B</code> and <code>diff.pMove.B</code>
+<code>pMove.B</code> with <code>param.pMove.B</code>, <code>timeDep.pMove.B</code>, <code>diff.pMove.B</code> and <code>hostCount.pMove.B</code>
 </li>
 <li>
-<code>sdMove.B</code> with <code>param.sdMove.B</code>, <code>timeDep.sdMove.B</code> and <code>diff.sdMove.B</code>
+<code>sdMove.B</code> with <code>param.sdMove.B</code>, <code>timeDep.sdMove.B</code>, <code>diff.sdMove.B</code> and <code>hostCount.sdMove.B</code>
 </li>
 <li><code>attracted.by.raster.B</code></li>
 <li>
-<code>nContact.B</code> with <code>param.nContact.B</code>, <code>timeDep.nContact.B</code> and <code>diff.nContact.B</code>
+<code>nContact.B</code> with <code>param.nContact.B</code>, <code>timeDep.nContact.B</code>, <code>diff.nContact.B</code> and <code>hostCount.nContact.B</code>
 </li>
 <li>
-<code>pTrans.B</code> with <code>param.pTrans.B</code>, <code>timeDep.pTrans.B</code> and <code>diff.pTrans.B</code>
+<code>pTrans.B</code> with <code>param.pTrans.B</code>, <code>timeDep.pTrans.B</code>, <code>diff.pTrans.B</code> and <code>hostCount.pTrans.B</code>
 </li>
 <li><code>prefix.host.B</code></li>
 <li><code>print.progress</code></li>
@@ -359,6 +358,7 @@
 <p>As you can see, host-type dependent parameters are now designated by the suffix <code>.A</code> or <code>.B</code>.</p>
 <p>Both <code>max.infected.A</code> and <code>max.infected.B</code> have to be provided to set an upper limit on the simulation size. To initiate the simulation, you have to provide at least on starting host, either <code>A</code> or <code>B</code> in <code>init.individuals.A</code> or <code>init.individuals.B</code> respectively, as well as starting position (vector of coordinates <code><a href="https://www.rdocumentation.org/packages/base/topics/c">c(x,y)</a></code> in the continuous space) in <code>init.individuals.A</code> or <code>init.individuals.B</code>, respectively. If you want to start the simulation with one host only, then <code>init.individuals</code> of the other host can be set to 0 and <code>init.structure</code> to <code>NA</code>.</p>
 <p>A major difference here is that hosts may, or not, share the same <code>structure.raster</code>. However, since they exist in the same “world”, they should be in the same coordinate system. It is also possible to have a host that does not move. In such case, <code>pMove</code> can be set to <code>NA</code>, as well as <code>sdMove</code>. In such “non-moving” case, a raster should still be provided, as it anchors the hosts into the simulation’s world.</p>
+<p>Here again, all parameters must be provided for both hosts, although <code>timeDep</code>, <code>diff</code> and <code>hostCount</code> have default values set to <code>FALSE</code>; if you do not want to use these options, then you do not have to explicitly provide a value. Be careful to switch <code>diff</code> to <code>TRUE</code> if you want to use <code>hostCount</code>, and remember to provide a result for each state.</p>
 </div>
 </div>
 <div id="running-nosoi" class="section level1">
@@ -553,7 +553,7 @@
 <div id="ptrans-b" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ptrans-b" class="anchor"></a>pTrans.B</h3>
-<p><code>pTrans.B</code> will be in the form of a gaussian function: it will its maximum value at a certain time point (mean) after initial infection and then will decrease until it reaches 0. #GB: you need to explain the function (dnorm) and its parameters below</p>
+<p><code>pTrans.B</code> will be in the form of a gaussian function: it will its maximum value at a certain time point (mean) after initial infection and then will decrease until it reaches 0. The function <code>dnorm</code> used here will achieve this objective: for each time <code>t</code> after infection, its return value will reach its maximum value (&lt; 1) at its mean (here <code>max.time</code>, a parameter that will be set for each individual, see below) and then decline back to 0. Its increase and decline is parameterised by the standard deviation <code>sd</code> of the <code>dnorm</code> function.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">p_Trans_fct.B &lt;-<span class="st"> </span><span class="cf">function</span>(t, max.time){</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">dnorm</a></span>(t, <span class="dt">mean=</span>max.time, <span class="dt">sd=</span><span class="dv">2</span>)<span class="op">*</span><span class="dv">5</span></a>
 <a class="sourceLine" id="cb17-3" data-line-number="3">}</a></code></pre></div>
@@ -562,7 +562,7 @@
 <p>Note again that here <code>max.time</code> is a function of <code>x</code> and not <code>t</code> (i.e. not a core function but individual-based parameters), and <code>x</code> enters the function as the number of draws to make.</p>
 <p>Taken together, the profile for <code>pTrans</code> for a subset of 200 individuals in the population will look like this:</p>
 <p><img src="continuous_files/figure-html/pTrans3.B-1.png" width="700"></p>
-<p>#GB: I’ve been using the singular “host’s” rather than the plural “hosts’”, we should pick one and stick with it Since <code>pTrans.B</code> is not dependent of the “absolute” time of the simulation nor the hosts’ location, <code>timeDep.pTrans.B=FALSE</code> and <code>diff.pTrans.B=FALSE</code>. However, since we have made use of individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The names of each element of the list should have the same name that the core function (<code>pTrans.B</code> here) uses as its argument, as shown here:</p>
+<p>Since <code>pTrans.B</code> is not dependent of the “absolute” time of the simulation nor the host’s location, <code>timeDep.pTrans.B=FALSE</code> and <code>diff.pTrans.B=FALSE</code>. However, since we have made use of individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The names of each element of the list should have the same name that the core function (<code>pTrans.B</code> here) uses as its argument, as shown here:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
 <a class="sourceLine" id="cb19-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb19-3" data-line-number="3">param_pTrans.B =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">max.time=</span>max.time_fct)</a></code></pre></div>
@@ -712,11 +712,11 @@
 <div id="going-further" class="section level1">
 <h1 class="hasAnchor">
 <a href="#going-further" class="anchor"></a>Going further</h1>
-<p>To analyse and visualise your <code>nosoi</code> simulation output, you can have a look on <a href="viz_stat.html">this page</a>.</p>
+<p>To analyse and visualise your <code>nosoi</code> simulation output, you can have a look on <a href="example/viz.html">this page</a>.</p>
 <p>A practical example using a dual host type of simulation with population structure in a continuous space is also available:</p>
 <ul>
 <li>
-<a href="ebola.html">Spread of Ebola virus in a continuous space</a>.</li>
+<a href="example/ebola.html">Spread of Ebola virus in a continuous space</a>.</li>
 </ul>
 </div>
   </div>

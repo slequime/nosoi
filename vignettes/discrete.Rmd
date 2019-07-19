@@ -75,16 +75,16 @@ This simulation type takes several arguments or options to be able to run, namel
 - `init.individuals`
 - `init.structure`
 - `structure.matrix`
-- `pExit` with `param.pExit`, `timeDep.pExit` and `diff.pExit` 
-- `pMove` with `param.pMove`, `timeDep.pMove` and `diff.pMove`
-- `nContact` with `param.nContact`, `timeDep.nContact` and `diff.nContact`
-- `pTrans` with `param.pTrans`, `timeDep.pTrans` and `diff.pTrans`
+- `pExit` with `param.pExit`, `timeDep.pExit`, `diff.pExit` and `hostCount.pExit`
+- `pMove` with `param.pMove`, `timeDep.pMove`, `diff.pMove` and `hostCount.pMove`
+- `nContact` with `param.nContact`, `timeDep.nContact`, `diff.nContact` and `hostCount.nContact`
+- `pTrans` with `param.pTrans`, `timeDep.pTrans`, `diff.pTrans` and `hostCount.pTrans`
 - `prefix.host.A`
 - `print.progress`
 - `print.step`
 
-#GB: explicitly say here that ALL of the arguments or options listed above HAVE TO BE provided? Same comment for the Dual Host part of the tutorial.
-All the `param` elements provide individual-level parameters to be taken into account, while the `timeDep` elements inform the simulator if the "absolute" simulation time should be taken into account. The `diff` elements inform the simulator if there is a differential probability according to the state the host is currently in.
+All the `param` elements provide individual-level parameters to be taken into account, while the `timeDep` elements inform the simulator if the "absolute" simulation time should be taken into account. The `diff` elements inform the simulator if there is a differential probability according to the state the host is currently in and the `hostCount` elements inform the simulator if the number of host in each state has to be taken into account.
+All parameters must be provided, although `timeDep`, `diff` and `hostCount` have default values set to `FALSE`; if you do not want to use these options, then you do not have to explicitly provide a value.
 
 ## General parameters
 
@@ -110,36 +110,44 @@ In case the function uses individual-based parameters, you have to specify a lis
 
 You can combine the influence of several parameters, such as time since infection, "absolute" time of the simulation, location (in the discrete states), and individual-based parameters within the same function.
 
-#GB: I don't understand the second part of the sentence; what do you mean with the order and what do you mean with 'before the individual-based parameters'?
-> In any case, time since infection, "absolute" time, and current location should ALWAYS be designated by `t`, `prestime` and `current.in` respectively, and be in that order and before the individual-based parameters.
+> `nosoi` can be flexible in what it allows as parameters in your function, but a common general structure should be observed. The argument of the function should be (in that order):
+(1) time since infection `t` (obligatory);
+(2) "absolute" time `prestime` (optional);
+(3) current state `current.in` (optional);
+(4) host count in state `host.count` (optional);
+(5) other individual-based parameter(s), provided in `param.function`.
+If one of the argument is not used (except `t`), then you do not have to provide it and can continue with the next argument.
 
-### `pExit`, `param.pExit`, `timeDep.pExit` and `diff.pExit`
+### `pExit`, `param.pExit`, `timeDep.pExit`, `diff.pExit` and `hostCount.pExit`
 
 `pExit` is the first required fundamental parameter and provides a daily probability for a host to leave the simulation (either cured, died, etc.).
 `param.pExit` is the list of functions needed to individually parameterize `pExit` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `pExit`. `timeDep.pExit` allows for `pExit` to be dependent of the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.pExit` is set to `FALSE`.
-`diff.pExit` allows `pExit` to differ according to the current discrete state of the host. By default, `diff.pExit` is set to `FALSE`.
+`diff.pExit` allows `pExit` to differ according to the current discrete state of the host. This can be useful, for example, if one state has a higher mortality rate (or better cures!) for the infection, in that case the probability to exit the simulation is higher. By default, `diff.pExit` is set to `FALSE`. Be careful, every state should give back a result for `pExit`.
+`hostCount.pExit` allows `pExit` to differ according to the number of hosts currently in a state. By default, `hostCount.pExit` is set to `FALSE`. To use `hostCount.pExit`, `diff.pExit` has to be set to `TRUE` too. 
 
-### `pMove`, `param.pMove`, `timeDep.pMove` and `diff.pMove`
+### `pMove`, `param.pMove`, `timeDep.pMove`, `diff.pMove` and `hostCount.pMove`
 
 `pMove` is the probability (per unit of time) for a host to move to a different state (for example, leaving state "A"). It should not be confused with the probabilities extracted from the `structure.matrix`, which represent the probability to go to a specific location once a movement is ongoing (for example, going to "B" or "C" while coming from "A").
 `param.pMove` is the list of function need to individually paramterize `pMove` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `pMove`. `timeDep.pMove` allows for `pMove` to be dependent of the "absolute" time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, `timeDep.pMove` is set to `FALSE`.
-`diff.pMove` allows `pMove` to be different according to the current discrete state of the host. By default, `diff.pMove` is set to `FALSE`.
-#GB: this begs the question how `pMove` needs to be adjusted or provided when `diff.pMove` is set to `TRUE`? The same question for the next 2 sections.
+`diff.pMove` allows `pMove` to be different according to the current discrete state of the host, to account, for example, of different travelling rates in different states. By default, `diff.pMove` is set to `FALSE`. Be careful, every state should give back a result for `pMove`.
+`hostCount.pMove` allows `pMove` to differ according to the number of hosts currently in a state. By default, `hostCount.pMove` is set to `FALSE`. To use `hostCount.pMove`, `diff.pMove` has to be set to `TRUE` too. 
 
-### `nContact`, `param.nContact`, `timeDep.nContact` and `diff.nContact`
+### `nContact`, `param.nContact`, `timeDep.nContact`, `diff.nContact` and `hostCount.nContact`
 
 ``nContact` represents the number (a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation.
 The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero.
 `param.nContact` is the list of functions needed to individually parameterize `nContact` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `nContact`.
-`timeDep.nContact` allows for `nContact` to be dependent of the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.nContact` is set to `FALSE`.
-`diff.nContact` allows `nContact` to differ according to the current discrete state of the host. By default, `diff.nContact` is set to `FALSE`.
+`timeDep.nContact` allows for `nContact` to be dependent of the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.nContact` is set to `FALSE`. 
+`diff.nContact` allows `nContact` to differ according to the current discrete state of the host. By default, `diff.nContact` is set to `FALSE`. Be careful, every state should give back a result for `nContact`.
+`hostCount.nContact` allows `nContact` to differ according to the number of hosts currently in a state. This can be useful to adjust the number of contact to the number of potentially susceptible hosts if the infected population is close to the maximum size of the population in a state. By default, `hostCount.nContact` is set to `FALSE`. To use `hostCount.nContact`, `diff.nContact` has to be set to `TRUE` too. 
 
-### `pTrans`, `param.pTrans`, `timeDep.pTrans` and `diff.pTrans`
+### `pTrans`, `param.pTrans`, `timeDep.pTrans`,`diff.pTrans`  and `hostCount.pTrans`
 
 `pTrans` is the heart of the transmission process and represents the probability of transmission over time (when a contact occurs).
 `param.pTrans` is the list of functions needed to individually parameterize `pTrans` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `pTrans`.
 `timeDep.pTrans` allows for `pTrans` to be dependent of the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.pTrans` is set to `FALSE`.
-`diff.pTrans` allows `pTrans` to be different according to the current discrete state of the host. By default, `diff.pTrans` is set to `FALSE`.
+`diff.pTrans` allows `pTrans` to be different according to the current discrete state of the host. This can be used to account of different dynamics linked to external factors common within a state, such as temperature for example. By default, `diff.pTrans` is set to `FALSE`. Be careful, every state should give back a result for `pTrans`.
+`hostCount.pTrans` allows `pTrans` to differ according to the number of hosts currently in a state. By default, `hostCount.pTrans` is set to `FALSE`. To use `hostCount.pTrans`, `diff.pTrans` has to be set to `TRUE` too. 
 
 ## Miscellaneous
 
@@ -169,15 +177,15 @@ This function takes several arguments or options to be able to run, namely:
 - `init.structure.B`
 - `structure.matrix.A`
 - `structure.matrix.B`
-- `pExit.A` with `param.pExit.A`, `timeDep.pExit.A` and `diff.pExit.A` 
-- `pMove.A` with `param.pMove.A`, `timeDep.pMove.A` and `diff.pMove.A`
-- `nContact.A` with `param.nContact.A`, `timeDep.nContact.A` and `diff.nContact.A`
-- `pTrans.A` with `param.pTrans.A`, `timeDep.pTrans.A` and `diff.pTrans.A`
+- `pExit.A` with `param.pExit.A`, `timeDep.pExit.A`, `diff.pExit.A` and `hostCount.pExit.A`
+- `pMove.A` with `param.pMove.A`, `timeDep.pMove.A`, `diff.pMove.A` and `hostCount.pMove.A`
+- `nContact.A` with `param.nContact.A`, `timeDep.nContact.A`, `diff.nContact.A` and `hostCount.nContact.A`
+- `pTrans.A` with `param.pTrans.A`, `timeDep.pTrans.A`, `diff.pTrans.A` and `hostCount.pTrans.A`
 - `prefix.host.A`
-- `pExit.B` with `param.pExit.B`, `timeDep.pExit.B` and `diff.pExit.B` 
-- `pMove.B` with `param.pMove.B`, `timeDep.pMove.B` and `diff.pMove.B`
-- `nContact.B` with `param.nContact.B`, `timeDep.nContact.B` and `diff.nContact.B`
-- `pTrans.B` with `param.pTrans.B`, `timeDep.pTrans.B` and `diff.pTrans.B`
+- `pExit.B` with `param.pExit.B`, `timeDep.pExit.B`, `diff.pExit.B` and `hostCount.pExit.B`
+- `pMove.B` with `param.pMove.B`, `timeDep.pMove.B`, `diff.pMove.B` and `hostCount.pMove.B`
+- `nContact.B` with `param.nContact.B`, `timeDep.nContact.B`, `diff.nContact.B` and `hostCount.nContact.B`
+- `pTrans.B` with `param.pTrans.B`, `timeDep.pTrans.B`, `diff.pTrans.B` and `hostCount.pTrans.B`
 - `prefix.host.B`
 - `print.progress`
 - `print.step`
@@ -187,6 +195,8 @@ As you can see, host-type dependent parameters are now designated by the suffix 
 Both `max.infected.A` and `max.infected.B` have to be provided in order to set an upper limit on the simulation size. To initiate the simulation, you have to provide at least one starting host, either `A` or `B` in `init.individuals.A` or `init.individuals.B` respectively, as well as a starting position in `init.individuals.A` or `init.individuals.B`, respectively. If you want to start the simulation with one host only, then `init.individuals` of the other can be set to 0 and `init.structure` to `NA`.
 
 A major difference here is that hosts may or may not share the same `structure.matrix`. However, since they exist in the same "world", they should share the same state names. It is also possible to have a host that does not move. In such case, `pMove` can be set to `NA`. In such a "non-movement" case, a transition matrix with all the state names should still be provided.
+
+Here again, all parameters must be provided for both hosts, although `timeDep`, `diff` and `hostCount` have default values set to `FALSE`; if you do not want to use these options, then you do not have to explicitly provide a value. Be careful to switch `diff` to `TRUE` if you want to use `hostCount`, and remember to provide a result for each state.
 
 # Running `nosoi`
 
@@ -225,10 +235,9 @@ For `nContact`, we will choose a constant function that will draw a value in a n
 n_contact_fct = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
 ```
 
-#GB: I get a lot of R-code as output first before the figure is shown? Can you avoid this, as something seems to have gone wrong?
 The distribution of `nContact` looks like this:
 
-```{r nContact2, echo=FALSE}
+```{r nContact2, echo=FALSE, message=FALSE}
 library(ggplot2)
 library(dplyr)
 set.seed(900)
@@ -596,8 +605,8 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 
 # Going further
 
-To analyse and visualise your `nosoi` simulation output, you can have a look on [this page](viz_stat.html).
+To analyse and visualise your `nosoi` simulation output, you can have a look on [this page](examples/viz.html).
 
 A practical example using a dual host type of simulation with a discrete population structure is also available: 
 
-- [Spread of dengue virus in a discrete space](dengue.html).
+- [Spread of dengue virus in a discrete space](examples/dengue.html).

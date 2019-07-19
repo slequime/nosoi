@@ -48,7 +48,7 @@ All the `param` elements provide individual-level parameters to be taken into ac
 `length.sim` is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run, whereas `max.infected` is the maximum number of individuals that can be infected during the simulation.
 `init.individuals` defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain (you will have as many transmission chains as initial individuals that "seed" the epidemic process).
 
-Here, we will run a simulation starting with 1 individual, for a maximum of 1.000 infected individuals and a maximum time of 300 days.
+Here, we will run a simulation starting with 1 individual, for a maximum of 1,000 infected individuals and a maximum time of 300 days.
 
 ```{r setupB, eval = FALSE}
 SimulationA <- nosoiSim(type="single", popStructure="none",
@@ -322,7 +322,7 @@ p_Trans_fct.B <- function(t, max.time){
 }
 ```
 
-Because each host is here also different (slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, and hence probability of transmission over time. Thus, `max.time` will be sampled for each host individually according to a certain distribution. ``max.time` will be sampled from a normal distribution of parameters $mean$ 5 and $sd$ 1.
+Because each host is here also different (slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, and hence probability of transmission over time. Thus, `max.time` will be sampled for each host individually according to a certain distribution. `max.time` will be sampled from a normal distribution of parameters $mean$ 5 and $sd$ 1.
 
 ```{r pTrans2.B, eval = FALSE}
 max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
@@ -449,7 +449,7 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 
 # Going further
 
-To analyse and visualise your `nosoi` simulation output, you can have a look on [this page](viz_stat.html).
+To analyse and visualise your `nosoi` simulation output, you can have a look on [this page](examples/viz.html).
 
 You may also want to complexify your model by adding some structure (e.g. geography) to your simulation. Two tutorials can guide you on how to set up theses:
 
@@ -458,4 +458,4 @@ You may also want to complexify your model by adding some structure (e.g. geogra
 
 A practical example using a dual host type of simulation without population structure is also available: 
 
-- [Epidemiological impact of mosquito vector competence](vector-competence.html).
+- [Epidemiological impact of mosquito vector competence](examples/vector-competence.html).

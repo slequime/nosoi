@@ -89,7 +89,7 @@ Thus, in order to return a constant value, the function should be expressed as:
 p_Function  <- function(t){0.08}
 ```
 
-This will return a single value (0.08). #GB: the generated html page reported [Math processing errors] for the line below.
+This will return a single value (0.08).
 If this probability/number should depend on the time since the host's initial infection, then you only have to add `t` in the body of the function, such as in the following example:
 
 ```{r pFunction2, eval = FALSE}
@@ -115,7 +115,17 @@ p_Function  <- function(t,current.in){
 p_Function  <- function(t,current.env.value){current.env.value/100} #continuous
 ```
 
-For more details on how to set up the influence of the structure, we refer to the tutorials on [discrete](single-host-discrete.html) and [continuous](single-host-continuous.html) structure.
+For more details on how to set up the influence of the structure, we refer to the tutorials on [discrete](discrete.html) and [continuous](continuous.html) structure. If you want your probability/number to be dependent on the number of hosts present at a location (only if you use a structured population), then you can add the argument `host.count` to your function.
+
+```{r pFunction4.2, eval = FALSE}
+p_Function  <- function(t,current.in, host.count){
+  if(current.in=="A"){return(0)}
+  if(current.in=="B" & host.count < 300 ){return(0.5)}
+  if(current.in=="B" & host.count >= 300 ){return(0)}
+  if(current.in=="C"){return(1)}} #discrete (between states "A","B" and "C")
+
+p_Function  <- function(t,current.env.value,host.count){(current.env.value-host.count)/100} #continuous
+```
 
 ## Parameters
 
@@ -153,7 +163,8 @@ Once your core functions are ready, you can provide everything `nosoi` needs to 
 2. [Spread of a pathogen in a structured (discrete) population of hosts](discrete.html).
 3. [Spread of a pathogen in a structure (continuous) population of hosts](continuous.html).
 
-To visualize or get basic statistics about your simulations, you can have a look at [these few examples](viz_stat.html).
+To get basic statistics or approximated phylogenetic trees out of your simulations output, you can have a look at [this page](output.html).
+To visualize your simulations, you can have a look at [these few examples](examples/viz.html).
 
 A series of practical examples are also available: 
 

@@ -214,7 +214,7 @@
 <h2 class="hasAnchor">
 <a href="#general-parameters" class="anchor"></a>General parameters</h2>
 <p><code>length.sim</code>, <code>max.infected</code> and <code>init.individuals</code> are general parameters that define the simulation. <code>length.sim</code> is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run, whereas <code>max.infected</code> is the maximum number of individuals that can be infected during the simulation. <code>init.individuals</code> defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain (you will have as many transmission chains as initial individuals that “seed” the epidemic process).</p>
-<p>Here, we will run a simulation starting with 1 individual, for a maximum of 1.000 infected individuals and a maximum time of 300 days.</p>
+<p>Here, we will run a simulation starting with 1 individual, for a maximum of 1,000 infected individuals and a maximum time of 300 days.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"none"</span>,</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">                        <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, ...)</a></code></pre></div>
 </div>
@@ -429,7 +429,7 @@
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">p_Trans_fct.B &lt;-<span class="st"> </span><span class="cf">function</span>(t, max.time){</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">dnorm</a></span>(t, <span class="dt">mean=</span>max.time, <span class="dt">sd=</span><span class="dv">2</span>)<span class="op">*</span><span class="dv">5</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">}</a></code></pre></div>
-<p>Because each host is here also different (slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, and hence probability of transmission over time. Thus, <code>max.time</code> will be sampled for each host individually according to a certain distribution. `<code>max.time</code> will be sampled from a normal distribution of parameters <span class="math inline">\(mean\)</span> 5 and <span class="math inline">\(sd\)</span> 1.</p>
+<p>Because each host is here also different (slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, and hence probability of transmission over time. Thus, <code>max.time</code> will be sampled for each host individually according to a certain distribution. <code>max.time</code> will be sampled from a normal distribution of parameters <span class="math inline">\(mean\)</span> 5 and <span class="math inline">\(sd\)</span> 1.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a></code></pre></div>
 <p>Note again that here <code>max.time</code> is function of <code>x</code> and not <code>t</code> (not core function but individual-based parameters), and <code>x</code> enters the function as the number of draws to make.</p>
 <p>Taken together, the profile for pTrans for a subset of 200 individuals in the population will look like this:</p>
@@ -527,7 +527,7 @@
 <div id="going-further" class="section level1">
 <h1 class="hasAnchor">
 <a href="#going-further" class="anchor"></a>Going further</h1>
-<p>To analyse and visualise your <code>nosoi</code> simulation output, you can have a look on <a href="viz_stat.html">this page</a>.</p>
+<p>To analyse and visualise your <code>nosoi</code> simulation output, you can have a look on <a href="examples/viz.html">this page</a>.</p>
 <p>You may also want to complexify your model by adding some structure (e.g. geography) to your simulation. Two tutorials can guide you on how to set up theses:</p>
 <ul>
 <li>
@@ -538,7 +538,7 @@
 <p>A practical example using a dual host type of simulation without population structure is also available:</p>
 <ul>
 <li>
-<a href="vector-competence.html">Epidemiological impact of mosquito vector competence</a>.</li>
+<a href="examples/vector-competence.html">Epidemiological impact of mosquito vector competence</a>.</li>
 </ul>
 </div>
   </div>
