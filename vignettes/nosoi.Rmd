@@ -11,25 +11,25 @@ vignette: >
 
 # Introduction
 
-`nosoi` aims to provide a modular framework to conduct epidemiological simulations under a wide range of scenarios, varying from relatively simple to highly complex and parameteric. This flexibility allows `nosoi` to take into account the effect of numerous covariates, taken individualy or in interaction, on the epidemic process, without having to use advanced mathematics to formalize the model into differential equations. As it core, `nosoi` generates a transmission chain (a link between hosts), the foundation of every epidemic process, allowing the reconstruction in great details of the history of the epidemic.
+`nosoi` aims to provide a modular framework to conduct epidemiological simulations under a wide range of scenarios, varying from relatively simple to highly complex and parameteric. This flexibility allows `nosoi` to take into account the effect of numerous covariates, taken individually or in the form of interactions, on the epidemic process, without having to use advanced mathematics to formalize the model into differential equations. At its core, `nosoi` generates a transmission chain (a link between hosts), the foundation of every epidemic process, allowing to reconstruct in great detail the history of the epidemic.
 
-`nosoi` is an agent-based model, which means it is centered on individuals, here called "hosts", that enter the simulation when they get infected. It's also stochastic, and thus relies heavily on probabilities, mainly 4 core probabilities, and its time is discretized.
+`nosoi` is an agent-based model, which means it is centered on individuals, here called "hosts", that enter the simulation when they get infected. `nosoi` is also stochastic, and thus relies heavily on probabilities, mainly 4 core probabilities, and its time is discretized.
 
 ## Critical assumption of `nosoi`
 
-`nosoi` assumes that the maximum number of hosts infected during your simulation is orders of magnitude smaller than the total exposed population. This means that, currently, it does not take into account building heard immunity using the simulated epidemic results (although a proxy can be used; discussed in the several tutorials).
+`nosoi` assumes that the maximum number of hosts infected during your simulation is orders of magnitude smaller than the total exposed population. This means that, currently, it does not take into account building herd immunity using the simulated epidemic results (although a proxy can be used; discussed in several of the provided tutorials).
 
-## Essential building blocs: 3 probabilities and 2 numbers
+## Essential building blocks: 3 probabilities and 2 numbers
 
 At its core, `nosoi` can be summarised by 3 probabilities and 2 numbers at a specific time point:
 
-- the probability to exit the simulation (here named `pExit`). For hosts, that means, for example, dying, being cured, leaving the study area, etc.
-- the probability to move (here named `pMove`), only relevant when your simulation has some kind of structure, either in a discrete or continuous space. For hosts, that could, for example, travelling, changing status (becoming rich, or getting a treatment), etc.
-- the standard deviation of the random walk (links to the distance travelled in coordinate space ; here named `sdMove`), only relevant when a stucture exist in a continuous space.
+- the probability to exit the simulation (here named `pExit`). For hosts, that means - for example - dying, being cured, leaving the study area, etc.
+- the probability to move (here named `pMove`), only relevant when your simulation has some kind of structure, either in a discrete or continuous space. For hosts, that could be - for example - travelling, changing status (gaining access to treatment), etc.
+- the standard deviation of the random walk (links to the distance travelled in coordinate space ; here named `sdMove`), only relevant when a structure is imposed or assumed in a continuous space.
 - the number of contacts (here named `nContact`). How many potentially infectious contacts does an infected host have?
-- the probability to transmit (here named `pTrans`). When a contact occures between two hosts, one of which being infected, the probability that the infection gets transmitted to the uninfected one.
+- the probability to transmit (here named `pTrans`). When a contact occurs between two hosts, with one of them being infected, the probability that the infection gets transmitted to the uninfected one.
 
-Each of these probabilities and numbers are computed during the simulation. In a very simple scenario, each one is a constant. In more complex models supported by `nosoi` they could depend on hosts parameters (e.g. genetics), dynamic parameters (since when the host is infected), environemental parameters (where the host is), or the moment of the simulation (e.g. seasons, mitigation campaign,...), taken individually into account or together.
+Each of these probabilities and numbers are computed during the simulation. In a very simple scenario, each one is a constant. In more complex models supported by `nosoi`, these probabilities could depend on a host's parameters (e.g. genetics), dynamic parameters (since when the host is infected), environmental parameters (related to the host's location), or the moment of the simulation (e.g. seasons, mitigation campaign,...), taken individually into account or together.
 
 ## What happens at each time step?
 
@@ -62,49 +62,49 @@ ggplot(graph.simA.network, aes(x = x, y = y, xend = xend, yend = yend)) +
   theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2)
 ```
 
-- Does the host exit the simulation? This step samples YES or NO based on the probability pExit and 1-pExit respectively.
-- Does the host move (if there is structure)? This step samples YES or NO based on the probability pMove and 1-pMove respectively.
-- How far does it go? (if the structure is a continuous space) This step gives back a number used as a distance in the continuous space.
-- How many infectious contacts does the host have? This step gives back a number (integer).
-- If there is an infectious contact, the host does it transmit to a new one? This step samples YES or NO based on the probability pTrans and 1-pTrans respectively.
+- Does the host exit the simulation? This step samples YES or NO based on the probability `pExit`.
+- Does the host move (if there is structure)? This step samples YES or NO based on the probability `pMove`.
+- How far does the host move (if the structure is a continuous space)? This step returns a number used as a distance in the continuous space.
+- How many infectious contacts does the host have? This step yields an integer number.
+- If there is an infectious contact, does the host transmit the infection to a new host? This step samples YES or NO based on the probability `pTrans`.
 
 Once all steps have been gone through, the simulation moves to the next time step.
 
 # Setting up the core functions
 
-`nosoi` runs under a series of user defined probabilities and numbers ( [see General principles](nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers) ). Each follows the same principles to be set up. We will detail here how to set up a correct function to be used into the simulator; this will apply for the functions `pExit`, `pMove`, `sdMove`, `nContact` and `pTrans`.
+`nosoi` runs under a series of user-defined probabilities and numbers ( [see General principles](nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers) ). Each follows the same principles to be set up. We will provide a detailed explanation here how to set up a correct function to be used in the simulator; this will apply for the functions `pExit`, `pMove`, `sdMove`, `nContact` and `pTrans`.
 
 ## Expected output
 
-Every function which name starts with a `p` (i.e. `pExit`, `pMove` and `pTrans`) should give back a single probability (a number between 0 and 1). 
+Every function which name starts with a `p` (i.e. `pExit`, `pMove` and `pTrans`) should return a single probability (a number between 0 and 1).
 
-`nContact` should give back a positive natural number (positive integer), while `sdMove` can give whatever number back (keep in mind its related to your coordinate space).
+`nContact` should return a positive natural number (positive integer), while `sdMove` can return a real number (keep in mind this number is related to your coordinate space).
 
 ## Function arguments
 
-A core function used by `nosoi` should be at least expressed as a function of `t` (e.g. `pExit(t)`), even if `t` is not used within the body of the function. 
-Thus, to have a constant value to be returned, the function should be expressed as:
+A core function used by `nosoi` should at the bare minimum be expressed as a function of `t` (e.g. `pExit(t)`), even if `t` is not used within the body of the function.
+Thus, in order to return a constant value, the function should be expressed as:
 
 ```{r pFunction1, eval = FALSE}
 p_Function  <- function(t){0.08}
 ```
 
-This will give back a single value (0.08). 
-If this probability/number should dependent on time since initial infection of the host, then you only have to add `t` in the body of the function, such as in the following example:
+This will return a single value (0.08). #GB: the generated html page reported [Math processing errors] for the line below.
+If this probability/number should depend on the time since the host's initial infection, then you only have to add `t` in the body of the function, such as in the following example:
 
 ```{r pFunction2, eval = FALSE}
 p_Function  <- function(t){plogis(t,10,2)}
 ```
 
 Here the probability/number will follow a logistic distribution with parameters $\mu$ 10 and $s$ 2.
-If you want your probability/number to be dependant on the "absolute" time of the simulation (not to be confused with the time since infection `t`, which is individual-dependant), then you have to add the argument `prestime` (for "present time"), such as:
+If you want your probability/number to be dependent on the "absolute" time of the simulation (not to be confused with the time since infection `t`, which is individual-dependent), then you have to add the argument `prestime` (for "present time"), as follows:
 
 ```{r pFunction3, eval = FALSE}
 p_Function  <- function(t,prestime){(sin(prestime/12)+1)/2}
 ```
 
-In that specific case, the function will give back values following a periodic pattern.
-If you want your probability/number to be dependant on the location where the host is present (only if you use a structured population), then you have to add the argument `current.in` (discrete structure) or `current.env.value` (continuous structure).
+In that specific case, the function will return values following a periodic pattern.
+If you want your probability/number to be dependent on the location where the host is present (only if you use a structured population), then you have to add the argument `current.in` (discrete structure) or `current.env.value` (continuous structure).
 
 ```{r pFunction4, eval = FALSE}
 p_Function  <- function(t,current.in){
@@ -115,11 +115,11 @@ p_Function  <- function(t,current.in){
 p_Function  <- function(t,current.env.value){current.env.value/100} #continuous
 ```
 
-For more details on how to set up the influence of the structure, please refer to the tutorials: [discrete](single-host-discrete.html) or [continuous](single-host-continuous.html) structure.
+For more details on how to set up the influence of the structure, we refer to the tutorials on [discrete](single-host-discrete.html) and [continuous](single-host-continuous.html) structure.
 
 ## Parameters
 
-If you want one of the parameters of the logistic distribution (or any other function) to be individual host-dependant (including some heterogeneity between hosts), then you can add a parameter:
+If you want one of the parameters of the logistic distribution (or any other function) to be dependent on the individual host (including some heterogeneity between hosts), then you can add a parameter:
 
 ```{r pFunction5, eval = FALSE}
 p_Function  <- function(t,pFunction.param1){plogis(t,pExit.param1,2)}
@@ -131,7 +131,7 @@ In this case, the $\mu$ parameter will be determined for each individual host by
 p_Function_param1 <- function(x){rnorm(x,mean = 10,sd=2)} #sampling one parameter for each infected individual
 ```
 
-\mu will be sample from a normal distribution (mean 10 and sd 2). Notice here that the function is expressed as a function of `x` instead of `t`. `x` is present in the body of the function as the number of draws to make in the distribution. Every parameter function you specify should be compiled into a list, where the function determining the parameter for each individual (right) can be named (left), using the name provided in p_Function for this parameter.
+$\mu$ will hence be sampled from a normal distribution (mean = 10 and sd = 2). Notice here that the function is expressed as a function of `x` instead of `t`. `x` is present in the body of the function as the number of draws to make from the distribution. Every parameter function you specify should be compiled into a list, where the function determining the parameter for each individual (right) can be named (left), using the name provided in `p_Function` for this parameter.
 
 ```{r pFunction7, eval = FALSE}
 p_Function_parameters  <- list(pFunction.param1 = p_Function_param1)
@@ -139,7 +139,7 @@ p_Function_parameters  <- list(pFunction.param1 = p_Function_param1)
 
 ## Combining arguments
 
-We have previously seen that you can combine the time since infection `t` with other parameters such as `current.in` or `prestime`. In fact, you can combine as many arguments as you want, making a function dependant of time since ifnection, current location, presentime and individual host-dependant parameters. They however need to respect a specific order to be correctly parsed by the simulator: first `t`, then `prestime`, then `current.in` (discrete) or `current.env.value` (continuous) and finally individual host-dependant parameters.
+We have previously shown that you can combine the time since infection `t` with other parameters such as `current.in` or `prestime`. In fact, you can combine as many arguments as you want, making a function dependent on the time since infection, current location, present time and individual host-dependent parameters. They however need to respect a specific order to be correctly parsed by the simulator: first `t`, then `prestime`, then `current.in` (discrete) or `current.env.value` (continuous) and finally individual host-dependent parameters.
 
 ```{r pFunction8, eval = FALSE}
 p_Function  <- function(t, prestime, current.in, pFunction.param1, pFunction.param2,...){}
@@ -147,7 +147,7 @@ p_Function  <- function(t, prestime, current.in, pFunction.param1, pFunction.par
 
 # Going further
 
-Once your core functions are ready, you can provide everything `nosoi` needs to run a simulation. A series of tutorials will guide you in how to set up `nosoi` depending on your case, both single host and dual host:
+Once your core functions are ready, you can provide everything `nosoi` needs to run a simulation. A series of tutorials will guide you in how to set up `nosoi` depending on your case, both for single host and dual host scenarios:
 
 1. [Spread of a pathogen in a homogeneous population (no structure) of hosts](none.html), a "simple" scenario.
 2. [Spread of a pathogen in a structured (discrete) population of hosts](discrete.html).
