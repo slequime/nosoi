@@ -7,7 +7,8 @@ articles:
   dengue: examples/dengue.html
   ebola: examples/ebola.html
   vector-competence: examples/vector-competence.html
-  viz_stat: examples/viz_stat.html
+  viz: examples/viz.html
   none: none.html
   nosoi: nosoi.html
+  output: output.html
 

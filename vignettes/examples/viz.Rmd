@@ -1,5 +1,5 @@
 ---
-title: "`nosoi` output and visualization"
+title: "Visualization tips"
 author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -14,5 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+
 
 # Work in progress

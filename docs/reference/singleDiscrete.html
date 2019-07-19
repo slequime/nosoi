@@ -90,14 +90,14 @@ is passed." />
   <a href="../articles/nosoi.html">
     <span class="fas fa fas fa-play-circle"></span>
      
-    Get started
+    Getting started
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fas fa fas fa-book"></span>
      
-    Tutorials
+    Simulation set up
      
     <span class="caret"></span>
   </a>
@@ -111,6 +111,17 @@ is passed." />
     <li>
       <a href="../articles/continuous.html">Spread of a pathogen in a continuous space</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-file"></span>
+     
+    Visualise &amp; summarise
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/output.html">nosoi output</a>
     </li>
@@ -123,7 +134,7 @@ is passed." />
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fas fa fas fa-file"></span>
      
-    Examples
+    Pathogen examples
      
     <span class="caret"></span>
   </a>
@@ -214,12 +225,13 @@ is passed.</p>
     </div>
 
     <pre class="usage"><span class='fu'>singleDiscrete</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>, <span class='no'>init.structure</span>,
-  <span class='no'>structure.matrix</span>, <span class='kw'>diff.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>,
-  <span class='no'>param.pMove</span>, <span class='kw'>diff.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>nContact</span>, <span class='no'>param.nContact</span>, <span class='kw'>diff.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='kw'>diff.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>, <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>,
-  <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+  <span class='no'>structure.matrix</span>, <span class='kw'>diff.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>, <span class='no'>param.pMove</span>, <span class='kw'>diff.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>timeDep.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hostCount.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact</span>,
+  <span class='no'>param.nContact</span>, <span class='kw'>diff.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='kw'>diff.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hostCount.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
+  <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -253,6 +265,10 @@ is passed.</p>
       <td><p>is pMove dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
     </tr>
     <tr>
+      <th>hostCount.pMove</th>
+      <td><p>does pMove varies with the host count in the state? (TRUE/FALSE); diff.pMove should be TRUE.</p></td>
+    </tr>
+    <tr>
       <th>pMove</th>
       <td><p>function that gives the probability of a host moving as a function of time.</p></td>
     </tr>
@@ -267,6 +283,10 @@ is passed.</p>
     <tr>
       <th>timeDep.nContact</th>
       <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+    </tr>
+    <tr>
+      <th>hostCount.nContact</th>
+      <td><p>does nContact varies with the host count in the state? (TRUE/FALSE); diff.nContact should be TRUE.</p></td>
     </tr>
     <tr>
       <th>nContact</th>
@@ -285,6 +305,10 @@ is passed.</p>
       <td><p>is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
     </tr>
     <tr>
+      <th>hostCount.pTrans</th>
+      <td><p>does pTrans varies with the host count in the state? (TRUE/FALSE); diff.pTrans should be TRUE.</p></td>
+    </tr>
+    <tr>
       <th>pTrans</th>
       <td><p>function that gives the probability of transmit a pathogen as a function of time since infection.</p></td>
     </tr>
@@ -299,6 +323,10 @@ is passed.</p>
     <tr>
       <th>timeDep.pExit</th>
       <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+    </tr>
+    <tr>
+      <th>hostCount.pExit</th>
+      <td><p>does pExit varies with the host count in the state? (TRUE/FALSE); diff.pExit should be TRUE.</p></td>
     </tr>
     <tr>
       <th>pExit</th>

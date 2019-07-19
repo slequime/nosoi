@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spread of Ebola virus in a continuous space • nosoi</title>
+<title>Spread of an Ebola-like virus in a continuous space • nosoi</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
-<script src="../../pkgdown.js"></script><meta property="og:title" content="Spread of Ebola virus in a continuous space">
+<script src="../../pkgdown.js"></script><meta property="og:title" content="Spread of an Ebola-like virus in a continuous space">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -53,14 +53,14 @@
   <a href="../../articles/nosoi.html">
     <span class="fas fa fas fa-play-circle"></span>
      
-    Get started
+    Getting started
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fas fa fas fa-book"></span>
      
-    Tutorials
+    Simulation set up
      
     <span class="caret"></span>
   </a>
@@ -74,8 +74,22 @@
     <li>
       <a href="../../articles/continuous.html">Spread of a pathogen in a continuous space</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-file"></span>
+     
+    Visualise &amp; summarise
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../../articles/output.html">nosoi output</a>
+    </li>
     <li>
-      <a href="../../articles/examples/viz_stat.html">nosoi output and visualization</a>
+      <a href="../../articles/examples/viz.html">Visualization</a>
     </li>
   </ul>
 </li>
@@ -83,7 +97,7 @@
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fas fa fas fa-file"></span>
      
-    Examples
+    Pathogen examples
      
     <span class="caret"></span>
   </a>
@@ -92,7 +106,7 @@
       <a href="../../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
     </li>
     <li>
-      <a href="../../articles/examples/ebola.html">Spread of Ebola virus in a continuous space</a>
+      <a href="../../articles/examples/ebola.html">Spread of Ebola-like virus in a continuous space</a>
     </li>
     <li>
       <a href="../../articles/examples/vector-competence.html">Epidemiological impact of mosquito vector competence</a>
@@ -123,16 +137,19 @@
       <a href="../../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
     </li>
     <li>
-      <a href="../../articles/examples/ebola.html">Spread of Ebola virus in a continuous space</a>
+      <a href="../../articles/examples/ebola.html">Spread of an Ebola-like virus in a continuous space</a>
     </li>
     <li>
       <a href="../../articles/examples/vector-competence.html">Epidemiological impact of mosquito vector competence variation</a>
     </li>
     <li>
-      <a href="../../articles/examples/viz_stat.html">`nosoi` output and visualization</a>
+      <a href="../../articles/examples/viz.html">Visualization tips</a>
     </li>
     <li>
       <a href="../../articles/none.html">Spread of a pathogen in a homogeneous population</a>
+    </li>
+    <li>
+      <a href="../../articles/output.html">`nosoi` output and summarisation</a>
     </li>
   </ul>
 </li>
@@ -156,10 +173,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Spread of Ebola virus in a continuous space</h1>
-                        <h4 class="author">Sebastian Lequime</h4>
+      <h1>Spread of an Ebola-like virus in a continuous space</h1>
+                        <h4 class="author">Sebastian Lequime &amp; Simon Dellicour</h4>
             
-            <h4 class="date">2019-05-13</h4>
+            <h4 class="date">2019-07-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/ebola.Rmd"><code>vignettes/examples/ebola.Rmd</code></a></small>
       <div class="hidden name"><code>ebola.Rmd</code></div>
@@ -168,10 +185,282 @@
 
     
     
-<p>##WORK IN PROGRESS</p>
+<div id="introduction" class="section level1">
+<h1 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h1>
+<p>In this example, we will simulate an Ebola-like epidemic in Western Africa.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">e_WestAfrica =<span class="st"> </span><span class="kw">extent</span>(<span class="op">-</span><span class="dv">18</span>, <span class="dv">-3</span>, <span class="dv">3</span>, <span class="dv">15</span>) <span class="co"># WorldPop Africa raster:</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">population =<span class="st"> </span><span class="kw">crop</span>(<span class="kw">raster</span>(<span class="st">"~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Nosoi_EBOV_simus/Africa_pop_2015.tif"</span>), e_WestAfrica)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">cellFromXY</span>(population, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(<span class="op">-</span><span class="fl">10.132</span>, <span class="fl">12.561</span>))</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw">extract</span>(population,<span class="dv">526545</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">extract</span>(population,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(<span class="op">-</span><span class="fl">11.132</span>, <span class="fl">12.561</span>))</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/extract">extract</a></span>(population,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(<span class="op">-</span><span class="fl">11.132</span>, <span class="fl">12.561</span>))</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">test=<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/as.data.frame">as.data.frame</a></span>(population, <span class="dt">xy=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">test[<span class="dv">526545</span>,]</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">start.pos =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="fl">10.132</span>, <span class="fl">8.561</span>) <span class="co"># Guéckédou in Guinea</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(population)</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(start.pos, <span class="dt">col=</span><span class="st">"red"</span>, <span class="dt">pch=</span><span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(viridis)</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="st">    </span><span class="kw">layer_spatial</span>(population) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">caption=</span><span class="st">"Human population grid"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/viridis/topics/scale_viridis">scale_fill_viridis</a></span>(<span class="dt">limits=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"white"</span>, <span class="dt">name=</span><span class="st">"Environmental</span><span class="ch">\n</span><span class="st">value"</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">x=</span><span class="op">-</span><span class="fl">10.132</span>,<span class="dt">y=</span><span class="fl">8.561</span>, <span class="dt">show.legend=</span>F, <span class="dt">color=</span><span class="st">"firebrick3"</span>) <span class="op">+</span><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">        <span class="dt">panel.ontop =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">        <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">linetype=</span><span class="st">"dashed"</span>, <span class="dt">colour =</span><span class="st">"grey70"</span>),</a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">        <span class="dt">axis.ticks=</span><span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">        <span class="dt">plot.caption=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>))</a></code></pre></div>
+</div>
+<div id="host-parameters" class="section level1">
+<h1 class="hasAnchor">
+<a href="#host-parameters" class="anchor"></a>Host parameters</h1>
+<div id="pexit" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pexit" class="anchor"></a><code>pExit</code>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">p_Exit_fct =<span class="st"> </span><span class="cf">function</span>(t, t_incub){ <span class="co"># return(0.1)} # should return a value between 0 and 1 (probability)</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  t_recovery =<span class="st"> </span><span class="dv">20</span> <span class="co"># days before recovery</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span> }</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="cf">if</span> ((t <span class="op">&gt;</span><span class="st"> </span>t_incub)<span class="op">&amp;</span>(t <span class="op">&lt;</span><span class="st"> </span>(t_incub<span class="op">+</span>t_recovery))) { p =<span class="st"> </span><span class="fl">0.025</span> } <span class="co"># 50% chance to dye before recovery</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>(t_incub<span class="op">+</span>t_recovery)) { p =<span class="st"> </span><span class="dv">1</span> } </a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">}</a></code></pre></div>
+</div>
+<div id="pmove" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pmove" class="anchor"></a><code>pMove</code>
+</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p_Move_fct =<span class="st"> </span><span class="cf">function</span>(t){ <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.01</span>) }</a></code></pre></div>
+</div>
+<div id="sdmove" class="section level3">
+<h3 class="hasAnchor">
+<a href="#sdmove" class="anchor"></a><code>sdMove</code>
+</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">sdMove_fct =<span class="st"> </span><span class="cf">function</span>(t){ <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1</span>,<span class="dv">100</span>),<span class="dv">1</span>,<span class="dt">prob=</span>(<span class="dv">1</span><span class="op">/</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1</span>,<span class="dv">100</span>)<span class="op">^</span><span class="dv">2</span>))<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>((<span class="dv">1</span><span class="op">/</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1</span>,<span class="dv">100</span>)<span class="op">^</span><span class="dv">2</span>)))) }</a></code></pre></div>
+</div>
+<div id="ncontact" class="section level3">
+<h3 class="hasAnchor">
+<a href="#ncontact" class="anchor"></a><code>nContact</code>
+</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">n_contact =<span class="st"> </span><span class="cf">function</span>(t, current.env.value){ current.env.value<span class="op">/</span><span class="dv">100</span> }</a></code></pre></div>
+</div>
+<div id="ptrans" class="section level3">
+<h3 class="hasAnchor">
+<a href="#ptrans" class="anchor"></a><code>pTrans</code>
+</h3>
+<p>PMID 12698919 Casillas et al. Biol Res Nurs. 2003 for tincub PMID 28396472 Skrip et al. Philos Trans R Soc Lond B Biol Sci. 2017 for pTrans</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">proba =<span class="st"> </span><span class="cf">function</span>(t, t_incub) {</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span> }</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="fl">0.025</span> } <span class="co"># REF: PMID-28396472</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">}</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">t_incub_fct =<span class="st"> </span><span class="cf">function</span>(x){ <span class="co"># REF: PMID-12698919</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">    t_incub =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>()</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">    <span class="cf">while</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(t_incub) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">        {</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">            t_incub =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="dt">mean=</span><span class="fl">6.5</span>, <span class="dt">sd=</span><span class="fl">2.5</span>)</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">            t_incub =<span class="st"> </span>t_incub[(t_incub<span class="op">&gt;=</span><span class="dv">2</span>)<span class="op">&amp;</span>(t_incub<span class="op">&lt;=</span><span class="dv">21</span>)]</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">            <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(t_incub) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">                {</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">                    <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(t_incub) <span class="op">&lt;</span><span class="st"> </span>x)</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">                        {</a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">                            <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(t_incub)</a>
+<a class="sourceLine" id="cb6-18" data-line-number="18">                            t_incub =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(t_incub, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(t_incub,x<span class="op">-</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(t_incub)))</a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">                        }</a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">                }   </a>
+<a class="sourceLine" id="cb6-21" data-line-number="21">        }</a>
+<a class="sourceLine" id="cb6-22" data-line-number="22">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(t_incub)</a>
+<a class="sourceLine" id="cb6-23" data-line-number="23">}</a></code></pre></div>
+</div>
+</div>
+<div id="running-nosoi" class="section level1">
+<h1 class="hasAnchor">
+<a href="#running-nosoi" class="anchor"></a>Running <code>nosoi</code>
+</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#Raster and starting location</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">e_WestAfrica =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/extent">extent</a></span>(<span class="op">-</span><span class="dv">18</span>, <span class="dv">-3</span>, <span class="dv">3</span>, <span class="dv">15</span>) <span class="co"># WorldPop Africa raster:</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">population =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/crop">crop</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="st">"~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Nosoi_EBOV_simus/Africa_pop_2015.tif"</span>), e_WestAfrica)</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co"># Starting parameter:</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">start.pos =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="fl">10.132</span>, <span class="fl">8.561</span>) <span class="co"># Guéckédou in Guinea</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co"># pExit:</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">p_Exit_fct =<span class="st"> </span><span class="cf">function</span>(t, t_incub){</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">  t_recovery =<span class="st"> </span><span class="dv">20</span> <span class="co"># days before recovery</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14">  <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span> }</a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">  <span class="cf">if</span> ((t <span class="op">&gt;</span><span class="st"> </span>t_incub)<span class="op">&amp;</span>(t <span class="op">&lt;</span><span class="st"> </span>(t_incub<span class="op">+</span>t_recovery))) { p =<span class="st"> </span><span class="fl">0.025</span> } <span class="co"># 50% chance to dye before recovery</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16">  <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>(t_incub<span class="op">+</span>t_recovery)) { p =<span class="st"> </span><span class="dv">1</span> } </a>
+<a class="sourceLine" id="cb7-17" data-line-number="17">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)</a>
+<a class="sourceLine" id="cb7-18" data-line-number="18">}</a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co"># pMove:</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21">p_Move_fct =<span class="st"> </span><span class="cf">function</span>(t){ <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.01</span>) }</a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co"># sdMove:</span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24">sdMove_fct =<span class="st"> </span><span class="cf">function</span>(t){ <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1</span>,<span class="dv">100</span>),<span class="dv">1</span>,<span class="dt">prob=</span>(<span class="dv">1</span><span class="op">/</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1</span>,<span class="dv">100</span>)<span class="op">^</span><span class="dv">2</span>))<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>((<span class="dv">1</span><span class="op">/</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1</span>,<span class="dv">100</span>)<span class="op">^</span><span class="dv">2</span>)))) }</a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co"># nContact:</span></a>
+<a class="sourceLine" id="cb7-27" data-line-number="27">n_contact =<span class="st"> </span><span class="cf">function</span>(t, current.env.value){ current.env.value<span class="op">/</span><span class="dv">100</span> }</a>
+<a class="sourceLine" id="cb7-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co"># pTrans:</span></a>
+<a class="sourceLine" id="cb7-30" data-line-number="30">t_incub_fct =<span class="st"> </span><span class="cf">function</span>(x){</a>
+<a class="sourceLine" id="cb7-31" data-line-number="31">    t_incub =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>()</a>
+<a class="sourceLine" id="cb7-32" data-line-number="32">    <span class="cf">while</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(t_incub) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb7-33" data-line-number="33">        {</a>
+<a class="sourceLine" id="cb7-34" data-line-number="34">            t_incub =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x, <span class="dt">mean=</span><span class="fl">6.5</span>, <span class="dt">sd=</span><span class="fl">2.5</span>)</a>
+<a class="sourceLine" id="cb7-35" data-line-number="35">            t_incub =<span class="st"> </span>t_incub[(t_incub<span class="op">&gt;=</span><span class="dv">2</span>)<span class="op">&amp;</span>(t_incub<span class="op">&lt;=</span><span class="dv">21</span>)]</a>
+<a class="sourceLine" id="cb7-36" data-line-number="36">            <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(t_incub) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb7-37" data-line-number="37">                {</a>
+<a class="sourceLine" id="cb7-38" data-line-number="38">                    <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(t_incub) <span class="op">&lt;</span><span class="st"> </span>x)</a>
+<a class="sourceLine" id="cb7-39" data-line-number="39">                        {</a>
+<a class="sourceLine" id="cb7-40" data-line-number="40">                            <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(t_incub)</a>
+<a class="sourceLine" id="cb7-41" data-line-number="41">                            t_incub =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(t_incub, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(t_incub,x<span class="op">-</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(t_incub)))</a>
+<a class="sourceLine" id="cb7-42" data-line-number="42">                        }</a>
+<a class="sourceLine" id="cb7-43" data-line-number="43">                }   </a>
+<a class="sourceLine" id="cb7-44" data-line-number="44">        }</a>
+<a class="sourceLine" id="cb7-45" data-line-number="45">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(t_incub)</a>
+<a class="sourceLine" id="cb7-46" data-line-number="46">}</a>
+<a class="sourceLine" id="cb7-47" data-line-number="47"></a>
+<a class="sourceLine" id="cb7-48" data-line-number="48">proba =<span class="st"> </span><span class="cf">function</span>(t, t_incub) {</a>
+<a class="sourceLine" id="cb7-49" data-line-number="49">  <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span> }</a>
+<a class="sourceLine" id="cb7-50" data-line-number="50">  <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="fl">0.025</span> }</a>
+<a class="sourceLine" id="cb7-51" data-line-number="51">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)</a>
+<a class="sourceLine" id="cb7-52" data-line-number="52">}</a>
+<a class="sourceLine" id="cb7-53" data-line-number="53"></a>
+<a class="sourceLine" id="cb7-54" data-line-number="54"><span class="co"># Starting the simulation ------------------------------------</span></a>
+<a class="sourceLine" id="cb7-55" data-line-number="55"></a>
+<a class="sourceLine" id="cb7-56" data-line-number="56">test.nosoiA =<span class="st"> </span><span class="kw"><a href="../../reference/nosoiSim.html">nosoiSim</a></span>(</a>
+<a class="sourceLine" id="cb7-57" data-line-number="57">    <span class="dt">type =</span> <span class="st">"single"</span>, <span class="dt">popStructure =</span> <span class="st">"continuous"</span>,</a>
+<a class="sourceLine" id="cb7-58" data-line-number="58">    <span class="dt">length =</span> <span class="dv">365</span>, </a>
+<a class="sourceLine" id="cb7-59" data-line-number="59">    <span class="dt">max.infected =</span> <span class="dv">10000</span>, </a>
+<a class="sourceLine" id="cb7-60" data-line-number="60">    <span class="dt">init.individuals =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb7-61" data-line-number="61">    <span class="dt">init.structure =</span> start.pos,</a>
+<a class="sourceLine" id="cb7-62" data-line-number="62">    <span class="dt">structure.raster =</span> population,</a>
+<a class="sourceLine" id="cb7-63" data-line-number="63">    </a>
+<a class="sourceLine" id="cb7-64" data-line-number="64">    <span class="co"># pExit:</span></a>
+<a class="sourceLine" id="cb7-65" data-line-number="65">    <span class="dt">diff.pExit =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb7-66" data-line-number="66">    <span class="dt">timeDep.pExit =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-67" data-line-number="67">    <span class="dt">pExit =</span> p_Exit_fct, </a>
+<a class="sourceLine" id="cb7-68" data-line-number="68">    <span class="dt">param.pExit =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">t_incub =</span> t_incub_fct),</a>
+<a class="sourceLine" id="cb7-69" data-line-number="69">    </a>
+<a class="sourceLine" id="cb7-70" data-line-number="70">    <span class="co"># pMove:</span></a>
+<a class="sourceLine" id="cb7-71" data-line-number="71">    <span class="dt">diff.pMove =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-72" data-line-number="72">    <span class="dt">timeDep.pMove =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb7-73" data-line-number="73">    <span class="dt">pMove =</span> p_Move_fct,</a>
+<a class="sourceLine" id="cb7-74" data-line-number="74">    <span class="dt">param.pMove =</span> <span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb7-75" data-line-number="75">    </a>
+<a class="sourceLine" id="cb7-76" data-line-number="76">    <span class="co"># sdMove:</span></a>
+<a class="sourceLine" id="cb7-77" data-line-number="77">    <span class="dt">diff.sdMove =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-78" data-line-number="78">    <span class="dt">timeDep.sdMove =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-79" data-line-number="79">    <span class="dt">sdMove =</span> sdMove_fct, </a>
+<a class="sourceLine" id="cb7-80" data-line-number="80">    <span class="dt">param.sdMove =</span> <span class="ot">NA</span>, </a>
+<a class="sourceLine" id="cb7-81" data-line-number="81">    <span class="dt">attracted.by.raster =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb7-82" data-line-number="82">    </a>
+<a class="sourceLine" id="cb7-83" data-line-number="83">    <span class="co"># nContact:</span></a>
+<a class="sourceLine" id="cb7-84" data-line-number="84">    <span class="dt">diff.nContact =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb7-85" data-line-number="85">    <span class="dt">timeDep.nContact =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-86" data-line-number="86">    <span class="dt">nContact =</span> n_contact,</a>
+<a class="sourceLine" id="cb7-87" data-line-number="87">    <span class="dt">param.nContact =</span> <span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb7-88" data-line-number="88">    </a>
+<a class="sourceLine" id="cb7-89" data-line-number="89">    <span class="co"># pTrans:</span></a>
+<a class="sourceLine" id="cb7-90" data-line-number="90">    <span class="dt">diff.pTrans =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-91" data-line-number="91">    <span class="dt">timeDep.pTrans =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-92" data-line-number="92">    <span class="dt">pTrans =</span> proba, </a>
+<a class="sourceLine" id="cb7-93" data-line-number="93">    <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">t_incub =</span> t_incub_fct),</a>
+<a class="sourceLine" id="cb7-94" data-line-number="94"></a>
+<a class="sourceLine" id="cb7-95" data-line-number="95">    <span class="co"># Closing parameters:</span></a>
+<a class="sourceLine" id="cb7-96" data-line-number="96">    <span class="dt">prefix.host =</span> <span class="st">"H"</span>, </a>
+<a class="sourceLine" id="cb7-97" data-line-number="97">    <span class="dt">print.progress =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb7-98" data-line-number="98">    <span class="dt">print.step =</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb7-99" data-line-number="99">)</a></code></pre></div>
+</div>
+<div id="analyzing-the-results-and-conclusions" class="section level1">
+<h1 class="hasAnchor">
+<a href="#analyzing-the-results-and-conclusions" class="anchor"></a>Analyzing the results and conclusions</h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">test.data =<span class="st"> </span>test.nosoiA<span class="op">$</span>host.info.A<span class="op">$</span>table.state</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggspatial)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">rast =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/brick">brick</a></span>(<span class="st">"Forest.asc"</span>, <span class="dt">crs=</span><span class="st">"+proj=longlat +datum=WGS84"</span>) <span class="co"># re-read the raster</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">rast =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/crop">crop</a></span>(rast, e_WestAfrica)</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co"># This plots everything on one picture (messy):</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">test.plot =<span class="st"> </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggspatial/topics/layer_spatial">layer_spatial</a></span>(population) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="st">    </span><span class="kw">scale_fill_gradient</span>(<span class="dt">low=</span><span class="st">"gray95"</span>, <span class="dt">high=</span><span class="st">"forestgreen"</span>, <span class="dt">limits=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>), <span class="dt">na.value=</span><span class="st">"white"</span>, <span class="dt">name=</span><span class="ot">NULL</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb8-14" data-line-number="14">        <span class="dt">panel.ontop =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15">        <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">linetype=</span><span class="st">"dashed"</span>, <span class="dt">colour=</span><span class="st">"grey70"</span>),</a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">        <span class="dt">axis.ticks=</span><span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb8-17" data-line-number="17">        <span class="dt">plot.caption=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">caption=</span><span class="st">"nosoi simulation output"</span>, <span class="dt">x=</span><span class="st">""</span>, <span class="dt">y=</span><span class="st">""</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggspatial/topics/stat_spatial_identity">geom_spatial_point</a></span>(<span class="dt">data=</span>test.data, <span class="kw">aes</span>(<span class="dt">x=</span>state.x,<span class="dt">y=</span>state.y), <span class="dt">color=</span><span class="st">"firebrick3"</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gganimate)</a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co"># The following script gives the position of every host at every time point:</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25">results=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>()</a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(test<span class="op">$</span>time.from)) {</a>
+<a class="sourceLine" id="cb8-27" data-line-number="27">    temp =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/subset">subset</a></span>(test, (time.from <span class="op">&lt;=</span><span class="st"> </span>i)<span class="op">&amp;</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>((time.to <span class="op">&gt;</span><span class="st"> </span>i)<span class="op">|</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(time.to)))[,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"hosts.ID"</span>,<span class="st">"state.x"</span>,<span class="st">"state.y"</span>,<span class="st">"current.env.value"</span>)]</a>
+<a class="sourceLine" id="cb8-28" data-line-number="28">    temp<span class="op">$</span>time =<span class="st"> </span>i</a>
+<a class="sourceLine" id="cb8-29" data-line-number="29">    results=data.table<span class="op">::</span><span class="kw">rbindlist</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(temp),<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(results)))</a>
+<a class="sourceLine" id="cb8-30" data-line-number="30">}</a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggspatial/topics/layer_spatial">layer_spatial</a></span>(rast) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="st">    </span><span class="kw">scale_fill_gradient</span>(<span class="dt">low=</span><span class="st">"gray95"</span>, <span class="dt">high=</span><span class="st">"blue3"</span>, <span class="dt">limits=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>), <span class="dt">na.value=</span><span class="st">"white"</span>, <span class="dt">name=</span><span class="ot">NULL</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">caption=</span><span class="st">"Human population grid"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">data=</span>results, <span class="kw">aes</span>(state.x,state.y), <span class="dt">show.legend=</span>F, <span class="dt">color=</span><span class="st">"firebrick3"</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb8-38" data-line-number="38">        <span class="dt">panel.ontop =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb8-39" data-line-number="39">        <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">linetype=</span><span class="st">"dashed"</span>, <span class="dt">colour =</span><span class="st">"grey70"</span>),</a>
+<a class="sourceLine" id="cb8-40" data-line-number="40">        <span class="dt">axis.ticks=</span><span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb8-41" data-line-number="41">        <span class="dt">plot.caption=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>time)</a>
+<a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co"># Polygon error: https://stackoverflow.com/questions/10581440/error-in-grid-calll-textbounds-as-graphicsannotxlabel-xx-xy-polygon</span></a>
+<a class="sourceLine" id="cb8-43" data-line-number="43"></a>
+<a class="sourceLine" id="cb8-44" data-line-number="44"><span class="co"># This is for the animated plot:</span></a>
+<a class="sourceLine" id="cb8-45" data-line-number="45"></a>
+<a class="sourceLine" id="cb8-46" data-line-number="46">animated.plot =<span class="st"> </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-47" data-line-number="47"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggspatial/topics/layer_spatial">layer_spatial</a></span>(rast) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-48" data-line-number="48"><span class="st">    </span><span class="kw">scale_fill_gradient</span>(<span class="dt">low=</span><span class="st">"gray95"</span>, <span class="dt">high=</span><span class="st">"forestgreen"</span>, <span class="dt">limits=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>), <span class="dt">na.value=</span><span class="st">"white"</span>, <span class="dt">name=</span><span class="ot">NULL</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">caption=</span><span class="st">"Forest Cover"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-50" data-line-number="50"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">data=</span>results, <span class="kw">aes</span>(state.x,state.y) ,<span class="dt">show.legend=</span>F, <span class="dt">color=</span><span class="st">"firebrick3"</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/gganimate/topics/transition_states">transition_states</a></span>(time) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb8-52" data-line-number="52">        <span class="dt">panel.ontop =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb8-53" data-line-number="53">        <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">linetype=</span><span class="st">"dashed"</span>, <span class="dt">colour=</span><span class="st">"grey70"</span>),</a>
+<a class="sourceLine" id="cb8-54" data-line-number="54">        <span class="dt">axis.ticks=</span><span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb8-55" data-line-number="55">        <span class="dt">plot.caption=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-56" data-line-number="56"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Time: {closest_state}"</span>)</a>
+<a class="sourceLine" id="cb8-57" data-line-number="57"></a>
+<a class="sourceLine" id="cb8-58" data-line-number="58"><span class="kw"><a href="https://www.rdocumentation.org/packages/gganimate/topics/animate">animate</a></span>(animated.plot, <span class="dt">nframes=</span>test.nosoiA<span class="op">$</span>pres.time<span class="op">*</span><span class="dv">2</span><span class="op">+</span><span class="dv">10</span>,<span class="dt">duration=</span><span class="dv">40</span>,<span class="dt">end_pause=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb8-59" data-line-number="59"></a>
+<a class="sourceLine" id="cb8-60" data-line-number="60"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">setwd</a></span>(<span class="st">"~/Desktop"</span>)</a>
+<a class="sourceLine" id="cb8-61" data-line-number="61"><span class="kw"><a href="https://www.rdocumentation.org/packages/gganimate/topics/anim_save">anim_save</a></span>(<span class="dt">filename =</span> <span class="st">"testZ"</span>)</a></code></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#introduction">Introduction</a></li>
+      <li><a href="#host-parameters">Host parameters</a></li>
+      <li><a href="#running-nosoi">Running <code>nosoi</code></a></li>
+      <li><a href="#analyzing-the-results-and-conclusions">Analyzing the results and conclusions</a></li>
+      </ul>
+</div>
       </div>
 
 </div>

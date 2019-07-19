@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creates a new line to be added to the movement table when hosts moves (internal fonction) — newLineState • nosoi</title>
+<title>Summarise position of hosts in a discrete or discretized (raster) space — updateHostCount • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,9 @@
 
 
 
-<meta property="og:title" content="Creates a new line to be added to the movement table when hosts moves (internal fonction) — newLineState" />
+<meta property="og:title" content="Summarise position of hosts in a discrete or discretized (raster) space — updateHostCount" />
 
-<meta property="og:description" content="This function creates a new line for the table,
-The lines are to be bounded with rbindlist." />
+<meta property="og:description" content="Returns a table of the number of hosts per discrete or discretized (raster cells) states." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -210,49 +209,31 @@ The lines are to be bounded with rbindlist." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Creates a new line to be added to the movement table when hosts moves (internal fonction)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/nosoi_tablesManagment.R'><code>R/nosoi_tablesManagment.R</code></a></small>
-    <div class="hidden name"><code>newLineState.Rd</code></div>
+    <h1>Summarise position of hosts in a discrete or discretized (raster) space</h1>
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/nosoi_utilityFunctions.R'><code>R/nosoi_utilityFunctions.R</code></a></small>
+    <div class="hidden name"><code>updateHostCount.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function creates a new line for the table,
-The lines are to be bounded with <code><a href='https://www.rdocumentation.org/packages/data.table/topics/rbindlist'>rbindlist</a></code>.</p>
+    <p>Returns a table of the number of hosts per discrete or discretized (raster cells) states.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>newLineState</span>(<span class='no'>hosts.ID</span>, <span class='no'>state.pres</span>, <span class='no'>time.is</span>,
-  <span class='kw'>current.environmental.value</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>current.cell.number.raster</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
+    <pre class="usage"><span class='fu'>updateHostCount</span>(<span class='no'>res</span>, <span class='kw'>res.B</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>type</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>hosts.ID</th>
-      <td><p>unique ID for the new host</p></td>
-    </tr>
-    <tr>
-      <th>state.pres</th>
-      <td><p>state in which host currently is</p></td>
-    </tr>
-    <tr>
-      <th>time.is</th>
-      <td><p>time in the simulation, when the infection takes place</p></td>
-    </tr>
-    <tr>
-      <th>current.environmental.value</th>
-      <td><p>current value of environemental variable (from raster) according to coordinates in current.in.</p></td>
-    </tr>
-    <tr>
-      <th>current.cell.number.raster</th>
-      <td><p>unique number of the raster cell where the host is</p></td>
+      <th>res</th>
+      <td><p>an object of class <code>nosoiSimOne</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list with the new line to add.</p>
+    <p>data.table containing state.ID (col1) and count (col2)</p>
     
 
   </div>

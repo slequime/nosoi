@@ -89,14 +89,14 @@ the end of given time (specified by length.sim) or when the number of hosts infe
   <a href="../articles/nosoi.html">
     <span class="fas fa fas fa-play-circle"></span>
      
-    Get started
+    Getting started
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fas fa fas fa-book"></span>
      
-    Tutorials
+    Simulation set up
      
     <span class="caret"></span>
   </a>
@@ -110,6 +110,17 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <li>
       <a href="../articles/continuous.html">Spread of a pathogen in a continuous space</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-file"></span>
+     
+    Visualise &amp; summarise
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/output.html">nosoi output</a>
     </li>
@@ -122,7 +133,7 @@ the end of given time (specified by length.sim) or when the number of hosts infe
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fas fa fas fa-file"></span>
      
-    Examples
+    Pathogen examples
      
     <span class="caret"></span>
   </a>
@@ -215,17 +226,22 @@ the end of given time (specified by length.sim) or when the number of hosts infe
   <span class='no'>init.individuals.A</span>, <span class='no'>init.individuals.B</span>, <span class='no'>init.structure.A</span>,
   <span class='no'>init.structure.B</span>, <span class='no'>structure.matrix.A</span>, <span class='no'>structure.matrix.B</span>, <span class='no'>pExit.A</span>,
   <span class='no'>param.pExit.A</span>, <span class='kw'>timeDep.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>pMove.A</span>, <span class='no'>param.pMove.A</span>, <span class='kw'>timeDep.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.A</span>, <span class='no'>param.nContact.A</span>,
-  <span class='kw'>timeDep.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.A</span>,
-  <span class='no'>param.pTrans.A</span>, <span class='kw'>timeDep.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>prefix.host.A</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='no'>pExit.B</span>, <span class='no'>param.pExit.B</span>, <span class='kw'>timeDep.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove.B</span>, <span class='no'>param.pMove.B</span>,
-  <span class='kw'>timeDep.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.B</span>,
-  <span class='no'>param.nContact.B</span>, <span class='kw'>timeDep.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.B</span>, <span class='no'>param.pTrans.B</span>,
+  <span class='kw'>hostCount.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove.A</span>, <span class='no'>param.pMove.A</span>,
+  <span class='kw'>timeDep.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.A</span>, <span class='no'>param.nContact.A</span>,
+  <span class='kw'>timeDep.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.A</span>, <span class='no'>param.pTrans.A</span>,
+  <span class='kw'>timeDep.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prefix.host.A</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='no'>pExit.B</span>,
+  <span class='no'>param.pExit.B</span>, <span class='kw'>timeDep.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove.B</span>, <span class='no'>param.pMove.B</span>,
+  <span class='kw'>timeDep.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact.B</span>, <span class='no'>param.nContact.B</span>,
+  <span class='kw'>timeDep.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans.B</span>, <span class='no'>param.pTrans.B</span>,
   <span class='kw'>timeDep.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>prefix.host.B</span> <span class='kw'>=</span> <span class='st'>"V"</span>, <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+  <span class='kw'>hostCount.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prefix.host.B</span> <span class='kw'>=</span> <span class='st'>"V"</span>,
+  <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -283,6 +299,10 @@ the end of given time (specified by length.sim) or when the number of hosts infe
       <td><p>is pExit different between states of the structured population (TRUE/FALSE) for host A.</p></td>
     </tr>
     <tr>
+      <th>hostCount.pExit.A</th>
+      <td><p>does pExit varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pExit.A should be TRUE.</p></td>
+    </tr>
+    <tr>
       <th>pMove.A</th>
       <td><p>function that gives the probability of a host moving as a function of time for host A.</p></td>
     </tr>
@@ -297,6 +317,10 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <tr>
       <th>diff.pMove.A</th>
       <td><p>is pMove different between states of the structured population (TRUE/FALSE) for host A.</p></td>
+    </tr>
+    <tr>
+      <th>hostCount.pMove.A</th>
+      <td><p>does pMove varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pMove.A should be TRUE.</p></td>
     </tr>
     <tr>
       <th>nContact.A</th>
@@ -315,6 +339,10 @@ the end of given time (specified by length.sim) or when the number of hosts infe
       <td><p>is nContact different between states of the structured population (TRUE/FALSE) for host A.</p></td>
     </tr>
     <tr>
+      <th>hostCount.nContact.A</th>
+      <td><p>does nContact varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.nContact.A should be TRUE.</p></td>
+    </tr>
+    <tr>
       <th>pTrans.A</th>
       <td><p>function that gives the probability of transmit a pathogen as a function of time since infection  for host A.</p></td>
     </tr>
@@ -329,6 +357,10 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <tr>
       <th>diff.pTrans.A</th>
       <td><p>is pTrans different between states of the structured population (TRUE/FALSE) for host A.</p></td>
+    </tr>
+    <tr>
+      <th>hostCount.pTrans.A</th>
+      <td><p>does pTrans varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pTrans.A should be TRUE.</p></td>
     </tr>
     <tr>
       <th>prefix.host.A</th>
@@ -351,6 +383,10 @@ the end of given time (specified by length.sim) or when the number of hosts infe
       <td><p>is pExit different between states of the structured population (TRUE/FALSE) for host B.</p></td>
     </tr>
     <tr>
+      <th>hostCount.pExit.B</th>
+      <td><p>does pExit varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pExit.B should be TRUE.</p></td>
+    </tr>
+    <tr>
       <th>pMove.B</th>
       <td><p>function that gives the probability of a host moving as a function of time for host B.</p></td>
     </tr>
@@ -365,6 +401,10 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <tr>
       <th>diff.pMove.B</th>
       <td><p>is pMove different between states of the structured population (TRUE/FALSE) for host B.</p></td>
+    </tr>
+    <tr>
+      <th>hostCount.pMove.B</th>
+      <td><p>does pMove varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pMove.B should be TRUE.</p></td>
     </tr>
     <tr>
       <th>nContact.B</th>
@@ -383,6 +423,10 @@ the end of given time (specified by length.sim) or when the number of hosts infe
       <td><p>is nContact different between states of the structured population (TRUE/FALSE) for host B.</p></td>
     </tr>
     <tr>
+      <th>hostCount.nContact.B</th>
+      <td><p>does nContact varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.nContact.B should be TRUE.</p></td>
+    </tr>
+    <tr>
       <th>pTrans.B</th>
       <td><p>function that gives the probability of transmit a pathogen as a function of time since infection  for host B.</p></td>
     </tr>
@@ -397,6 +441,10 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <tr>
       <th>diff.pTrans.B</th>
       <td><p>is pTrans different between states of the structured population (TRUE/FALSE) for host B.</p></td>
+    </tr>
+    <tr>
+      <th>hostCount.pTrans.B</th>
+      <td><p>does pTrans varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pTrans.B should be TRUE.</p></td>
     </tr>
     <tr>
       <th>prefix.host.B</th>

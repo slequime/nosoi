@@ -60,7 +60,7 @@ ggplot() +
 
 Movements in `nosoi` are basically described by a random walk (Brownian motion), that can be attracted by the underlying environmental variable (`attracted.by.raster`). In any case, the movement cannot land into areas out of the raster nor into areas of the raster with no value (`NA`).
 
-The user provides a core function `sdMove` that give the standard deviation of this Brownian motion. This function, [like the other core functions](nosoi.html#setting-up-the-core-functions), can be dependent of time since infection, absolute time of the simulation, location (value of the environmental variable) or individual-based parameters.
+The user provides a core function `sdMove` that give the standard deviation of this Brownian motion. This function, [like the other core functions](nosoi.html#setting-up-the-core-functions), can be dependent of time since infection, absolute time of the simulation, location (value of the environmental variable) or individual-based parameters. This standard deviation is in your coordinate space, so the actual distance travelled by the host may actually vary according to your space.
 
 In the case where hosts are attracted by the raster, hosts will tend to go to positions with high environmental values. Internally, once a new position is proposed, its environmental value is extracted and normalized (against the highest environmental value). This normalized number represents its probability of acceptance. Up to 30 draws can be made until one is accepted (by default the 30th move is always accepted).
 #GB: why/how was the upper limit of 30 chosen?

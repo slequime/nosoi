@@ -327,7 +327,7 @@ SimulationDual <- nosoiSim(type="dual", popStructure="none",
 
 To analyse the results here, we classify each simulation into 3 categories based on the number of humans infected: over 100 infected, below 100 infected and no secondary case (just one infected). We then plot the results:
 
-```{r Output1, echo = FALSE, message=FALSE}
+```{r Output1, echo = FALSE, message=FALSE, warning=FALSE}
 load("/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Haiti.RData")
 load("/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Thai2.RData")
 load("/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Laos.RData")

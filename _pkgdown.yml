@@ -1,17 +1,17 @@
 navbar:
   structure:
-    left:  [home, intro, tutorials, examples, reference]
+    left:  [home, intro, tutorials, output, examples, reference]
     right: [news, github]
   components:
     home:
       icon: fa-home fa-lg
       href: index.html
     intro:
-      text: Get started
+      text: Getting started
       icon: fas fa-play-circle
       href: articles/nosoi.html
     tutorials:
-      text: Tutorials
+      text: Simulation set up
       icon: fas fa-book
       menu:
       - text: Spread of a pathogen in a homogeneous population
@@ -20,15 +20,21 @@ navbar:
         href: articles/discrete.html
       - text: Spread of a pathogen in a continuous space
         href: articles/continuous.html
-      - text: nosoi output and visualization
-        href: articles/examples/viz_stat.html
+    output:
+      text: Visualise & summarise
+      icon: fas fa-file
+      menu:
+      - text: nosoi output
+        href: articles/output.html
+      - text: Visualization
+        href: articles/examples/viz.html 
     examples:
-      text: Examples
+      text: Pathogen examples
       icon: fas fa-file
       menu:
       - text: Spread of dengue virus in a discrete space
         href: articles/examples/dengue.html
-      - text: Spread of Ebola virus in a continuous space
+      - text: Spread of Ebola-like virus in a continuous space
         href: articles/examples/ebola.html
       - text: Epidemiological impact of mosquito vector competence
         href: articles/examples/vector-competence.html
@@ -39,7 +45,6 @@ navbar:
     github:
       icon: fa-github fa-lg
       href: https://github.com/slequime/nosoi
-
 reference:
   - title: "Wrapper function"
     contents: 
@@ -54,3 +59,6 @@ reference:
     contents:
       - nosoiSummary
       - numberInfected
+      - getTransmissionTree
+      - sampleTransmissionTree
+      - sampleTransmissionTreeFromExiting

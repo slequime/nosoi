@@ -1,6 +1,6 @@
 ---
-title: "Spread of Ebola virus in a continuous space"
-author: "Sebastian Lequime"
+title: "Spread of an Ebola-like virus in a continuous space"
+author: "Sebastian Lequime & Simon Dellicour"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -9,4 +9,266 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-##WORK IN PROGRESS
+# Introduction
+
+In this example, we will simulate an Ebola-like epidemic in Western Africa.
+
+```{r mapANDstart, eval = FALSE}
+e_WestAfrica = extent(-18, -3, 3, 15) # WorldPop Africa raster:
+population = crop(raster("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Nosoi_EBOV_simus/Africa_pop_2015.tif"), e_WestAfrica)
+
+
+cellFromXY(population, cbind(-10.132, 12.561))
+extract(population,526545)
+extract(population,cbind(-11.132, 12.561))
+raster::extract(population,cbind(-11.132, 12.561))
+
+test= raster::as.data.frame(population, xy=FALSE)
+test[526545,]
+
+start.pos = c(-10.132, 8.561) # Guéckédou in Guinea
+
+plot(population)
+points(start.pos, col="red", pch=50)
+
+library(viridis)
+ggplot() +
+	layer_spatial(population) +
+	labs(caption="Human population grid") +  scale_fill_viridis(limits=c(0,NA),na.value="white", name="Environmental\nvalue") + 
+	geom_point(x=-10.132,y=8.561, show.legend=F, color="firebrick3") +	theme(panel.background = element_blank(),
+		panel.ontop = TRUE,
+		panel.grid.major = element_line(size=0.25, linetype="dashed", colour ="grey70"),
+		axis.ticks=element_blank(),
+		plot.caption=element_text(size=10))
+```
+# Host parameters
+
+### `pExit`
+
+```{r pExit, eval = FALSE}
+p_Exit_fct = function(t, t_incub){ # return(0.1)} # should return a value between 0 and 1 (probability)
+  t_recovery = 20 # days before recovery
+  if (t <= t_incub) { p = 0 }
+  if ((t > t_incub)&(t < (t_incub+t_recovery))) { p = 0.025 } # 50% chance to dye before recovery
+  if (t > (t_incub+t_recovery)) { p = 1 } 
+  return(p)
+}
+```
+
+### `pMove`
+```{r pMove, eval = FALSE}
+p_Move_fct = function(t){ return(0.01) }
+```
+
+### `sdMove`
+```{r sdMove, eval = FALSE}
+sdMove_fct = function(t){ sample(seq(1,100),1,prob=(1/(seq(1,100)^2))/sum((1/(seq(1,100)^2)))) }
+```
+
+### `nContact`
+```{r nContact, eval = FALSE}
+n_contact = function(t, current.env.value){ current.env.value/100 }
+```
+
+### `pTrans`
+
+PMID 12698919 Casillas et al. Biol Res Nurs. 2003 for tincub
+PMID 28396472 Skrip et al. Philos Trans R Soc Lond B Biol Sci. 2017 for pTrans
+
+```{r pTrans, eval = FALSE}
+
+proba = function(t, t_incub) {
+  if (t <= t_incub) { p = 0 }
+  if (t > t_incub) { p = 0.025 } # REF: PMID-28396472
+  return(p)
+}
+
+t_incub_fct = function(x){ # REF: PMID-12698919
+	t_incub = c()
+	while (length(t_incub) == 0)
+		{
+			t_incub = rnorm(x, mean=6.5, sd=2.5)
+			t_incub = t_incub[(t_incub>=2)&(t_incub<=21)]
+			if (length(t_incub) > 0)
+				{
+					if (length(t_incub) < x)
+						{
+							print(t_incub)
+							t_incub = c(t_incub, sample(t_incub,x-length(t_incub)))
+						}
+				}	
+		}
+	return(t_incub)
+}
+```
+
+# Running `nosoi`
+
+```{r Runs, eval = FALSE}
+library(raster)
+
+#Raster and starting location
+
+e_WestAfrica = extent(-18, -3, 3, 15) # WorldPop Africa raster:
+population = crop(raster("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Nosoi_EBOV_simus/Africa_pop_2015.tif"), e_WestAfrica)
+
+# Starting parameter:
+start.pos = c(-10.132, 8.561) # Guéckédou in Guinea
+
+# pExit:
+p_Exit_fct = function(t, t_incub){
+  t_recovery = 20 # days before recovery
+  if (t <= t_incub) { p = 0 }
+  if ((t > t_incub)&(t < (t_incub+t_recovery))) { p = 0.025 } # 50% chance to dye before recovery
+  if (t > (t_incub+t_recovery)) { p = 1 } 
+  return(p)
+}
+
+# pMove:
+p_Move_fct = function(t){ return(0.01) }
+
+# sdMove:
+sdMove_fct = function(t){ sample(seq(1,100),1,prob=(1/(seq(1,100)^2))/sum((1/(seq(1,100)^2)))) }
+
+# nContact:
+n_contact = function(t, current.env.value){ current.env.value/100 }
+
+# pTrans:
+t_incub_fct = function(x){
+	t_incub = c()
+	while (length(t_incub) == 0)
+		{
+			t_incub = rnorm(x, mean=6.5, sd=2.5)
+			t_incub = t_incub[(t_incub>=2)&(t_incub<=21)]
+			if (length(t_incub) > 0)
+				{
+					if (length(t_incub) < x)
+						{
+							print(t_incub)
+							t_incub = c(t_incub, sample(t_incub,x-length(t_incub)))
+						}
+				}	
+		}
+	return(t_incub)
+}
+
+proba = function(t, t_incub) {
+  if (t <= t_incub) { p = 0 }
+  if (t > t_incub) { p = 0.025 }
+  return(p)
+}
+
+# Starting the simulation ------------------------------------
+
+test.nosoiA = nosoiSim(
+	type = "single", popStructure = "continuous",
+	length = 365, 
+	max.infected = 10000, 
+	init.individuals = 1, 
+	init.structure = start.pos,
+	structure.raster = population,
+	
+	# pExit:
+	diff.pExit = FALSE,
+	timeDep.pExit = FALSE, 
+	pExit = p_Exit_fct, 
+	param.pExit = list(t_incub = t_incub_fct),
+	
+	# pMove:
+	diff.pMove = FALSE, 
+	timeDep.pMove = FALSE,
+	pMove = p_Move_fct,
+	param.pMove = NA,
+	
+	# sdMove:
+	diff.sdMove = FALSE, 
+	timeDep.sdMove = FALSE, 
+	sdMove = sdMove_fct, 
+	param.sdMove = NA, 
+	attracted.by.raster = FALSE,
+	
+	# nContact:
+	diff.nContact = TRUE, 
+	timeDep.nContact = FALSE, 
+	nContact = n_contact,
+	param.nContact = NA,
+	
+	# pTrans:
+	diff.pTrans = FALSE, 
+	timeDep.pTrans = FALSE, 
+	pTrans = proba, 
+	param.pTrans = list(t_incub = t_incub_fct),
+
+  	# Closing parameters:
+	prefix.host = "H", 
+	print.progress = TRUE,
+	print.step = 1
+)
+```
+
+# Analyzing the results and conclusions
+
+```{r output, eval = FALSE}
+test.data = test.nosoiA$host.info.A$table.state
+
+library(ggspatial)
+
+rast = raster::brick("Forest.asc", crs="+proj=longlat +datum=WGS84") # re-read the raster
+rast = crop(rast, e_WestAfrica)
+
+# This plots everything on one picture (messy):
+
+test.plot = ggplot() +
+	layer_spatial(population) +
+	scale_fill_gradient(low="gray95", high="forestgreen", limits=c(0,NA), na.value="white", name=NULL) +
+	theme(panel.background = element_blank(),
+		panel.ontop = TRUE,
+		panel.grid.major = element_line(size=0.25, linetype="dashed", colour="grey70"),
+		axis.ticks=element_blank(),
+		plot.caption=element_text(size=10)) +
+	labs(caption="nosoi simulation output", x="", y="") +
+	geom_spatial_point(data=test.data, aes(x=state.x,y=state.y), color="firebrick3", alpha=0.1)
+
+library(gganimate)
+
+# The following script gives the position of every host at every time point:
+
+results=data.frame()
+for (i in 1:max(test$time.from)) {
+	temp = subset(test, (time.from <= i)&c((time.to > i)|is.na(time.to)))[,c("hosts.ID","state.x","state.y","current.env.value")]
+	temp$time = i
+	results=data.table::rbindlist(c(list(temp),list(results)))
+}
+
+ggplot() +
+	layer_spatial(rast) +
+	scale_fill_gradient(low="gray95", high="blue3", limits=c(0,NA), na.value="white", name=NULL) +
+	labs(caption="Human population grid") +
+	geom_point(data=results, aes(state.x,state.y), show.legend=F, color="firebrick3", alpha=0.1) +
+	theme(panel.background = element_blank(),
+		panel.ontop = TRUE,
+		panel.grid.major = element_line(size=0.25, linetype="dashed", colour ="grey70"),
+		axis.ticks=element_blank(),
+		plot.caption=element_text(size=10)) + facet_wrap(~time)
+# Polygon error: https://stackoverflow.com/questions/10581440/error-in-grid-calll-textbounds-as-graphicsannotxlabel-xx-xy-polygon
+
+# This is for the animated plot:
+
+animated.plot = ggplot() +
+	layer_spatial(rast) +
+	scale_fill_gradient(low="gray95", high="forestgreen", limits=c(0,NA), na.value="white", name=NULL) +
+	labs(caption="Forest Cover") +
+	geom_point(data=results, aes(state.x,state.y) ,show.legend=F, color="firebrick3", alpha=0.1) + transition_states(time) +
+	theme(panel.background = element_blank(),
+		panel.ontop = TRUE,
+		panel.grid.major = element_line(size=0.25, linetype="dashed", colour="grey70"),
+		axis.ticks=element_blank(),
+		plot.caption=element_text(size=10)) +
+	labs(title = "Time: {closest_state}")
+
+animate(animated.plot, nframes=test.nosoiA$pres.time*2+10,duration=40,end_pause=10)
+
+setwd("~/Desktop")
+anim_save(filename = "testZ")
+```
+
