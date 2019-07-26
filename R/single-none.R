@@ -1,23 +1,57 @@
-#' Single-host without structured host population
+#' @title Single-host pathogen in a homogeneous host population
 #'
-#' @description This function runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
-#' the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.
+#' @description This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
+#' the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
+#'
+#' @details The \code{pExit} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
+#' @details The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
+#' @details The use of \code{timeDep} (switch to \code{TRUE}) make the corresponding function use the argument \code{prestime} (for present time).
+#' @details The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE), \code{parameters} specified in the list.
 #'
 #' @param length.sim specifies the length (in unit of time) over which the simulation should be run.
 #' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
 #' @param init.individuals number of initially infected individuals.
 #' @param nContact function that gives the number of potential transmission events per unit of time.
 #' @param param.nContact parameter names (list of functions) for param.nContact.
-#' @param timeDep.nContact is nContact dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param timeDep.nContact is nContact dependant on the absolute time of the simulation? (TRUE/FALSE)
 #' @param pTrans function that gives the probability of transmit a pathogen as a function of time since infection.
 #' @param param.pTrans parameter names (list of functions) for the pExit.
-#' @param timeDep.pTrans is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param timeDep.pTrans is pTrans dependant on the absolute time of the simulation? (TRUE/FALSE)
 #' @param pExit function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).
 #' @param param.pExit parameter names (list of functions) for the pExit.
-#' @param timeDep.pExit is pExit dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param timeDep.pExit is pExit dependant on the absolute time of the simulation? (TRUE/FALSE)
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
 #' @param print.progress if TRUE, displays a progress bar (current time/length.sim).
 #' @param print.step print.progress is TRUE, step with which the progress message will be printed.
+#'
+#' @return An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
+#'
+#' @seealso Other for more complicated simulation with a single host: \code{\link{singleDiscrete}}
+#'
+#' @examples
+#'t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+#'p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+#'p_Exit_fct  <- function(t){return(0.08)}
+#'
+#'proba <- function(t,p_max,t_incub){
+#'  if(t <= t_incub){p=0}
+#'  if(t >= t_incub){p=p_max}
+#'  return(p)
+#'}
+#'
+#'time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+#'
+#'test.nosoiA <- nosoiSim(type="single", popStructure="none",
+#'                         length=40,
+#'                         max.infected=100,
+#'                         init.individuals=1,
+#'                         nContact=time_contact,
+#'                         param.nContact=NA,
+#'                         pTrans = proba,
+#'                         param.pTrans = list(p_max=p_max_fct,
+#'                                             t_incub=t_incub_fct),
+#'                         pExit=p_Exit_fct,
+#'                         param.pExit=NA)
 #'
 #' @export singleNone
 
