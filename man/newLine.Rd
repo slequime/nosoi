@@ -6,8 +6,8 @@
 \usage{
 newLine(hosts.ID, infected.by, infected.in, time.is, ParamHost,
   current.environmental.value = NULL,
-  current.cell.number.raster = NULL, current.count = NULL,
-  current.count.B = NULL)
+  current.cell.number.raster = NULL, current.count = integer(0),
+  current.count.B = integer(0))
 }
 \arguments{
 \item{hosts.ID}{unique ID for the new host}

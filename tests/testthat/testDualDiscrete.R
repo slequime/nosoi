@@ -686,6 +686,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
 
     temp.val = 30 - host.count
 
+    # browser()
     if(temp.val <= 0) {
       return(0)
     }

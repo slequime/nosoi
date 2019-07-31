@@ -6,8 +6,8 @@
 \usage{
 iniTable(init.individuals, init.structure, prefix.host, ParamHost,
   current.environmental.value = NULL,
-  current.cell.number.raster = NULL, current.count = NULL,
-  current.count.B = NULL)
+  current.cell.number.raster = NULL, current.count = integer(0),
+  current.count.B = integer(0))
 }
 \arguments{
 \item{init.individuals}{number of initially infected individuals (i.e. number of lines at time 0).}

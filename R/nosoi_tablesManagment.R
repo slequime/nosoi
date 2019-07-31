@@ -24,7 +24,8 @@
 newLine <- function(hosts.ID,
                     infected.by, infected.in,
                     time.is,
-                    ParamHost, current.environmental.value = NULL, current.cell.number.raster = NULL, current.count = NULL, current.count.B = NULL) {
+                    ParamHost, current.environmental.value = NULL, current.cell.number.raster = NULL,
+                    current.count = integer(0), current.count.B = integer(0)) {
 
   if (length(infected.in) == 1) {
     if (is.na(infected.in)) infected.in <- NULL
@@ -32,8 +33,8 @@ newLine <- function(hosts.ID,
              inf.by = infected.by,
              inf.in = infected.in,
              current.in = infected.in,
-             host.count = current.count,
-             host.count.B = current.count.B,
+             host.count = as.integer(current.count),
+             host.count.B = as.integer(current.count.B),
              inf.time = time.is,
              out.time = NA_real_,
              active = 1,
@@ -52,8 +53,8 @@ newLine <- function(hosts.ID,
              current.in.y = infected.in[2],
              current.env.value = current.environmental.value,
              current.cell.raster = current.cell.number.raster,
-             host.count = current.count,
-             host.count.B = current.count.B,
+             host.count = as.integer(current.count),
+             host.count.B = as.integer(current.count.B),
              inf.time = time.is,
              out.time = NA_real_,
              active = 1,
@@ -77,7 +78,8 @@ newLine <- function(hosts.ID,
 #' @param current.count.B current count of host B
 #' @keywords internal
 
-iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value=NULL, current.cell.number.raster=NULL, current.count = NULL, current.count.B = NULL){
+iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value=NULL, current.cell.number.raster=NULL,
+                     current.count = integer(0), current.count.B = integer(0)){
 
   if (init.individuals >= 1){
     list.init <- vector("list", init.individuals)

@@ -210,80 +210,57 @@ getExitingMoving <- function(res, pres.time, pasedFunction) {
 #'
 #' @keywords internal
 ##
-
 updateHostCount <- function(res, res.B=NULL, type) {
 
-  #To avoid notes (use of data.table shortcuts)
-  count.A <- NULL
-  count.B <- NULL
-  current.cell.raster <- NULL
-  current.in <- NULL
+  if(type == "discrete"){
+    name_cur <- "current.in"
+  } else if (type == "continuous") {
+    name_cur <- "current.cell.raster"
+  }
 
-  #New IDEA: create count table for both A & B at same time with both needed states => merge
-
-  #Step 1: count Table
   active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
-  if(type == "discrete"){host.table.count.A <- as.data.table(table(res$table.hosts[active.hosts]$current.in))}
-  if(type == "continuous"){host.table.count.A <- as.data.table(table(res$table.hosts[active.hosts]$current.cell.raster))}
-  host.table.count.A$V1 = as.character(host.table.count.A$V1)
-  colnames(host.table.count.A) = c("state.ID","count")
+
+  res$table.hosts[active.hosts, by=name_cur, `:=` (host.count = .N)]
 
   if(!is.null(res.B)){
     active.hosts.B <- res.B$table.hosts[["active"]] == 1 #active hosts (boolean vector)
 
-    if(type == "discrete"){host.table.count.B <- as.data.table(table(res.B$table.hosts[active.hosts.B]$current.in))}
-    if(type == "continuous"){host.table.count.B <- as.data.table(table(res.B$table.hosts[active.hosts.B]$current.cell.raster))}
-    host.table.count.B$V1 = as.character(host.table.count.B$V1)
-    colnames(host.table.count.B) = c("state.ID","count")
+    res.B$table.hosts[active.hosts.B, by=name_cur, `:=` (host.count.B = .N)]
+
+    res$table.hosts[active.hosts, by=name_cur,
+                    `:=` (host.count.B = get_other_count(table_hosts = res.B$table.hosts,
+                                                         name_cur = name_cur,
+                                                         active_hosts = active.hosts.B,
+                                                         name_count = "host.count.B",
+                                                         .SD)),
+                    .SDcols = name_cur]
+    res.B$table.hosts[active.hosts.B, by=name_cur,
+                      `:=` (host.count = get_other_count(table_hosts = res$table.hosts,
+                                                         name_cur = name_cur,
+                                                         active_hosts = active.hosts,
+                                                         name_count = "host.count",
+                                                         .SD)),
+                      .SDcols = name_cur]
   }
+}
 
-  if(is.null(res.B)) {host.table.count.B = data.table(V1=0,N=0)[-1]
-  host.table.count.B$V1 = as.character(host.table.count.B$V1)
-  colnames(host.table.count.B) = c("state.ID","count")}
-
-  host.table.count.tot = merge(host.table.count.A,host.table.count.B,by="state.ID", all=TRUE, suffixes = c(".A",".B"))
-  setkey(host.table.count.tot,"state.ID")
-
-  #Change NA into 0
-  host.table.count.tot[is.na(count.B), `:=` (count.B = 0)]
-  host.table.count.tot[is.na(count.A), `:=` (count.A = 0)]
-
-  #Step 2: update counts
-
-  if(type == "discrete"){
-    if(is.null(res.B)){
-      for (i in host.table.count.tot$state.ID){
-        res$table.hosts[(active.hosts & current.in == i), `:=` (host.count = host.table.count.tot[i][["count.A"]])]
-      }
-    }
-
-    if(!is.null(res.B)){
-      for (i in host.table.count.tot$state.ID){
-
-        res$table.hosts[(active.hosts & current.in == i), `:=` (host.count = host.table.count.tot[i][["count.A"]],
-                                                                host.count.B = host.table.count.tot[i][["count.B"]])]
-
-        res.B$table.hosts[(active.hosts.B & current.in == i), `:=` (host.count = host.table.count.tot[i][["count.A"]],
-                                                                    host.count.B = host.table.count.tot[i][["count.B"]])]
-      }
-    }
-  }
-
-  if(type == "continuous"){
-    if(is.null(res.B)){
-      for (i in host.table.count.tot$state.ID){
-        res$table.hosts[(active.hosts & current.cell.raster == i), `:=` (host.count = host.table.count.tot[as.character(i)][["count.A"]])]
-      }
-    }
-
-    if(!is.null(res.B)){
-      for (i in host.table.count.tot$state.ID){
-        res$table.hosts[(active.hosts & current.cell.raster == i), `:=` (host.count = host.table.count.tot[as.character(i)][["count.A"]],
-                                                                host.count.B = host.table.count.tot[as.character(i)][["count.B"]])]
-
-        res.B$table.hosts[(active.hosts.B & current.cell.raster == i), `:=` (host.count = host.table.count.tot[as.character(i)][["count.A"]],
-                                                                             host.count.B = host.table.count.tot[as.character(i)][["count.B"]])]
-      }
-    }
-  }
+#' @title Get host count from table
+#'
+#' @description
+#' Returns the host count for a table and a state
+#'
+#' @param table_hosts a table.hosts
+#' @param name_cur name of the cell, one of "current.in" or "current.cell.raster"
+#' @param active_hosts a boolean vector of active hosts
+#' @param name_count name of the count, one of "host.count" or "host.count.B"
+#' @param cur a data.table with the state
+#'
+#' @return data.table containing state.ID (col1) and count (col2)
+#'
+#' @keywords internal
+##
+get_other_count <- function(table_hosts, name_cur, active_hosts, name_count, cur) {
+  if (nrow(cur) == 0) return(0L)
+  val <- table_hosts[active_hosts & get(name_cur) == cur[[1,1]], name_count, with=FALSE]
+  return(ifelse(nrow(val) == 0, 0L, val[[1, 1]]))
 }
