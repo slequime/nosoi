@@ -1,5 +1,5 @@
 ---
-title: "Spread of an Ebola-like virus in a continuous space"
+title: "Spread of an Ebola-like virus in continuous space"
 author: "Sebastian Lequime & Simon Dellicour"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
