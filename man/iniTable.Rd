@@ -6,7 +6,7 @@
 \usage{
 iniTable(init.individuals, init.structure, prefix.host, ParamHost,
   current.environmental.value = NULL,
-  current.cell.number.raster = NULL, current.count = integer(0),
+  current.cell.number.raster = NULL, current.count.A = integer(0),
   current.count.B = integer(0))
 }
 \arguments{
@@ -22,7 +22,7 @@ iniTable(init.individuals, init.structure, prefix.host, ParamHost,
 
 \item{current.cell.number.raster}{unique number of the raster cell where the host is}
 
-\item{current.count}{current count of host A}
+\item{current.count.A}{current count of host A}
 
 \item{current.count.B}{current count of host B}
 }

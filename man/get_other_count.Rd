@@ -13,7 +13,7 @@ get_other_count(table_hosts, name_cur, active_hosts, name_count, cur)
 
 \item{active_hosts}{a boolean vector of active hosts}
 
-\item{name_count}{name of the count, one of "host.count" or "host.count.B"}
+\item{name_count}{name of the count, one of "host.count.A" or "host.count.B"}
 
 \item{cur}{a data.table with the state}
 }
