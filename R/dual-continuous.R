@@ -222,14 +222,20 @@ dualContinuous <- function(length.sim,
                              type = "dual",
                              pop.A = nosoiSimOneConstructor(
                                N.infected = init.individuals.A,
-                               table.hosts = iniTable(init.individuals.A, init.structure.A, prefix.host.A, ParamHost.A, current.environmental.value = start.env.A, current.cell.number.raster = start.cell.A, current.count = init.individuals.A, current.count.B = init.individuals.B),
-                               table.state = iniTableState(init.individuals.A, init.structure.A, prefix.host.A, current.environmental.value = start.env.A, current.cell.number.raster = start.cell.A),
+                               table.hosts = iniTable(init.individuals.A, init.structure.A, prefix.host.A, ParamHost.A,
+                                                      current.environmental.value = start.env.A, current.cell.number.raster = start.cell.A,
+                                                      current.count.A = init.individuals.A, current.count.B = init.individuals.B),
+                               table.state = iniTableState(init.individuals.A, init.structure.A, prefix.host.A,
+                                                           current.environmental.value = start.env.A, current.cell.number.raster = start.cell.A),
                                prefix.host = prefix.host.A,
                                popStructure = "continuous"),
                              pop.B = nosoiSimOneConstructor(
                                N.infected = init.individuals.B,
-                               table.hosts = iniTable(init.individuals.B, init.structure.B, prefix.host.B, ParamHost.B, current.environmental.value = start.env.B,current.cell.number.raster =start.cell.B, current.count = init.individuals.A, current.count.B = init.individuals.B),
-                               table.state = iniTableState(init.individuals.B, init.structure.B, prefix.host.B, current.environmental.value = start.env.B,current.cell.number.raster =start.cell.B),
+                               table.hosts = iniTable(init.individuals.B, init.structure.B, prefix.host.B, ParamHost.B,
+                                                      current.environmental.value = start.env.B, current.cell.number.raster = start.cell.B,
+                                                      current.count.A = init.individuals.A, current.count.B = init.individuals.B),
+                               table.state = iniTableState(init.individuals.B, init.structure.B, prefix.host.B,
+                                                           current.environmental.value = start.env.B, current.cell.number.raster = start.cell.B),
                                prefix.host = prefix.host.B,
                                popStructure = "continuous"))
 
@@ -282,11 +288,19 @@ dualContinuous <- function(length.sim,
     #Step 2: Meeting & transmission ----------------------------------------------------
 
     #Transmission from A to B
-    df.meetTransmit.A <- meetTransmit(res$host.info.A, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value","current.cell.raster","host.count","host.count.B"), nContactParsed.A, pTransParsed.A)
+    df.meetTransmit.A <- meetTransmit(res$host.info.A, pres.time,
+                                      positions = c("current.in.x", "current.in.y",
+                                                    "current.env.value","current.cell.raster",
+                                                    "host.count.A", "host.count.B"),
+                                      nContactParsed.A, pTransParsed.A)
     res$host.info.B <- writeInfected(df.meetTransmit.A, res$host.info.B, pres.time, ParamHost.B)
 
     #Transmission from B to A
-    df.meetTransmit.B <- meetTransmit(res$host.info.B, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value","current.cell.raster","host.count","host.count.B"), nContactParsed.B, pTransParsed.B)
+    df.meetTransmit.B <- meetTransmit(res$host.info.B, pres.time,
+                                      positions = c("current.in.x", "current.in.y",
+                                                    "current.env.value","current.cell.raster",
+                                                    "host.count.A","host.count.B"),
+                                      nContactParsed.B, pTransParsed.B)
     res$host.info.A <- writeInfected(df.meetTransmit.B, res$host.info.A, pres.time, ParamHost.A)
 
     #update host.count

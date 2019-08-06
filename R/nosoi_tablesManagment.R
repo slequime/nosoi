@@ -14,7 +14,7 @@
 #' @param ParamHost list of individual based parameters.
 #' @param current.environmental.value current environmental value
 #' @param current.cell.number.raster unique number of the raster cell where the host is
-#' @param current.count current count of host A
+#' @param current.count.A current count of host A
 #' @param current.count.B current count of host B
 #'
 #' @return a list with the new line to add.
@@ -25,7 +25,7 @@ newLine <- function(hosts.ID,
                     infected.by, infected.in,
                     time.is,
                     ParamHost, current.environmental.value = NULL, current.cell.number.raster = NULL,
-                    current.count = integer(0), current.count.B = integer(0)) {
+                    current.count.A = integer(0), current.count.B = integer(0)) {
 
   if (length(infected.in) == 1) {
     if (is.na(infected.in)) infected.in <- NULL
@@ -33,7 +33,7 @@ newLine <- function(hosts.ID,
              inf.by = infected.by,
              inf.in = infected.in,
              current.in = infected.in,
-             host.count = as.integer(current.count),
+             host.count.A = as.integer(current.count.A),
              host.count.B = as.integer(current.count.B),
              inf.time = time.is,
              out.time = NA_real_,
@@ -53,7 +53,7 @@ newLine <- function(hosts.ID,
              current.in.y = infected.in[2],
              current.env.value = current.environmental.value,
              current.cell.raster = current.cell.number.raster,
-             host.count = as.integer(current.count),
+             host.count.A = as.integer(current.count.A),
              host.count.B = as.integer(current.count.B),
              inf.time = time.is,
              out.time = NA_real_,
@@ -74,12 +74,14 @@ newLine <- function(hosts.ID,
 #' @param ParamHost list of individual based parameters.
 #' @param current.environmental.value current value of the environemental variable provided by the raster according to its position in init.structure.
 #' @param current.cell.number.raster unique number of the raster cell where the host is
-#' @param current.count current count of host A
+#' @param current.count.A current count of host A
 #' @param current.count.B current count of host B
+#'
 #' @keywords internal
 
-iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value=NULL, current.cell.number.raster=NULL,
-                     current.count = integer(0), current.count.B = integer(0)){
+iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost,
+                     current.environmental.value = NULL, current.cell.number.raster = NULL,
+                     current.count.A = integer(0), current.count.B = integer(0)){
 
   if (init.individuals >= 1){
     list.init <- vector("list", init.individuals)
@@ -90,9 +92,9 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, c
                                     infected.in = init.structure,
                                     time.is = 0,
                                     ParamHost = ParamHost,
-                                    current.environmental.value=current.environmental.value,
+                                    current.environmental.value = current.environmental.value,
                                     current.cell.number.raster = current.cell.number.raster,
-                                    current.count = current.count,
+                                    current.count.A = current.count.A,
                                     current.count.B = current.count.B)
     }
     table.hosts <- data.table::rbindlist(list.init)
@@ -108,9 +110,9 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost, c
                                     infected.in = init.structure,
                                     time.is = 0,
                                     ParamHost = ParamHost,
-                                    current.environmental.value=current.environmental.value,
+                                    current.environmental.value = current.environmental.value,
                                     current.cell.number.raster = current.cell.number.raster,
-                                    current.count = current.count,
+                                    current.count.A = current.count.A,
                                     current.count.B = current.count.B)
     }
     table.hosts <- data.table::rbindlist(list.init)

@@ -82,7 +82,7 @@ writeInfected <- function(df.meetTransmit, res,
                                  ParamHost,
                                  current.environmental.value = df.meetTransmit[i,]$current.env.value,
                                  current.cell.number.raster = df.meetTransmit[i,]$current.cell.raster,
-                                 current.count = df.meetTransmit[i,]$host.count,
+                                 current.count.A = df.meetTransmit[i,]$host.count.A,
                                  current.count.B = df.meetTransmit[i,]$host.count.B)
       if (keepHistory) {
         table.state.temp[[i]] <- newLineState(hosts.ID,

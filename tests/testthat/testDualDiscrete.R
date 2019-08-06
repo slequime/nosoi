@@ -682,11 +682,10 @@ test_that("Transmission is coherent with single introduction (host A) differenti
     return(p)
   }
 
-  time_contact_B <- function(t, current.in, host.count){
+  time_contact_B <- function(t, current.in, host.count.A){
 
-    temp.val = 30 - host.count
+    temp.val = 30 - host.count.A
 
-    # browser()
     if(temp.val <= 0) {
       return(0)
     }

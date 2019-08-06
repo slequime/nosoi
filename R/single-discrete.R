@@ -102,7 +102,8 @@ singleDiscrete <- function(length.sim,
                              type = "single",
                              pop.A = nosoiSimOneConstructor(
                                N.infected = init.individuals,
-                               table.hosts = iniTable(init.individuals, init.structure, prefix.host, ParamHost, current.count = init.individuals),
+                               table.hosts = iniTable(init.individuals, init.structure, prefix.host, ParamHost,
+                                                      current.count.A = init.individuals),
                                table.state = iniTableState(init.individuals, init.structure, prefix.host),
                                prefix.host = prefix.host,
                                popStructure = "discrete"))
@@ -140,7 +141,7 @@ singleDiscrete <- function(length.sim,
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
-    df.meetTransmit <- meetTransmit(res$host.info.A, pres.time, positions = c("current.in", "host.count"), nContactParsed, pTransParsed)
+    df.meetTransmit <- meetTransmit(res$host.info.A, pres.time, positions = c("current.in", "host.count.A"), nContactParsed, pTransParsed)
 
     res$host.info.A <- writeInfected(df.meetTransmit, res$host.info.A, pres.time, ParamHost)
 

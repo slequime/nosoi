@@ -586,9 +586,9 @@ test_that("One host (B) moves, host count", {
 
   time_contact_A = function(t){round(rnorm(1, 3, 1), 0)}
 
-  time_contact_B <- function(t, current.env.value, host.count){
+  time_contact_B <- function(t, current.env.value, host.count.A){
 
-    temp.val = round(((current.env.value-host.count)/current.env.value)*rnorm(1, 3, 1), 0)
+    temp.val = round(((current.env.value-host.count.A)/current.env.value)*rnorm(1, 3, 1), 0)
 
     if(length(temp.val) == 0 || temp.val <= 0) {
       return(0)

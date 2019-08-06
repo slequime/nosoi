@@ -52,8 +52,17 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE, h
 
   pFunc_vect_args = pFunc_eval_args[-1]
 
-  pFunc_vect <- function(prestime, parameters) {
-    do.call(pFunc_eval, c(list(prestime = prestime), parameters))
+  if (hostCount && any("host.count" == pFunc_vect_args)) { ## Replace user defined "host.count" by "host.count.A"
+    pFunc_vect_args["host.count" == pFunc_vect_args] <- "host.count.A"
+
+    pFunc_vect <- function(prestime, parameters) {
+      names(parameters)[names(parameters) == "host.count.A"] <- "host.count"
+      do.call(pFunc_eval, c(list(prestime = prestime), parameters))
+    }
+  } else {
+    pFunc_vect <- function(prestime, parameters) {
+      do.call(pFunc_eval, c(list(prestime = prestime), parameters))
+    }
   }
 
   return(list(vect = pFunc_vect,
@@ -220,7 +229,7 @@ updateHostCount <- function(res, res.B=NULL, type) {
 
   active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
 
-  res$table.hosts[active.hosts, by=name_cur, `:=` (host.count = .N)]
+  res$table.hosts[active.hosts, by=name_cur, `:=` (host.count.A = .N)]
 
   if(!is.null(res.B)){
     active.hosts.B <- res.B$table.hosts[["active"]] == 1 #active hosts (boolean vector)
@@ -235,10 +244,10 @@ updateHostCount <- function(res, res.B=NULL, type) {
                                                          .SD)),
                     .SDcols = name_cur]
     res.B$table.hosts[active.hosts.B, by=name_cur,
-                      `:=` (host.count = get_other_count(table_hosts = res$table.hosts,
+                      `:=` (host.count.A = get_other_count(table_hosts = res$table.hosts,
                                                          name_cur = name_cur,
                                                          active_hosts = active.hosts,
-                                                         name_count = "host.count",
+                                                         name_count = "host.count.A",
                                                          .SD)),
                       .SDcols = name_cur]
   }
@@ -252,7 +261,7 @@ updateHostCount <- function(res, res.B=NULL, type) {
 #' @param table_hosts a table.hosts
 #' @param name_cur name of the cell, one of "current.in" or "current.cell.raster"
 #' @param active_hosts a boolean vector of active hosts
-#' @param name_count name of the count, one of "host.count" or "host.count.B"
+#' @param name_count name of the count, one of "host.count.A" or "host.count.B"
 #' @param cur a data.table with the state
 #'
 #' @return data.table containing state.ID (col1) and count (col2)

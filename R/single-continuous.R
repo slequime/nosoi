@@ -121,8 +121,11 @@ singleContinuous <- function(length.sim,
                              type = "single",
                              pop.A = nosoiSimOneConstructor(
                                N.infected = init.individuals,
-                               table.hosts = iniTable(init.individuals, init.structure, prefix.host, ParamHost, current.environmental.value = start.env, current.cell.number.raster = start.cell, current.count = init.individuals),
-                               table.state = iniTableState(init.individuals, init.structure, prefix.host, current.environmental.value = start.env, current.cell.number.raster = start.cell),
+                               table.hosts = iniTable(init.individuals, init.structure, prefix.host, ParamHost,
+                                                      current.environmental.value = start.env, current.cell.number.raster = start.cell,
+                                                      current.count.A = init.individuals),
+                               table.state = iniTableState(init.individuals, init.structure, prefix.host,
+                                                           current.environmental.value = start.env, current.cell.number.raster = start.cell),
                                prefix.host = prefix.host,
                                popStructure = "continuous"))
 
@@ -164,7 +167,11 @@ singleContinuous <- function(length.sim,
 
     #Step 2: Hosts Meet & Transmist ----------------------------------------------------
 
-    df.meetTransmit <- meetTransmit(res$host.info.A, pres.time, positions = c("current.in.x", "current.in.y", "current.env.value","current.cell.raster","host.count"), nContactParsed, pTransParsed)
+    df.meetTransmit <- meetTransmit(res$host.info.A, pres.time,
+                                    positions = c("current.in.x", "current.in.y",
+                                                  "current.env.value","current.cell.raster",
+                                                  "host.count.A"),
+                                    nContactParsed, pTransParsed)
 
     res$host.info.A <- writeInfected(df.meetTransmit, res$host.info.A, pres.time, ParamHost)
 
