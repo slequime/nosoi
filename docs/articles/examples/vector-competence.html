@@ -137,7 +137,7 @@
       <a href="../../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
     </li>
     <li>
-      <a href="../../articles/examples/ebola.html">Spread of an Ebola-like virus in a continuous space</a>
+      <a href="../../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
     </li>
     <li>
       <a href="../../articles/examples/vector-competence.html">Epidemiological impact of mosquito vector competence variation</a>
@@ -176,7 +176,7 @@
       <h1>Epidemiological impact of mosquito vector competence variation</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-07-19</h4>
+            <h4 class="date">2019-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/vector-competence.Rmd"><code>vignettes/examples/vector-competence.Rmd</code></a></small>
       <div class="hidden name"><code>vector-competence.Rmd</code></div>
@@ -188,22 +188,22 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>Vector competence (VC) defines the intrinsic ability of a vector to carry and transmit a pathogen. VC is usually scored experimentally as a prevalence of infected and infectious vectors at given times post-pathogen exposure. Each year, numerous experimental studies aim to evaluate vector species or local population’s competence for vector-borne pathogens, ultimately intending to understand epidemiology and assess local risk of transmission for potentially introduced vector-borne pathogens.</p>
-<p>These experimental data however usually remain purely descriptive and poorly reflect the dynamic nature of VC. <code>nosoi</code> can be used to easily translate such empirically observed within-host dynamics into their impact in a epidemic process through simulations, without the use of advanced mathematics. The epidemic process can be tailored to mimic known parameters of a particular place of interest, or can be “fixed” to allow an easy comparison of one or several key variables.</p>
-<p>This example aims to illustrate how to use <code>nosoi</code> to perform such study. We will use data derived from this following published article:</p>
+<p>Vector competence (VC) defines the intrinsic ability of a vector to carry and transmit a pathogen. VC is usually scored experimentally as the prevalence of infected and infectious vectors at given times post-pathogen exposure. Each year, numerous experimental studies aim to evaluate vector species or local population’s competence for vector-borne pathogens, #GB: this sentence/structure isn’t clear to me; perhaps ‘competence’ should be replaced by a different term or the first part of the sentence rewritten? which is ultimately intended to understand epidemiology and assess local risk of transmission for potentially introduced vector-borne pathogens.</p>
+<p>These experimental data however usually remain purely descriptive and poorly reflect the dynamic nature of VC. <code>nosoi</code> can be used to easily translate such empirically observed within-host dynamics into their impact on an epidemic process through simulations, without the use of advanced mathematics. The epidemic process can be tailored to mimic known parameters of a particular place of interest, or can be “fixed” to allow easy comparison of one or several key variables.</p>
+<p>This example aims to illustrate how to use <code>nosoi</code> to perform such a study. We will use data derived from the following published article:</p>
 <blockquote>
 <p>A. Fontaine, S. Lequime, I. Moltini-Conclois, D. Jiolle, I. Leparc-Goffart, R. C. Reiner Jr. &amp; L. Lambrechts (2018) <em>Epidemiological significance of dengue virus genetic variation in mosquito infection dynamics</em>. <strong>PLoS Pathog.</strong> 14(7): e1007187. <a href="https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1007187">Link</a></p>
 </blockquote>
-<p>In this paper, Fontaine <em>et al.</em> explore the impact of variation of within-host dynamics of dengue virus 1 in <em>Aedes aegypti</em> mosquitoes on a simulated epidemic process. They compare, in the same population of <em>Aedes aegypti</em> from Thailand, the dynamics of 8 viral isolates. In this example, we will compare three of these, called Laos2012, Haiti2012 and Thai2010b using <code>nosoi</code> simulated epidemic processes. Most of the parameters of this set of simulation will be derived from Fontaine <em>et al.</em> paper, especially <a href="https://journals.plos.org/plospathogens/article/file?type=supplementary&amp;id=info:doi/10.1371/journal.ppat.1007187.s006">supplementary table 1</a>.</p>
+<p>In this paper, Fontaine <em>et al.</em> explore the impact of variation of within-host dynamics of dengue virus 1 in <em>Aedes aegypti</em> mosquitoes on a simulated epidemic process. They compare, in the same population of <em>Aedes aegypti</em> from Thailand, the dynamics of 8 viral isolates. In the example here, we will compare three of these isolates, called Laos2012, Haiti2012 and Thai2010b using epidemic processes simulated using <code>nosoi</code>. Most of the parameters of this set of simulations will be derived from the Fontaine <em>et al.</em> paper, specifically <a href="https://journals.plos.org/plospathogens/article/file?type=supplementary&amp;id=info:doi/10.1371/journal.ppat.1007187.s006">supplementary table 1</a>.</p>
 </div>
 <div id="setting-up-the-simulation-framework" class="section level1">
 <h1 class="hasAnchor">
 <a href="#setting-up-the-simulation-framework" class="anchor"></a>Setting up the simulation framework</h1>
-<p>We will keep here the simulation relatively simple, as the idea is to compare three viral isolate under the same set of parameters except the ones linked to vector competence in the mosquito. Time steps will be in days. We will of course be in the case of dual-host pathogen, but we will not use any spatial or population structure (for more details on this type of simulation, see the <a href="nosoi.html#setting-up-the-core-functions">relevant tutorial</a>). Thus only 3 core functions of <code>nosoi</code> need to be parameterized for each host:</p>
+<p>We will restrict ourselves to a relatively simple simulation, as the idea is to compare three viral isolates under the same set of parameters except for the ones linked to vector competence in the mosquito. Time steps will be in days. This simulation obviously puts us in the case of a dual-host pathogen, but we will not use any spatial or population structure (for more details on this type of simulation, see the <a href="nosoi.html#setting-up-the-core-functions">relevant tutorial</a>). Hence, only 3 core functions of <code>nosoi</code> need to be parameterized for each host:</p>
 <ul>
-<li>the daily probability to exit the simulation (<code>pExit</code>), either curing the disease for a human or dying for a mosquito.</li>
-<li>the daily number of infectious contacts with different potential hosts (<code>nContact</code>), which would be the number of time per day a human is bitten by a sensitive mosquito, or the number of times per day a mosquito is biting a different human.</li>
-<li>the probability to transmit the virus once an infecttious contact occurs (<code>pTrans</code>). This will be dependent on the within-host dynamics in each hosts, and will be the place where vector competence will influence the epidemic process.</li>
+<li>the daily probability to exit the simulation (<code>pExit</code>), either being cured of the disease for a human or dying for a mosquito.</li>
+<li>the daily number of infectious contacts with different potential hosts (<code>nContact</code>), which would be the number of times per day a human is bitten by a sensitive mosquito, or the number of times per day a mosquito is biting a different human. #GB: replace ‘sensitive’ by ‘susceptible’ (sensitive has a different meaning in general)?</li>
+<li>the probability to transmit the virus once an infectious contact occurs (<code>pTrans</code>). This will be dependent on the within-host dynamics in each host, and will be the place where vector competence will influence the epidemic process.</li>
 </ul>
 <div id="host-a-humans" class="section level2">
 <h2 class="hasAnchor">
@@ -212,7 +212,7 @@
 <h3 class="hasAnchor">
 <a href="#pexit" class="anchor"></a><code>pExit</code>
 </h3>
-<p>In Fontaine <em>et al.</em>, humans do not die from the dengue infection, but exit the simulation when they transmission probability approaches 0 on its way down (see below). To approximate that, we will use one of the parameters used in <code>pTrans</code>, called <code>Md_human</code>, which is the time since infection at which <code>pTrans</code> equals 50% of its maximum value. We will assume here that after three time this period, an infected humans can not transmit the virus anymore and will thus exit the simulation.</p>
+<p>In Fontaine <em>et al.</em>, humans do not die from the dengue infection, but exit the simulation when their transmission probability approaches 0 on its way down (see below). To approximate this behaviour, we will use one of the parameters used in <code>pTrans</code>, called <code>Md_human</code>, which is the time since infection at which <code>pTrans</code> equals 50% of its maximum value. We will assume here that after three times this period, an infected human cannot transmit the virus any more and will thus exit the simulation:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">p_Exit_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t,Md_human){</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">  <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>Md_human){p=<span class="dv">0</span>}</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>Md_human){p=<span class="dv">1</span>}</a>
@@ -225,14 +225,14 @@
 <h3 class="hasAnchor">
 <a href="#ncontact" class="anchor"></a><code>nContact</code>
 </h3>
-<p>This parameter was not determined in Fontaine <em>et al.</em>, as unlike in <code>nosoi</code>, each mosquito in the simulation was simulated. Since the daily probability of a mosquito to bite is 0.3 and the relative density of mosquito compared to human was 3, we can estimated that the daily probability to get bitten by a mosquito is around 0.9. Of course, this should correspond to a distribution of integer number (such as 0, 1, 2). We will therefore make draws in a Poisson distribution of parameter <span class="math inline">\(\lambda\)</span> 0.9.</p>
+<p>This parameter was not determined in Fontaine <em>et al.</em>, as unlike in <code>nosoi</code>, each mosquito in the simulation was simulated. Since the daily probability of a mosquito to bite is 0.3 and the relative density of mosquitoes compared to humans equalled 3, we can estimate that the daily probability to get bitten by a mosquito is approximately 0.9. Of course, this should correspond to a distribution of integer numbers (such as 0, 1, 2). We will therefore make draws from a Poisson distribution with rate parameter <span class="math inline">\(\lambda\)</span> = 0.9.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">n_contact_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Poisson">rpois</a></span>(<span class="dv">1</span>,<span class="fl">0.9</span>)}</a></code></pre></div>
 </div>
 <div id="ptrans" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ptrans" class="anchor"></a><code>pTrans</code>
 </h3>
-<p>Fontaine <em>et al.</em> model the transmission probability of a human to a mosquito using a 5-parameter equation based on two logistic functions, allowing the value of <code>pTrans</code> to go up in time, reach a plateau and then decrease over time.</p>
+<p>Fontaine <em>et al.</em> model the transmission probability of a human to a mosquito using a 5-parameter equation based on two logistic functions, allowing the value of <code>pTrans</code> to go up in time, reach a plateau and then decrease over time:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p_Trans_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t, K_human, Mg_human, Bg_human, Md_human, Bd_human) {</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  K_human<span class="op">*</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span><span class="op">*</span>((<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Hyperbolic">tanh</a></span>((t<span class="op">-</span>Mg_human)<span class="op">/</span>Bg_human))<span class="op">-</span>(<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Hyperbolic">tanh</a></span>((t<span class="op">-</span>Md_human)<span class="op">/</span>Bd_human)))</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">}</a></code></pre></div>
@@ -241,13 +241,13 @@
 <li>
 <span class="math inline">\(K_{human}\)</span> (<code>K_human</code>), the maximum probability of transmission.</li>
 <li>
-<span class="math inline">\(M\gamma\)</span> (<code>Mg_human</code>), the time when 50% <span class="math inline">\(K_{human}\)</span> is reached during ascending phase.</li>
+<span class="math inline">\(M\gamma\)</span> (<code>Mg_human</code>), the time when 50% <span class="math inline">\(K_{human}\)</span> is reached during the ascending phase.</li>
 <li>
-<span class="math inline">\(B\gamma\)</span> (<code>Bg_human</code>), slope of the ascending curve.</li>
+<span class="math inline">\(B\gamma\)</span> (<code>Bg_human</code>), the slope of the ascending curve.</li>
 <li>
-<span class="math inline">\(M\delta\)</span> (<code>Md_human</code>), the time when 50% <span class="math inline">\(K_{human}\)</span> is reached during descending phase.</li>
+<span class="math inline">\(M\delta\)</span> (<code>Md_human</code>), the time when 50% <span class="math inline">\(K_{human}\)</span> is reached during the descending phase.</li>
 <li>
-<span class="math inline">\(B\delta\)</span> (<code>Bd_human</code>), slope of the descending curve.</li>
+<span class="math inline">\(B\delta\)</span> (<code>Bd_human</code>), the slope of the descending curve.</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">#Dynamics of viremia in vertebrate (see EIP paper for justification)</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"></a>
@@ -260,7 +260,7 @@
 <a class="sourceLine" id="cb4-9" data-line-number="9">Bd_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="fl">4.038</span>,<span class="fl">0.2</span>)}</a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb4-11" data-line-number="11">param.pTrans_human &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">K_human=</span>K_human_fct, <span class="dt">Mg_human=</span>Mg_human_fct, <span class="dt">Bg_human=</span>Bg_human_fct, <span class="dt">Md_human=</span>Md_human_fct, <span class="dt">Bd_human=</span>Bd_human_fct) </a></code></pre></div>
-<p>The profile over time since infection of 150 unique hosts will look like this (red is the mean values for each parameter): <img src="vector-competence_files/figure-html/pTrans3-1.png" width="700"></p>
+<p>The profile over time since infection of 150 unique hosts will look like this (red is the mean value for each parameter): <img src="vector-competence_files/figure-html/pTrans3-1.png" width="700"></p>
 </div>
 </div>
 <div id="host-b-mosquitoes" class="section level2">
@@ -284,18 +284,18 @@
 <h3 class="hasAnchor">
 <a href="#ptrans-1" class="anchor"></a><code>pTrans</code>
 </h3>
-<p>In Fontaine <em>et al.</em> the probability of transmission from a mosquito to a human is approximated by their measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that <code>pTrans</code> is in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (<code>t_EIP</code>), and after that time, it will transmit with a certain (constant) probability (we will call <code>p_max</code>). This function will be dependant of the time since the mosquito’s infection <code>t</code>.</p>
-<p><code>pTrans</code> will of course vary according the the viral isolate studied. EIP was measured dynamically over time as a proportion of mosquitoes with disseminated viral infection. This experimental measure is then a mean of the whole population and follows a logistic function characterized by three parameters:</p>
+<p>In Fontaine <em>et al.</em> the probability of transmission from a mosquito to a human is approximated by their measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that <code>pTrans</code> is defined in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (<code>t_EIP</code>), and after that time, it will transmit with a certain (constant) probability (which we will call <code>p_max</code>). This function will be dependent on the time since the mosquito’s infection <code>t</code>:</p>
+<p><code>pTrans</code> will of course vary according the the viral isolate studied. EIP was measured dynamically over time as the proportion of mosquitoes with disseminated viral infection. #GB: ‘with’ or ‘which’? This experimental measure is then a mean of the whole population and follows a logistic function characterized by three parameters: #GB: mention again where the values below were obtained from.</p>
 <ul>
 <li>
 <span class="math inline">\(K_{mosquito}\)</span> (<code>K_mosquito</code>), the maximum probability of transmission.</li>
 <li>
-<span class="math inline">\(M_{mosquito}\)</span> (<code>M_mosquito</code>), the time when 50% <span class="math inline">\(K_{mosquito}\)</span> is reached during ascending phase.</li>
+<span class="math inline">\(M_{mosquito}\)</span> (<code>M_mosquito</code>), the time when 50% <span class="math inline">\(K_{mosquito}\)</span> is reached during the ascending phase.</li>
 <li>
-<span class="math inline">\(B_{mosquito}\)</span> (<code>B_mosquito</code>), slope of the ascending curve.</li>
+<span class="math inline">\(B_{mosquito}\)</span> (<code>B_mosquito</code>), the slope of the ascending curve.</li>
 </ul>
 <p><img src="vector-competence_files/figure-html/pTrans.B-1.png" width="700"></p>
-<p>According to our initial hypothesis, these population curves are actually formed by an heterogenous population of mosquito “switching” from infected to infectious, thus, <code>t_EIP</code> is individually set and can be extracted from the logistic curve of the population, representing the probability distribution, and <code>p_max</code> is actually 1 for most of the mosquitoes, but can be 0 (some will never transmit despite being infected) for a few others.</p>
+<p>According to our initial hypothesis, these population curves are actually formed by a heterogeneous population of mosquitoes “switching” from infected to infectious, thus <code>t_EIP</code> is individually set and can be extracted from the logistic curve of the population, representing the probability distribution, and <code>p_max</code> is actually 1 for most of the mosquitoes, but can be 0 (some will never transmit despite being infected) for a few others: #GB: mention again where the values below were obtained from.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">p_max_fct_Laos &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Binomial">rbinom</a></span>(x,<span class="dv">1</span>, <span class="dv">1</span>)}</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">t_EIP_Laos &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Logistic">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">4.9</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">2.37</span>)}</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"></a>
@@ -312,7 +312,7 @@
 <a class="sourceLine" id="cb7-14" data-line-number="14">param_pTrans_mosquito_Thai &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Thai,<span class="dt">t_EIP=</span>t_EIP_Thai)</a></code></pre></div>
 <p>Here is what this looks like for 150 mosquitoes with each isolate:</p>
 <p><img src="vector-competence_files/figure-html/popDemo-1.png" width="700"></p>
-<p>As we can see, this perfectly mimicks the observed population pattern for each virus.</p>
+<p>As we can see, this perfectly mimics the observed population pattern for each virus.</p>
 </div>
 </div>
 </div>
@@ -320,7 +320,7 @@
 <h1 class="hasAnchor">
 <a href="#running-nosoi" class="anchor"></a>Running <code>nosoi</code>
 </h1>
-<p>Since all core functions have been set, we can not proceed with the simulation. We will set a total length of 400 unit of time maximum, as in Fontaine <em>et al.</em>, with a maximum of 10,000 infected humans, and 1,000,000 infected mosquitoes (to be sure the total number of mosquitoes will not be a limiting factor). The epidemic will start with one infected human. The <code>nosoi</code> script will then look like:</p>
+<p>Since all core functions have been set, we can now proceed with the simulation. We will set a maximum total length of 400 units of time as in Fontaine <em>et al.</em>, with a maximum of 10,000 infected humans, and 1,000,000 infected mosquitoes (to be sure the total number of mosquitoes will not be a limiting factor). The epidemic will start with one infected human. The <code>nosoi</code> script will then look like:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#HostA, Humans ------------------------------------</span></a>
@@ -417,14 +417,16 @@
 <a class="sourceLine" id="cb8-94" data-line-number="94">                        <span class="dt">prefix.host.B=</span><span class="st">"M"</span>,</a>
 <a class="sourceLine" id="cb8-95" data-line-number="95">                        </a>
 <a class="sourceLine" id="cb8-96" data-line-number="96">                        <span class="dt">print.progress=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<p>#GB: it would be good so show here what is being printed to screen when you actually run the simulation.</p>
 </div>
 <div id="analyzing-the-results-and-conclusions" class="section level1">
 <h1 class="hasAnchor">
 <a href="#analyzing-the-results-and-conclusions" class="anchor"></a>Analyzing the results and conclusions</h1>
-<p>To analyse the results here, we classify each simulation into 3 categories based on the number of humans infected: over 100 infected, below 100 infected and no secondary case (just one infected). We then plot the results:</p>
+<p>To analyse the results, we classify each simulation into 3 categories based on the number of humans infected: over 100 infected, below 100 infected and no secondary cases (i.e. just one infected). We then plot the results as follows:</p>
 <p><img src="vector-competence_files/figure-html/Output1-1.png" width="700"></p>
+<p>#GB: I think it would be good/helpful to explicitly mention VC again here, as that’s what this page is about, i.e. an additional sentence regarding VC related to what is shown in the figure.</p>
 <p>As we can see, the isolate Haiti2012 yielded less “big outbreaks” (&gt; 100 humans infected) compared to the two other isolates, which is coherent with its slower within-host dynamics. This result is similar to the one obtained in the original paper which used an earlier version of <code>nosoi</code> in a closed population.</p>
-<p>With a set of simulated transmission chain and its metadata anchoring them in time, and sometime space, <code>nosoi</code> offers a perfect setting to explore how within-host dynamics can drastically influence a pathogen epidemiology. Changes in any of the parameters are easy to implement, including drastic changes on how a certain probability or number is computed, allowing for a maximum flexibility.</p>
+<p>With a set of simulated transmission chains and associated metadata anchoring them in time, and sometimes space, <code>nosoi</code> offers a perfect setting to explore how within-host dynamics can drastically influence a pathogen’s epidemiology. Changes in any of the parameters are easy to implement, including drastic changes on how a certain probability or number is computed, allowing for maximum flexibility.</p>
 </div>
   </div>
 

@@ -137,7 +137,7 @@
       <a href="../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
     </li>
     <li>
-      <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in a continuous space</a>
+      <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
     </li>
     <li>
       <a href="../articles/examples/vector-competence.html">Epidemiological impact of mosquito vector competence variation</a>
@@ -176,7 +176,7 @@
       <h1>Spread of a pathogen in a continuous space</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-07-19</h4>
+            <h4 class="date">2019-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/continuous.Rmd"><code>vignettes/continuous.Rmd</code></a></small>
       <div class="hidden name"><code>continuous.Rmd</code></div>
@@ -263,7 +263,7 @@
 </blockquote>
 <p>You can combine the influence of several parameters, such as time since infection, “absolute” time of the simulation, location (in the continuous space), and individual-based parameters within the same function.</p>
 <blockquote>
-<p><code>nosoi</code> can be flexible in what it allows as parameters in your function, but a common general structure should be observed. The argument of the function should be (in that order): (1) time since infection <code>t</code> (obligatory); (2) “absolute” time <code>prestime</code> (optional); (3) current state <code>current.in</code> (optional); (4) host count in state <code>host.count</code> (optional); (5) other individual-based parameter(s), provided in <code>param.function</code>. If one of the argument is not used (except <code>t</code>), then you do not have to provide it and can continue with the next argument.</p>
+<p><code>nosoi</code> can be flexible in what it allows as parameters in your function, but a common general structure should be observed. The argument of the function should be (in that order): (1) time since infection <code>t</code> (obligatory); (2) “absolute” time <code>prestime</code> (optional); (3) current enviromental value <code>current.env.value</code> (optional); (4) host count in state <code>host.count</code> (optional); (5) other individual-based parameter(s), provided in <code>param.function</code>. If one of the argument is not used (except <code>t</code>), then you do not have to provide it and can continue with the next argument.</p>
 </blockquote>
 <div id="pexit-param-pexit-timedep-pexit-diff-pexit-and-hostcount-pexit" class="section level3">
 <h3 class="hasAnchor">
