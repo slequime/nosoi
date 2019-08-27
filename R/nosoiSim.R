@@ -7,7 +7,7 @@
 #' @param ... arguments to be passed on to the simulator (see below).
 #'
 #' @details This function determines which general settings the user wants to use for his simulation.
-#' @details All other arguments are passed down to the chosen simulator itself, such as \code{\link{singleNone}}, \code{\link{singleDiscrete}}, \code{\link{singleContinuous}}, \code{\link{dualNone}}, \code{\link{dualDiscrete}} or \code{\link{dualContinuous}}..
+#' @details All other arguments are passed down to the chosen simulator itself, such as \code{\link{singleNone}}, \code{\link{singleDiscrete}}, \code{\link{singleContinuous}}, \code{\link{dualNone}}, \code{\link{dualDiscrete}} or \code{\link{dualContinuous}}.
 #' @export nosoiSim
 #' @import data.table
 #' @import methods

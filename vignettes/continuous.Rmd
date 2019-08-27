@@ -245,7 +245,7 @@ You can combine the influence of several parameters, such as time since infectio
 > `nosoi` can be flexible in what it allows as parameters in your function, but a common general structure should be observed. The argument of the function should be (in that order):
 (1) time since infection `t` (obligatory);
 (2) "absolute" time `prestime` (optional);
-(3) current state `current.in` (optional);
+(3) current enviromental value `current.env.value` (optional);
 (4) host count in state `host.count` (optional);
 (5) other individual-based parameter(s), provided in `param.function`.
 If one of the argument is not used (except `t`), then you do not have to provide it and can continue with the next argument.

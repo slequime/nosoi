@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Node — get_node • nosoi</title>
+<title>Get host count from table — get_other_count • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,9 @@
 
 
 
-<meta property="og:title" content="Get Node — get_node" />
+<meta property="og:title" content="Get host count from table — get_other_count" />
 
-<meta property="og:description" content="Find the node descending from the branch where the host lies at a given
- time on the transmission tree." />
+<meta property="og:description" content="Returns the host count for a table and a state" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -210,45 +209,47 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Node</h1>
-    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_treeGenerator.r'><code>R/output_treeGenerator.r</code></a></small>
-    <div class="hidden name"><code>get_node.Rd</code></div>
+    <h1>Get host count from table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/nosoi_utilityFunctions.R'><code>R/nosoi_utilityFunctions.R</code></a></small>
+    <div class="hidden name"><code>get_other_count.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Find the node descending from the branch where the host lies at a given
- time on the transmission tree.</p>
+    <p>Returns the host count for a table and a state</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_node</span>(<span class='no'>tdata</span>, <span class='no'>host</span>, <span class='no'>time</span>)</pre>
+    <pre class="usage"><span class='fu'>get_other_count</span>(<span class='no'>table_hosts</span>, <span class='no'>name_cur</span>, <span class='no'>active_hosts</span>, <span class='no'>name_count</span>, <span class='no'>cur</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tdata</th>
-      <td><p>a tibble extracted from a <code>treedata</code> object.</p></td>
+      <th>table_hosts</th>
+      <td><p>a table.hosts</p></td>
     </tr>
     <tr>
-      <th>host</th>
-      <td><p>host id</p></td>
+      <th>name_cur</th>
+      <td><p>name of the cell, one of "current.in" or "current.cell.raster"</p></td>
     </tr>
     <tr>
-      <th>time</th>
-      <td><p>time at which to sample the host</p></td>
+      <th>active_hosts</th>
+      <td><p>a boolean vector of active hosts</p></td>
+    </tr>
+    <tr>
+      <th>name_count</th>
+      <td><p>name of the count, one of "host.count.A" or "host.count.B"</p></td>
+    </tr>
+    <tr>
+      <th>cur</th>
+      <td><p>a data.table with the state</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>number of the node in the transmission tree descending from the
-host at given time.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='get_position.html'>get_position</a></code></p></div>
+    <p>data.table containing state.ID (col1) and count (col2)</p>
     
 
   </div>
@@ -258,8 +259,6 @@ host at given time.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

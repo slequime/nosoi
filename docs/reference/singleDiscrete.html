@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Single-host with structured (discrete) host population — singleDiscrete • nosoi</title>
+<title>Single-host pathogen in a structured (discrete) host population — singleDiscrete • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,11 +37,10 @@
 
 
 
-<meta property="og:title" content="Single-host with structured (discrete) host population — singleDiscrete" />
+<meta property="og:title" content="Single-host pathogen in a structured (discrete) host population — singleDiscrete" />
 
-<meta property="og:description" content="This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
-The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed." />
+<meta property="og:description" content="This function, that can be wrapped within nosoiSim, runs a single-host transmission chain simulation, with a discrete host population structure (e.g. spatial, socio-economic). The simulation stops either at
+the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is crossed." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -174,7 +173,7 @@ is passed." />
       <a href="../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
     </li>
     <li>
-      <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in a continuous space</a>
+      <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
     </li>
     <li>
       <a href="../articles/examples/vector-competence.html">Epidemiological impact of mosquito vector competence variation</a>
@@ -211,27 +210,27 @@ is passed." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Single-host with structured (discrete) host population</h1>
+    <h1>Single-host pathogen in a structured (discrete) host population</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/single-discrete.R'><code>R/single-discrete.R</code></a></small>
     <div class="hidden name"><code>singleDiscrete.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
-The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed.</p>
+    <p>This function, that can be wrapped within <code><a href='nosoiSim.html'>nosoiSim</a></code>, runs a single-host transmission chain simulation, with a discrete host population structure (e.g. spatial, socio-economic). The simulation stops either at
+the end of given time (specified by <code>length.sim</code>) or when the number of hosts infected threshold (<code>max.infected</code>) is crossed.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>singleDiscrete</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>, <span class='no'>init.structure</span>,
-  <span class='no'>structure.matrix</span>, <span class='kw'>diff.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>, <span class='no'>param.pMove</span>, <span class='kw'>diff.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hostCount.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact</span>,
-  <span class='no'>param.nContact</span>, <span class='kw'>diff.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='kw'>diff.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hostCount.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
-  <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+  <span class='no'>structure.matrix</span>, <span class='kw'>diff.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>, <span class='kw'>diff.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hostCount.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>, <span class='no'>param.pMove</span>,
+  <span class='kw'>diff.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact</span>, <span class='no'>param.nContact</span>,
+  <span class='kw'>diff.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hostCount.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>,
+  <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -255,6 +254,26 @@ is passed.</p>
     <tr>
       <th>structure.matrix</th>
       <td><p>transition matrix (probabilities) to go from location A (row) to B (column)</p></td>
+    </tr>
+    <tr>
+      <th>diff.pExit</th>
+      <td><p>is pExit different between states of the structured population (TRUE/FALSE)</p></td>
+    </tr>
+    <tr>
+      <th>timeDep.pExit</th>
+      <td><p>is pExit dependant on the absolute time of the simulation? (TRUE/FALSE)</p></td>
+    </tr>
+    <tr>
+      <th>hostCount.pExit</th>
+      <td><p>does pExit varies with the host count in the state? (TRUE/FALSE); diff.pExit should be TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>pExit</th>
+      <td><p>function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).</p></td>
+    </tr>
+    <tr>
+      <th>param.pExit</th>
+      <td><p>parameter names (list of functions) for the pExit.</p></td>
     </tr>
     <tr>
       <th>diff.pMove</th>
@@ -282,7 +301,7 @@ is passed.</p>
     </tr>
     <tr>
       <th>timeDep.nContact</th>
-      <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+      <td><p>is nContact dependant on the absolute time of the simulation? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>hostCount.nContact</th>
@@ -294,7 +313,7 @@ is passed.</p>
     </tr>
     <tr>
       <th>param.nContact</th>
-      <td><p>parameter names (list of functions) for nContact.</p></td>
+      <td><p>parameter names (list of functions) for param.nContact.</p></td>
     </tr>
     <tr>
       <th>diff.pTrans</th>
@@ -302,7 +321,7 @@ is passed.</p>
     </tr>
     <tr>
       <th>timeDep.pTrans</th>
-      <td><p>is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+      <td><p>is pTrans dependant on the absolute time of the simulation? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>hostCount.pTrans</th>
@@ -314,26 +333,6 @@ is passed.</p>
     </tr>
     <tr>
       <th>param.pTrans</th>
-      <td><p>parameter names (list of functions) for the pTrans.</p></td>
-    </tr>
-    <tr>
-      <th>diff.pExit</th>
-      <td><p>is pExit different between states of the structured population (TRUE/FALSE)</p></td>
-    </tr>
-    <tr>
-      <th>timeDep.pExit</th>
-      <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
-    </tr>
-    <tr>
-      <th>hostCount.pExit</th>
-      <td><p>does pExit varies with the host count in the state? (TRUE/FALSE); diff.pExit should be TRUE.</p></td>
-    </tr>
-    <tr>
-      <th>pExit</th>
-      <td><p>function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).</p></td>
-    </tr>
-    <tr>
-      <th>param.pExit</th>
       <td><p>parameter names (list of functions) for the pExit.</p></td>
     </tr>
     <tr>
@@ -350,13 +349,74 @@ is passed.</p>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>An object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>, containing all results of the simulation.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The structure matrix provided provided should of class <code>matrix</code>, with the same number of rows and columns, rows representing depature state and column the arrival state. All rows should add to 1.</p>
+<p>The <code>pExit</code>, <code>pMove</code> and <code>pTrans</code> function should return a single probability (a number between 0 and 1), and <code>nContact</code> a positive natural number (positive integer) or 0.</p>
+<p>The <code>param</code> arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.</p>
+<p>The use of <code>timeDep</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>prestime</code> (for "present time").</p>
+<p>The use of <code>diff</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>current.in</code> (for "currently in"). Your function should in that case give a result for every possible discrete state.</p>
+<p>The use of <code>hostCount</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>host.count</code>.</p>
+<p>The user specified function's arguments should follow this order: <code>t</code> (mandatory), <code>prestime</code> (optional, only if timeDep is TRUE),
+<code>current.in</code> (optional, only if diff is TRUE), <code>host.count</code> (optional, only if hostCount is TRUE) and <code>parameters</code> specified in the list.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>For simulations with a structure in continuous space, see <code><a href='singleContinuous.html'>singleContinuous</a></code>. For simulations without any structures, see <code><a href='singleNone.html'>singleNone</a></code>.</p></div>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>t_incub_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='no'>x</span>,<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>1</span>)}
+<span class='no'>p_max_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Beta'>rbeta</a></span>(<span class='no'>x</span>,<span class='kw'>shape1</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>shape2</span><span class='kw'>=</span><span class='fl'>2</span>)}
+<span class='no'>p_Exit_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='fl'>0.08</span>)}
+<span class='no'>p_Move_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='fl'>0.1</span>)}
+
+<span class='no'>proba</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>,<span class='no'>p_max</span>,<span class='no'>t_incub</span>){
+ <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&lt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='fl'>0</span>}
+ <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&gt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='no'>p_max</span>}
+ <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='no'>p</span>)
+}
+
+<span class='no'>time_contact</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)}
+
+<span class='no'>transition.matrix</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>0.2</span>,<span class='fl'>0.4</span>,<span class='fl'>0.5</span>,<span class='fl'>0</span>,<span class='fl'>0.6</span>,<span class='fl'>0.5</span>,<span class='fl'>0.8</span>,<span class='fl'>0</span>),<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>,<span class='kw'>dimnames</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>,<span class='st'>"B"</span>,<span class='st'>"C"</span>),<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>,<span class='st'>"B"</span>,<span class='st'>"C"</span>)))
+
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>805</span>)
+<span class='no'>test.nosoiA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"discrete"</span>,
+                       <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>,
+                       <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
+                       <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
+                       <span class='kw'>init.structure</span><span class='kw'>=</span><span class='st'>"A"</span>,
+                       <span class='kw'>structure.matrix</span><span class='kw'>=</span><span class='no'>transition.matrix</span>,
+                       <span class='kw'>pMove</span><span class='kw'>=</span><span class='no'>p_Move_fct</span>,
+                       <span class='kw'>param.pMove</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
+                       <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
+                       <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
+                                           <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
+                      <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
+                      <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -2,16 +2,17 @@
 % Please edit documentation in R/single-discrete.R
 \name{singleDiscrete}
 \alias{singleDiscrete}
-\title{Single-host with structured (discrete) host population}
+\title{Single-host pathogen in a structured (discrete) host population}
 \usage{
 singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
-  structure.matrix, diff.pMove = FALSE, timeDep.pMove = FALSE,
-  hostCount.pMove = FALSE, pMove, param.pMove, diff.nContact = FALSE,
-  timeDep.nContact = FALSE, hostCount.nContact = FALSE, nContact,
-  param.nContact, diff.pTrans = FALSE, timeDep.pTrans = FALSE,
-  hostCount.pTrans = FALSE, pTrans, param.pTrans, diff.pExit = FALSE,
-  timeDep.pExit = FALSE, hostCount.pExit = FALSE, pExit, param.pExit,
-  prefix.host = "H", print.progress = TRUE, print.step = 10)
+  structure.matrix, diff.pExit = FALSE, timeDep.pExit = FALSE,
+  hostCount.pExit = FALSE, pExit, param.pExit, diff.pMove = FALSE,
+  timeDep.pMove = FALSE, hostCount.pMove = FALSE, pMove, param.pMove,
+  diff.nContact = FALSE, timeDep.nContact = FALSE,
+  hostCount.nContact = FALSE, nContact, param.nContact,
+  diff.pTrans = FALSE, timeDep.pTrans = FALSE,
+  hostCount.pTrans = FALSE, pTrans, param.pTrans, prefix.host = "H",
+  print.progress = TRUE, print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -23,6 +24,16 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 \item{init.structure}{which state (e.g. location) the initially infected individuals are located.}
 
 \item{structure.matrix}{transition matrix (probabilities) to go from location A (row) to B (column)}
+
+\item{diff.pExit}{is pExit different between states of the structured population (TRUE/FALSE)}
+
+\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation? (TRUE/FALSE)}
+
+\item{hostCount.pExit}{does pExit varies with the host count in the state? (TRUE/FALSE); diff.pExit should be TRUE.}
+
+\item{pExit}{function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).}
+
+\item{param.pExit}{parameter names (list of functions) for the pExit.}
 
 \item{diff.pMove}{is pMove different between states of the structured population (TRUE/FALSE)}
 
@@ -36,33 +47,23 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 
 \item{diff.nContact}{is nContact different between states of the structured population (TRUE/FALSE)}
 
-\item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)}
+\item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{hostCount.nContact}{does nContact varies with the host count in the state? (TRUE/FALSE); diff.nContact should be TRUE.}
 
 \item{nContact}{function that gives the number of potential transmission events per unit of time.}
 
-\item{param.nContact}{parameter names (list of functions) for nContact.}
+\item{param.nContact}{parameter names (list of functions) for param.nContact.}
 
 \item{diff.pTrans}{is pTrans different between states of the structured population (TRUE/FALSE)}
 
-\item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)}
+\item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{hostCount.pTrans}{does pTrans varies with the host count in the state? (TRUE/FALSE); diff.pTrans should be TRUE.}
 
 \item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
 
-\item{param.pTrans}{parameter names (list of functions) for the pTrans.}
-
-\item{diff.pExit}{is pExit different between states of the structured population (TRUE/FALSE)}
-
-\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)}
-
-\item{hostCount.pExit}{does pExit varies with the host count in the state? (TRUE/FALSE); diff.pExit should be TRUE.}
-
-\item{pExit}{function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).}
-
-\item{param.pExit}{parameter names (list of functions) for the pExit.}
+\item{param.pTrans}{parameter names (list of functions) for the pExit.}
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
@@ -70,8 +71,64 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 
 \item{print.step}{print.progress is TRUE, step with which the progress message will be printed.}
 }
+\value{
+An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
+}
 \description{
-This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
-The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed.
+This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-host transmission chain simulation, with a discrete host population structure (e.g. spatial, socio-economic). The simulation stops either at
+the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
+}
+\details{
+The structure matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing depature state and column the arrival state. All rows should add to 1.
+
+The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
+
+The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
+
+The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
+
+The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.in} (for "currently in"). Your function should in that case give a result for every possible discrete state.
+
+The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count}.
+
+The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
+\code{current.in} (optional, only if diff is TRUE), \code{host.count} (optional, only if hostCount is TRUE) and \code{parameters} specified in the list.
+}
+\examples{
+\dontrun{
+t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+p_Exit_fct  <- function(t){return(0.08)}
+p_Move_fct  <- function(t){return(0.1)}
+
+proba <- function(t,p_max,t_incub){
+ if(t <= t_incub){p=0}
+ if(t >= t_incub){p=p_max}
+ return(p)
+}
+
+time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+
+transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+
+set.seed(805)
+test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
+                       length=20,
+                       max.infected=100,
+                       init.individuals=1,
+                       init.structure="A",
+                       structure.matrix=transition.matrix,
+                       pMove=p_Move_fct,
+                       param.pMove=NA,
+                       nContact=time_contact,
+                       param.nContact=NA,
+                       pTrans = proba,
+                       param.pTrans = list(p_max=p_max_fct,
+                                           t_incub=t_incub_fct),
+                      pExit=p_Exit_fct,
+                      param.pExit=NA)
+}
+}
+\seealso{
+For simulations with a structure in continuous space, see \code{\link{singleContinuous}}. For simulations without any structures, see \code{\link{singleNone}}.
 }

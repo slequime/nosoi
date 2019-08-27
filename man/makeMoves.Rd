@@ -17,7 +17,7 @@ makeMoves(res, pres.time, moving.full, structure.matrix = NA,
 
 \item{structure.raster}{raster object defining the environmental variable.}
 
-\item{attracted.by.raster}{should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)}
+\item{attracted.by.raster}{should the hosts be attracted by higher values in the environmental raster? (TRUE/FALSE).}
 }
 \value{
 The modified object res

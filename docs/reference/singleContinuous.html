@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Single-host with structured (continuous) host population — singleContinuous • nosoi</title>
+<title>Single-host pathogen in a structured (continuous) host population — singleContinuous • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,11 +37,11 @@
 
 
 
-<meta property="og:title" content="Single-host with structured (continuous) host population — singleContinuous" />
+<meta property="og:title" content="Single-host pathogen in a structured (continuous) host population — singleContinuous" />
 
-<meta property="og:description" content="This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
+<meta property="og:description" content="This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features) in a continuous space.
 The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed." />
+is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -174,7 +174,7 @@ is passed." />
       <a href="../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
     </li>
     <li>
-      <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in a continuous space</a>
+      <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
     </li>
     <li>
       <a href="../articles/examples/vector-competence.html">Epidemiological impact of mosquito vector competence variation</a>
@@ -211,30 +211,30 @@ is passed." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Single-host with structured (continuous) host population</h1>
+    <h1>Single-host pathogen in a structured (continuous) host population</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/single-continuous.R'><code>R/single-continuous.R</code></a></small>
     <div class="hidden name"><code>singleContinuous.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
+    <p>This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features) in a continuous space.
 The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed.</p>
+is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>singleContinuous</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>,
-  <span class='no'>init.structure</span>, <span class='no'>structure.raster</span>, <span class='kw'>diff.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hostCount.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pMove</span>, <span class='no'>param.pMove</span>,
-  <span class='kw'>diff.sdMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.sdMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>init.structure</span>, <span class='no'>structure.raster</span>, <span class='kw'>diff.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hostCount.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
+  <span class='kw'>diff.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hostCount.pMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>pMove</span>, <span class='no'>param.pMove</span>, <span class='kw'>diff.sdMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.sdMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>hostCount.sdMove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>sdMove</span>, <span class='no'>param.sdMove</span>,
   <span class='kw'>attracted.by.raster</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>timeDep.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hostCount.nContact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>nContact</span>,
   <span class='no'>param.nContact</span>, <span class='kw'>diff.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='kw'>diff.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hostCount.pExit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pExit</span>, <span class='no'>param.pExit</span>,
-  <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>, <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+  <span class='kw'>hostCount.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>,
+  <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -253,23 +253,43 @@ is passed.</p>
     </tr>
     <tr>
       <th>init.structure</th>
-      <td><p>which state (i.e. location) the initially infected individuals are located.</p></td>
+      <td><p>which location the initially infected individuals are located. A vector of coordinates in the same coordinate space as the raster.</p></td>
     </tr>
     <tr>
       <th>structure.raster</th>
       <td><p>raster object defining the environmental variable.</p></td>
     </tr>
     <tr>
+      <th>diff.pExit</th>
+      <td><p>does pExit different between states of the structured population (TRUE/FALSE).</p></td>
+    </tr>
+    <tr>
+      <th>timeDep.pExit</th>
+      <td><p>is pExit dependant on the absolute time of the simulation? (TRUE/FALSE)</p></td>
+    </tr>
+    <tr>
+      <th>hostCount.pExit</th>
+      <td><p>does pExit vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit should be TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>pExit</th>
+      <td><p>function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).</p></td>
+    </tr>
+    <tr>
+      <th>param.pExit</th>
+      <td><p>parameter names (list of functions) for the pExit.</p></td>
+    </tr>
+    <tr>
       <th>diff.pMove</th>
-      <td><p>is pMove different between states of the structured population (TRUE/FALSE)</p></td>
+      <td><p>does pMove depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>timeDep.pMove</th>
-      <td><p>is pMove dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+      <td><p>does pMove depend on the absolute time of the simulation (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>hostCount.pMove</th>
-      <td><p>does pMove varies with the host count? (TRUE/FALSE); diff.pMove should be TRUE.</p></td>
+      <td><p>does pMove vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove should also be TRUE.</p></td>
     </tr>
     <tr>
       <th>pMove</th>
@@ -281,39 +301,39 @@ is passed.</p>
     </tr>
     <tr>
       <th>diff.sdMove</th>
-      <td><p>is sdMove dependant on the environmental value (TRUE/FALSE).</p></td>
+      <td><p>does sdMove depend on the environmental value (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>timeDep.sdMove</th>
-      <td><p>is sdMove dependant on the absolute time of the simulation (TRUE/FALSE).</p></td>
+      <td><p>does sdMove depend on the absolute time of the simulation (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>hostCount.sdMove</th>
-      <td><p>does sdMove varies with the host count? (TRUE/FALSE); diff.sdMove should be TRUE.</p></td>
+      <td><p>does sdMove vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove should be TRUE.</p></td>
     </tr>
     <tr>
       <th>sdMove</th>
-      <td><p>function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.</p></td>
+      <td><p>function that gives the distance travelled (based on coordinates); output is the standard deviation value for the Brownian motion.</p></td>
     </tr>
     <tr>
       <th>param.sdMove</th>
-      <td><p>parameter names (list of functions) for sdMove</p></td>
+      <td><p>parameter names (list of functions) for sdMove.</p></td>
     </tr>
     <tr>
       <th>attracted.by.raster</th>
-      <td><p>should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)</p></td>
+      <td><p>should the hosts be attracted by higher values in the environmental raster? (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>diff.nContact</th>
-      <td><p>is nContact different between states of the structured population (TRUE/FALSE)</p></td>
+      <td><p>does nContact different between states of the structured population (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>timeDep.nContact</th>
-      <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+      <td><p>is nContact dependant on the absolute time of the simulation? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>hostCount.nContact</th>
-      <td><p>does nContact varies with the host count? (TRUE/FALSE); diff.nContact should be TRUE.</p></td>
+      <td><p>does nContact vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.nContact should be TRUE.</p></td>
     </tr>
     <tr>
       <th>nContact</th>
@@ -321,19 +341,19 @@ is passed.</p>
     </tr>
     <tr>
       <th>param.nContact</th>
-      <td><p>parameter names (list of functions) for nContact.</p></td>
+      <td><p>parameter names (list of functions) for param.nContact.</p></td>
     </tr>
     <tr>
       <th>diff.pTrans</th>
-      <td><p>is pTrans different between states of the structured population (TRUE/FALSE)</p></td>
+      <td><p>does pTrans different between states of the structured population (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>timeDep.pTrans</th>
-      <td><p>is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
+      <td><p>is pTrans dependant on the absolute time of the simulation? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>hostCount.pTrans</th>
-      <td><p>does pTrans varies with the host count? (TRUE/FALSE); diff.pTrans should be TRUE.</p></td>
+      <td><p>does pTrans vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.pTrans should be TRUE.</p></td>
     </tr>
     <tr>
       <th>pTrans</th>
@@ -341,26 +361,6 @@ is passed.</p>
     </tr>
     <tr>
       <th>param.pTrans</th>
-      <td><p>parameter names (list of functions) for the pTrans.</p></td>
-    </tr>
-    <tr>
-      <th>diff.pExit</th>
-      <td><p>is pExit different between states of the structured population (TRUE/FALSE)</p></td>
-    </tr>
-    <tr>
-      <th>timeDep.pExit</th>
-      <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)</p></td>
-    </tr>
-    <tr>
-      <th>hostCount.pExit</th>
-      <td><p>does pExit varies with the host count? (TRUE/FALSE); diff.pExit should be TRUE.</p></td>
-    </tr>
-    <tr>
-      <th>pExit</th>
-      <td><p>function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).</p></td>
-    </tr>
-    <tr>
-      <th>param.pExit</th>
       <td><p>parameter names (list of functions) for the pExit.</p></td>
     </tr>
     <tr>
@@ -369,7 +369,7 @@ is passed.</p>
     </tr>
     <tr>
       <th>print.progress</th>
-      <td><p>if TRUE, print message on simulation state to screen.</p></td>
+      <td><p>if TRUE, displays a progress bar (current time/length.sim).</p></td>
     </tr>
     <tr>
       <th>print.step</th>
@@ -377,13 +377,88 @@ is passed.</p>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>An object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>, containing all results of the simulation.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The structure raster provided provided should of class <code>raster</code>. High values of the environemental variable can attract hosts if <code>attracted.by.raster</code> is TRUE.</p>
+<p>The <code>pExit</code>, <code>pMove</code> and <code>pTrans</code> function should return a single probability (a number between 0 and 1), <code>sdMove</code> a real number (keep in mind this number is related to your coordinate space), and <code>nContact</code> a positive natural number (positive integer) or 0</p>
+<p>The <code>param</code> arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.</p>
+<p>The use of <code>timeDep</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>prestime</code> (for "present time").</p>
+<p>The use of <code>diff</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>current.env.value</code> (for "currently in"). Your function should in that case give a result for every possible discrete state.</p>
+<p>The use of <code>hostCount</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>host.count</code>.</p>
+<p>The user specified function's arguments should follow this order: <code>t</code> (mandatory), <code>prestime</code> (optional, only if timeDep is TRUE),
+<code>current.env.value</code> (optional, only if diff is TRUE), <code>host.count</code> (optional, only if hostCount is TRUE) and <code>parameters</code> specified in the list.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>For simulations with a discrete structure, see <code><a href='singleDiscrete.html'>singleDiscrete</a></code>. For simulations without any structures, see <code><a href='singleNone.html'>singleNone</a></code>.</p></div>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>raster</span>)
+<span class='co'>#Generating a raster the for movement</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>860</span>)
+
+<span class='no'>test.raster</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/raster/topics/raster'>raster</a></span>(<span class='kw'>nrows</span><span class='kw'>=</span><span class='fl'>100</span>, <span class='kw'>ncols</span><span class='kw'>=</span><span class='fl'>100</span>, <span class='kw'>xmn</span><span class='kw'>=</span>-<span class='fl'>50</span>, <span class='kw'>xmx</span><span class='kw'>=</span><span class='fl'>50</span>, <span class='kw'>ymn</span><span class='kw'>=</span>-<span class='fl'>50</span>,<span class='kw'>ymx</span><span class='kw'>=</span><span class='fl'>50</span>)
+<span class='no'>test.raster</span>[] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>10000</span>, -<span class='fl'>80</span>, <span class='fl'>180</span>)
+<span class='no'>test.raster</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/raster/topics/focal'>focal</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/raster/topics/focal'>focal</a></span>(<span class='no'>test.raster</span>, <span class='kw'>w</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>5</span>), <span class='no'>mean</span>), <span class='kw'>w</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>5</span>), <span class='no'>mean</span>)
+
+<span class='no'>t_incub_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='no'>x</span>,<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>1</span>)}
+<span class='no'>p_max_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Beta'>rbeta</a></span>(<span class='no'>x</span>,<span class='kw'>shape1</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>shape2</span><span class='kw'>=</span><span class='fl'>2</span>)}
+<span class='no'>p_Move_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='fl'>0.1</span>)}
+
+<span class='no'>sdMove_fct</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>t</span>,<span class='no'>current.env.value</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='fl'>100</span>/(<span class='no'>current.env.value</span>+<span class='fl'>1</span>))}
+
+<span class='no'>p_Exit_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='fl'>0.08</span>)}
+
+<span class='no'>proba</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>,<span class='no'>p_max</span>,<span class='no'>t_incub</span>){
+  <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&lt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='fl'>0</span>}
+  <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&gt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='no'>p_max</span>}
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='no'>p</span>)
+}
+
+<span class='no'>time_contact</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)}
+
+<span class='no'>start.pos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>0</span>)
+
+<span class='no'>test.nosoiA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"continuous"</span>,
+                   <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>200</span>,
+                   <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>500</span>,
+                   <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
+                   <span class='kw'>init.structure</span><span class='kw'>=</span><span class='no'>start.pos</span>,
+                   <span class='kw'>structure.raster</span><span class='kw'>=</span><span class='no'>test.raster</span>,
+                   <span class='kw'>pMove</span><span class='kw'>=</span><span class='no'>p_Move_fct</span>,
+                   <span class='kw'>param.pMove</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                   <span class='kw'>diff.sdMove</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
+                   <span class='kw'>sdMove</span><span class='kw'>=</span><span class='no'>sdMove_fct</span>,
+                   <span class='kw'>param.sdMove</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                   <span class='kw'>attracted.by.raster</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
+                   <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
+                   <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                   <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
+                   <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
+                                       <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
+                   <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
+                   <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

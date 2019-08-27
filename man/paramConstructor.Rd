@@ -12,11 +12,11 @@ paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans,
 
 \item{param.pMove}{parameter names (list of functions) for the pMove.}
 
-\item{param.nContact}{parameter names (list of functions) for nContact.}
+\item{param.nContact}{parameter names (list of functions) for param.nContact.}
 
-\item{param.pTrans}{parameter names (list of functions) for the pTrans.}
+\item{param.pTrans}{parameter names (list of functions) for the pExit.}
 
-\item{param.sdMove}{parameter names (list of functions) for sdMove}
+\item{param.sdMove}{parameter names (list of functions) for sdMove.}
 }
 \value{
 An object of class \code{ParamHost}

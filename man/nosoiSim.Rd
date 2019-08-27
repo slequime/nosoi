@@ -19,5 +19,5 @@ Top-level function to use Nosoi
 \details{
 This function determines which general settings the user wants to use for his simulation.
 
-All other arguments are passed down to the chosen simulator itself, such as \code{\link{singleNone}}, \code{\link{singleDiscrete}}, \code{\link{singleContinuous}}, \code{\link{dualNone}}, \code{\link{dualDiscrete}} or \code{\link{dualContinuous}}..
+All other arguments are passed down to the chosen simulator itself, such as \code{\link{singleNone}}, \code{\link{singleDiscrete}}, \code{\link{singleContinuous}}, \code{\link{dualNone}}, \code{\link{dualDiscrete}} or \code{\link{dualContinuous}}.
 }

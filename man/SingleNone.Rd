@@ -45,7 +45,7 @@ singleNone(length.sim, max.infected, init.individuals, pExit, param.pExit,
 An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
 }
 \description{
-This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-host transmission chain simulation, without any spatial features. The simulation stops either at
+This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-host transmission chain simulation, without any structure features in the host population. The simulation stops either at
 the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
 }
 \details{
@@ -53,11 +53,12 @@ The \code{pExit} and \code{pTrans} function should return a single probability (
 
 The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
 
-The use of \code{timeDep} (switch to \code{TRUE}) make the corresponding function use the argument \code{prestime} (for present time).
+The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
 
 The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE), \code{parameters} specified in the list.
 }
 \examples{
+\dontrun{
 t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 p_Exit_fct  <- function(t){return(0.08)}
@@ -81,8 +82,8 @@ test.nosoiA <- nosoiSim(type="single", popStructure="none",
                                             t_incub=t_incub_fct),
                         pExit=p_Exit_fct,
                         param.pExit=NA)
-
+}
 }
 \seealso{
-Other for more complicated simulation with a single host: \code{\link{singleDiscrete}}
+For simulations with a discrete structered host population, see \code{\link{singleDiscrete}}. For simulations with a structured population in continuous space, \code{\link{singleContinuous}}
 }

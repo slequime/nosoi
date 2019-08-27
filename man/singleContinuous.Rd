@@ -2,19 +2,19 @@
 % Please edit documentation in R/single-continuous.R
 \name{singleContinuous}
 \alias{singleContinuous}
-\title{Single-host with structured (continuous) host population}
+\title{Single-host pathogen in a structured (continuous) host population}
 \usage{
 singleContinuous(length.sim, max.infected, init.individuals,
-  init.structure, structure.raster, diff.pMove = FALSE,
-  timeDep.pMove = FALSE, hostCount.pMove = FALSE, pMove, param.pMove,
-  diff.sdMove = FALSE, timeDep.sdMove = FALSE,
+  init.structure, structure.raster, diff.pExit = FALSE,
+  timeDep.pExit = FALSE, hostCount.pExit = FALSE, pExit, param.pExit,
+  diff.pMove = FALSE, timeDep.pMove = FALSE, hostCount.pMove = FALSE,
+  pMove, param.pMove, diff.sdMove = FALSE, timeDep.sdMove = FALSE,
   hostCount.sdMove = FALSE, sdMove, param.sdMove,
   attracted.by.raster = FALSE, diff.nContact = FALSE,
   timeDep.nContact = FALSE, hostCount.nContact = FALSE, nContact,
   param.nContact, diff.pTrans = FALSE, timeDep.pTrans = FALSE,
-  hostCount.pTrans = FALSE, pTrans, param.pTrans, diff.pExit = FALSE,
-  timeDep.pExit = FALSE, hostCount.pExit = FALSE, pExit, param.pExit,
-  prefix.host = "H", print.progress = TRUE, print.step = 10)
+  hostCount.pTrans = FALSE, pTrans, param.pTrans, prefix.host = "H",
+  print.progress = TRUE, print.step = 10)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -23,70 +23,141 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{init.individuals}{number of initially infected individuals.}
 
-\item{init.structure}{which state (i.e. location) the initially infected individuals are located.}
+\item{init.structure}{which location the initially infected individuals are located. A vector of coordinates in the same coordinate space as the raster.}
 
 \item{structure.raster}{raster object defining the environmental variable.}
 
-\item{diff.pMove}{is pMove different between states of the structured population (TRUE/FALSE)}
+\item{diff.pExit}{does pExit different between states of the structured population (TRUE/FALSE).}
 
-\item{timeDep.pMove}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE)}
+\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation? (TRUE/FALSE)}
 
-\item{hostCount.pMove}{does pMove varies with the host count? (TRUE/FALSE); diff.pMove should be TRUE.}
-
-\item{pMove}{function that gives the probability of a host moving as a function of time.}
-
-\item{param.pMove}{parameter names (list of functions) for the pMove.}
-
-\item{diff.sdMove}{is sdMove dependant on the environmental value (TRUE/FALSE).}
-
-\item{timeDep.sdMove}{is sdMove dependant on the absolute time of the simulation (TRUE/FALSE).}
-
-\item{hostCount.sdMove}{does sdMove varies with the host count? (TRUE/FALSE); diff.sdMove should be TRUE.}
-
-\item{sdMove}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion.}
-
-\item{param.sdMove}{parameter names (list of functions) for sdMove}
-
-\item{attracted.by.raster}{should the hosts be attracted by high values in the environmental raster? (TRUE/FALSE)}
-
-\item{diff.nContact}{is nContact different between states of the structured population (TRUE/FALSE)}
-
-\item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)}
-
-\item{hostCount.nContact}{does nContact varies with the host count? (TRUE/FALSE); diff.nContact should be TRUE.}
-
-\item{nContact}{function that gives the number of potential transmission events per unit of time.}
-
-\item{param.nContact}{parameter names (list of functions) for nContact.}
-
-\item{diff.pTrans}{is pTrans different between states of the structured population (TRUE/FALSE)}
-
-\item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)}
-
-\item{hostCount.pTrans}{does pTrans varies with the host count? (TRUE/FALSE); diff.pTrans should be TRUE.}
-
-\item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
-
-\item{param.pTrans}{parameter names (list of functions) for the pTrans.}
-
-\item{diff.pExit}{is pExit different between states of the structured population (TRUE/FALSE)}
-
-\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)}
-
-\item{hostCount.pExit}{does pExit varies with the host count? (TRUE/FALSE); diff.pExit should be TRUE.}
+\item{hostCount.pExit}{does pExit vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit should be TRUE.}
 
 \item{pExit}{function that gives the probability to exit the simulation for an infected host (either moving out, dying, etc.).}
 
 \item{param.pExit}{parameter names (list of functions) for the pExit.}
 
+\item{diff.pMove}{does pMove depend on the environmental variable (set by the raster) (TRUE/FALSE).}
+
+\item{timeDep.pMove}{does pMove depend on the absolute time of the simulation (TRUE/FALSE).}
+
+\item{hostCount.pMove}{does pMove vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove should also be TRUE.}
+
+\item{pMove}{function that gives the probability of a host moving as a function of time.}
+
+\item{param.pMove}{parameter names (list of functions) for the pMove.}
+
+\item{diff.sdMove}{does sdMove depend on the environmental value (TRUE/FALSE).}
+
+\item{timeDep.sdMove}{does sdMove depend on the absolute time of the simulation (TRUE/FALSE).}
+
+\item{hostCount.sdMove}{does sdMove vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove should be TRUE.}
+
+\item{sdMove}{function that gives the distance travelled (based on coordinates); output is the standard deviation value for the Brownian motion.}
+
+\item{param.sdMove}{parameter names (list of functions) for sdMove.}
+
+\item{attracted.by.raster}{should the hosts be attracted by higher values in the environmental raster? (TRUE/FALSE).}
+
+\item{diff.nContact}{does nContact different between states of the structured population (TRUE/FALSE).}
+
+\item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation? (TRUE/FALSE)}
+
+\item{hostCount.nContact}{does nContact vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.nContact should be TRUE.}
+
+\item{nContact}{function that gives the number of potential transmission events per unit of time.}
+
+\item{param.nContact}{parameter names (list of functions) for param.nContact.}
+
+\item{diff.pTrans}{does pTrans different between states of the structured population (TRUE/FALSE).}
+
+\item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation? (TRUE/FALSE)}
+
+\item{hostCount.pTrans}{does pTrans vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.pTrans should be TRUE.}
+
+\item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
+
+\item{param.pTrans}{parameter names (list of functions) for the pExit.}
+
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
-\item{print.progress}{if TRUE, print message on simulation state to screen.}
+\item{print.progress}{if TRUE, displays a progress bar (current time/length.sim).}
 
 \item{print.step}{print.progress is TRUE, step with which the progress message will be printed.}
 }
+\value{
+An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
+}
 \description{
-This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features).
+This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features) in a continuous space.
 The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed.
+is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable.
+}
+\details{
+The structure raster provided provided should of class \code{raster}. High values of the environemental variable can attract hosts if \code{attracted.by.raster} is TRUE.
+
+The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), \code{sdMove} a real number (keep in mind this number is related to your coordinate space), and \code{nContact} a positive natural number (positive integer) or 0
+
+The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
+
+The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
+
+The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.env.value} (for "currently in"). Your function should in that case give a result for every possible discrete state.
+
+The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count}.
+
+The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
+\code{current.env.value} (optional, only if diff is TRUE), \code{host.count} (optional, only if hostCount is TRUE) and \code{parameters} specified in the list.
+}
+\examples{
+\dontrun{
+library(raster)
+#Generating a raster the for movement
+set.seed(860)
+
+test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
+test.raster[] <- runif(10000, -80, 180)
+test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
+
+t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+p_Move_fct  <- function(t){return(0.1)}
+
+sdMove_fct = function(t,current.env.value){return(100/(current.env.value+1))}
+
+p_Exit_fct  <- function(t){return(0.08)}
+
+proba <- function(t,p_max,t_incub){
+  if(t <= t_incub){p=0}
+  if(t >= t_incub){p=p_max}
+  return(p)
+}
+
+time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+
+start.pos <- c(0,0)
+
+test.nosoiA <- nosoiSim(type="single", popStructure="continuous",
+                   length=200,
+                   max.infected=500,
+                   init.individuals=1,
+                   init.structure=start.pos,
+                   structure.raster=test.raster,
+                   pMove=p_Move_fct,
+                   param.pMove=NA,
+                   diff.sdMove=TRUE,
+                   sdMove=sdMove_fct,
+                   param.sdMove=NA,
+                   attracted.by.raster=TRUE,
+                   nContact=time_contact,
+                   param.nContact=NA,
+                   pTrans = proba,
+                   param.pTrans = list(p_max=p_max_fct,
+                                       t_incub=t_incub_fct),
+                   pExit=p_Exit_fct,
+                   param.pExit=NA)
+}
+}
+\seealso{
+For simulations with a discrete structure, see \code{\link{singleDiscrete}}. For simulations without any structures, see \code{\link{singleNone}}.
 }
