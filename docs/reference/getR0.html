@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get R0 from a nosoi simulation — getR0 • nosoi</title>
+<title>Gets R0 from a <code>nosoi</code> simulation — getR0 • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Get R0 from a nosoi simulation — getR0" />
+<meta property="og:title" content="Gets R0 from a <code>nosoi</code> simulation — getR0" />
 
-<meta property="og:description" content="Gets an estimate of secondary cases (what R0 usually tries to estimate) and its distribution. The calculation is based on inactive hosts at the end of the simulation." />
+<meta property="og:description" content="Gets an estimate of secondary cases (what R0 usually tries to estimate) and its distribution from the output of a nosoiSim simulation. The actual calculation is based on inactive hosts at the end of the simulation to avoid bias introduced by hosts that have not finished their transmission potential." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -209,31 +209,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get R0 from a nosoi simulation</h1>
+    <h1>Gets R0 from a <code>nosoi</code> simulation</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_nosoiSummary.R'><code>R/output_nosoiSummary.R</code></a></small>
     <div class="hidden name"><code>getR0.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Gets an estimate of secondary cases (what R0 usually tries to estimate) and its distribution. The calculation is based on inactive hosts at the end of the simulation.</p>
+    <p>Gets an estimate of secondary cases (what R0 usually tries to estimate) and its distribution from the output of a <code>nosoiSim</code> simulation. The actual calculation is based on inactive hosts at the end of the simulation to avoid bias introduced by hosts that have not finished their transmission potential.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>getR0</span>(<span class='no'>table.nosoi</span>)</pre>
+    <pre class="usage"><span class='fu'>getR0</span>(<span class='no'>nosoi.output</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>table.nosoi</th>
-      <td><p>result of function <code><a href='nosoiSim.html'>nosoiSim</a></code></p></td>
+      <th>nosoi.output</th>
+      <td><p>Output of a nosoi simulation (object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>R0 estimate (mean and distribution), as well as the number of inactive hosts at the end of the simulation.</p>
+    <p>A list with the following items:</p><dl class='dl-horizontal'>
+   <dt>N.inactive</dt><dd><p>Number of inactive hosts at the end of the simulation.</p></dd>
+   <dt>R0.mean</dt><dd><p>Mean R0 based on the distribution (see below).</p></dd>
+   <dt>R0.dist</dt><dd><p>Distribution for each host of the secondary cases it generated (in case of dual-hosts, then the secondary cases of the same host-type).</p></dd>
+   </dl>
+
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

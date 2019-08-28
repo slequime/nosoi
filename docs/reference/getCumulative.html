@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cumulative number of infected units for the full length of the simulation — getCumulative • nosoi</title>
+<title>Gets the cumulative number of infected hosts for the full length of the simulation — getCumulative • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Cumulative number of infected units for the full length of the simulation — getCumulative" />
+<meta property="og:title" content="Gets the cumulative number of infected hosts for the full length of the simulation — getCumulative" />
 
-<meta property="og:description" content="Number of infected units at time t for the full length of the simulation" />
+<meta property="og:description" content="This function computes from the output of a nosoiSim simulation the cumulative count of infected hosts at each time step of the simulation. The output is a data.table." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -209,31 +209,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Cumulative number of infected units for the full length of the simulation</h1>
+    <h1>Gets the cumulative number of infected hosts for the full length of the simulation</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_nosoiSummary.R'><code>R/output_nosoiSummary.R</code></a></small>
     <div class="hidden name"><code>getCumulative.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Number of infected units at time t for the full length of the simulation</p>
+    <p>This function computes from the output of a <code>nosoiSim</code> simulation the cumulative count of infected hosts at each time step of the simulation. The output is a <code><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>getCumulative</span>(<span class='no'>table.nosoi</span>)</pre>
+    <pre class="usage"><span class='fu'>getCumulative</span>(<span class='no'>nosoi.output</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>table.nosoi</th>
-      <td><p>result of function <code><a href='nosoiSim.html'>nosoiSim</a></code></p></td>
+      <th>nosoi.output</th>
+      <td><p>Output of a nosoi simulation (object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>).</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <div class='dont-index'><p><code><a href='nosoiSim.html'>nosoiSim</a></code></p></div>
+    <p>The output is a <code><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table</a></code> with the following structure:</p><dl class='dl-horizontal'>
+   <dt>t</dt><dd><p>Time-step (integer).</p></dd>
+   <dt>Count</dt><dd><p>Cumulative number of infected hosts at given time-step.</p></dd>
+   <dt>type</dt><dd><p>Host-type, identified by its user-defined prefix.</p></dd>
+   </dl>
+
     
 
   </div>
@@ -242,7 +247,7 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#value">Value</a></li>
           </ul>
 
   </div>

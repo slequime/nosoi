@@ -2,19 +2,27 @@
 % Please edit documentation in R/output_utilityFunctions.R
 \name{getTableState}
 \alias{getTableState}
-\title{Get table states}
+\title{Extracts \code{table.state} from a \code{nosoiSim} object}
 \usage{
-getTableState(res, pop = "A")
+getTableState(nosoi.output, pop = "A")
 }
 \arguments{
-\item{res}{an object of class \code{nosoiSim}}
+\item{nosoi.output}{an object of class \code{\link{nosoiSim}}}
 
-\item{pop}{the population to be extracted (one of "A" or "B")}
+\item{pop}{the host-type to be extracted (either "A" or "B", if not dual-host, then "A")}
 }
 \value{
-a data.table with state table informations
+Returns a \code{\link[data.table:data.table-package]{data.table}} with the requested data. The \code{table.state} (class \code{\link[data.table:data.table-package]{data.table}}) contains informations the location of each host during time (one row is one host at one location).
+The structure of the table is the following:
+\describe{
+   \item{hosts.ID}{Unique identifier for the host, based on user-defined prefix and an integer.}
+   \item{state}{State or coordinates (in that case state.x and state.y) in which the host is during that time interval.}
+   \item{current.env.value}{(only if continuous structure is present) Environmental value (raster cell value) in which the host is at the end of the simulation.}
+   \item{current.cell.raster}{(only if continuous structure is present) Raster cell numeric ID in which the host is at the end of the simulation.}
+   \item{time.from}{Time-step at which the host moved to the location.}
+   \item{time.to}{Time-step at which the host exited the location (either by exiting the simulation or moving somewhere else).}
+   }
 }
 \description{
-Get "table.state"
-TODO: describe the table
+This function extracts the \code{table.state} for the request host-type from a \code{\link{nosoiSim}} object. \code{table.state} is present only if there is any structure (discrete or continuous) used.
 }

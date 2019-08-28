@@ -2,18 +2,23 @@
 % Please edit documentation in R/output_nosoiSummary.R
 \name{getR0}
 \alias{getR0}
-\title{Get R0 from a nosoi simulation}
+\title{Gets R0 from a \code{nosoi} simulation}
 \usage{
-getR0(table.nosoi)
+getR0(nosoi.output)
 }
 \arguments{
-\item{table.nosoi}{result of function \code{\link{nosoiSim}}}
+\item{nosoi.output}{Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).}
 }
 \value{
-R0 estimate (mean and distribution), as well as the number of inactive hosts at the end of the simulation.
+A list with the following items:
+\describe{
+   \item{N.inactive}{Number of inactive hosts at the end of the simulation.}
+   \item{R0.mean}{Mean R0 based on the distribution (see below).}
+   \item{R0.dist}{Distribution for each host of the secondary cases it generated (in case of dual-hosts, then the secondary cases of the same host-type).}
+   }
 }
 \description{
-Gets an estimate of secondary cases (what R0 usually tries to estimate) and its distribution. The calculation is based on inactive hosts at the end of the simulation.
+Gets an estimate of secondary cases (what R0 usually tries to estimate) and its distribution from the output of a \code{nosoiSim} simulation. The actual calculation is based on inactive hosts at the end of the simulation to avoid bias introduced by hosts that have not finished their transmission potential.
 }
 \seealso{
 \code{\link{nosoiSim}}

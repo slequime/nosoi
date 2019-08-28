@@ -46,19 +46,28 @@ navbar:
       icon: fa-github fa-lg
       href: https://github.com/slequime/nosoi
 reference:
-  - title: "Wrapper function"
+  - title: "Simulation function"
+    desc: "These functions are called by nosoiSim and are specific to the type of simulations your run."
     contents: 
       - nosoiSim
-  - title: "Specific functions"
-    desc: "These functions are called by nosoiSim and are specific to the type of simulations your run."
-    contents:
       - starts_with("single")
       - starts_with("dual")
-  - title: "Output functions"
+  - title: "Output: data extraction"
+    desc: "These functions are used to get information on your nosoi output."
+    contents:
+      - getHostData
+      - getTableHosts
+      - getTableState
+  - title: "Output: epidemiology"
     desc: "These functions are used to get information on your nosoi output."
     contents:
       - nosoiSummary
-      - numberInfected
+      - getR0
+      - getDynamic
+      - getCumulative
+  - title: "Output: transmission chains"
+    desc: "These functions are used to get information on your nosoi output."
+    contents:
       - getTransmissionTree
       - sampleTransmissionTree
       - sampleTransmissionTreeFromExiting

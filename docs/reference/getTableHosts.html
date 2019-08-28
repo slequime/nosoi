@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get table hosts — getTableHosts • nosoi</title>
+<title>Extracts <code>table.hosts</code> from a <code>nosoiSim</code> object — getTableHosts • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,9 @@
 
 
 
-<meta property="og:title" content="Get table hosts — getTableHosts" />
+<meta property="og:title" content="Extracts <code>table.hosts</code> from a <code>nosoiSim</code> object — getTableHosts" />
 
-<meta property="og:description" content="Get &quot;table.hosts&quot;
-TODO: describe the table" />
+<meta property="og:description" content="This function extracts the table.hosts for the request host-type from a nosoiSim object." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -210,36 +209,49 @@ TODO: describe the table" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get table hosts</h1>
+    <h1>Extracts <code>table.hosts</code> from a <code>nosoiSim</code> object</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_utilityFunctions.R'><code>R/output_utilityFunctions.R</code></a></small>
     <div class="hidden name"><code>getTableHosts.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Get "table.hosts"
-TODO: describe the table</p>
+    <p>This function extracts the <code>table.hosts</code> for the request host-type from a <code><a href='nosoiSim.html'>nosoiSim</a></code> object.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>getTableHosts</span>(<span class='no'>res</span>, <span class='kw'>pop</span> <span class='kw'>=</span> <span class='st'>"A"</span>)</pre>
+    <pre class="usage"><span class='fu'>getTableHosts</span>(<span class='no'>nosoi.output</span>, <span class='kw'>pop</span> <span class='kw'>=</span> <span class='st'>"A"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>res</th>
-      <td><p>an object of class <code>nosoiSim</code></p></td>
+      <th>nosoi.output</th>
+      <td><p>an object of class <code><a href='nosoiSim.html'>nosoiSim</a></code></p></td>
     </tr>
     <tr>
       <th>pop</th>
-      <td><p>the population to be extracted (one of "A" or "B")</p></td>
+      <td><p>the host-type to be extracted (either "A" or "B", if not dual-host, then "A")</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data.table with hosts table informations</p>
+    <p>Returns a <code><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table</a></code> with the requested data. The <code>table.hosts</code> (class <code><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table</a></code>) contains informations about each host that has been simulated (one row is one host).
+The structure of the table is the following:</p><dl class='dl-horizontal'>
+   <dt>hosts.ID</dt><dd><p>Unique identifier for the host, based on user-defined prefix and an integer.</p></dd>
+   <dt>inf.by</dt><dd><p>Unique identifier for the host that infected the current one.</p></dd>
+   <dt>inf.in</dt><dd><p>(only if structure is present) State or coordinates (in that case inf.in.x and inf.in.y) in which the host was infected.</p></dd>
+   <dt>current.in</dt><dd><p>(only if structure is present) State or coordinates (in that case current.in.x and current.in.y) in which the host is at the end of the simulation.</p></dd>
+   <dt>current.env.value</dt><dd><p>(only if continuous structure is present) Environmental value (raster cell value) in which the host is at the end of the simulation.</p></dd>
+   <dt>current.cell.raster</dt><dd><p>(only if continuous structure is present) Raster cell numeric ID in which the host is at the end of the simulation.</p></dd>
+   <dt>host.count</dt><dd><p>(only if structure is present) Host count in the current state or raster cell (beware, updated only if used).</p></dd>
+   <dt>inf.time</dt><dd><p>When did the host enter the simulation (infection time).</p></dd>
+   <dt>out.time</dt><dd><p>When did the host exit the simulation (NA if still active).</p></dd>
+   <dt>active</dt><dd><p>Is the host still active at the end of the simulation (1 for YES, 0 for NO)?</p></dd>
+   <dt>parameters</dt><dd><p>The remaining columns are the sampled values for the individual-based parameters (if any) specified by the user.</p></dd>
+   </dl>
+
     
 
   </div>

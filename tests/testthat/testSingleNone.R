@@ -21,7 +21,7 @@ test_that("Transmission is coherent with single introduction, constant pExit and
                           pExit=p_Exit_fct,
                           param.pExit=NA
   )
-  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.host")[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostData(test.nosoiA, "table.host")[,c(1,2)],directed=F)
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
@@ -57,7 +57,7 @@ test_that("Transmission is coherent with single introduction, constant pExit and
                           pExit=p_Exit_fct,
                           param.pExit=NA
   )
-  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.host")[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostData(test.nosoiA, "table.host")[,c(1,2)],directed=F)
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
@@ -115,7 +115,7 @@ test_that("Transmission is coherent with single introduction, simple pExit and p
                           pExit=p_Exit_fct,
                           param.pExit=NA
   )
-  g <- graph.data.frame(getHostInfo(test.nosoiB, "table.host")[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostData(test.nosoiB, "table.host")[,c(1,2)],directed=F)
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
@@ -153,7 +153,7 @@ test_that("Transmission is coherent with single introduction, complex pExit and 
                           pExit=p_Exit_fct,
                           param.pExit = list(pExit.param1=p_exit_param1)
   )
-  g <- graph.data.frame(getHostInfo(test.nosoiC, "table.host")[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostData(test.nosoiC, "table.host")[,c(1,2)],directed=F)
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
@@ -190,7 +190,7 @@ test_that("Transmission is coherent with multiple introductions, constant pExit 
                           param.pExit=NA
   )
 
-  g <- graph.data.frame(getHostInfo(test.nosoiA, "table.host")[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostData(test.nosoiA, "table.host")[,c(1,2)],directed=F)
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 3)
@@ -225,7 +225,7 @@ test_that("Transmission is coherent with multiple introductions, simple pExit an
                           pExit=p_Exit_fct,
                           param.pExit=NA
   )
-  g <- graph.data.frame(getHostInfo(test.nosoiB, "table.host")[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostData(test.nosoiB, "table.host")[,c(1,2)],directed=F)
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 3)
@@ -262,7 +262,7 @@ test_that("Transmission is coherent with multiple introductions, complex pExit a
                           pExit=p_Exit_fct,
                           param.pExit = list(pExit.param1=p_exit_param1)
   )
-  g <- graph.data.frame(getHostInfo(test.nosoiC, "table.host")[,c(1,2)],directed=F)
+  g <- graph.data.frame(getHostData(test.nosoiC, "table.host")[,c(1,2)],directed=F)
 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 3)
@@ -297,6 +297,6 @@ test_that("Dying out epidemic", {
                           param.pExit=NA
   )
 
-  expect_equal(nrow(getHostInfo(test.nosoiA, "table.host")),1)
+  expect_equal(nrow(getHostData(test.nosoiA, "table.host")),1)
   expect_equal(test.nosoiA$total.time,4)
 })

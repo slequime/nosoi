@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summarizes the epidemiological features of a <code>nosoi</code> simulation — nosoiSummary • nosoi</title>
+<title>Extracts specific data from a <code>nosoiSim</code> object — getHostData • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Summarizes the epidemiological features of a <code>nosoi</code> simulation — nosoiSummary" />
+<meta property="og:title" content="Extracts specific data from a <code>nosoiSim</code> object — getHostData" />
 
-<meta property="og:description" content="This function provides summary informations about the simulation (number of infected hosts, R0, etc.) in form of a list." />
+<meta property="og:description" content="This function extracts data user-defined data (i.e. table.hosts, N.infected, table.state or popStructure) from a nosoiSim object." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -209,40 +209,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Summarizes the epidemiological features of a <code>nosoi</code> simulation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_nosoiSummary.R'><code>R/output_nosoiSummary.R</code></a></small>
-    <div class="hidden name"><code>nosoiSummary.Rd</code></div>
+    <h1>Extracts specific data from a <code>nosoiSim</code> object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_utilityFunctions.R'><code>R/output_utilityFunctions.R</code></a></small>
+    <div class="hidden name"><code>getHostData.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function provides summary informations about the simulation (number of infected hosts, R0, etc.) in form of a list.</p>
+    <p>This function extracts data user-defined data (i.e. <code>table.hosts</code>, <code>N.infected</code>, <code>table.state</code> or <code>popStructure</code>) from a <code><a href='nosoiSim.html'>nosoiSim</a></code> object.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>nosoiSummary</span>(<span class='no'>nosoi.output</span>)</pre>
+    <pre class="usage"><span class='fu'>getHostData</span>(<span class='no'>nosoi.output</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"table.hosts"</span>, <span class='st'>"N.infected"</span>,
+  <span class='st'>"table.state"</span>, <span class='st'>"popStructure"</span>), <span class='kw'>pop</span> <span class='kw'>=</span> <span class='st'>"A"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>nosoi.output</th>
-      <td><p>Output of a nosoi simulation (object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>).</p></td>
+      <td><p>an object of class <code>nosoiSim</code></p></td>
+    </tr>
+    <tr>
+      <th>what</th>
+      <td><p>the data to get, among <code>table.hosts</code>, <code>N.infected</code>, <code>table.state</code> or <code>popStructure</code>.</p></td>
+    </tr>
+    <tr>
+      <th>pop</th>
+      <td><p>the population to be extracted (one of "A" or "B")</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>All computed data are provided in a list:</p><dl class='dl-horizontal'>
-   <dt>R0</dt><dd><p>Provides a sublist with number of inactive hosts at the end of the simulation <code>N.inactive</code>, mean R0 <code>R0.mean</code>, and R0 distribution <code>R0.dist</code>. For more details, see <code><a href='getR0.html'>getR0</a></code>.</p></dd>
-   <dt>dynamics</dt><dd><p><code><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table</a></code> with the count of currently infected (i.e. active) hosts at each time step of the simulation (by step if the simulation was in a discrete structured host population). For more details, see <code><a href='getDynamic.html'>getDynamic</a></code>.</p></dd>
-   <dt>cumulative</dt><dd><p><code><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table</a></code> with the cumulative count of infected hosts at each time step of the simulation. For more details, see <code><a href='getCumulative.html'>getCumulative</a></code>.</p></dd>
-   </dl>
-
+    <p>Returns a <code><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table</a></code> with the requested data.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>You can directly compute each elements of the list without using the summarise function. See <code><a href='getR0.html'>getR0</a></code>, <code><a href='getDynamic.html'>getDynamic</a></code> and <code><a href='getCumulative.html'>getCumulative</a></code>.</p></div>
+    <div class='dont-index'><p>To directly extract <code>table.hosts</code> or <code>table.state</code>, you can also use <code><a href='getTableHosts.html'>getTableHosts</a></code> and <code><a href='getTableState.html'>getTableState</a></code> respectively.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -272,7 +276,7 @@
                         <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
 
 
-<span class='fu'>nosoiSummary</span>(<span class='no'>test.nosoiA</span>)
+<span class='no'>data.extracted</span> <span class='kw'>&lt;-</span> <span class='fu'>getHostData</span>(<span class='no'>test.nosoiA</span>, <span class='st'>"table.hosts"</span>, <span class='st'>"A"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

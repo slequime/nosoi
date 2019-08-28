@@ -221,8 +221,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-wrapper-function" class="hasAnchor"><a href="#section-wrapper-function" class="anchor"></a>Wrapper function</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-simulation-function" class="hasAnchor"><a href="#section-simulation-function" class="anchor"></a>Simulation function</h2>
+          <p class="section-desc"><p>These functions are called by nosoiSim and are specific to the type of simulations your run.</p></p>
         </th>
       </tr>
       <tr>
@@ -231,15 +231,7 @@
           <p><code><a href="nosoiSim.html">nosoiSim()</a></code> </p>
         </td>
         <td><p>Top-level function to use <code>nosoi</code>.</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-specific-functions" class="hasAnchor"><a href="#section-specific-functions" class="anchor"></a>Specific functions</h2>
-          <p class="section-desc"><p>These functions are called by nosoiSim and are specific to the type of simulations your run.</p></p>
-        </th>
-      </tr>
-      <tr>
+      </tr><tr>
         
         <td>
           <p><code><a href="singleContinuous.html">singleContinuous()</a></code> </p>
@@ -279,7 +271,33 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-output-functions" class="hasAnchor"><a href="#section-output-functions" class="anchor"></a>Output functions</h2>
+          <h2 id="section-output-data-extraction" class="hasAnchor"><a href="#section-output-data-extraction" class="anchor"></a>Output: data extraction</h2>
+          <p class="section-desc"><p>These functions are used to get information on your nosoi output.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="getHostData.html">getHostData()</a></code> </p>
+        </td>
+        <td><p>Extracts specific data from a <code>nosoiSim</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getTableHosts.html">getTableHosts()</a></code> </p>
+        </td>
+        <td><p>Extracts <code>table.hosts</code> from a <code>nosoiSim</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getTableState.html">getTableState()</a></code> </p>
+        </td>
+        <td><p>Extracts <code>table.state</code> from a <code>nosoiSim</code> object</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-output-epidemiology" class="hasAnchor"><a href="#section-output-epidemiology" class="anchor"></a>Output: epidemiology</h2>
           <p class="section-desc"><p>These functions are used to get information on your nosoi output.</p></p>
         </th>
       </tr>
@@ -288,14 +306,34 @@
         <td>
           <p><code><a href="nosoiSummary.html">nosoiSummary()</a></code> </p>
         </td>
-        <td><p>Summary of a simulation</p></td>
+        <td><p>Summarizes the epidemiological features of a <code>nosoi</code> simulation</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="numberInfected.html">numberInfected()</a></code> </p>
+          <p><code><a href="getR0.html">getR0()</a></code> </p>
         </td>
-        <td><p>Number of Active infected units at time t</p></td>
+        <td><p>Gets R0 from a <code>nosoi</code> simulation</p></td>
       </tr><tr>
+        
+        <td>
+          <p><code><a href="getDynamic.html">getDynamic()</a></code> </p>
+        </td>
+        <td><p>Gets the current number of infected hosts for the full length of the simulation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getCumulative.html">getCumulative()</a></code> </p>
+        </td>
+        <td><p>Gets the cumulative number of infected hosts for the full length of the simulation</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-output-transmission-chains" class="hasAnchor"><a href="#section-output-transmission-chains" class="anchor"></a>Output: transmission chains</h2>
+          <p class="section-desc"><p>These functions are used to get information on your nosoi output.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="getTransmissionTree.html">getTransmissionTree()</a></code> </p>
@@ -321,9 +359,10 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-wrapper-function">Wrapper function</a></li>
-      <li><a href="#section-specific-functions">Specific functions</a></li>
-      <li><a href="#section-output-functions">Output functions</a></li>
+      <li><a href="#section-simulation-function">Simulation function</a></li>
+      <li><a href="#section-output-data-extraction">Output: data extraction</a></li>
+      <li><a href="#section-output-epidemiology">Output: epidemiology</a></li>
+      <li><a href="#section-output-transmission-chains">Output: transmission chains</a></li>
     </ul>
   </div>
 </div>

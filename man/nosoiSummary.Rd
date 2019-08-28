@@ -2,16 +2,54 @@
 % Please edit documentation in R/output_nosoiSummary.R
 \name{nosoiSummary}
 \alias{nosoiSummary}
-\title{Summary of a simulation}
+\title{Summarizes the epidemiological features of a \code{nosoi} simulation}
 \usage{
 nosoiSummary(nosoi.output)
 }
 \arguments{
-\item{nosoi.output}{Output of a nosoi simulation (the data.table).}
+\item{nosoi.output}{Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).}
+}
+\value{
+All computed data are provided in a list:
+\describe{
+   \item{R0}{Provides a sublist with number of inactive hosts at the end of the simulation \code{N.inactive}, mean R0 \code{R0.mean}, and R0 distribution \code{R0.dist}. For more details, see \code{\link{getR0}}.}
+   \item{dynamics}{\code{\link[data.table:data.table-package]{data.table}} with the count of currently infected (i.e. active) hosts at each time step of the simulation (by step if the simulation was in a discrete structured host population). For more details, see \code{\link{getDynamic}}.}
+   \item{cumulative}{\code{\link[data.table:data.table-package]{data.table}} with the cumulative count of infected hosts at each time step of the simulation. For more details, see \code{\link{getCumulative}}.}
+   }
 }
 \description{
-This function provides summary informations about the simulation (number of infected hosts, R0, etc.).
+This function provides summary informations about the simulation (number of infected hosts, R0, etc.) in form of a list.
 }
-\details{
-All elements are provided in a list.
+\examples{
+\dontrun{
+t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+p_Exit_fct  <- function(t){return(0.08)}
+
+proba <- function(t,p_max,t_incub){
+ if(t <= t_incub){p=0}
+ if(t >= t_incub){p=p_max}
+ return(p)
+}
+
+time_contact <- function(t){round(rnorm(1, 3, 1), 0)}
+
+test.nosoiA <- nosoiSim(type="single", popStructure="none",
+                        length=40,
+                        max.infected=100,
+                        init.individuals=1,
+                        nContact=time_contact,
+                        param.nContact=NA,
+                        pTrans = proba,
+                        param.pTrans = list(p_max=p_max_fct,
+                                            t_incub=t_incub_fct),
+                        pExit=p_Exit_fct,
+                        param.pExit=NA)
+
+
+nosoiSummary(test.nosoiA)
+}
+}
+\seealso{
+You can directly compute each elements of the list without using the summarise function. See \code{\link{getR0}}, \code{\link{getDynamic}} and \code{\link{getCumulative}}.
 }

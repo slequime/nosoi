@@ -2,7 +2,7 @@
 % Please edit documentation in R/output_nosoiSummary.R
 \name{numberInfected}
 \alias{numberInfected}
-\title{Number of Active infected units at time t}
+\title{Number of active infected hosts at time t}
 \usage{
 numberInfected(table.nosoi, t)
 }
@@ -20,3 +20,4 @@ For a given time t, this function returns the number of infected active units.
 \seealso{
 \code{\link{nosoiSim}}
 }
+\keyword{internal}

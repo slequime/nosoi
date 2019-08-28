@@ -17,16 +17,16 @@
 #'    \item{host.info.A (object of class \code{nosoiSimOne})}{
 #'        \describe{
 #'           \item{N.infected}{Number of infected hosts (integer).}
-#'           \item{table.hosts}{Table containing the results of the simulation (class \code{\link[data.table:data.table-package]{data.table}}).}
-#'           \item{table.state}{Table containing the results of the simulation, focusing on the movement history of each host (class \code{\link[data.table:data.table-package]{data.table}}).}
+#'           \item{table.hosts}{Table containing the results of the simulation  (see \code{\link{getTableHosts}} for more details on the table).}
+#'           \item{table.state}{Table containing the results of the simulation, focusing on the movement history of each host (see \code{\link{getTableState}} for more details on the table).}
 #'           \item{prefix.host}{String containing the prefix used to name hosts (character string).}
 #'           \item{popStructure}{String about the population structure (either \code{none}, \code{discrete} or \code{continuous}).}
 #'    }}
 #'
 #'    \item{host.info.B (object of class \code{nosoiSimOne})}{\describe{
 #'           \item{N.infected}{Number of infected hosts (integer)}
-#'           \item{table.hosts}{Table containing the results of the simulation, focusing on each host (class \code{\link[data.table:data.table-package]{data.table}}).}
-#'           \item{table.state}{Table containing the results of the simulation, focusing on the movement history of each host (class \code{\link[data.table:data.table-package]{data.table}}).}
+#'           \item{table.hosts}{Table containing the results of the simulation, (see \code{\link{getTableHosts}} for more details on the table).}
+#'           \item{table.state}{Table containing the results of the simulation, focusing on the movement history of each host (see \code{\link{getTableState}} for more details on the table).}
 #'           \item{prefix.host}{String containing the prefix used to name hosts (character string).}
 #'           \item{popStructure}{String about the population structure (either \code{none}, \code{discrete} or \code{continuous}).}
 #'    }}

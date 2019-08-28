@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get table states — getTableState • nosoi</title>
+<title>Extracts <code>table.state</code> from a <code>nosoiSim</code> object — getTableState • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,9 @@
 
 
 
-<meta property="og:title" content="Get table states — getTableState" />
+<meta property="og:title" content="Extracts <code>table.state</code> from a <code>nosoiSim</code> object — getTableState" />
 
-<meta property="og:description" content="Get &quot;table.state&quot;
-TODO: describe the table" />
+<meta property="og:description" content="This function extracts the table.state for the request host-type from a nosoiSim object. table.state is present only if there is any structure (discrete or continuous) used." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -210,36 +209,44 @@ TODO: describe the table" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get table states</h1>
+    <h1>Extracts <code>table.state</code> from a <code>nosoiSim</code> object</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_utilityFunctions.R'><code>R/output_utilityFunctions.R</code></a></small>
     <div class="hidden name"><code>getTableState.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Get "table.state"
-TODO: describe the table</p>
+    <p>This function extracts the <code>table.state</code> for the request host-type from a <code><a href='nosoiSim.html'>nosoiSim</a></code> object. <code>table.state</code> is present only if there is any structure (discrete or continuous) used.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>getTableState</span>(<span class='no'>res</span>, <span class='kw'>pop</span> <span class='kw'>=</span> <span class='st'>"A"</span>)</pre>
+    <pre class="usage"><span class='fu'>getTableState</span>(<span class='no'>nosoi.output</span>, <span class='kw'>pop</span> <span class='kw'>=</span> <span class='st'>"A"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>res</th>
-      <td><p>an object of class <code>nosoiSim</code></p></td>
+      <th>nosoi.output</th>
+      <td><p>an object of class <code><a href='nosoiSim.html'>nosoiSim</a></code></p></td>
     </tr>
     <tr>
       <th>pop</th>
-      <td><p>the population to be extracted (one of "A" or "B")</p></td>
+      <td><p>the host-type to be extracted (either "A" or "B", if not dual-host, then "A")</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data.table with state table informations</p>
+    <p>Returns a <code><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table</a></code> with the requested data. The <code>table.state</code> (class <code><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table</a></code>) contains informations the location of each host during time (one row is one host at one location).
+The structure of the table is the following:</p><dl class='dl-horizontal'>
+   <dt>hosts.ID</dt><dd><p>Unique identifier for the host, based on user-defined prefix and an integer.</p></dd>
+   <dt>state</dt><dd><p>State or coordinates (in that case state.x and state.y) in which the host is during that time interval.</p></dd>
+   <dt>current.env.value</dt><dd><p>(only if continuous structure is present) Environmental value (raster cell value) in which the host is at the end of the simulation.</p></dd>
+   <dt>current.cell.raster</dt><dd><p>(only if continuous structure is present) Raster cell numeric ID in which the host is at the end of the simulation.</p></dd>
+   <dt>time.from</dt><dd><p>Time-step at which the host moved to the location.</p></dd>
+   <dt>time.to</dt><dd><p>Time-step at which the host exited the location (either by exiting the simulation or moving somewhere else).</p></dd>
+   </dl>
+
     
 
   </div>

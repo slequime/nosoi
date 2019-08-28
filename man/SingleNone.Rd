@@ -69,7 +69,7 @@ proba <- function(t,p_max,t_incub){
  return(p)
 }
 
-time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+time_contact <- function(t){round(rnorm(1, 3, 1), 0)}
 
 test.nosoiA <- nosoiSim(type="single", popStructure="none",
                         length=40,

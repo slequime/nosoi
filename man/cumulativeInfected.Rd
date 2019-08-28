@@ -2,7 +2,7 @@
 % Please edit documentation in R/output_nosoiSummary.R
 \name{cumulativeInfected}
 \alias{cumulativeInfected}
-\title{Cumulative number of infected units at time t}
+\title{Cumulative number of infected hosts at time t}
 \usage{
 cumulativeInfected(table.nosoi, t)
 }
@@ -20,3 +20,4 @@ For a given time t, this function returns the cumulative number of infected unit
 \seealso{
 \code{\link{nosoiSim}}
 }
+\keyword{internal}

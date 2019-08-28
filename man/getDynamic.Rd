@@ -2,16 +2,22 @@
 % Please edit documentation in R/output_nosoiSummary.R
 \name{getDynamic}
 \alias{getDynamic}
-\title{Dynamic number of infected units at time t during the full length of the simulation}
+\title{Gets the current number of infected hosts for the full length of the simulation}
 \usage{
-getDynamic(table.nosoi)
+getDynamic(nosoi.output)
 }
 \arguments{
-\item{table.nosoi}{result of function \code{\link{nosoiSim}}}
+\item{nosoi.output}{Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).}
+}
+\value{
+The output is a \code{\link[data.table:data.table-package]{data.table}} with the following structure:
+\describe{
+   \item{state}{(only when discrete structure) Given state}
+   \item{Count}{Current number of infected hosts at given time-step.}
+   \item{type}{Host-type, identified by its user-defined prefix.}
+   \item{t}{Time-step (integer).}
+   }
 }
 \description{
-Number of infected units at time t for the full length of the simulation
-}
-\seealso{
-\code{\link{nosoiSim}}
+This function computes from the output of a \code{nosoiSim} simulation the dynamic count of infected hosts at each time step (and each state if discrete structure) of the simulation. The output is a \code{\link[data.table:data.table-package]{data.table}}.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/output_nosoiSummary.R
 \name{numberInfectedBGW}
 \alias{numberInfectedBGW}
-\title{Number of Infected units at time t (BGW)}
+\title{Number of infected hosts at time t (BGW)}
 \usage{
 numberInfectedBGW(table.nosoi, t)
 }

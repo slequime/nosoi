@@ -184,8 +184,8 @@ test_that("Diffusion in continuous space", {
                           pExit=p_Exit_fct,
                           param.pExit=NA)
 
-  expect_equal(nrow(getHostInfo(test.nosoiA, "table.hosts")),648)
-  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
+  expect_equal(nrow(getHostData(test.nosoiA, "table.hosts")),648)
+  expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
 
 })
 
@@ -236,8 +236,8 @@ test_that("Epidemic dying out", {
                           pExit=p_Exit_fct,
                           param.pExit=NA)
 
-  expect_equal(nrow(getHostInfo(test.nosoiA, "table.hosts")),3)
-  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
+  expect_equal(nrow(getHostData(test.nosoiA, "table.hosts")),3)
+  expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
 
 })
 
@@ -306,6 +306,6 @@ test_that("Diffusion in continuous space with host count", {
                           pExit=p_Exit_fct,
                           param.pExit=NA)
 
-  expect_equal(nrow(getHostInfo(test.nosoiA, "table.hosts")),115)
-  expect_equal(nrow(subset(getHostInfo(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
+  expect_equal(nrow(getHostData(test.nosoiA, "table.hosts")),115)
+  expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
 })

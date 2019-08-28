@@ -2,19 +2,32 @@
 % Please edit documentation in R/output_utilityFunctions.R
 \name{getTableHosts}
 \alias{getTableHosts}
-\title{Get table hosts}
+\title{Extracts \code{table.hosts} from a \code{nosoiSim} object}
 \usage{
-getTableHosts(res, pop = "A")
+getTableHosts(nosoi.output, pop = "A")
 }
 \arguments{
-\item{res}{an object of class \code{nosoiSim}}
+\item{nosoi.output}{an object of class \code{\link{nosoiSim}}}
 
-\item{pop}{the population to be extracted (one of "A" or "B")}
+\item{pop}{the host-type to be extracted (either "A" or "B", if not dual-host, then "A")}
 }
 \value{
-a data.table with hosts table informations
+Returns a \code{\link[data.table:data.table-package]{data.table}} with the requested data. The \code{table.hosts} (class \code{\link[data.table:data.table-package]{data.table}}) contains informations about each host that has been simulated (one row is one host).
+The structure of the table is the following:
+\describe{
+   \item{hosts.ID}{Unique identifier for the host, based on user-defined prefix and an integer.}
+   \item{inf.by}{Unique identifier for the host that infected the current one.}
+   \item{inf.in}{(only if structure is present) State or coordinates (in that case inf.in.x and inf.in.y) in which the host was infected.}
+   \item{current.in}{(only if structure is present) State or coordinates (in that case current.in.x and current.in.y) in which the host is at the end of the simulation.}
+   \item{current.env.value}{(only if continuous structure is present) Environmental value (raster cell value) in which the host is at the end of the simulation.}
+   \item{current.cell.raster}{(only if continuous structure is present) Raster cell numeric ID in which the host is at the end of the simulation.}
+   \item{host.count}{(only if structure is present) Host count in the current state or raster cell (beware, updated only if used).}
+   \item{inf.time}{When did the host enter the simulation (infection time).}
+   \item{out.time}{When did the host exit the simulation (NA if still active).}
+   \item{active}{Is the host still active at the end of the simulation (1 for YES, 0 for NO)?}
+   \item{parameters}{The remaining columns are the sampled values for the individual-based parameters (if any) specified by the user.}
+   }
 }
 \description{
-Get "table.hosts"
-TODO: describe the table
+This function extracts the \code{table.hosts} for the request host-type from a \code{\link{nosoiSim}} object.
 }

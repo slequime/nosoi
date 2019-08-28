@@ -123,7 +123,7 @@ getTransmissionTree <- function(nosoiInf, pop = "A") {
 
   }
   # Remove NAs
-  popStructure <- getHostInfo(nosoiInf, "popStructure", pop = pop)
+  popStructure <- getHostData(nosoiInf, "popStructure", pop = pop)
   switch(popStructure,
          discrete = treeTable$state.x <- treeTable$state.y <- NULL,
          continuous = treeTable$state <- NULL)
