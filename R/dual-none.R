@@ -1,38 +1,107 @@
-#' Dual-host without structured host population
+#' @title Dual-host pathogen in homogeneous hosts populations
 #'
-#' @description This function runs a dual-host transmission chain simulation, without any spatial features. The simulation stops either at
-#' the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.
+#' @description This function, that can be wrapped within \code{\link{nosoiSim}}, runs a dual-host transmission chain simulation, without any structure features in both hosts populations. The simulation stops either at
+#' the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
+#'
+#' @details The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host type A or B.
+#' @details The \code{pExit} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
+#' @details The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
+#' @details The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
+#' @details The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE), \code{parameters} specified in the list.
 #'
 #' @param length.sim specifies the length (in unit of time) over which the simulation should be run.
-#' @param max.infected.A specifies the maximum number of hosts A that can be infected in the simulation.
-#' @param max.infected.B specifies the maximum number of hosts B that can be infected in the simulation.
+#' @param max.infected.A specifies the maximum number of individual hosts A that can be infected in the simulation.
+#' @param max.infected.B specifies the maximum number of individual hosts B that can be infected in the simulation.
 #' @param init.individuals.A number of initially infected individuals (hosts A).
 #' @param init.individuals.B number of initially infected individuals (hosts B).
-
 #' @param pExit.A function that gives the probability to exit the simulation for an infected host A (either moving out, dying, etc.).
-#' @param param.pExit.A parameter names (list of functions) for the pExit for host A.
-#' @param timeDep.pExit.A is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.
-#' @param nContact.A function that gives the number of potential transmission events per unit of time  for host A.
-#' @param param.nContact.A parameter names (list of functions) for param.nContact  for host A.
-#' @param timeDep.nContact.A is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.
-#' @param pTrans.A function that gives the probability of transmit a pathogen as a function of time since infection  for host A.
+#' @param param.pExit.A parameter names (list of functions) for the pExit for host-type A.
+#' @param timeDep.pExit.A is pExit of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param nContact.A function that gives the number of potential transmission events per unit of time  for host-type A.
+#' @param param.nContact.A parameter names (list of functions) for param.nContact for host-type A.
+#' @param timeDep.nContact.A is nContact of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param pTrans.A function that gives the probability of transmit a pathogen as a function of time since infection for host A.
 #' @param param.pTrans.A parameter names (list of functions) for the pExit  for host A.
-#' @param timeDep.pTrans.A is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.
+#' @param timeDep.pTrans.A is pTrans of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?
 #' @param prefix.host.A character(s) to be used as a prefix for the host A identification number.
-#'
 #' @param pExit.B function that gives the probability to exit the simulation for an infected host B (either moving out, dying, etc.).
-#' @param param.pExit.B parameter names (list of functions) for the pExit for host B.
-#' @param timeDep.pExit.B is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.
-#' @param nContact.B function that gives the number of potential transmission events per unit of time  for host B.
-#' @param param.nContact.B parameter names (list of functions) for param.nContact  for host B.
-#' @param timeDep.nContact.B is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.
-#' @param pTrans.B function that gives the probability of transmit a pathogen as a function of time since infection  for host B.
-#' @param param.pTrans.B parameter names (list of functions) for the pExit  for host B.
-#' @param timeDep.pTrans.B is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.
+#' @param param.pExit.B parameter names (list of functions) for the pExit for host-type B.
+#' @param timeDep.pExit.B is pExit of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param nContact.B function that gives the number of potential transmission events per unit of time for host B.
+#' @param param.nContact.B parameter names (list of functions) for param.nContact for host-type B.
+#' @param timeDep.nContact.B is nContact of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param pTrans.B function that gives the probability of transmit a pathogen as a function of time since infection for host B.
+#' @param param.pTrans.B parameter names (list of functions) for the pExit for host-type B.
+#' @param timeDep.pTrans.B is pTrans of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?
 #' @param prefix.host.B character(s) to be used as a prefix for the host B identification number.
-#'
 #' @param print.progress if TRUE, displays a progress bar (current time/length.sim).
 #' @param print.step print.progress is TRUE, step with which the progress message will be printed.
+#'
+#' @return An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
+#'
+#' @seealso For simulations with a discrete structered host population, see \code{\link{dualDiscrete}}. For simulations with a structured population in continuous space, \code{\link{dualContinuous}}
+#'
+#' @examples
+#' \dontrun{
+#'  #Host A
+#' t_infectA_fct <- function(x){rnorm(x,mean = 12,sd=3)}
+#' pTrans_hostA <- function(t,t_infectA){
+#'   if(t/t_infectA <= 1){p=sin(pi*t/t_infectA)}
+#'   if(t/t_infectA > 1){p=0}
+#'   return(p)
+#' }
+#'
+#' p_Exit_fctA  <- function(t,t_infectA){
+#'   if(t/t_infectA <= 1){p=0}
+#'   if(t/t_infectA > 1){p=1}
+#'   return(p)
+#' }
+#'
+#' time_contact_A = function(t){sample(c(0,1,2),1,prob=c(0.2,0.4,0.4))}
+#'
+#' #Host B
+#' t_incub_fct_B <- function(x){rnorm(x,mean = 5,sd=1)}
+#' p_max_fct_B <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+#'
+#' p_Exit_fct_B  <- function(t,prestime){(sin(prestime/12)+1)/5}
+#'
+#' pTrans_hostB <- function(t,p_max,t_incub){
+#'   if(t <= t_incub){p=0}
+#'   if(t >= t_incub){p=p_max}
+#'   return(p)
+#' }
+#'
+#' time_contact_B = function(t){round(rnorm(1, 3, 1), 0)}
+#'
+#' set.seed(90)
+#' test.nosoiA <- nosoiSim(type="dual", popStructure="none",
+#'                         length.sim=40,
+#'                         max.infected.A=100,
+#'                         max.infected.B=200,
+#'                         init.individuals.A=1,
+#'                         init.individuals.B=0,
+#'                         pExit.A = p_Exit_fctA,
+#'                         param.pExit.A = list(t_infectA = t_infectA_fct),
+#'                         timeDep.pExit.A=FALSE,
+#'                         nContact.A = time_contact_A,
+#'                         param.nContact.A = NA,
+#'                         timeDep.nContact.A=FALSE,
+#'                         pTrans.A = pTrans_hostA,
+#'                         param.pTrans.A = list(t_infectA=t_infectA_fct),
+#'                                               timeDep.pTrans.A=FALSE,
+#'                         prefix.host.A="H",
+#'                         pExit.B = p_Exit_fct_B,
+#'                         param.pExit.B = NA,
+#'                         timeDep.pExit.B=TRUE,
+#'                         nContact.B = time_contact_B,
+#'                         param.nContact.B = NA,
+#'                         timeDep.nContact.B=FALSE,
+#'                         pTrans.B = pTrans_hostB,
+#'                         param.pTrans.B = list(p_max=p_max_fct_B,
+#'                                              t_incub=t_incub_fct_B),
+#'                         timeDep.pTrans.B=FALSE,
+#'                         prefix.host.B="V")
+#' }
 #'
 #' @export dualNone
 

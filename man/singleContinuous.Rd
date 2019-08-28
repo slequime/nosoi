@@ -23,11 +23,11 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{init.individuals}{number of initially infected individuals.}
 
-\item{init.structure}{which location the initially infected individuals are located. A vector of coordinates in the same coordinate space as the raster.}
+\item{init.structure}{in which location the initially infected individuals are located. A vector of coordinates in the same coordinate space as the raster.}
 
 \item{structure.raster}{raster object defining the environmental variable.}
 
-\item{diff.pExit}{does pExit different between states of the structured population (TRUE/FALSE).}
+\item{diff.pExit}{does pExit depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
 \item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation? (TRUE/FALSE)}
 
@@ -47,7 +47,7 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{param.pMove}{parameter names (list of functions) for the pMove.}
 
-\item{diff.sdMove}{does sdMove depend on the environmental value (TRUE/FALSE).}
+\item{diff.sdMove}{does sdMove depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
 \item{timeDep.sdMove}{does sdMove depend on the absolute time of the simulation (TRUE/FALSE).}
 
@@ -59,7 +59,7 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{attracted.by.raster}{should the hosts be attracted by higher values in the environmental raster? (TRUE/FALSE).}
 
-\item{diff.nContact}{does nContact different between states of the structured population (TRUE/FALSE).}
+\item{diff.nContact}{does nContact depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
 \item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation? (TRUE/FALSE)}
 
@@ -69,7 +69,7 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{param.nContact}{parameter names (list of functions) for param.nContact.}
 
-\item{diff.pTrans}{does pTrans different between states of the structured population (TRUE/FALSE).}
+\item{diff.pTrans}{does pTrans depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
 \item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation? (TRUE/FALSE)}
 
@@ -91,7 +91,7 @@ An object of class \code{\link{nosoiSim}}, containing all results of the simulat
 \description{
 This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features) in a continuous space.
 The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable.
+is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.
 }
 \details{
 The structure raster provided provided should of class \code{raster}. High values of the environemental variable can attract hosts if \code{attracted.by.raster} is TRUE.
@@ -102,7 +102,7 @@ The \code{param} arguments should be a list of functions or NA. Each item name i
 
 The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
 
-The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.env.value} (for "currently in"). Your function should in that case give a result for every possible discrete state.
+The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.env.value} (for "current environmental value").
 
 The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count}.
 

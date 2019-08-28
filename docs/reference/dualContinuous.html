@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dual-host with structured (discrete) host population — dualContinuous • nosoi</title>
+<title>Dual-host pathogen in structured (continuous) hosts populations — dualContinuous • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,11 @@
 
 
 
-<meta property="og:title" content="Dual-host with structured (discrete) host population — dualContinuous" />
+<meta property="og:title" content="Dual-host pathogen in structured (continuous) hosts populations — dualContinuous" />
 
-<meta property="og:description" content="This function runs a dual-host transmission chain simulation, with discrete structure features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed." />
+<meta property="og:description" content="This function runs a dual-host transmission chain simulation, with structured hosts populations (such as spatial features) in a shared continuous space.
+The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
+is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -210,15 +211,16 @@ the end of given time (specified by length.sim) or when the number of hosts infe
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Dual-host with structured (discrete) host population</h1>
+    <h1>Dual-host pathogen in structured (continuous) hosts populations</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/dual-continuous.R'><code>R/dual-continuous.R</code></a></small>
     <div class="hidden name"><code>dualContinuous.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function runs a dual-host transmission chain simulation, with discrete structure features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.</p>
+    <p>This function runs a dual-host transmission chain simulation, with structured hosts populations (such as spatial features) in a shared continuous space.
+The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
+is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.</p>
     
     </div>
 
@@ -256,11 +258,11 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     </tr>
     <tr>
       <th>max.infected.A</th>
-      <td><p>specifies the maximum number of hosts A that can be infected in the simulation.</p></td>
+      <td><p>specifies the maximum number of individual hosts A that can be infected in the simulation.</p></td>
     </tr>
     <tr>
       <th>max.infected.B</th>
-      <td><p>specifies the maximum number of hosts B that can be infected in the simulation.</p></td>
+      <td><p>specifies the maximum number of individual hosts B that can be infected in the simulation.</p></td>
     </tr>
     <tr>
       <th>init.individuals.A</th>
@@ -272,15 +274,15 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     </tr>
     <tr>
       <th>init.structure.A</th>
-      <td><p>which state (e.g. location) the initially infected individuals of host A are located. (NA if init.individual.A is 0)</p></td>
+      <td><p>in which location the initially infected host-A individuals are located. A vector of coordinates in the same coordinate space as the raster (NA if init.individual.A is 0).</p></td>
     </tr>
     <tr>
       <th>init.structure.B</th>
-      <td><p>which state (e.g. location) the initially infected individuals of host B are located. (NA if init.individual.B is 0)</p></td>
+      <td><p>in which location the initially infected host-B individuals are located. A vector of coordinates in the same coordinate space as the raster (NA if init.individual.B is 0).</p></td>
     </tr>
     <tr>
       <th>structure.raster.A</th>
-      <td><p>raster object defining the environmental variable for host A.</p></td>
+      <td><p>raster object defining the environmental variable for host-type A.</p></td>
     </tr>
     <tr>
       <th>structure.raster.B</th>
@@ -292,87 +294,87 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     </tr>
     <tr>
       <th>param.pExit.A</th>
-      <td><p>parameter names (list of functions) for the pExit for host A.</p></td>
+      <td><p>parameter names (list of functions) for the pExit for host-type A.</p></td>
     </tr>
     <tr>
       <th>timeDep.pExit.A</th>
-      <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
+      <td><p>is pExit of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pExit.A</th>
-      <td><p>is pExit different between states of the structured population (TRUE/FALSE) for host A.</p></td>
+      <td><p>does pExit of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>hostCount.pExit.A</th>
-      <td><p>does pExit varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pExit.A should be TRUE.</p></td>
+      <td><p>does pExit of host-type A vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit.A should be TRUE.</p></td>
     </tr>
     <tr>
       <th>pMove.A</th>
-      <td><p>function that gives the probability of a host moving as a function of time for host A.</p></td>
+      <td><p>function that gives the probability of a host moving as a function of time for host-type A.</p></td>
     </tr>
     <tr>
       <th>param.pMove.A</th>
-      <td><p>parameter names (list of functions) for the pMove for host A.</p></td>
+      <td><p>parameter names (list of functions) for the pMove for host-type A.</p></td>
     </tr>
     <tr>
       <th>timeDep.pMove.A</th>
-      <td><p>is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.</p></td>
+      <td><p>is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host-type A.</p></td>
     </tr>
     <tr>
       <th>diff.pMove.A</th>
-      <td><p>is pMove different between states of the structured population (TRUE/FALSE) for host A.</p></td>
+      <td><p>does pMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).A.</p></td>
     </tr>
     <tr>
       <th>hostCount.pMove.A</th>
-      <td><p>does pMove varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pMove.A should be TRUE.</p></td>
+      <td><p>does pMove of host-type A vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove.A should be TRUE.</p></td>
     </tr>
     <tr>
       <th>sdMove.A</th>
-      <td><p>function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion for host A.</p></td>
+      <td><p>function that gives the distance travelled for host-type A (based on coordinates); output is the standard deviation value for the Brownian motion.</p></td>
     </tr>
     <tr>
       <th>param.sdMove.A</th>
-      <td><p>parameter names (list of functions) for sdMove for host A</p></td>
+      <td><p>parameter names (list of functions) for sdMove for host-type A.</p></td>
     </tr>
     <tr>
       <th>diff.sdMove.A</th>
-      <td><p>is sdMove dependant on the environmental value (TRUE/FALSE) for host A.</p></td>
+      <td><p>does sdMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>timeDep.sdMove.A</th>
-      <td><p>is sdMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.</p></td>
+      <td><p>is sdMove of host-type A dependant on the absolute time of the simulation (TRUE/FALSE) .</p></td>
     </tr>
     <tr>
       <th>hostCount.sdMove.A</th>
-      <td><p>does sdMove varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pMove.A should be TRUE.</p></td>
+      <td><p>does sdMove varies with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); diff.sdMove.A should be TRUE.</p></td>
     </tr>
     <tr>
       <th>attracted.by.raster.A</th>
-      <td><p>should the hosts A be attracted by high values in the environmental raster? (TRUE/FALSE)</p></td>
+      <td><p>should the host-type A be attracted by higher values in the environmental raster? (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>nContact.A</th>
-      <td><p>function that gives the number of potential transmission events per unit of time  for host A.</p></td>
+      <td><p>function that gives the number of potential transmission events per unit of time  for host-type A.</p></td>
     </tr>
     <tr>
       <th>param.nContact.A</th>
-      <td><p>parameter names (list of functions) for param.nContact  for host A.</p></td>
+      <td><p>parameter names (list of functions) for param.nContact for host-type A.</p></td>
     </tr>
     <tr>
       <th>timeDep.nContact.A</th>
-      <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
+      <td><p>is nContact of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.nContact.A</th>
-      <td><p>is nContact different between states of the structured population (TRUE/FALSE) for host A.</p></td>
+      <td><p>does nContact of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>hostCount.nContact.A</th>
-      <td><p>does nContact varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.nContact.A should be TRUE.</p></td>
+      <td><p>does nContact vary with the host count (of either host-type A or B) in each raster cell?? (TRUE/FALSE); diff.nContact.A should be TRUE.</p></td>
     </tr>
     <tr>
       <th>pTrans.A</th>
-      <td><p>function that gives the probability of transmit a pathogen as a function of time since infection  for host A.</p></td>
+      <td><p>function that gives the probability of transmit a pathogen as a function of time since infection for host A.</p></td>
     </tr>
     <tr>
       <th>param.pTrans.A</th>
@@ -380,15 +382,15 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     </tr>
     <tr>
       <th>timeDep.pTrans.A</th>
-      <td><p>is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.</p></td>
+      <td><p>is pTrans of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pTrans.A</th>
-      <td><p>is pTrans different between states of the structured population (TRUE/FALSE) for host A.</p></td>
+      <td><p>does pTrans of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>hostCount.pTrans.A</th>
-      <td><p>does pTrans varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pTrans.A should be TRUE.</p></td>
+      <td><p>does pTrans vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); diff.pTrans.A should be TRUE.</p></td>
     </tr>
     <tr>
       <th>prefix.host.A</th>
@@ -400,103 +402,103 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     </tr>
     <tr>
       <th>param.pExit.B</th>
-      <td><p>parameter names (list of functions) for the pExit for host B.</p></td>
+      <td><p>parameter names (list of functions) for the pExit for host-type B.</p></td>
     </tr>
     <tr>
       <th>timeDep.pExit.B</th>
-      <td><p>is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
+      <td><p>is pExit of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pExit.B</th>
-      <td><p>is pExit different between states of the structured population (TRUE/FALSE) for host B.</p></td>
+      <td><p>does pExit of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>hostCount.pExit.B</th>
-      <td><p>does pExit varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pExit.B should be TRUE.</p></td>
+      <td><p>does pExit of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit.B should be TRUE.</p></td>
     </tr>
     <tr>
       <th>pMove.B</th>
-      <td><p>function that gives the probability of a host moving as a function of time for host B.</p></td>
+      <td><p>function that gives the probability of a host moving as a function of time for host-type B.</p></td>
     </tr>
     <tr>
       <th>param.pMove.B</th>
-      <td><p>parameter names (list of functions) for the pMove for host B.</p></td>
+      <td><p>parameter names (list of functions) for the pMove for host-type B.</p></td>
     </tr>
     <tr>
       <th>timeDep.pMove.B</th>
-      <td><p>is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host B.</p></td>
+      <td><p>is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host-type B.</p></td>
     </tr>
     <tr>
       <th>diff.pMove.B</th>
-      <td><p>is pMove different between states of the structured population (TRUE/FALSE) for host B.</p></td>
+      <td><p>does pMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>hostCount.pMove.B</th>
-      <td><p>does pMove varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pMove.B should be TRUE.</p></td>
+      <td><p>does pMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove.B should be TRUE.</p></td>
     </tr>
     <tr>
       <th>sdMove.B</th>
-      <td><p>function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion for host A.</p></td>
+      <td><p>function that gives the distance travelled for host-type B (based on coordinates); output is the standard deviation value for the Brownian motion.</p></td>
     </tr>
     <tr>
       <th>param.sdMove.B</th>
-      <td><p>parameter names (list of functions) for sdMove for host A</p></td>
+      <td><p>parameter names (list of functions) for sdMove for host-type B.</p></td>
     </tr>
     <tr>
       <th>diff.sdMove.B</th>
-      <td><p>is sdMove dependant on the environmental value (TRUE/FALSE) for host A.</p></td>
+      <td><p>does sdMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>timeDep.sdMove.B</th>
-      <td><p>is sdMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.</p></td>
+      <td><p>is sdMove of host-type B dependant on the absolute time of the simulation (TRUE/FALSE) for host-type B.</p></td>
     </tr>
     <tr>
       <th>hostCount.sdMove.B</th>
-      <td><p>does sdMove varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pMove.B should be TRUE.</p></td>
+      <td><p>does sdMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove.B should be TRUE.</p></td>
     </tr>
     <tr>
       <th>attracted.by.raster.B</th>
-      <td><p>should the hosts A be attracted by high values in the environmental raster? (TRUE/FALSE)</p></td>
+      <td><p>should the host-type B be attracted by higher values in the environmental raster? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>nContact.B</th>
-      <td><p>function that gives the number of potential transmission events per unit of time  for host B.</p></td>
+      <td><p>function that gives the number of potential transmission events per unit of time for host B.</p></td>
     </tr>
     <tr>
       <th>param.nContact.B</th>
-      <td><p>parameter names (list of functions) for param.nContact  for host B.</p></td>
+      <td><p>parameter names (list of functions) for param.nContact for host-type B.</p></td>
     </tr>
     <tr>
       <th>timeDep.nContact.B</th>
-      <td><p>is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
+      <td><p>is nContact of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.nContact.B</th>
-      <td><p>is nContact different between states of the structured population (TRUE/FALSE) for host B.</p></td>
+      <td><p>does nContact of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>hostCount.nContact.B</th>
-      <td><p>does nContact varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.nContact.B should be TRUE.</p></td>
+      <td><p>does nContact of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.nContact.B should be TRUE.</p></td>
     </tr>
     <tr>
       <th>pTrans.B</th>
-      <td><p>function that gives the probability of transmit a pathogen as a function of time since infection  for host B.</p></td>
+      <td><p>function that gives the probability of transmit a pathogen as a function of time since infection for host B.</p></td>
     </tr>
     <tr>
       <th>param.pTrans.B</th>
-      <td><p>parameter names (list of functions) for the pExit  for host B.</p></td>
+      <td><p>parameter names (list of functions) for the pExit for host-type B.</p></td>
     </tr>
     <tr>
       <th>timeDep.pTrans.B</th>
-      <td><p>is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.</p></td>
+      <td><p>is pTrans of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pTrans.B</th>
-      <td><p>is pTrans different between states of the structured population (TRUE/FALSE) for host B.</p></td>
+      <td><p>does pTrans of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>hostCount.pTrans.B</th>
-      <td><p>does pTrans varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pTrans.B should be TRUE.</p></td>
+      <td><p>does pTrans of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pTrans.B should be TRUE.</p></td>
     </tr>
     <tr>
       <th>prefix.host.B</th>
@@ -512,13 +514,128 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>An object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>, containing all results of the simulation.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The suffix <code>.A</code> or <code>.B</code> specifies if the considered function or parameter concerns host-type A or B.</p>
+<p>The structure raster(s) provided provided should of class <code>raster</code>. High values of the environemental variable can attract hosts if <code>attracted.by.raster</code> is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).</p>
+<p>The <code>pExit</code>, <code>pMove</code> and <code>pTrans</code> function should return a single probability (a number between 0 and 1), <code>sdMove</code> a real number (keep in mind this number is related to your coordinate space), and <code>nContact</code> a positive natural number (positive integer) or 0.</p>
+<p>The <code>param</code> arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.</p>
+<p>The use of <code>timeDep</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>prestime</code> (for "present time").</p>
+<p>The use of <code>diff</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>current.env.value</code> (for "current environmental value").</p>
+<p>The use of <code>hostCount</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>host.count.A</code> or <code>host.count.B</code>.</p>
+<p>The user specified function's arguments should follow this order: <code>t</code> (mandatory), <code>prestime</code> (optional, only if timeDep is TRUE),
+<code>current.env.value</code> (optional, only if diff is TRUE), <code>host.count.A</code> or <code>host.count.B</code> (optional, only if hostCount is TRUE) and <code>parameters</code> specified in the list.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>For simulations with a discrete structure, see <code><a href='dualDiscrete.html'>dualDiscrete</a></code>. For simulations without any structures, see <code><a href='dualNone.html'>dualNone</a></code>.</p></div>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>raster</span>)
+
+<span class='co'>#Generating a raster the for movement</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>860</span>)
+
+<span class='no'>test.raster</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/raster/topics/raster'>raster</a></span>(<span class='kw'>nrows</span><span class='kw'>=</span><span class='fl'>100</span>, <span class='kw'>ncols</span><span class='kw'>=</span><span class='fl'>100</span>, <span class='kw'>xmn</span><span class='kw'>=</span>-<span class='fl'>50</span>, <span class='kw'>xmx</span><span class='kw'>=</span><span class='fl'>50</span>, <span class='kw'>ymn</span><span class='kw'>=</span>-<span class='fl'>50</span>,<span class='kw'>ymx</span><span class='kw'>=</span><span class='fl'>50</span>)
+<span class='no'>test.raster</span>[] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>10000</span>, -<span class='fl'>80</span>, <span class='fl'>180</span>)
+<span class='no'>test.raster</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/raster/topics/focal'>focal</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/raster/topics/focal'>focal</a></span>(<span class='no'>test.raster</span>, <span class='kw'>w</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>5</span>), <span class='no'>mean</span>), <span class='kw'>w</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>5</span>), <span class='no'>mean</span>)
+
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>igraph</span>)
+<span class='no'>t_incub_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='no'>x</span>,<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>1</span>)}
+<span class='no'>p_max_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Beta'>rbeta</a></span>(<span class='no'>x</span>,<span class='kw'>shape1</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>shape2</span><span class='kw'>=</span><span class='fl'>2</span>)}
+<span class='no'>p_Move_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='fl'>0.1</span>)}
+
+<span class='no'>sdMove_fct</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>t</span>,<span class='no'>current.env.value</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='fl'>100</span>/(<span class='no'>current.env.value</span>+<span class='fl'>1</span>))}
+
+<span class='no'>p_Exit_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='fl'>0.08</span>)}
+
+<span class='no'>proba</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>,<span class='no'>p_max</span>,<span class='no'>t_incub</span>){
+ <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&lt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='fl'>0</span>}
+ <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&gt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='no'>p_max</span>}
+ <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='no'>p</span>)
+}
+
+<span class='no'>time_contact</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)}
+
+<span class='no'>start.pos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>0</span>)
+
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>805</span>)
+<span class='no'>test.nosoiA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"dual"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"continuous"</span>,
+                       <span class='kw'>length.sim</span><span class='kw'>=</span><span class='fl'>200</span>,
+                       <span class='kw'>max.infected.A</span><span class='kw'>=</span><span class='fl'>500</span>,
+                       <span class='kw'>max.infected.B</span><span class='kw'>=</span><span class='fl'>500</span>,
+                       <span class='kw'>init.individuals.A</span><span class='kw'>=</span><span class='fl'>1</span>,
+                       <span class='kw'>init.individuals.B</span><span class='kw'>=</span><span class='fl'>0</span>,
+                       <span class='kw'>init.structure.A</span><span class='kw'>=</span><span class='no'>start.pos</span>,
+                       <span class='kw'>init.structure.B</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>structure.raster.A</span><span class='kw'>=</span><span class='no'>test.raster</span>,
+                       <span class='kw'>structure.raster.B</span><span class='kw'>=</span><span class='no'>test.raster</span>,
+                       <span class='kw'>pExit.A</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
+                       <span class='kw'>param.pExit.A</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>timeDep.pExit.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>diff.pExit.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>pMove.A</span><span class='kw'>=</span><span class='no'>p_Move_fct</span>,
+                       <span class='kw'>param.pMove.A</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>timeDep.pMove.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>diff.pMove.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>diff.sdMove.A</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
+                       <span class='kw'>sdMove.A</span><span class='kw'>=</span><span class='no'>sdMove_fct</span>,
+                       <span class='kw'>param.sdMove.A</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>attracted.by.raster.A</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
+                       <span class='kw'>nContact.A</span><span class='kw'>=</span><span class='no'>time_contact</span>,
+                       <span class='kw'>param.nContact.A</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>timeDep.nContact.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>diff.nContact.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>pTrans.A</span><span class='kw'>=</span><span class='no'>proba</span>,
+                       <span class='kw'>param.pTrans.A</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
+                                           <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
+                       <span class='kw'>timeDep.pTrans.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>diff.pTrans.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>prefix.host.A</span><span class='kw'>=</span><span class='st'>"H"</span>,
+                       <span class='kw'>pExit.B</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
+                       <span class='kw'>param.pExit.B</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>timeDep.pExit.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>diff.pExit.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>pMove.B</span><span class='kw'>=</span><span class='no'>p_Move_fct</span>,
+                       <span class='kw'>param.pMove.B</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>timeDep.pMove.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>diff.pMove.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>diff.sdMove.B</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
+                       <span class='kw'>sdMove.B</span><span class='kw'>=</span><span class='no'>sdMove_fct</span>,
+                       <span class='kw'>param.sdMove.B</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>attracted.by.raster.B</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
+                       <span class='kw'>nContact.B</span><span class='kw'>=</span><span class='no'>time_contact</span>,
+                       <span class='kw'>param.nContact.B</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>timeDep.nContact.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>diff.nContact.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>pTrans.B</span><span class='kw'>=</span><span class='no'>proba</span>,
+                       <span class='kw'>param.pTrans.B</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
+                                           <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
+                       <span class='kw'>timeDep.pTrans.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>diff.pTrans.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+                       <span class='kw'>prefix.host.B</span><span class='kw'>=</span><span class='st'>"V"</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

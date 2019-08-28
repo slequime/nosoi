@@ -2,7 +2,7 @@
 % Please edit documentation in R/dual-continuous.R
 \name{dualContinuous}
 \alias{dualContinuous}
-\title{Dual-host with structured (discrete) host population}
+\title{Dual-host pathogen in structured (continuous) hosts populations}
 \usage{
 dualContinuous(length.sim, max.infected.A, max.infected.B,
   init.individuals.A, init.individuals.B, init.structure.A,
@@ -32,127 +32,127 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
 
-\item{max.infected.A}{specifies the maximum number of hosts A that can be infected in the simulation.}
+\item{max.infected.A}{specifies the maximum number of individual hosts A that can be infected in the simulation.}
 
-\item{max.infected.B}{specifies the maximum number of hosts B that can be infected in the simulation.}
+\item{max.infected.B}{specifies the maximum number of individual hosts B that can be infected in the simulation.}
 
 \item{init.individuals.A}{number of initially infected individuals (hosts A).}
 
 \item{init.individuals.B}{number of initially infected individuals (hosts B).}
 
-\item{init.structure.A}{which state (e.g. location) the initially infected individuals of host A are located. (NA if init.individual.A is 0)}
+\item{init.structure.A}{in which location the initially infected host-A individuals are located. A vector of coordinates in the same coordinate space as the raster (NA if init.individual.A is 0).}
 
-\item{init.structure.B}{which state (e.g. location) the initially infected individuals of host B are located. (NA if init.individual.B is 0)}
+\item{init.structure.B}{in which location the initially infected host-B individuals are located. A vector of coordinates in the same coordinate space as the raster (NA if init.individual.B is 0).}
 
-\item{structure.raster.A}{raster object defining the environmental variable for host A.}
+\item{structure.raster.A}{raster object defining the environmental variable for host-type A.}
 
 \item{structure.raster.B}{raster object defining the environmental variable for host B.}
 
 \item{pExit.A}{function that gives the probability to exit the simulation for an infected host A (either moving out, dying, etc.).}
 
-\item{param.pExit.A}{parameter names (list of functions) for the pExit for host A.}
+\item{param.pExit.A}{parameter names (list of functions) for the pExit for host-type A.}
 
-\item{timeDep.pExit.A}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
+\item{timeDep.pExit.A}{is pExit of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.pExit.A}{is pExit different between states of the structured population (TRUE/FALSE) for host A.}
+\item{diff.pExit.A}{does pExit of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{hostCount.pExit.A}{does pExit varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pExit.A should be TRUE.}
+\item{hostCount.pExit.A}{does pExit of host-type A vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit.A should be TRUE.}
 
-\item{pMove.A}{function that gives the probability of a host moving as a function of time for host A.}
+\item{pMove.A}{function that gives the probability of a host moving as a function of time for host-type A.}
 
-\item{param.pMove.A}{parameter names (list of functions) for the pMove for host A.}
+\item{param.pMove.A}{parameter names (list of functions) for the pMove for host-type A.}
 
-\item{timeDep.pMove.A}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.}
+\item{timeDep.pMove.A}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host-type A.}
 
-\item{diff.pMove.A}{is pMove different between states of the structured population (TRUE/FALSE) for host A.}
+\item{diff.pMove.A}{does pMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).A.}
 
-\item{hostCount.pMove.A}{does pMove varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pMove.A should be TRUE.}
+\item{hostCount.pMove.A}{does pMove of host-type A vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove.A should be TRUE.}
 
-\item{sdMove.A}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion for host A.}
+\item{sdMove.A}{function that gives the distance travelled for host-type A (based on coordinates); output is the standard deviation value for the Brownian motion.}
 
-\item{param.sdMove.A}{parameter names (list of functions) for sdMove for host A}
+\item{param.sdMove.A}{parameter names (list of functions) for sdMove for host-type A.}
 
-\item{diff.sdMove.A}{is sdMove dependant on the environmental value (TRUE/FALSE) for host A.}
+\item{diff.sdMove.A}{does sdMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{timeDep.sdMove.A}{is sdMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.}
+\item{timeDep.sdMove.A}{is sdMove of host-type A dependant on the absolute time of the simulation (TRUE/FALSE) .}
 
-\item{hostCount.sdMove.A}{does sdMove varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pMove.A should be TRUE.}
+\item{hostCount.sdMove.A}{does sdMove varies with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); diff.sdMove.A should be TRUE.}
 
-\item{attracted.by.raster.A}{should the hosts A be attracted by high values in the environmental raster? (TRUE/FALSE)}
+\item{attracted.by.raster.A}{should the host-type A be attracted by higher values in the environmental raster? (TRUE/FALSE).}
 
-\item{nContact.A}{function that gives the number of potential transmission events per unit of time  for host A.}
+\item{nContact.A}{function that gives the number of potential transmission events per unit of time  for host-type A.}
 
-\item{param.nContact.A}{parameter names (list of functions) for param.nContact  for host A.}
+\item{param.nContact.A}{parameter names (list of functions) for param.nContact for host-type A.}
 
-\item{timeDep.nContact.A}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
+\item{timeDep.nContact.A}{is nContact of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.nContact.A}{is nContact different between states of the structured population (TRUE/FALSE) for host A.}
+\item{diff.nContact.A}{does nContact of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{hostCount.nContact.A}{does nContact varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.nContact.A should be TRUE.}
+\item{hostCount.nContact.A}{does nContact vary with the host count (of either host-type A or B) in each raster cell?? (TRUE/FALSE); diff.nContact.A should be TRUE.}
 
-\item{pTrans.A}{function that gives the probability of transmit a pathogen as a function of time since infection  for host A.}
+\item{pTrans.A}{function that gives the probability of transmit a pathogen as a function of time since infection for host A.}
 
 \item{param.pTrans.A}{parameter names (list of functions) for the pExit  for host A.}
 
-\item{timeDep.pTrans.A}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
+\item{timeDep.pTrans.A}{is pTrans of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.pTrans.A}{is pTrans different between states of the structured population (TRUE/FALSE) for host A.}
+\item{diff.pTrans.A}{does pTrans of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{hostCount.pTrans.A}{does pTrans varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pTrans.A should be TRUE.}
+\item{hostCount.pTrans.A}{does pTrans vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); diff.pTrans.A should be TRUE.}
 
 \item{prefix.host.A}{character(s) to be used as a prefix for the host A identification number.}
 
 \item{pExit.B}{function that gives the probability to exit the simulation for an infected host B (either moving out, dying, etc.).}
 
-\item{param.pExit.B}{parameter names (list of functions) for the pExit for host B.}
+\item{param.pExit.B}{parameter names (list of functions) for the pExit for host-type B.}
 
-\item{timeDep.pExit.B}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
+\item{timeDep.pExit.B}{is pExit of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.pExit.B}{is pExit different between states of the structured population (TRUE/FALSE) for host B.}
+\item{diff.pExit.B}{does pExit of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{hostCount.pExit.B}{does pExit varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pExit.B should be TRUE.}
+\item{hostCount.pExit.B}{does pExit of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit.B should be TRUE.}
 
-\item{pMove.B}{function that gives the probability of a host moving as a function of time for host B.}
+\item{pMove.B}{function that gives the probability of a host moving as a function of time for host-type B.}
 
-\item{param.pMove.B}{parameter names (list of functions) for the pMove for host B.}
+\item{param.pMove.B}{parameter names (list of functions) for the pMove for host-type B.}
 
-\item{timeDep.pMove.B}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host B.}
+\item{timeDep.pMove.B}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host-type B.}
 
-\item{diff.pMove.B}{is pMove different between states of the structured population (TRUE/FALSE) for host B.}
+\item{diff.pMove.B}{does pMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{hostCount.pMove.B}{does pMove varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pMove.B should be TRUE.}
+\item{hostCount.pMove.B}{does pMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove.B should be TRUE.}
 
-\item{sdMove.B}{function that gives the distance travelled (based on coordinates); gives the sd value for the brownian motion for host A.}
+\item{sdMove.B}{function that gives the distance travelled for host-type B (based on coordinates); output is the standard deviation value for the Brownian motion.}
 
-\item{param.sdMove.B}{parameter names (list of functions) for sdMove for host A}
+\item{param.sdMove.B}{parameter names (list of functions) for sdMove for host-type B.}
 
-\item{diff.sdMove.B}{is sdMove dependant on the environmental value (TRUE/FALSE) for host A.}
+\item{diff.sdMove.B}{does sdMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{timeDep.sdMove.B}{is sdMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.}
+\item{timeDep.sdMove.B}{is sdMove of host-type B dependant on the absolute time of the simulation (TRUE/FALSE) for host-type B.}
 
-\item{hostCount.sdMove.B}{does sdMove varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pMove.B should be TRUE.}
+\item{hostCount.sdMove.B}{does sdMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove.B should be TRUE.}
 
-\item{attracted.by.raster.B}{should the hosts A be attracted by high values in the environmental raster? (TRUE/FALSE)}
+\item{attracted.by.raster.B}{should the host-type B be attracted by higher values in the environmental raster? (TRUE/FALSE)}
 
-\item{nContact.B}{function that gives the number of potential transmission events per unit of time  for host B.}
+\item{nContact.B}{function that gives the number of potential transmission events per unit of time for host B.}
 
-\item{param.nContact.B}{parameter names (list of functions) for param.nContact  for host B.}
+\item{param.nContact.B}{parameter names (list of functions) for param.nContact for host-type B.}
 
-\item{timeDep.nContact.B}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
+\item{timeDep.nContact.B}{is nContact of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.nContact.B}{is nContact different between states of the structured population (TRUE/FALSE) for host B.}
+\item{diff.nContact.B}{does nContact of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{hostCount.nContact.B}{does nContact varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.nContact.B should be TRUE.}
+\item{hostCount.nContact.B}{does nContact of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.nContact.B should be TRUE.}
 
-\item{pTrans.B}{function that gives the probability of transmit a pathogen as a function of time since infection  for host B.}
+\item{pTrans.B}{function that gives the probability of transmit a pathogen as a function of time since infection for host B.}
 
-\item{param.pTrans.B}{parameter names (list of functions) for the pExit  for host B.}
+\item{param.pTrans.B}{parameter names (list of functions) for the pExit for host-type B.}
 
-\item{timeDep.pTrans.B}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
+\item{timeDep.pTrans.B}{is pTrans of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.pTrans.B}{is pTrans different between states of the structured population (TRUE/FALSE) for host B.}
+\item{diff.pTrans.B}{does pTrans of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{hostCount.pTrans.B}{does pTrans varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pTrans.B should be TRUE.}
+\item{hostCount.pTrans.B}{does pTrans of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pTrans.B should be TRUE.}
 
 \item{prefix.host.B}{character(s) to be used as a prefix for the host B identification number.}
 
@@ -160,7 +160,120 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{print.step}{print.progress is TRUE, step with which the progress message will be printed.}
 }
+\value{
+An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
+}
 \description{
-This function runs a dual-host transmission chain simulation, with discrete structure features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.
+This function runs a dual-host transmission chain simulation, with structured hosts populations (such as spatial features) in a shared continuous space.
+The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
+is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.
+}
+\details{
+The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host-type A or B.
+
+The structure raster(s) provided provided should of class \code{raster}. High values of the environemental variable can attract hosts if \code{attracted.by.raster} is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).
+
+The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), \code{sdMove} a real number (keep in mind this number is related to your coordinate space), and \code{nContact} a positive natural number (positive integer) or 0.
+
+The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
+
+The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
+
+The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.env.value} (for "current environmental value").
+
+The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count.A} or \code{host.count.B}.
+
+The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
+\code{current.env.value} (optional, only if diff is TRUE), \code{host.count.A} or \code{host.count.B} (optional, only if hostCount is TRUE) and \code{parameters} specified in the list.
+}
+\examples{
+\dontrun{
+library(raster)
+
+#Generating a raster the for movement
+set.seed(860)
+
+test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
+test.raster[] <- runif(10000, -80, 180)
+test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
+
+library(igraph)
+t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+p_Move_fct  <- function(t){return(0.1)}
+
+sdMove_fct = function(t,current.env.value){return(100/(current.env.value+1))}
+
+p_Exit_fct  <- function(t){return(0.08)}
+
+proba <- function(t,p_max,t_incub){
+ if(t <= t_incub){p=0}
+ if(t >= t_incub){p=p_max}
+ return(p)
+}
+
+time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+
+start.pos <- c(0,0)
+
+set.seed(805)
+test.nosoiA <- nosoiSim(type="dual", popStructure="continuous",
+                       length.sim=200,
+                       max.infected.A=500,
+                       max.infected.B=500,
+                       init.individuals.A=1,
+                       init.individuals.B=0,
+                       init.structure.A=start.pos,
+                       init.structure.B=NA,
+                       structure.raster.A=test.raster,
+                       structure.raster.B=test.raster,
+                       pExit.A=p_Exit_fct,
+                       param.pExit.A=NA,
+                       timeDep.pExit.A=FALSE,
+                       diff.pExit.A=FALSE,
+                       pMove.A=p_Move_fct,
+                       param.pMove.A=NA,
+                       timeDep.pMove.A=FALSE,
+                       diff.pMove.A=FALSE,
+                       diff.sdMove.A=TRUE,
+                       sdMove.A=sdMove_fct,
+                       param.sdMove.A=NA,
+                       attracted.by.raster.A=TRUE,
+                       nContact.A=time_contact,
+                       param.nContact.A=NA,
+                       timeDep.nContact.A=FALSE,
+                       diff.nContact.A=FALSE,
+                       pTrans.A=proba,
+                       param.pTrans.A=list(p_max=p_max_fct,
+                                           t_incub=t_incub_fct),
+                       timeDep.pTrans.A=FALSE,
+                       diff.pTrans.A=FALSE,
+                       prefix.host.A="H",
+                       pExit.B=p_Exit_fct,
+                       param.pExit.B=NA,
+                       timeDep.pExit.B=FALSE,
+                       diff.pExit.B=FALSE,
+                       pMove.B=p_Move_fct,
+                       param.pMove.B=NA,
+                       timeDep.pMove.B=FALSE,
+                       diff.pMove.B=FALSE,
+                       diff.sdMove.B=TRUE,
+                       sdMove.B=sdMove_fct,
+                       param.sdMove.B=NA,
+                       attracted.by.raster.B=TRUE,
+                       nContact.B=time_contact,
+                       param.nContact.B=NA,
+                       timeDep.nContact.B=FALSE,
+                       diff.nContact.B=FALSE,
+                       pTrans.B=proba,
+                       param.pTrans.B=list(p_max=p_max_fct,
+                                           t_incub=t_incub_fct),
+                       timeDep.pTrans.B=FALSE,
+                       diff.pTrans.B=FALSE,
+                       prefix.host.B="V")
+}
+
+}
+\seealso{
+For simulations with a discrete structure, see \code{\link{dualDiscrete}}. For simulations without any structures, see \code{\link{dualNone}}.
 }

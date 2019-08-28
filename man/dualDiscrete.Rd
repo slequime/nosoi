@@ -2,7 +2,7 @@
 % Please edit documentation in R/dual-discrete.R
 \name{dualDiscrete}
 \alias{dualDiscrete}
-\title{Dual-host with structured (discrete) host population}
+\title{Dual-host pathogen in structured (discrete) hosts populations}
 \usage{
 dualDiscrete(length.sim, max.infected.A, max.infected.B,
   init.individuals.A, init.individuals.B, init.structure.A,
@@ -28,103 +28,103 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
 
-\item{max.infected.A}{specifies the maximum number of hosts A that can be infected in the simulation.}
+\item{max.infected.A}{specifies the maximum number of individual hosts A that can be infected in the simulation.}
 
-\item{max.infected.B}{specifies the maximum number of hosts B that can be infected in the simulation.}
+\item{max.infected.B}{specifies the maximum number of individual hosts B that can be infected in the simulation.}
 
 \item{init.individuals.A}{number of initially infected individuals (hosts A).}
 
 \item{init.individuals.B}{number of initially infected individuals (hosts B).}
 
-\item{init.structure.A}{which state (e.g. location) the initially infected individuals of host A are located. (NA if init.individual.A is 0)}
+\item{init.structure.A}{in which state (e.g. location) the initially infected individuals of host-type A are located (\code{NA} if init.individual.A is 0)?}
 
-\item{init.structure.B}{which state (e.g. location) the initially infected individuals of host B are located. (NA if init.individual.B is 0)}
+\item{init.structure.B}{in which state (e.g. location) the initially infected individuals of host-type B are located (\code{NA} if init.individual.B is 0)?}
 
-\item{structure.matrix.A}{transition matrix (probabilities) to go from location A (row) to B (column) for host A.}
+\item{structure.matrix.A}{transition matrix (probabilities) to go from location A (row) to B (column) for host-type A.}
 
-\item{structure.matrix.B}{transition matrix (probabilities) to go from location A (row) to B (column) for host B.}
+\item{structure.matrix.B}{transition matrix (probabilities) to go from location A (row) to B (column) for host-type B.}
 
 \item{pExit.A}{function that gives the probability to exit the simulation for an infected host A (either moving out, dying, etc.).}
 
-\item{param.pExit.A}{parameter names (list of functions) for the pExit for host A.}
+\item{param.pExit.A}{parameter names (list of functions) for the pExit for host-type A.}
 
-\item{timeDep.pExit.A}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
+\item{timeDep.pExit.A}{is pExit of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.pExit.A}{is pExit different between states of the structured population (TRUE/FALSE) for host A.}
+\item{diff.pExit.A}{is pExit of host-type A different between states of the structured population (TRUE/FALSE)?}
 
-\item{hostCount.pExit.A}{does pExit varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pExit.A should be TRUE.}
+\item{hostCount.pExit.A}{does pExit of host-type A vary with the host count (of either host-type A or B) in the state? (TRUE/FALSE); diff.pExit.A should be TRUE.}
 
-\item{pMove.A}{function that gives the probability of a host moving as a function of time for host A.}
+\item{pMove.A}{function that gives the probability of a host moving as a function of time for host-type A.}
 
-\item{param.pMove.A}{parameter names (list of functions) for the pMove for host A.}
+\item{param.pMove.A}{parameter names (list of functions) for the pMove for host-type A.}
 
-\item{timeDep.pMove.A}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host A.}
+\item{timeDep.pMove.A}{is pMove of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.pMove.A}{is pMove different between states of the structured population (TRUE/FALSE) for host A.}
+\item{diff.pMove.A}{is pMove of host-type A different between states of the structured population (TRUE/FALSE)?}
 
-\item{hostCount.pMove.A}{does pMove varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pMove.A should be TRUE.}
+\item{hostCount.pMove.A}{does pMove of host-type A vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pMove.A should be TRUE.}
 
-\item{nContact.A}{function that gives the number of potential transmission events per unit of time  for host A.}
+\item{nContact.A}{function that gives the number of potential transmission events per unit of time  for host-type A.}
 
-\item{param.nContact.A}{parameter names (list of functions) for param.nContact  for host A.}
+\item{param.nContact.A}{parameter names (list of functions) for param.nContact for host-type A.}
 
-\item{timeDep.nContact.A}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
+\item{timeDep.nContact.A}{is nContact of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.nContact.A}{is nContact different between states of the structured population (TRUE/FALSE) for host A.}
+\item{diff.nContact.A}{is nContact of host-type A different between states of the structured population (TRUE/FALSE)?}
 
-\item{hostCount.nContact.A}{does nContact varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.nContact.A should be TRUE.}
+\item{hostCount.nContact.A}{does nContact of host-type A vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.nContact.A should be TRUE.}
 
-\item{pTrans.A}{function that gives the probability of transmit a pathogen as a function of time since infection  for host A.}
+\item{pTrans.A}{function that gives the probability of transmit a pathogen as a function of time since infection for host A.}
 
 \item{param.pTrans.A}{parameter names (list of functions) for the pExit  for host A.}
 
-\item{timeDep.pTrans.A}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host A.}
+\item{timeDep.pTrans.A}{is pTrans of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.pTrans.A}{is pTrans different between states of the structured population (TRUE/FALSE) for host A.}
+\item{diff.pTrans.A}{is pTrans of host-type A different between states of the structured population (TRUE/FALSE)?}
 
-\item{hostCount.pTrans.A}{does pTrans varies with the host count (of either host A or B) in the state for host A? (TRUE/FALSE); diff.pTrans.A should be TRUE.}
+\item{hostCount.pTrans.A}{does pTrans of host-type A vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pTrans.A should be TRUE.}
 
 \item{prefix.host.A}{character(s) to be used as a prefix for the host A identification number.}
 
 \item{pExit.B}{function that gives the probability to exit the simulation for an infected host B (either moving out, dying, etc.).}
 
-\item{param.pExit.B}{parameter names (list of functions) for the pExit for host B.}
+\item{param.pExit.B}{parameter names (list of functions) for the pExit for host-type B.}
 
-\item{timeDep.pExit.B}{is pExit dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
+\item{timeDep.pExit.B}{is pExit of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.pExit.B}{is pExit different between states of the structured population (TRUE/FALSE) for host B.}
+\item{diff.pExit.B}{is pExit of host-type B different between states of the structured population (TRUE/FALSE)?}
 
-\item{hostCount.pExit.B}{does pExit varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pExit.B should be TRUE.}
+\item{hostCount.pExit.B}{does pExit of host-type B vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pExit.B should be TRUE.}
 
-\item{pMove.B}{function that gives the probability of a host moving as a function of time for host B.}
+\item{pMove.B}{function that gives the probability of a host moving as a function of time for host-type B.}
 
-\item{param.pMove.B}{parameter names (list of functions) for the pMove for host B.}
+\item{param.pMove.B}{parameter names (list of functions) for the pMove for host-type B.}
 
-\item{timeDep.pMove.B}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host B.}
+\item{timeDep.pMove.B}{is pMove of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.pMove.B}{is pMove different between states of the structured population (TRUE/FALSE) for host B.}
+\item{diff.pMove.B}{is pMove of host-type B different between states of the structured population (TRUE/FALSE)?}
 
-\item{hostCount.pMove.B}{does pMove varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pMove.B should be TRUE.}
+\item{hostCount.pMove.B}{does pMove of host-type B vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pMove.B should be TRUE.}
 
-\item{nContact.B}{function that gives the number of potential transmission events per unit of time  for host B.}
+\item{nContact.B}{function that gives the number of potential transmission events per unit of time for host B.}
 
-\item{param.nContact.B}{parameter names (list of functions) for param.nContact  for host B.}
+\item{param.nContact.B}{parameter names (list of functions) for param.nContact for host-type B.}
 
-\item{timeDep.nContact.B}{is nContact dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
+\item{timeDep.nContact.B}{is nContact of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.nContact.B}{is nContact different between states of the structured population (TRUE/FALSE) for host B.}
+\item{diff.nContact.B}{is nContact of host-type B different between states of the structured population (TRUE/FALSE)?}
 
-\item{hostCount.nContact.B}{does nContact varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.nContact.B should be TRUE.}
+\item{hostCount.nContact.B}{does nContact of host-type B vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.nContact.B should be TRUE.}
 
-\item{pTrans.B}{function that gives the probability of transmit a pathogen as a function of time since infection  for host B.}
+\item{pTrans.B}{function that gives the probability of transmit a pathogen as a function of time since infection for host B.}
 
-\item{param.pTrans.B}{parameter names (list of functions) for the pExit  for host B.}
+\item{param.pTrans.B}{parameter names (list of functions) for the pExit for host-type B.}
 
-\item{timeDep.pTrans.B}{is pTrans dependant on the absolute time of the simulation (TRUE/FALSE)  for host B.}
+\item{timeDep.pTrans.B}{is pTrans of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{diff.pTrans.B}{is pTrans different between states of the structured population (TRUE/FALSE) for host B.}
+\item{diff.pTrans.B}{is pTrans host-type B different between states of the structured population (TRUE/FALSE)?}
 
-\item{hostCount.pTrans.B}{does pTrans varies with the host count (of either host A or B) in the state for host B? (TRUE/FALSE); diff.pTrans.B should be TRUE.}
+\item{hostCount.pTrans.B}{does pTrans of host-type B vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pTrans.B should be TRUE.}
 
 \item{prefix.host.B}{character(s) to be used as a prefix for the host B identification number.}
 
@@ -132,7 +132,111 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{print.step}{print.progress is TRUE, step with which the progress message will be printed.}
 }
+\value{
+An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
+}
 \description{
-This function runs a dual-host transmission chain simulation, with discrete structure features. The simulation stops either at
-the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected) is passed.
+This function, that can be wrapped within \code{\link{nosoiSim}}, runs a dual-host transmission chain simulation, with discrete hosts populations structures (e.g. spatial, socio-economic, etc.). The simulation stops either at
+the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
+}
+\details{
+The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host-type A or B.
+
+The structure/transition matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing depature state and column the arrival state. All rows should add to 1. Probability values can be different for hosts A and B (so two different matrices), but the name of the column and the rows should be shared.
+
+The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
+
+The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
+
+The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
+
+The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.in} (for "currently in"). Your function should in that case give a result for every possible discrete state.
+
+The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count.A} or \code{host.count.B}.
+
+The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
+\code{current.in} (optional, only if diff is TRUE), \code{host.count.A} or \code{host.count.B} (optional, only if hostCount is TRUE) and \code{parameters} specified in the list.
+}
+\examples{
+\dontrun{#Host A
+t_infectA_fct <- function(x){rnorm(x,mean = 12,sd=3)}
+pTrans_hostA <- function(t,t_infectA){
+ if(t/t_infectA <= 1){p=sin(pi*t/t_infectA)}
+ if(t/t_infectA > 1){p=0}
+ return(p)
+}
+
+p_Move_fctA  <- function(t){return(0.1)}
+
+p_Exit_fctA  <- function(t,t_infectA){
+ if(t/t_infectA <= 1){p=0}
+ if(t/t_infectA > 1){p=1}
+ return(p)
+}
+
+time_contact_A = function(t){sample(c(0,1,2),1,prob=c(0.2,0.4,0.4))}
+
+t_incub_fct_B <- function(x){rnorm(x,mean = 5,sd=1)}
+p_max_fct_B <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+
+p_Exit_fct_B  <- function(t,current.in){
+ if(current.in=="A"){return(0.1)}
+ if(current.in=="B"){return(0.2)}
+ if(current.in=="C"){return(1)}}
+
+pTrans_hostB <- function(t,p_max,t_incub){
+ if(t <= t_incub){p=0}
+ if(t >= t_incub){p=p_max}
+ return(p)
+}
+
+time_contact_B = function(t){round(rnorm(1, 3, 1), 0)}
+
+transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+
+set.seed(6262)
+test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
+                       length.sim=40,
+                       max.infected.A=100,
+                       max.infected.B=200,
+                       init.individuals.A=1,
+                       init.individuals.B=0,
+                       init.structure.A="A",
+                       init.structure.B=NA,
+                       structure.matrix.A=transition.matrix,
+                       structure.matrix.B=transition.matrix,
+                       pExit.A = p_Exit_fctA,
+                       param.pExit.A = list(t_infectA = t_infectA_fct),
+                       pMove.A=p_Move_fctA,
+                       param.pMove.A=NA,
+                       timeDep.pMove.A=FALSE,
+                       diff.pMove.A=FALSE,
+                       timeDep.pExit.A=FALSE,
+                       nContact.A = time_contact_A,
+                       param.nContact.A = NA,
+                       timeDep.nContact.A=FALSE,
+                       pTrans.A = pTrans_hostA,
+                       param.pTrans.A = list(t_infectA=t_infectA_fct),
+                       timeDep.pTrans.A=FALSE,
+                       prefix.host.A="H",
+                       pExit.B = p_Exit_fct_B,
+                       param.pExit.B = NA,
+                       timeDep.pExit.B=FALSE,
+                       diff.pExit.B=TRUE,
+                       pMove.B=NA,
+                       param.pMove.B=NA,
+                       timeDep.pMove.B=FALSE,
+                       diff.pMove.B=FALSE,
+                       nContact.B = time_contact_B,
+                       param.nContact.B = NA,
+                       timeDep.nContact.B=FALSE,
+                       pTrans.B = pTrans_hostB,
+                       param.pTrans.B = list(p_max=p_max_fct_B,
+                                             t_incub=t_incub_fct_B),
+                       timeDep.pTrans.B=FALSE,
+                       prefix.host.B="V")
+}
+}
+\seealso{
+For simulations with a structure in continuous space, see \code{\link{dualContinuous}}. For simulations without any structures, see \code{\link{dualNone}}.
 }

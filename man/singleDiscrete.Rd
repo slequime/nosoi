@@ -21,7 +21,7 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 
 \item{init.individuals}{number of initially infected individuals.}
 
-\item{init.structure}{which state (e.g. location) the initially infected individuals are located.}
+\item{init.structure}{in which state (e.g. location) the initially infected individuals are located.}
 
 \item{structure.matrix}{transition matrix (probabilities) to go from location A (row) to B (column)}
 
@@ -75,7 +75,7 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
 }
 \description{
-This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-host transmission chain simulation, with a discrete host population structure (e.g. spatial, socio-economic). The simulation stops either at
+This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-host transmission chain simulation, with a discrete host population structure (e.g. spatial, socio-economic, etc.). The simulation stops either at
 the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
 }
 \details{

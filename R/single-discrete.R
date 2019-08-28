@@ -1,6 +1,6 @@
 #' @title Single-host pathogen in a structured (discrete) host population
 #'
-#' @description This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-host transmission chain simulation, with a discrete host population structure (e.g. spatial, socio-economic). The simulation stops either at
+#' @description This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-host transmission chain simulation, with a discrete host population structure (e.g. spatial, socio-economic, etc.). The simulation stops either at
 #' the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
 #'
 #' @details The structure matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing depature state and column the arrival state. All rows should add to 1.
@@ -13,7 +13,7 @@
 #' \code{current.in} (optional, only if diff is TRUE), \code{host.count} (optional, only if hostCount is TRUE) and \code{parameters} specified in the list.
 #'
 #' @inheritParams singleNone
-#' @param init.structure which state (e.g. location) the initially infected individuals are located.
+#' @param init.structure in which state (e.g. location) the initially infected individuals are located.
 #' @param structure.matrix transition matrix (probabilities) to go from location A (row) to B (column)
 #' @param diff.pMove is pMove different between states of the structured population (TRUE/FALSE)
 #' @param timeDep.pMove is pMove dependant on the absolute time of the simulation (TRUE/FALSE)
@@ -25,7 +25,7 @@
 #' @param diff.pTrans is pTrans different between states of the structured population (TRUE/FALSE)
 #' @param hostCount.pTrans does pTrans varies with the host count in the state? (TRUE/FALSE); diff.pTrans should be TRUE.
 #' @param diff.pExit is pExit different between states of the structured population (TRUE/FALSE)
-#' @param hostCount.pExit  does pExit varies with the host count in the state? (TRUE/FALSE); diff.pExit should be TRUE.
+#' @param hostCount.pExit does pExit varies with the host count in the state? (TRUE/FALSE); diff.pExit should be TRUE.
 #'
 #' @return An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
 #'

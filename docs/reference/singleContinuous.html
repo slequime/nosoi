@@ -41,7 +41,7 @@
 
 <meta property="og:description" content="This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features) in a continuous space.
 The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable." />
+is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -220,7 +220,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     
     <p>This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features) in a continuous space.
 The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
-is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable.</p>
+is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.</p>
     
     </div>
 
@@ -253,7 +253,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>init.structure</th>
-      <td><p>which location the initially infected individuals are located. A vector of coordinates in the same coordinate space as the raster.</p></td>
+      <td><p>in which location the initially infected individuals are located. A vector of coordinates in the same coordinate space as the raster.</p></td>
     </tr>
     <tr>
       <th>structure.raster</th>
@@ -261,7 +261,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>diff.pExit</th>
-      <td><p>does pExit different between states of the structured population (TRUE/FALSE).</p></td>
+      <td><p>does pExit depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>timeDep.pExit</th>
@@ -301,7 +301,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>diff.sdMove</th>
-      <td><p>does sdMove depend on the environmental value (TRUE/FALSE).</p></td>
+      <td><p>does sdMove depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>timeDep.sdMove</th>
@@ -325,7 +325,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>diff.nContact</th>
-      <td><p>does nContact different between states of the structured population (TRUE/FALSE).</p></td>
+      <td><p>does nContact depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>timeDep.nContact</th>
@@ -345,7 +345,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>diff.pTrans</th>
-      <td><p>does pTrans different between states of the structured population (TRUE/FALSE).</p></td>
+      <td><p>does pTrans depend on the environmental variable (set by the raster) (TRUE/FALSE).</p></td>
     </tr>
     <tr>
       <th>timeDep.pTrans</th>
@@ -387,7 +387,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 <p>The <code>pExit</code>, <code>pMove</code> and <code>pTrans</code> function should return a single probability (a number between 0 and 1), <code>sdMove</code> a real number (keep in mind this number is related to your coordinate space), and <code>nContact</code> a positive natural number (positive integer) or 0</p>
 <p>The <code>param</code> arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.</p>
 <p>The use of <code>timeDep</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>prestime</code> (for "present time").</p>
-<p>The use of <code>diff</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>current.env.value</code> (for "currently in"). Your function should in that case give a result for every possible discrete state.</p>
+<p>The use of <code>diff</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>current.env.value</code> (for "current environmental value").</p>
 <p>The use of <code>hostCount</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>host.count</code>.</p>
 <p>The user specified function's arguments should follow this order: <code>t</code> (mandatory), <code>prestime</code> (optional, only if timeDep is TRUE),
 <code>current.env.value</code> (optional, only if diff is TRUE), <code>host.count</code> (optional, only if hostCount is TRUE) and <code>parameters</code> specified in the list.</p>
