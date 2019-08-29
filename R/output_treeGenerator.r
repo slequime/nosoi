@@ -1,8 +1,7 @@
-##
-#' @title  Get full transmission tree
+#' @title Gets the full transmission tree (phylogenetic tree-like) from a \code{nosoi} simulation
 #'
 #' @description
-#'  From a simulated epidemics, this function extract the full transmission tree.
+#'  From a \code{nosoi} simulated epidemics, this function extract the full transmission tree in a form mimicking a phylogenetic tree.
 #'
 #' @details
 #'  This function uses packages \pkg{tidytree} and \pkg{treeio},
@@ -12,7 +11,7 @@
 #' @param pop the population to be considered (one of "A" or "B")
 #'
 #' @return A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
-#' phylogenetic tree and the mapped data at all the nodes.
+#' phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
 #'
 #' @seealso For exporting the annotated tree to other softwares, see functions
 #' in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
@@ -20,8 +19,7 @@
 #' To sub-sample this tree, see function \code{\link{sampleTransmissionTree}}
 #'
 #' @export getTransmissionTree
-#'
-##
+
 getTransmissionTree <- function(nosoiInf, pop = "A") {
   if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
     stop("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.",
@@ -313,9 +311,7 @@ draw_one_sample <- function(table.states, total.time, tree, sample) {
                       state))
 }
 
-## Sample the tree
-##
-#' @title  Sample the transmission tree
+#' @title Samples the transmission tree (phylogenetic tree-like)
 #'
 #' @description
 #'  Sample a full transmission tree. This function allows for sampling multiple
@@ -336,7 +332,7 @@ draw_one_sample <- function(table.states, total.time, tree, sample) {
 #' }
 #'
 #' @return A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
-#' phylogenetic tree and the mapped data at all the nodes.
+#' phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
 #'
 #' @seealso For exporting the annotated tree to other softwares, see functions
 #' in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
@@ -344,8 +340,7 @@ draw_one_sample <- function(table.states, total.time, tree, sample) {
 #' For sampling only dead individuals, see \code{\link{sampleTransmissionTreeFromExiting}}.
 #'
 #' @export sampleTransmissionTree
-#'
-##
+
 sampleTransmissionTree <- function(nosoiInf, tree, samples) {
   ## Extract table state
   pop <- tree@info$pop
@@ -365,14 +360,13 @@ sampleTransmissionTree <- function(nosoiInf, tree, samples) {
   return(resTree)
 }
 
-##
-#' @title  Sample the transmission tree among the exited hosts
+#' @title Samples the transmission tree (phylogenetic tree-like) among the exited hosts
 #'
 #' @description
-#'  Sample a full transmission tree. This function allows for sampling only dead
-#'  individuals (e.g. when the sampling procedure is destructive).
+#'  Sample a full transmission tree. This function allows for sampling only exited (i.e. inactive)
+#'  individuals (e.g. when the sampling procedure is destructive or cuts the hosts from the population).
 #'  Beware because it does not influence the epidemiological process, it only means that the host
-#'  has been sampled when exiting the simulation
+#'  has been sampled when exiting the simulation.
 #'
 #' @details
 #'  The tree needs to be produced by function \code{\link{getTransmissionTree}}
@@ -382,7 +376,7 @@ sampleTransmissionTree <- function(nosoiInf, tree, samples) {
 #' @param hosts a vector of dead hosts to sample
 #'
 #' @return A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
-#' phylogenetic tree and the mapped data at all the nodes.
+#' phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
 #'
 #' @seealso For exporting the annotated tree to other softwares, see functions
 #' in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
@@ -390,8 +384,7 @@ sampleTransmissionTree <- function(nosoiInf, tree, samples) {
 #' For sampling non-dead individuals, see \code{\link{sampleTransmissionTree}}.
 #'
 #' @export sampleTransmissionTreeFromExiting
-#'
-##
+
 sampleTransmissionTreeFromExiting <- function(tree, hosts) {
   # resTree <- treeio::drop.tip(tree, tree@phylo$tip.label[-match(hosts, tree@phylo$tip.label)])
   # resTree@phylo$root.edge <- tree@phylo$root.edge
@@ -399,15 +392,13 @@ sampleTransmissionTreeFromExiting <- function(tree, hosts) {
   return(resTree)
 }
 
-##
 #' @title  Keep tips
 #'
 #' @description
 #'  Keep the tips in the list. See \code{\link[ape:keep.tip]{keep.tip}}
 #'
 #' @keywords internal
-#'
-##
+
 keep.tip.treedata <- function(tree, tip) {
   # Tree info
   oldTree <- tree@phylo

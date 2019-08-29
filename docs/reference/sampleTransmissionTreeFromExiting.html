@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sample the transmission tree among the exited hosts — sampleTransmissionTreeFromExiting • nosoi</title>
+<title>Samples the transmission tree (phylogenetic tree-like) among the exited hosts — sampleTransmissionTreeFromExiting • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,12 +37,12 @@
 
 
 
-<meta property="og:title" content="Sample the transmission tree among the exited hosts — sampleTransmissionTreeFromExiting" />
+<meta property="og:title" content="Samples the transmission tree (phylogenetic tree-like) among the exited hosts — sampleTransmissionTreeFromExiting" />
 
-<meta property="og:description" content="Sample a full transmission tree. This function allows for sampling only dead
- individuals (e.g. when the sampling procedure is destructive).
+<meta property="og:description" content="Sample a full transmission tree. This function allows for sampling only exited (i.e. inactive)
+ individuals (e.g. when the sampling procedure is destructive or cuts the hosts from the population).
  Beware because it does not influence the epidemiological process, it only means that the host
- has been sampled when exiting the simulation" />
+ has been sampled when exiting the simulation." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -212,17 +212,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Sample the transmission tree among the exited hosts</h1>
+    <h1>Samples the transmission tree (phylogenetic tree-like) among the exited hosts</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_treeGenerator.r'><code>R/output_treeGenerator.r</code></a></small>
     <div class="hidden name"><code>sampleTransmissionTreeFromExiting.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Sample a full transmission tree. This function allows for sampling only dead
- individuals (e.g. when the sampling procedure is destructive).
+    <p>Sample a full transmission tree. This function allows for sampling only exited (i.e. inactive)
+ individuals (e.g. when the sampling procedure is destructive or cuts the hosts from the population).
  Beware because it does not influence the epidemiological process, it only means that the host
- has been sampled when exiting the simulation</p>
+ has been sampled when exiting the simulation.</p>
     
     </div>
 
@@ -244,7 +244,7 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A tree of class <code><a href='https://www.rdocumentation.org/packages/tidytree/topics/treedata-class'>treedata</a></code>, containing a
-phylogenetic tree and the mapped data at all the nodes.</p>
+phylogenetic tree based on the transmission chain and the mapped data at all the nodes.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 

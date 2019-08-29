@@ -2,7 +2,7 @@
 % Please edit documentation in R/output_treeGenerator.r
 \name{sampleTransmissionTree}
 \alias{sampleTransmissionTree}
-\title{Sample the transmission tree}
+\title{Samples the transmission tree (phylogenetic tree-like)}
 \usage{
 sampleTransmissionTree(nosoiInf, tree, samples)
 }
@@ -20,7 +20,7 @@ sampleTransmissionTree(nosoiInf, tree, samples)
 }
 \value{
 A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
-phylogenetic tree and the mapped data at all the nodes.
+phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
 }
 \description{
 Sample a full transmission tree. This function allows for sampling multiple

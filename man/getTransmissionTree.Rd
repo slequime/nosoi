@@ -2,7 +2,7 @@
 % Please edit documentation in R/output_treeGenerator.r
 \name{getTransmissionTree}
 \alias{getTransmissionTree}
-\title{Get full transmission tree}
+\title{Gets the full transmission tree (phylogenetic tree-like) from a \code{nosoi} simulation}
 \usage{
 getTransmissionTree(nosoiInf, pop = "A")
 }
@@ -13,10 +13,10 @@ getTransmissionTree(nosoiInf, pop = "A")
 }
 \value{
 A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
-phylogenetic tree and the mapped data at all the nodes.
+phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
 }
 \description{
-From a simulated epidemics, this function extract the full transmission tree.
+From a \code{nosoi} simulated epidemics, this function extract the full transmission tree in a form mimicking a phylogenetic tree.
 }
 \details{
 This function uses packages \pkg{tidytree} and \pkg{treeio},

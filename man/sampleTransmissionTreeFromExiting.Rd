@@ -2,7 +2,7 @@
 % Please edit documentation in R/output_treeGenerator.r
 \name{sampleTransmissionTreeFromExiting}
 \alias{sampleTransmissionTreeFromExiting}
-\title{Sample the transmission tree among the exited hosts}
+\title{Samples the transmission tree (phylogenetic tree-like) among the exited hosts}
 \usage{
 sampleTransmissionTreeFromExiting(tree, hosts)
 }
@@ -13,13 +13,13 @@ sampleTransmissionTreeFromExiting(tree, hosts)
 }
 \value{
 A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
-phylogenetic tree and the mapped data at all the nodes.
+phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
 }
 \description{
-Sample a full transmission tree. This function allows for sampling only dead
- individuals (e.g. when the sampling procedure is destructive).
+Sample a full transmission tree. This function allows for sampling only exited (i.e. inactive)
+ individuals (e.g. when the sampling procedure is destructive or cuts the hosts from the population).
  Beware because it does not influence the epidemiological process, it only means that the host
- has been sampled when exiting the simulation
+ has been sampled when exiting the simulation.
 }
 \details{
 The tree needs to be produced by function \code{\link{getTransmissionTree}}
