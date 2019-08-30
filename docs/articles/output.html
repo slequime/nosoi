@@ -5,8 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>
-<code>nosoi</code> output and summarisation • nosoi</title>
+<title>Output and summarization • nosoi</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +15,7 @@
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="&lt;code&gt;nosoi&lt;/code&gt; output and summarisation">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Output and summarization">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -38,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -150,7 +149,7 @@
       <a href="../articles/none.html">Spread of a pathogen in a homogeneous population</a>
     </li>
     <li>
-      <a href="../articles/output.html">`nosoi` output and summarisation</a>
+      <a href="../articles/output.html">Output and summarization</a>
     </li>
   </ul>
 </li>
@@ -174,11 +173,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>
-<code>nosoi</code> output and summarisation</h1>
+      <h1>Output and summarization</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-08-27</h4>
+            <h4 class="date">2019-08-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/output.Rmd"><code>vignettes/output.Rmd</code></a></small>
       <div class="hidden name"><code>output.Rmd</code></div>
@@ -187,9 +185,406 @@
 
     
     
-<div id="work-in-progress" class="section level1">
+<div id="nosoisim-object" class="section level1">
 <h1 class="hasAnchor">
-<a href="#work-in-progress" class="anchor"></a>Work in progress</h1>
+<a href="#nosoisim-object" class="anchor"></a><code>nosoiSim</code> object</h1>
+<p>The output of a <code>nosoi</code> simulation is a class <code>nosoiSim</code> object. It contains all data generated during the simulation into the following slots:</p>
+<ul>
+<li>
+<code>total.time</code> is the number of time-steps (an integer) during which the simulation has run.</li>
+<li>
+<code>type</code> is the simulation type that has been runed (either “single” or “dual” host).</li>
+<li>
+<code>host.info.A</code> is an object of class <code>nosoiSimOne</code>, itself a list of elements concerning host-type A (or the unique host type in case of a single-host simulation), with the following slots:
+<ul>
+<li>
+<code>N.infected</code> is the final number (an integer) of infected hosts.</li>
+<li>
+<code>table.hosts</code> is a table containing the results of the simulations focusing on each individual hosts. For more details on its structure, see below.</li>
+<li>
+<code>table.state</code> is a table containing the results of the simulations concerning the movement history of the infected hosts. For more details on its structure, see below.</li>
+<li>
+<code>prefix.host</code> is the string containing the prefix used to name the hosts (user-defined <code>prefix.host</code> in the <code>nosoiSim</code> function).</li>
+<li>
+<code>popStructure</code> is the population structure used (either “none”, “discrete” or “continuous”).</li>
+</ul>
+</li>
+<li>
+<code>host.info.B</code> is the same as above, but for host-type B (is <code>NA</code> if a single-host was run).</li>
+</ul>
+<p>Host-specific element (i.e. in <code>host.info.A</code> or <code>host.info.B</code>) in this object can be easily extracted by using the function <code>getHostData</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">getHostData</span>(nosoi.output, what, pop)</a></code></pre></div>
+<p>This function takes as arguments your nosoi output object (class <code>nosoiSim</code>), what you want to extract (either <code>N.infected</code>, <code>table.hosts</code>, <code>table.state</code> or <code>prefix.host</code>), and which host-type (here <code>pop</code>) you are interested in (<code>A</code> (by default) but can be <code>B</code> in case of dual hosts simulations).</p>
+<div id="table-hosts" class="section level2">
+<h2 class="hasAnchor">
+<a href="#table-hosts" class="anchor"></a><code>table.hosts</code>
+</h2>
+<p><code>table.hosts</code>, a <code>data.table</code> object, contains informations about each host that has been simulated. In this object, one row corresponds to one host. This object can be directly extracted using the function <code>getTableHosts</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/getTableHosts.html">getTableHosts</a></span>(nosoi.output, pop)</a></code></pre></div>
+<p>This function takes as arguments your nosoi output object (class <code>nosoiSim</code>) and which host-type (here <code>pop</code>) you are interested in (<code>A</code> (by default) but can be <code>B</code> in case of dual hosts simulations).</p>
+<p>The structure of the table is the following:</p>
+<ul>
+<li>
+<code>hosts.ID</code> is the unique identifier for the host (a string of characters), based on user-defined prefix and an integer.</li>
+<li>
+<code>inf.by</code> is the unique identifier of the host that infected the current one (stands for “infected by”).</li>
+<li>
+<code>inf.in</code> (only if structure is present) is the state or coordinates (in that case <code>inf.in.x</code> and <code>inf.in.y</code>) in which the host was initially infected (stands for “infected in”).</li>
+<li>
+<code>current.in</code> (only if structure is present) is the state or coordinates (in that case <code>current.in.x</code> and <code>current.in.y</code>) in which the host is at the end of the simulation (stands for “currently in”). A complete history of hosts movements is stored in the other table <code>table.state</code> (see following section).</li>
+<li>
+<code>current.env.value</code> (only if continuous structure is present) is the environmental value (i.e. raster cell value) in which the host is at the end of the simulation (stands for “current environmental value”). A complete history of the environmental value encoutered by the host is stored in the other table <code>table.state</code> (see following section).</li>
+<li>
+<code>current.cell.raster</code> (only if continuous structure is present) is the raster cell numeric identifier in which the host is at the end of the simulation. Here also, a complete history of raster cell occupied during the simulation is stored in the other table <code>table.state</code> (see following section).</li>
+<li>
+<code>host.count</code> (only if structure is present) is the host count in the current state or raster cell. This value is only updated if the host count is actually used as a parameter in the simulation.</li>
+<li>
+<code>inf.time</code> is the time (in time-steps) at which the host entered the simulation (i.e. got infected) (stands for “infection time”).</li>
+<li>
+<code>out.time</code> is the time (in time-steps) at which the host exited the simulation.</li>
+<li>
+<code>active</code> is a number (either 0 or 1) indicating if the host is still active at the end of the simulation (1 for yes, 0 for no).</li>
+<li>the rest stores the user-defined individual-specific parameters used by the functions (i.e. specified by the <code>param</code> arguments in the simulator’s functions).</li>
+</ul>
+</div>
+<div id="table-state" class="section level2">
+<h2 class="hasAnchor">
+<a href="#table-state" class="anchor"></a><code>table.state</code>
+</h2>
+<p><code>table.state</code>, a <code>data.table</code> object, contains informations about the history of movement of each host that has been simulated. This table is available only if a structured population was simulated (either discrete or continuous). It can be directly extracted using the function <code>getTableState</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/getTableState.html">getTableState</a></span>(nosoi.output, pop)</a></code></pre></div>
+<p>This function takes as arguments your nosoi output object (class <code>nosoiSim</code>) and which host-type (here <code>pop</code>) you are interested in (<code>A</code> (by default) but can be <code>B</code> in case of dual hosts simulations).</p>
+<p>The structure of the table is the following:</p>
+<ul>
+<li>
+<code>hosts.ID</code> is the unique identifier for the host (a string of characters), based on user-defined prefix and an integer.</li>
+<li>
+<code>state</code> is the state or coordinates (in that case <code>state.x</code> and <code>state.y</code>) in which the host is located during the time interval.</li>
+<li>
+<code>current.env.value</code> (only if continuous structure is present) is the environmental value (i.e. raster cell value) in which the host is at the end of the simulation (stands for “current environmental value”).</li>
+<li>
+<code>current.cell.raster</code> (only if continuous structure is present) is the raster cell numeric identifier in which the host is at the end of the simulation.</li>
+<li>
+<code>time.from</code> is the time (in time-steps) at which the host entered (i.e. got infected or moved) into the state.</li>
+<li>
+<code>time.to</code> is the time (in time-steps) at which the host left (i.e. excited or moved) out of the state.</li>
+</ul>
+</div>
+</div>
+<div id="epidemiological-insights" class="section level1">
+<h1 class="hasAnchor">
+<a href="#epidemiological-insights" class="anchor"></a>Epidemiological insights</h1>
+<p>By simulating transmission chains, <code>nosoi</code> also simulates an epidemic process. <code>nosoi</code> provides some solutions to easily explore the dynamics of this epidemic process by following through time the number of active infected hosts as well as the cumulative number of infected hosts. It also allows to compute the exact basic reproduction number <span class="math inline">\(R_0\)</span>, defined as the average number of cases one case generates. Since the whole data generated is stored in the output <code>nosoiSim</code> object, more advanced exploration could also be done.</p>
+<div id="epidemiological-summary" class="section level2">
+<h2 class="hasAnchor">
+<a href="#epidemiological-summary" class="anchor"></a>Epidemiological summary</h2>
+<p>The <code>nosoiSummary</code> is a turnkey solution that computes both the dynamics of the epidemic and <span class="math inline">\(R_0\)</span>. Its only argument is your nosoi output object (class <code>nosoiSim</code>):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/nosoiSummary.html">nosoiSummary</a></span>(nosoi.output)</a></code></pre></div>
+<p>It returns a list containing the slots:</p>
+<ul>
+<li>
+<code>R0</code> a sublist with number of inactive hosts at the end of the simulation <code>N.inactive</code> on which the calculation is done, mean <span class="math inline">\(R_0\)</span> <code>R0.mean</code>, and <span class="math inline">\(R_0\)</span> distribution <code>R0.dist</code>. For more details on the computation behind, see below.</li>
+<li>
+<code>dynamics</code> is a <code>data.table</code> object with the count of the sum of infected and active host at each time of the simulation (by state if this simulation has been done in a discrete structured host population). See below for more details.</li>
+<li>
+<code>cumulative</code> is a <code>data.table</code> object with the cumulative sum of infected hosts at each time step of the simulation. See below for more details.</li>
+</ul>
+</div>
+<div id="epidemiological-dynamics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#epidemiological-dynamics" class="anchor"></a>Epidemiological dynamics</h2>
+<p>Both the <code>cumulative</code> and <code>dynamics</code> tables can be directly extracted using the functions <code>getCumulative</code> and <code>getDynamic</code> respectively. Both function yield a <code>data.table</code> object, but its structures varies slightly. <code>cumulative</code> has the following structure:</p>
+<ul>
+<li>
+<code>t</code> is the time-step (an integer).</li>
+<li>
+<code>Count</code> is the cumulative number of infected hosts at given time-step (an integer).</li>
+<li>
+<code>type</code> is the host-type, idenfitied by its user-defined prefix (string of characters).</li>
+</ul>
+<p><code>dynamics</code> has the following structure:</p>
+<ul>
+<li>
+<code>state</code> (only if discrete structure) is the state (a string of characters, usually).</li>
+<li>
+<code>Count</code> is the number of active infected hosts at given time-step (an integer) by state (if discrete structure).</li>
+<li>
+<code>type</code> is the host-type, idenfitied by its user-defined prefix (string of characters).</li>
+<li>
+<code>t</code> is the time-step (an integer).</li>
+</ul>
+<p>These can be used to plot the epidemiological dynamics of the simulated transmission chain. Here for example, we simulate a single introduction of a single-host pathogen between 3 differents states (named “A”, “B”, and “C”), with a constant exit and move probabilityn as well as a number of contacts dependant of the location and host count in each location:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  p_Move_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.1</span>)}</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">  p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.05</span>)}</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">  proba &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">    <span class="cf">if</span>(t <span class="op">&lt;=</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">  }</a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">  time_contact &lt;-<span class="st"> </span><span class="cf">function</span>(t, current.in, host.count){</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16">    temp.val =<span class="st"> </span><span class="dv">30</span> <span class="op">-</span><span class="st"> </span>host.count</a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">    <span class="cf">if</span>(temp.val <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb5-19" data-line-number="19">      <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb5-20" data-line-number="20">    }</a>
+<a class="sourceLine" id="cb5-21" data-line-number="21">    <span class="cf">if</span>(temp.val <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb5-22" data-line-number="22">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"A"</span>){</a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>((temp.val<span class="op">/</span><span class="dv">30</span>)<span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb5-24" data-line-number="24">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"B"</span>){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">0</span>)}</a>
+<a class="sourceLine" id="cb5-25" data-line-number="25">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"C"</span>){</a>
+<a class="sourceLine" id="cb5-26" data-line-number="26">        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>((temp.val<span class="op">/</span><span class="dv">30</span>)<span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb5-27" data-line-number="27">    }</a>
+<a class="sourceLine" id="cb5-28" data-line-number="28">  }</a>
+<a class="sourceLine" id="cb5-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb5-30" data-line-number="30">  transition.matrix =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="dv">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="dv">0</span>),<span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>,<span class="dt">dimnames=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>),<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>)))</a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb5-32" data-line-number="32">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">1050</span>)</a>
+<a class="sourceLine" id="cb5-33" data-line-number="33">  test.nosoiA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"discrete"</span>,</a>
+<a class="sourceLine" id="cb5-34" data-line-number="34">                          <span class="dt">length=</span><span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb5-35" data-line-number="35">                          <span class="dt">max.infected=</span><span class="dv">200</span>,</a>
+<a class="sourceLine" id="cb5-36" data-line-number="36">                          <span class="dt">init.individuals=</span><span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb5-37" data-line-number="37">                          <span class="dt">init.structure=</span><span class="st">"A"</span>,</a>
+<a class="sourceLine" id="cb5-38" data-line-number="38">                          <span class="dt">structure.matrix=</span>transition.matrix,</a>
+<a class="sourceLine" id="cb5-39" data-line-number="39">                          <span class="dt">pMove=</span>p_Move_fct,</a>
+<a class="sourceLine" id="cb5-40" data-line-number="40">                          <span class="dt">param.pMove=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb5-41" data-line-number="41">                          <span class="dt">diff.nContact=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb5-42" data-line-number="42">                          <span class="dt">hostCount.nContact=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb5-43" data-line-number="43">                          <span class="dt">nContact=</span>time_contact,</a>
+<a class="sourceLine" id="cb5-44" data-line-number="44">                          <span class="dt">param.nContact=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb5-45" data-line-number="45">                          <span class="dt">pTrans =</span> proba,</a>
+<a class="sourceLine" id="cb5-46" data-line-number="46">                          <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,</a>
+<a class="sourceLine" id="cb5-47" data-line-number="47">                                              <span class="dt">t_incub=</span>t_incub_fct),</a>
+<a class="sourceLine" id="cb5-48" data-line-number="48">                          <span class="dt">pExit=</span>p_Exit_fct,</a>
+<a class="sourceLine" id="cb5-49" data-line-number="49">                          <span class="dt">param.pExit=</span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb5-50" data-line-number="50">  )</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">cumulative.table &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getCumulative.html">getCumulative</a></span>(test.nosoiA)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">dynamics.table &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getDynamic.html">getDynamic</a></span>(test.nosoiA)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data=</span>cumulative.table, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>t, <span class="dt">y=</span>Count)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x=</span><span class="st">"Time (t)"</span>,<span class="dt">y=</span><span class="st">"Cumulative count of infected hosts"</span>)</a></code></pre></div>
+<p><img src="output_files/figure-html/figureDynamics1-1.png" width="700"></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data=</span>dynamics.table, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>t, <span class="dt">y=</span>Count, <span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x=</span><span class="st">"Time (t)"</span>,<span class="dt">y=</span><span class="st">"Number of active infected hosts"</span>)</a></code></pre></div>
+<p><img src="output_files/figure-html/figureDynamics2-1.png" width="700"></p>
+</div>
+<div id="r_0" class="section level2">
+<h2 class="hasAnchor">
+<a href="#r_0" class="anchor"></a><span class="math inline">\(R_0\)</span>
+</h2>
+<p>The output <code>nosoiSim</code> object can be used to compute the “real” <span class="math inline">\(R_0\)</span>, defined as the average number of cases one case generates, often estimated in epidemiological studies. The function <code>getRO</code> can be used directly, with the <code>nosoiSim</code> output as unique argument, to generate a list containing:</p>
+<ul>
+<li>
+<code>N.inactive</code>, the number of inactive hosts at the end of the simulation on which the <span class="math inline">\(R_0\)</span> calculation is made. This is to avoid bias introduced by hosts that have not accomplished their full transmission potential (i.e. are still active).</li>
+<li>
+<code>R0.mean</code> is the <span class="math inline">\(R_0\)</span> estimate, mean of the following <code>R0.dist</code>.</li>
+<li>
+<code>R0.dist</code> is the full distribution (one number is one host) of <span class="math inline">\(R_0\)</span> estimates per host.</li>
+</ul>
+<p>Here for example, we simulate a single introduction of a single-host pathogen between 3 differents states (named “A”, “B”, and “C”), with a constant exit and move probabilityn as well as a number of contacts dependant of the location and host count in each location:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">  p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">  p_Move_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.1</span>)}</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">  p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.05</span>)}</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">  proba &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){</a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">    <span class="cf">if</span>(t <span class="op">&lt;=</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12">  }</a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14">  time_contact &lt;-<span class="st"> </span><span class="cf">function</span>(t, current.in, host.count){</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">    temp.val =<span class="st"> </span><span class="dv">30</span> <span class="op">-</span><span class="st"> </span>host.count</a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18">    <span class="cf">if</span>(temp.val <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb8-19" data-line-number="19">      <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb8-20" data-line-number="20">    }</a>
+<a class="sourceLine" id="cb8-21" data-line-number="21">    <span class="cf">if</span>(temp.val <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb8-22" data-line-number="22">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"A"</span>){</a>
+<a class="sourceLine" id="cb8-23" data-line-number="23">        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>((temp.val<span class="op">/</span><span class="dv">30</span>)<span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb8-24" data-line-number="24">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"B"</span>){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">0</span>)}</a>
+<a class="sourceLine" id="cb8-25" data-line-number="25">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"C"</span>){</a>
+<a class="sourceLine" id="cb8-26" data-line-number="26">        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>((temp.val<span class="op">/</span><span class="dv">30</span>)<span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb8-27" data-line-number="27">    }</a>
+<a class="sourceLine" id="cb8-28" data-line-number="28">  }</a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30">  transition.matrix =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="dv">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="dv">0</span>),<span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>,<span class="dt">dimnames=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>),<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>)))</a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">1050</span>)</a>
+<a class="sourceLine" id="cb8-33" data-line-number="33">  test.nosoiA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"discrete"</span>,</a>
+<a class="sourceLine" id="cb8-34" data-line-number="34">                          <span class="dt">length=</span><span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb8-35" data-line-number="35">                          <span class="dt">max.infected=</span><span class="dv">200</span>,</a>
+<a class="sourceLine" id="cb8-36" data-line-number="36">                          <span class="dt">init.individuals=</span><span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb8-37" data-line-number="37">                          <span class="dt">init.structure=</span><span class="st">"A"</span>,</a>
+<a class="sourceLine" id="cb8-38" data-line-number="38">                          <span class="dt">structure.matrix=</span>transition.matrix,</a>
+<a class="sourceLine" id="cb8-39" data-line-number="39">                          <span class="dt">pMove=</span>p_Move_fct,</a>
+<a class="sourceLine" id="cb8-40" data-line-number="40">                          <span class="dt">param.pMove=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb8-41" data-line-number="41">                          <span class="dt">diff.nContact=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb8-42" data-line-number="42">                          <span class="dt">hostCount.nContact=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb8-43" data-line-number="43">                          <span class="dt">nContact=</span>time_contact,</a>
+<a class="sourceLine" id="cb8-44" data-line-number="44">                          <span class="dt">param.nContact=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb8-45" data-line-number="45">                          <span class="dt">pTrans =</span> proba,</a>
+<a class="sourceLine" id="cb8-46" data-line-number="46">                          <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,</a>
+<a class="sourceLine" id="cb8-47" data-line-number="47">                                              <span class="dt">t_incub=</span>t_incub_fct),</a>
+<a class="sourceLine" id="cb8-48" data-line-number="48">                          <span class="dt">pExit=</span>p_Exit_fct,</a>
+<a class="sourceLine" id="cb8-49" data-line-number="49">                          <span class="dt">param.pExit=</span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb8-50" data-line-number="50">  )</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/getR0.html">getR0</a></span>(test.nosoiA)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; $N.inactive</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; [1] 117</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; $R0.mean</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; [1] 1.041667</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; $R0.dist</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;   [1] 66  1  4  1  4 12  1  2  1  2  5  2  6 18  0  0  0  0  0  0  0  0  0</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  [24]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  [47]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  [70]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  [93]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; [116]  0  0  0  0  0</span></a></code></pre></div>
+<p>As you can see, out of the 117 inactive hosts, the mean <span class="math inline">\(R_0\)</span> is 1.041667. This does not of course reflect the distribution of <span class="math inline">\(R_0\)</span> where most hosts actually never transmitted the infection:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">data =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">R0=</span><span class="kw"><a href="../reference/getR0.html">getR0</a></span>(test.nosoiA)<span class="op">$</span>R0.dist)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data=</span>data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>R0)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>()</a></code></pre></div>
+<p><img src="output_files/figure-html/figureR0-1.png" width="700"></p>
+</div>
+</div>
+<div id="transmission-chains" class="section level1">
+<h1 class="hasAnchor">
+<a href="#transmission-chains" class="anchor"></a>Transmission chains</h1>
+<div id="full-transmission-chain" class="section level2">
+<h2 class="hasAnchor">
+<a href="#full-transmission-chain" class="anchor"></a>Full transmission chain</h2>
+<p>The transmission chain is the main product of a <code>nosoi</code> simulation. It can be extracted or visualized as such using the <code>table.hosts</code> table that links in time hosts. It can also be extracted in a form mimicking a phylogenetic tree, and visualized or saved as such using available tools for phylogenetic trees. To do so, you can use the <code>getTransmissionTree</code> function, which arguments are the <code>nosoi</code> simulation output and which host-type would be the tips of the tree (“A” by default, or “B” in case a dual-host simulation).</p>
+<!-- put here more info on how the transmissiont tree is actually reconstructed. Paul? -->
+<blockquote>
+<p><code>getTransmissionTree</code> extracts the full transmission tree. In case of a big simulated epidemic, this can take some time. It can also be very complicated to plot/visualise.</p>
+</blockquote>
+<p>As an exemple, we simulate a single introduction of a single-host pathogen between 3 differents states (named “A”, “B”, and “C”), with a constant exit and move probabilityn as well as a number of contacts dependant of the location and host count in each location:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">  t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">  p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">  p_Move_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.1</span>)}</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">  p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.05</span>)}</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">  proba &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){</a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">    <span class="cf">if</span>(t <span class="op">&lt;=</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}</a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)</a>
+<a class="sourceLine" id="cb11-12" data-line-number="12">  }</a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14">  time_contact &lt;-<span class="st"> </span><span class="cf">function</span>(t, current.in, host.count){</a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb11-16" data-line-number="16">    temp.val =<span class="st"> </span><span class="dv">30</span> <span class="op">-</span><span class="st"> </span>host.count</a>
+<a class="sourceLine" id="cb11-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb11-18" data-line-number="18">    <span class="cf">if</span>(temp.val <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb11-19" data-line-number="19">      <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb11-20" data-line-number="20">    }</a>
+<a class="sourceLine" id="cb11-21" data-line-number="21">    <span class="cf">if</span>(temp.val <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb11-22" data-line-number="22">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"A"</span>){</a>
+<a class="sourceLine" id="cb11-23" data-line-number="23">        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>((temp.val<span class="op">/</span><span class="dv">30</span>)<span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb11-24" data-line-number="24">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"B"</span>){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="dv">0</span>)}</a>
+<a class="sourceLine" id="cb11-25" data-line-number="25">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"C"</span>){</a>
+<a class="sourceLine" id="cb11-26" data-line-number="26">        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>((temp.val<span class="op">/</span><span class="dv">30</span>)<span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb11-27" data-line-number="27">    }</a>
+<a class="sourceLine" id="cb11-28" data-line-number="28">  }</a>
+<a class="sourceLine" id="cb11-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb11-30" data-line-number="30">  transition.matrix =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="dv">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="dv">0</span>),<span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>,<span class="dt">dimnames=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>),<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>)))</a>
+<a class="sourceLine" id="cb11-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb11-32" data-line-number="32">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">1050</span>)</a>
+<a class="sourceLine" id="cb11-33" data-line-number="33">  test.nosoiA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"discrete"</span>,</a>
+<a class="sourceLine" id="cb11-34" data-line-number="34">                          <span class="dt">length=</span><span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb11-35" data-line-number="35">                          <span class="dt">max.infected=</span><span class="dv">200</span>,</a>
+<a class="sourceLine" id="cb11-36" data-line-number="36">                          <span class="dt">init.individuals=</span><span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb11-37" data-line-number="37">                          <span class="dt">init.structure=</span><span class="st">"A"</span>,</a>
+<a class="sourceLine" id="cb11-38" data-line-number="38">                          <span class="dt">structure.matrix=</span>transition.matrix,</a>
+<a class="sourceLine" id="cb11-39" data-line-number="39">                          <span class="dt">pMove=</span>p_Move_fct,</a>
+<a class="sourceLine" id="cb11-40" data-line-number="40">                          <span class="dt">param.pMove=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb11-41" data-line-number="41">                          <span class="dt">diff.nContact=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb11-42" data-line-number="42">                          <span class="dt">hostCount.nContact=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb11-43" data-line-number="43">                          <span class="dt">nContact=</span>time_contact,</a>
+<a class="sourceLine" id="cb11-44" data-line-number="44">                          <span class="dt">param.nContact=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb11-45" data-line-number="45">                          <span class="dt">pTrans =</span> proba,</a>
+<a class="sourceLine" id="cb11-46" data-line-number="46">                          <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,</a>
+<a class="sourceLine" id="cb11-47" data-line-number="47">                                              <span class="dt">t_incub=</span>t_incub_fct),</a>
+<a class="sourceLine" id="cb11-48" data-line-number="48">                          <span class="dt">pExit=</span>p_Exit_fct,</a>
+<a class="sourceLine" id="cb11-49" data-line-number="49">                          <span class="dt">param.pExit=</span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb11-50" data-line-number="50">  )</a></code></pre></div>
+<p>The simulation runs for 46 time-steps and infected 204 hosts. The following transmission tree can thus be extracted and plotted:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggtree)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">test.nosoiA.tree =<span class="st"> </span><span class="kw"><a href="../reference/getTransmissionTree.html">getTransmissionTree</a></span>(test.nosoiA)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/ggtree">ggtree</a></span>(test.nosoiA.tree) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_nodepoint">geom_nodepoint</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_tippoint">geom_tippoint</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/theme_tree2">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">        <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
+<p><img src="output_files/figure-html/treeA-1.png" width="700"></p>
+<p>Each color point represent the state, either at transmission (a node) or a host when it exits the simulation (or the end point of the simulation; a tip). This transmission tree is timed (time-steps of the simulation). As you can see, no transmission ever occurs at location “B” (green); this is coherent with the chosen <code>nContact</code> function, where no infectious contact occurs when the hosts is in “B”.</p>
+</div>
+<div id="sampling-the-transmission-chain" class="section level2">
+<h2 class="hasAnchor">
+<a href="#sampling-the-transmission-chain" class="anchor"></a>Sampling the transmission chain</h2>
+<p>Usually, it is unlikely that the whole transmission chain (i.e. every host) will be sampled during surveillance of an epidemic outbreak or endemic transmission. The functions <code><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree()</a></code> and <code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code> can both be used to sample hosts in this transmission chain and construct the new tree based on the existing hosts (tips).</p>
+<p><code><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree()</a></code> needs the following arguments:</p>
+<ul>
+<li>
+<code>nosoiInf</code>, the output of simulation (<code>nosoiSim</code> object)</li>
+<li>
+<code>tree</code>, a <code>treedata</code> object created by the function <code><a href="../reference/getTransmissionTree.html">getTransmissionTree()</a></code> (see above).</li>
+<li>
+<code>samples</code>, a <code>data.table</code> object with the following entries:
+<ul>
+<li>
+<code>hosts</code>, unique <code>Host.ID</code> of the individuals to be sampled.</li>
+<li>
+<code>times</code>, time at which hosts are sampled.</li>
+<li>
+<code>labels</code>, name of the corresponding tip in the tree</li>
+</ul>
+</li>
+</ul>
+<p>In the exemple above, we want to sample the following 20 hosts:</p>
+<pre><code>#&gt; # A tibble: 20 x 3
+#&gt; # Groups:   hosts.ID [20]
+#&gt;    hosts times labels       
+#&gt;    &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;        
+#&gt;  1 H-7      14 H-7-sampled  
+#&gt;  2 H-120    33 H-120-sampled
+#&gt;  3 H-109    32 H-109-sampled
+#&gt;  4 H-191    44 H-191-sampled
+#&gt;  5 H-10     15 H-10-sampled 
+#&gt;  6 H-29     19 H-29-sampled 
+#&gt;  7 H-48     22 H-48-sampled 
+#&gt;  8 H-108    28 H-108-sampled
+#&gt;  9 H-99     26 H-99-sampled 
+#&gt; 10 H-61     26 H-61-sampled 
+#&gt; 11 H-110    40 H-110-sampled
+#&gt; 12 H-2      33 H-2-sampled  
+#&gt; 13 H-67     38 H-67-sampled 
+#&gt; 14 H-62     21 H-62-sampled 
+#&gt; 15 H-59     28 H-59-sampled 
+#&gt; 16 H-5      28 H-5-sampled  
+#&gt; 17 H-177    46 H-177-sampled
+#&gt; 18 H-51     25 H-51-sampled 
+#&gt; 19 H-164    40 H-164-sampled
+#&gt; 20 H-32     16 H-32-sampled</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/ggtree">ggtree</a></span>(test.nosoiA.tree.sampled) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_nodepoint">geom_nodepoint</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_tippoint">geom_tippoint</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_tiplab">geom_tiplab</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">label=</span>host)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/theme_tree2">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">        <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
+<p><img src="output_files/figure-html/treeB-1.png" width="700"></p>
+</div>
 </div>
   </div>
 
@@ -198,7 +593,25 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#work-in-progress">Work in progress</a></li>
+<li>
+<a href="#nosoisim-object"><code>nosoiSim</code> object</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#table-hosts"><code>table.hosts</code></a></li>
+      <li><a href="#table-state"><code>table.state</code></a></li>
+      </ul>
+</li>
+      <li>
+<a href="#epidemiological-insights">Epidemiological insights</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#epidemiological-summary">Epidemiological summary</a></li>
+      <li><a href="#epidemiological-dynamics">Epidemiological dynamics</a></li>
+      <li><a href="#r_0"><span class="math inline">\(R_0\)</span></a></li>
+      </ul>
+</li>
+      <li>
+<a href="#transmission-chains">Transmission chains</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#full-transmission-chain">Full transmission chain</a></li>
+      <li><a href="#sampling-the-transmission-chain">Sampling the transmission chain</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>

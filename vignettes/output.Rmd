@@ -1,5 +1,5 @@
 ---
-title: "`nosoi` output and summarisation"
+title: "Output and summarization"
 author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -15,4 +15,358 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Work in progress
+# `nosoiSim` object
+
+The output of a `nosoi` simulation is a class `nosoiSim` object. It contains all data generated during the simulation into the following slots:
+
+- `total.time` is the number of time-steps (an integer) during which the simulation has run.
+- `type` is the simulation type that has been runed (either "single" or "dual" host).
+- `host.info.A` is an object of class `nosoiSimOne`, itself a list of elements concerning host-type A (or the unique host type in case of a single-host simulation), with the following slots:
+  - `N.infected` is the final number (an integer) of infected hosts.
+  - `table.hosts` is a table containing the results of the simulations focusing on each individual hosts. For more details on its structure, see below.
+  - `table.state` is a table containing the results of the simulations concerning the movement history of the infected hosts. For more details on its structure, see below.
+  - `prefix.host` is the string containing the prefix used to name the hosts (user-defined `prefix.host` in the `nosoiSim` function).
+  - `popStructure` is the population structure used (either "none", "discrete" or "continuous").
+- `host.info.B` is the same as above, but for host-type B (is `NA` if a single-host was run).
+
+Host-specific element (i.e. in `host.info.A` or `host.info.B`) in this object can be easily extracted by using the function `getHostData`:
+```{r getHostData, eval = FALSE}
+getHostData(nosoi.output, what, pop)
+```                        
+
+This function takes as arguments your nosoi output object (class `nosoiSim`), what you want to extract (either `N.infected`, `table.hosts`, `table.state` or `prefix.host`), and which host-type (here `pop`) you are interested in (`A` (by default) but can be `B` in case of dual hosts simulations).
+
+## `table.hosts`
+
+`table.hosts`, a `data.table` object, contains informations about each host that has been simulated. In this object, one row corresponds to one host. This object can be directly extracted using the function `getTableHosts`:
+```{r getTableHosts, eval = FALSE}
+getTableHosts(nosoi.output, pop)
+``` 
+
+This function takes as arguments your nosoi output object (class `nosoiSim`) and which host-type (here `pop`) you are interested in (`A` (by default) but can be `B` in case of dual hosts simulations).
+
+The structure of the table is the following:
+
+- `hosts.ID` is the unique identifier for the host (a string of characters), based on user-defined prefix and an integer.
+- `inf.by` is the unique identifier of the host that infected the current one (stands for "infected by").
+- `inf.in` (only if structure is present) is the state or coordinates (in that case `inf.in.x` and `inf.in.y`) in which the host was initially infected (stands for "infected in").
+- `current.in` (only if structure is present) is the state or coordinates (in that case `current.in.x` and `current.in.y`) in which the host is at the end of the simulation (stands for "currently in"). A complete history of hosts movements is stored in the other table `table.state` (see following section).
+- `current.env.value` (only if continuous structure is present) is the environmental value (i.e. raster cell value) in which the host is at the end of the simulation (stands for "current environmental value"). A complete history of the environmental value encoutered by the host is stored in the other table `table.state` (see following section).
+- `current.cell.raster` (only if continuous structure is present) is the raster cell numeric identifier in which the host is at the end of the simulation. Here also, a complete history of raster cell occupied during the simulation is stored in the other table `table.state` (see following section).
+- `host.count` (only if structure is present) is the host count in the current state or raster cell. This value is only updated if the host count is actually used as a parameter in the simulation.
+- `inf.time` is the time (in time-steps) at which the host entered the simulation (i.e. got infected) (stands for "infection time").
+- `out.time` is the time (in time-steps) at which the host exited the simulation.
+- `active` is a number (either 0 or 1) indicating if the host is still active at the end of the simulation (1 for yes, 0 for no).
+- the rest stores the user-defined individual-specific parameters used by the functions (i.e. specified by the `param` arguments in the simulator's functions).
+
+## `table.state`
+
+`table.state`, a `data.table` object, contains informations about the history of movement of each host that has been simulated. This table is available only if a structured population was simulated (either discrete or continuous). It can be directly extracted using the function `getTableState`:
+```{r getTableState, eval = FALSE}
+getTableState(nosoi.output, pop)
+``` 
+
+This function takes as arguments your nosoi output object (class `nosoiSim`) and which host-type (here `pop`) you are interested in (`A` (by default) but can be `B` in case of dual hosts simulations).
+
+The structure of the table is the following:
+
+- `hosts.ID` is the unique identifier for the host (a string of characters), based on user-defined prefix and an integer.
+- `state` is the state or coordinates (in that case `state.x` and `state.y`) in which the host is located during the time interval.
+- `current.env.value` (only if continuous structure is present) is the environmental value (i.e. raster cell value) in which the host is at the end of the simulation (stands for "current environmental value").
+- `current.cell.raster` (only if continuous structure is present) is the raster cell numeric identifier in which the host is at the end of the simulation.
+- `time.from` is the time (in time-steps) at which the host entered (i.e. got infected or moved) into the state.
+- `time.to` is the time (in time-steps) at which the host left (i.e. excited or moved) out of the state.
+
+# Epidemiological insights
+
+By simulating transmission chains, `nosoi` also simulates an epidemic process. `nosoi` provides some solutions to easily explore the dynamics of this epidemic process by following through time the number of active infected hosts as well as the cumulative number of infected hosts. It also allows to compute the exact basic reproduction number $R_0$, defined as the average number of cases one case generates. Since the whole data generated is stored in the output `nosoiSim` object, more advanced exploration could also be done.
+
+## Epidemiological summary
+
+The `nosoiSummary` is a turnkey solution that computes both the dynamics of the epidemic and $R_0$. Its only argument is your nosoi output object (class `nosoiSim`):
+```{r nosoiSummary, eval = FALSE}
+nosoiSummary(nosoi.output)
+``` 
+
+It returns a list containing the slots:
+
+- `R0` a sublist with number of inactive hosts at the end of the simulation `N.inactive` on which the calculation is done, mean $R_0$ `R0.mean`, and $R_0$ distribution `R0.dist`. For more details on the computation behind, see below.
+- `dynamics` is a `data.table` object with the count of the sum of infected and active host at each time of the simulation (by state if this simulation has been done in a discrete structured host population). See below for more details.
+- `cumulative` is a `data.table` object with the cumulative sum of infected hosts at each time step of the simulation. See below for more details.
+
+## Epidemiological dynamics
+
+Both the `cumulative` and `dynamics` tables can be directly extracted using the functions `getCumulative` and `getDynamic` respectively. Both function yield a `data.table` object, but its structures varies slightly.  `cumulative` has the following structure:
+
+- `t` is the time-step (an integer).
+- `Count` is the cumulative number of infected hosts at given time-step (an integer).
+- `type` is the host-type, idenfitied by its user-defined prefix (string of characters).
+
+`dynamics` has the following structure:
+
+- `state` (only if discrete structure) is the state (a string of characters, usually).
+- `Count` is the number of active infected hosts at given time-step (an integer) by state (if discrete structure).
+- `type` is the host-type, idenfitied by its user-defined prefix (string of characters).
+- `t` is the time-step (an integer).
+
+These can be used to plot the epidemiological dynamics of the simulated transmission chain. Here for example, we simulate a single introduction of a single-host pathogen between 3 differents states (named "A", "B", and "C"), with a constant exit and move probabilityn as well as a number of contacts dependant of the location and host count in each location:
+```{r simDynamics, message=FALSE}
+library(nosoi)
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Move_fct  <- function(t){return(0.1)}
+
+  p_Exit_fct  <- function(t){return(0.05)}
+
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact <- function(t, current.in, host.count){
+
+    temp.val = 30 - host.count
+
+    if(temp.val <= 0) {
+      return(0)
+    }
+    if(temp.val >= 0) {
+      if(current.in=="A"){
+        return(round((temp.val/30)*rnorm(1, 3, 1), 0))}
+      if(current.in=="B"){return(0)}
+      if(current.in=="C"){
+        return(round((temp.val/30)*rnorm(1, 6, 1), 0))}
+    }
+  }
+
+  transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+
+  set.seed(1050)
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
+                          length=100,
+                          max.infected=200,
+                          init.individuals=1,
+                          init.structure="A",
+                          structure.matrix=transition.matrix,
+                          pMove=p_Move_fct,
+                          param.pMove=NA,
+                          diff.nContact=TRUE,
+                          hostCount.nContact=TRUE,
+                          nContact=time_contact,
+                          param.nContact=NA,
+                          pTrans = proba,
+                          param.pTrans = list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          pExit=p_Exit_fct,
+                          param.pExit=NA
+  )
+```
+
+```{r figureDynamics1, message=FALSE}
+library(ggplot2)
+cumulative.table <- getCumulative(test.nosoiA)
+dynamics.table <- getDynamic(test.nosoiA)
+
+ggplot(data=cumulative.table, aes(x=t, y=Count)) + geom_line() + theme_minimal() + labs(x="Time (t)",y="Cumulative count of infected hosts")
+```
+
+```{r figureDynamics2, message=FALSE}
+ggplot(data=dynamics.table, aes(x=t, y=Count, color=state)) + geom_line() + theme_minimal() + labs(x="Time (t)",y="Number of active infected hosts")
+```
+
+## $R_0$
+
+The output `nosoiSim` object can be used to compute the "real" $R_0$, defined as the average number of cases one case generates, often estimated in epidemiological studies. The function `getRO` can be used directly, with the `nosoiSim` output as unique argument, to generate a list containing:
+
+- `N.inactive`, the number of inactive hosts at the end of the simulation on which the $R_0$ calculation is made. This is to avoid bias introduced by hosts that have not accomplished their full transmission potential (i.e. are still active).
+- `R0.mean` is the $R_0$ estimate, mean of the following `R0.dist`.
+- `R0.dist` is the full distribution (one number is one host) of $R_0$ estimates per host.
+
+Here for example, we simulate a single introduction of a single-host pathogen between 3 differents states (named "A", "B", and "C"), with a constant exit and move probabilityn as well as a number of contacts dependant of the location and host count in each location:
+```{r simDynamics-bis, eval=FALSE, message=FALSE}
+library(nosoi)
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Move_fct  <- function(t){return(0.1)}
+
+  p_Exit_fct  <- function(t){return(0.05)}
+
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact <- function(t, current.in, host.count){
+
+    temp.val = 30 - host.count
+
+    if(temp.val <= 0) {
+      return(0)
+    }
+    if(temp.val >= 0) {
+      if(current.in=="A"){
+        return(round((temp.val/30)*rnorm(1, 3, 1), 0))}
+      if(current.in=="B"){return(0)}
+      if(current.in=="C"){
+        return(round((temp.val/30)*rnorm(1, 6, 1), 0))}
+    }
+  }
+
+  transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+
+  set.seed(1050)
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
+                          length=100,
+                          max.infected=200,
+                          init.individuals=1,
+                          init.structure="A",
+                          structure.matrix=transition.matrix,
+                          pMove=p_Move_fct,
+                          param.pMove=NA,
+                          diff.nContact=TRUE,
+                          hostCount.nContact=TRUE,
+                          nContact=time_contact,
+                          param.nContact=NA,
+                          pTrans = proba,
+                          param.pTrans = list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          pExit=p_Exit_fct,
+                          param.pExit=NA
+  )
+```
+
+```{r R0-1, message=FALSE}
+getR0(test.nosoiA)
+```
+
+As you can see, out of the 117 inactive hosts, the mean $R_0$ is 1.041667. This does not of course reflect the distribution of $R_0$ where most hosts actually never transmitted the infection:
+```{r figureR0, message=FALSE}
+data = data.frame(R0=getR0(test.nosoiA)$R0.dist)
+
+ggplot(data=data, aes(x=R0)) + geom_histogram() + theme_minimal()
+```
+
+# Transmission chains
+
+## Full transmission chain
+The transmission chain is the main product of a `nosoi` simulation. It can be extracted or visualized as such using the `table.hosts` table that links in time hosts. It can also be extracted in a form mimicking a phylogenetic tree, and visualized or saved as such using available tools for phylogenetic trees. To do so, you can use the `getTransmissionTree` function, which arguments are the `nosoi` simulation output and which host-type would be the tips of the tree ("A" by default, or "B" in case a dual-host simulation).
+
+<!-- put here more info on how the transmissiont tree is actually reconstructed. Paul? --> 
+
+> `getTransmissionTree` extracts the full transmission tree. In case of a big simulated epidemic, this can take some time. It can also be very complicated to plot/visualise.
+
+As an exemple, we simulate a single introduction of a single-host pathogen between 3 differents states (named "A", "B", and "C"), with a constant exit and move probabilityn as well as a number of contacts dependant of the location and host count in each location:
+
+```{r simDynamics-ter, eval=FALSE, message=FALSE}
+library(nosoi)
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Move_fct  <- function(t){return(0.1)}
+
+  p_Exit_fct  <- function(t){return(0.05)}
+
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  time_contact <- function(t, current.in, host.count){
+
+    temp.val = 30 - host.count
+
+    if(temp.val <= 0) {
+      return(0)
+    }
+    if(temp.val >= 0) {
+      if(current.in=="A"){
+        return(round((temp.val/30)*rnorm(1, 3, 1), 0))}
+      if(current.in=="B"){return(0)}
+      if(current.in=="C"){
+        return(round((temp.val/30)*rnorm(1, 6, 1), 0))}
+    }
+  }
+
+  transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+
+  set.seed(1050)
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
+                          length=100,
+                          max.infected=200,
+                          init.individuals=1,
+                          init.structure="A",
+                          structure.matrix=transition.matrix,
+                          pMove=p_Move_fct,
+                          param.pMove=NA,
+                          diff.nContact=TRUE,
+                          hostCount.nContact=TRUE,
+                          nContact=time_contact,
+                          param.nContact=NA,
+                          pTrans = proba,
+                          param.pTrans = list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          pExit=p_Exit_fct,
+                          param.pExit=NA
+  )
+```
+
+The simulation runs for 46 time-steps and infected 204 hosts. The following transmission tree can thus be extracted and plotted:
+
+```{r treeA, message=FALSE}
+library(ggtree)
+
+test.nosoiA.tree = getTransmissionTree(test.nosoiA)
+
+ggtree(test.nosoiA.tree) + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + 
+    theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
+        legend.title = element_blank(),
+        legend.key = element_blank()) 
+```
+
+Each color point represent the state, either at transmission (a node) or a host when it exits the simulation (or the end point of the simulation; a tip). This transmission tree is timed (time-steps of the simulation). As you can see, no transmission ever occurs at location "B" (green); this is coherent with the chosen `nContact` function, where no infectious contact occurs when the hosts is in "B".
+
+## Sampling the transmission chain
+
+Usually, it is unlikely that the whole transmission chain (i.e. every host) will be sampled during surveillance of an epidemic outbreak or endemic transmission. The functions `sampleTransmissionTree()` and `sampleTransmissionTreeFromExiting()` can both be used to sample hosts in this transmission chain and construct the new tree based on the existing hosts (tips).
+
+`sampleTransmissionTree()` needs the following arguments:
+
+- `nosoiInf`, the output of simulation (`nosoiSim` object)
+- `tree`, a `treedata` object created by the function `getTransmissionTree()` (see above).
+- `samples`, a `data.table` object with the following entries:
+  - `hosts`, unique `Host.ID` of the individuals to be sampled.
+  - `times`, time at which hosts are sampled.
+  - `labels`, name of the corresponding tip in the tree
+
+In the exemple above, we want to sample the following 20 hosts:
+
+```{r tree-sample1, echo=FALSE, message=FALSE}
+library(dplyr)
+
+table.hosts.testA <- getTableHosts(test.nosoiA)
+setkey(table.hosts.testA, "hosts.ID")
+
+set.seed(30082019)
+sampled.hosts <- sample(table.hosts.testA$hosts.ID, 20)
+
+samples.data.table <- table.hosts.testA[sampled.hosts] %>% group_by(hosts.ID) %>% mutate(Sampled.time = round(runif(1, min=inf.time,max=out.time), digits = 0), labels = paste(hosts.ID,"sampled",sep="-")) 
+
+samples.data.table <- samples.data.table[c("hosts.ID","Sampled.time","labels")]
+colnames(samples.data.table) <- c("hosts", "times", "labels")
+samples.data.table
+
+test.nosoiA.tree.sampled <- sampleTransmissionTree(test.nosoiA, test.nosoiA.tree, samples.data.table)
+```
+
+```{r treeB, message=FALSE}
+ggtree(test.nosoiA.tree.sampled) + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
+    theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
+        legend.title = element_blank(),
+        legend.key = element_blank()) 
+```
+
+
+
+
