@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -37,14 +39,14 @@
 
 
 
-<meta property="og:title" content="Single-host pathogen in a structured (continuous) host population — singleContinuous" />
 
+<meta property="og:title" content="Single-host pathogen in a structured (continuous) host population — singleContinuous" />
 <meta property="og:description" content="This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features) in a continuous space.
 The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
 is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -74,7 +76,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -186,12 +188,11 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
       <a href="../articles/none.html">Spread of a pathogen in a homogeneous population</a>
     </li>
     <li>
-      <a href="../articles/output.html">`nosoi` output and summarisation</a>
+      <a href="../articles/output.html">Output and summarization</a>
     </li>
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/slequime/nosoi">
@@ -217,11 +218,9 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </div>
 
     <div class="ref-description">
-    
     <p>This function runs a single-host transmission chain simulation, with a structured host population (such as spatial features) in a continuous space.
 The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
 is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>singleContinuous</span>(<span class='no'>length.sim</span>, <span class='no'>max.infected</span>, <span class='no'>init.individuals</span>,
@@ -235,7 +234,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
   <span class='no'>param.nContact</span>, <span class='kw'>diff.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeDep.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>hostCount.pTrans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>pTrans</span>, <span class='no'>param.pTrans</span>, <span class='kw'>prefix.host</span> <span class='kw'>=</span> <span class='st'>"H"</span>,
   <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -376,11 +375,10 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
       <td><p>print.progress is TRUE, step with which the progress message will be printed.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>, containing all results of the simulation.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The structure raster provided provided should of class <code>raster</code>. High values of the environemental variable can attract hosts if <code>attracted.by.raster</code> is TRUE.</p>
@@ -391,11 +389,9 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 <p>The use of <code>hostCount</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>host.count</code>.</p>
 <p>The user specified function's arguments should follow this order: <code>t</code> (mandatory), <code>prestime</code> (optional, only if timeDep is TRUE),
 <code>current.env.value</code> (optional, only if diff is TRUE), <code>host.count</code> (optional, only if hostCount is TRUE) and <code>parameters</code> specified in the list.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>For simulations with a discrete structure, see <code><a href='singleDiscrete.html'>singleDiscrete</a></code>. For simulations without any structures, see <code><a href='singleNone.html'>singleNone</a></code>.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
@@ -450,13 +446,9 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

@@ -46,5 +46,6 @@ Suggests:
     png,
     ape (>= 5.3),
     tidytree (>= 0.2.4),
-    treeio (>= 1.6.2)
+    treeio (>= 1.6.2),
+    ggtree (>= 1.17.0)
 VignetteBuilder: knitr

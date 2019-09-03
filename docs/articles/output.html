@@ -176,7 +176,7 @@
       <h1>Output and summarization</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-08-30</h4>
+            <h4 class="date">2019-09-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/output.Rmd"><code>vignettes/output.Rmd</code></a></small>
       <div class="hidden name"><code>output.Rmd</code></div>
@@ -213,7 +213,7 @@
 <code>host.info.B</code> is the same as above, but for host-type B (is <code>NA</code> if a single-host was run).</li>
 </ul>
 <p>Host-specific element (i.e. in <code>host.info.A</code> or <code>host.info.B</code>) in this object can be easily extracted by using the function <code>getHostData</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">getHostData</span>(nosoi.output, what, pop)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="../reference/getHostData.html">getHostData</a></span>(nosoi.output, what, pop)</a></code></pre></div>
 <p>This function takes as arguments your nosoi output object (class <code>nosoiSim</code>), what you want to extract (either <code>N.infected</code>, <code>table.hosts</code>, <code>table.state</code> or <code>prefix.host</code>), and which host-type (here <code>pop</code>) you are interested in (<code>A</code> (by default) but can be <code>B</code> in case of dual hosts simulations).</p>
 <div id="table-hosts" class="section level2">
 <h2 class="hasAnchor">
@@ -520,7 +520,7 @@
 <a class="sourceLine" id="cb11-48" data-line-number="48">                          <span class="dt">pExit=</span>p_Exit_fct,</a>
 <a class="sourceLine" id="cb11-49" data-line-number="49">                          <span class="dt">param.pExit=</span><span class="ot">NA</span></a>
 <a class="sourceLine" id="cb11-50" data-line-number="50">  )</a></code></pre></div>
-<p>The simulation runs for 46 time-steps and infected 204 hosts. The following transmission tree can thus be extracted and plotted:</p>
+<p>The simulation runs for 46 time-steps and infected 204 hosts. The following transmission tree can thus be extracted (as a <code>treedata</code> object) and plotted:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggtree)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb12-3" data-line-number="3">test.nosoiA.tree =<span class="st"> </span><span class="kw"><a href="../reference/getTransmissionTree.html">getTransmissionTree</a></span>(test.nosoiA)</a>
@@ -579,16 +579,38 @@
 #&gt; 18 H-51     25 H-51-sampled 
 #&gt; 19 H-164    40 H-164-sampled
 #&gt; 20 H-32     16 H-32-sampled</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/ggtree">ggtree</a></span>(test.nosoiA.tree.sampled) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_nodepoint">geom_nodepoint</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_tippoint">geom_tippoint</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_tiplab">geom_tiplab</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">label=</span>host)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/theme_tree2">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">        <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">test.nosoiA.tree.sampled &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree</a></span>(test.nosoiA, test.nosoiA.tree, samples.data.table)</a></code></pre></div>
+<p>As before, the tree obtained is a <code>treedata</code> object, and can be plotted:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/ggtree">ggtree</a></span>(test.nosoiA.tree.sampled) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_nodepoint">geom_nodepoint</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_tippoint">geom_tippoint</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_tiplab">geom_tiplab</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">label=</span>host)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/theme_tree2">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">        <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
 <p><img src="output_files/figure-html/treeB-1.png" width="700"></p>
+<p>Alternatively, you can sample among exited hosts (i.e. no longer active at the end of the simulation) using the function <code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code>, mimicking a sampling procedure that is destructive or cuts the hosts from the population. Be careful however, as it does not influence the epidemiological process: the hosts are only sampled when exiting the simulation.</p>
+<p><code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code> needs the following arguments:</p>
+<ul>
+<li>
+<code>tree</code>, a <code>treedata</code> object created by the function <code><a href="../reference/getTransmissionTree.html">getTransmissionTree()</a></code> (see above).</li>
+<li>
+<code>hosts</code>, a vector with the hosts.ID of the exited hosts to sample.</li>
+</ul>
+<p>In our example, we want to sample these samples:</p>
+<pre><code>#&gt;  [1] "H-151" "H-123" "H-50"  "H-64"  "H-73"  "H-118" "H-29"  "H-85" 
+#&gt;  [9] "H-100" "H-95"  "H-82"  "H-93"  "H-111" "H-45"  "H-124" "H-165"
+#&gt; [17] "H-38"  "H-16"  "H-107" "H-155"</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">test.nosoiA.tree.sampled.exiting &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting</a></span>(test.nosoiA.tree, sampled.hosts)</a></code></pre></div>
+<p>As before, the tree obtained is a <code>treedata</code> object, and can be plotted:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/ggtree">ggtree</a></span>(test.nosoiA.tree.sampled.exiting) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_nodepoint">geom_nodepoint</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_tippoint">geom_tippoint</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/geom_tiplab">geom_tiplab</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">aes</a></span>(<span class="dt">label=</span>host)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/theme_tree2">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggtree/topics/reexports">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">        <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
+<p><img src="output_files/figure-html/treeC-1.png" width="700"></p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>

@@ -312,7 +312,7 @@ library(nosoi)
   )
 ```
 
-The simulation runs for 46 time-steps and infected 204 hosts. The following transmission tree can thus be extracted and plotted:
+The simulation runs for 46 time-steps and infected 204 hosts. The following transmission tree can thus be extracted (as a `treedata` object) and plotted:
 
 ```{r treeA, message=FALSE}
 library(ggtree)
@@ -356,9 +356,13 @@ samples.data.table <- table.hosts.testA[sampled.hosts] %>% group_by(hosts.ID) %>
 samples.data.table <- samples.data.table[c("hosts.ID","Sampled.time","labels")]
 colnames(samples.data.table) <- c("hosts", "times", "labels")
 samples.data.table
+```
 
+```{r tree-sample2, message=FALSE}
 test.nosoiA.tree.sampled <- sampleTransmissionTree(test.nosoiA, test.nosoiA.tree, samples.data.table)
 ```
+
+As before, the tree obtained is a `treedata` object, and can be plotted:
 
 ```{r treeB, message=FALSE}
 ggtree(test.nosoiA.tree.sampled) + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
@@ -367,6 +371,31 @@ ggtree(test.nosoiA.tree.sampled) + geom_nodepoint(aes(color=state)) + geom_tippo
         legend.key = element_blank()) 
 ```
 
+Alternatively, you can sample among exited hosts (i.e. no longer active at the end of the simulation) using the function `sampleTransmissionTreeFromExiting()`, mimicking a sampling procedure that is destructive or cuts the hosts from the population. Be careful however, as it does not influence the epidemiological process: the hosts are only sampled when exiting the simulation.
 
+`sampleTransmissionTreeFromExiting()` needs the following arguments:
 
+- `tree`, a `treedata` object created by the function `getTransmissionTree()` (see above).
+- `hosts`, a vector with the hosts.ID of the exited hosts to sample.
 
+In our example, we want to sample these samples:
+
+```{r tree-sample3, echo=FALSE, message=FALSE}
+set.seed(5905950)
+sampled.hosts2 = subset(table.hosts.testA, active == 0)$hosts.ID
+sampled.hosts <- sample(sampled.hosts2, 20)
+sampled.hosts
+```
+
+```{r tree-sample4, message=FALSE}
+test.nosoiA.tree.sampled.exiting <- sampleTransmissionTreeFromExiting(test.nosoiA.tree, sampled.hosts)
+```
+
+As before, the tree obtained is a `treedata` object, and can be plotted:
+
+```{r treeC, message=FALSE}
+ggtree(test.nosoiA.tree.sampled.exiting) + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
+    theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
+        legend.title = element_blank(),
+        legend.key = element_blank()) 
+```
