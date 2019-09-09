@@ -11,79 +11,39 @@ vignette: >
 
 # Introduction
 
-In this example, we will simulate an Ebola-like epidemic in Western Africa.
+In this example, we will simulate an Ebola-like epidemic in Western Africa. We will use the distribution of the population in this region as the "environmental factor" to be included in our simulation (origin: [WorldPop](https://www.worldpop.org/)). The map will be the following (here represented on a log scale to show efficiently differences in distribution):
 
-```{r mapANDstart, eval = FALSE}
+```{r importRaster, echo = FALSE, message=FALSE, warning=FALSE}
+library(raster)
+library(viridis)
+library(ggplot2)
+library(ggspatial)
+
 e_WestAfrica = extent(-18, -3, 3, 15) # WorldPop Africa raster:
 population = crop(raster("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Nosoi_EBOV_simus/Africa_pop_2015.tif"), e_WestAfrica)
 
-
-cellFromXY(population, cbind(-10.132, 12.561))
-extract(population,526545)
-extract(population,cbind(-11.132, 12.561))
-raster::extract(population,cbind(-11.132, 12.561))
-
-test= raster::as.data.frame(population, xy=FALSE)
-test[526545,]
-
-start.pos = c(-10.132, 8.561) # Guéckédou in Guinea
-
-plot(population)
-points(start.pos, col="red", pch=50)
-
-library(viridis)
 ggplot() +
-	layer_spatial(population) +
-	labs(caption="Human population grid") +  scale_fill_viridis(limits=c(0,NA),na.value="white", name="Environmental\nvalue") + 
-	geom_point(x=-10.132,y=8.561, show.legend=F, color="firebrick3") +	theme(panel.background = element_blank(),
+	layer_spatial(population) + 
+	labs(caption="Human population grid", x="longitude", y="latitude") +  
+  scale_fill_viridis(trans = "log1p",option="A",limits=c(0,NA),na.value="white", name="Environmental\nvalue (number of\ninhabitants)",
+                     position="bottom",breaks=c(6,60,600,6000,60000),labels=c(6,60,600,6000,60000)) + 
+	theme(panel.background = element_blank(),
 		panel.ontop = TRUE,
 		panel.grid.major = element_line(size=0.25, linetype="dashed", colour ="grey70"),
 		axis.ticks=element_blank(),
 		plot.caption=element_text(size=10))
 ```
+
+Ebola will here be considered a single-host pathogen, and some of the pathogen related parameters will be found in the literature. The others will be empirically fixed to realistic values. As estimated for the 2013 epidemic, the first infected host will start at Gueckedou in Guinea.
+
 # Host parameters
 
-### `pExit`
+## `pExit`
 
-```{r pExit, eval = FALSE}
-p_Exit_fct = function(t, t_incub){ # return(0.1)} # should return a value between 0 and 1 (probability)
-  t_recovery = 20 # days before recovery
-  if (t <= t_incub) { p = 0 }
-  if ((t > t_incub)&(t < (t_incub+t_recovery))) { p = 0.025 } # 50% chance to dye before recovery
-  if (t > (t_incub+t_recovery)) { p = 1 } 
-  return(p)
-}
-```
+The probability of exiting (i.e. in our case recovering or dying from the infection) for each host will depend on (1) time since infection and (2) a host parameter called `t_incub` for "incubation time" that will be sampled, for each host, based on a published article ( [Casillas et al. 2003 Biol Res Nurs](https://www.ncbi.nlm.nih.gov/pubmed/12698919) ):
 
-### `pMove`
-```{r pMove, eval = FALSE}
-p_Move_fct = function(t){ return(0.01) }
-```
-
-### `sdMove`
-```{r sdMove, eval = FALSE}
-sdMove_fct = function(t){ sample(seq(1,100),1,prob=(1/(seq(1,100)^2))/sum((1/(seq(1,100)^2)))) }
-```
-
-### `nContact`
-```{r nContact, eval = FALSE}
-n_contact = function(t, current.env.value){ current.env.value/100 }
-```
-
-### `pTrans`
-
-PMID 12698919 Casillas et al. Biol Res Nurs. 2003 for tincub
-PMID 28396472 Skrip et al. Philos Trans R Soc Lond B Biol Sci. 2017 for pTrans
-
-```{r pTrans, eval = FALSE}
-
-proba = function(t, t_incub) {
-  if (t <= t_incub) { p = 0 }
-  if (t > t_incub) { p = 0.025 } # REF: PMID-28396472
-  return(p)
-}
-
-t_incub_fct = function(x){ # REF: PMID-12698919
+```{r tincub}
+t_incub_fct = function(x){
 	t_incub = c()
 	while (length(t_incub) == 0)
 		{
@@ -93,12 +53,80 @@ t_incub_fct = function(x){ # REF: PMID-12698919
 				{
 					if (length(t_incub) < x)
 						{
-							print(t_incub)
 							t_incub = c(t_incub, sample(t_incub,x-length(t_incub)))
 						}
 				}	
 		}
 	return(t_incub)
+}
+```
+
+Which gives the following distribution for 1,000 hosts:
+
+```{r tincubDemo, echo = FALSE, error=FALSE, message=FALSE, warning=FALSE}
+set.seed(5006)
+data.test.tincub <- data.frame(x=t_incub_fct(1000))
+
+ggplot(data=data.test.tincub, aes(x=x)) + geom_histogram() + theme_minimal() + labs(x="Incubation time", y="Host count")
+```
+
+If "time since infection" (hereafter `t`) is below the incubation time (`t_incub`), then the probability to exit is null. If `t` is greater that `t_incub` but below a recovery time (`t_recovery` fixed at 20 days after symptom onset), then the daily probability to exit (by dying) is 2.5\%. If `t` is greater than `t_recovery`, then the probability to exit is (by being cured) is 1.
+
+```{r pExit, eval = FALSE}
+p_Exit_fct = function(t, t_incub){ # return(0.1)} # should return a value between 0 and 1 (probability)
+  t_recovery = 20 # days before recovery
+  if (t <= t_incub) { p = 0 }
+  if ((t > t_incub)&(t < (t_incub+t_recovery))) { p = 0.025 } # 50% chance to die before recovery
+  if (t > (t_incub+t_recovery)) { p = 1 } 
+  return(p)
+}
+```
+
+## Movement
+
+The daily probability to move `pMove` for a host is empirically set to 0.01 (1\% chance for a host to move each day).
+
+```{r pMove, eval = FALSE}
+p_Move_fct = function(t){ return(0.01) }
+```
+
+The distance travelled is determined by the standard deviation of the Brownian motion (`sdMove`) used as the movement kernel in `nosoi`. Keep in mind that this standard deviation is in your coordinate space, so the actual distance travelled by the host may actually vary according to your space. For each host that moves, a standard deviation will be sampled using this function:
+```{r sdMove}
+sdMove_fct = function(t){ sample(seq(1,50),1,prob=(1/(seq(1,50)^2))/sum((1/(seq(1,50)^2)))) }
+```
+
+This function will lead the following distribution for 1,000 hosts:
+
+```{r sdMove2, echo = FALSE, message=FALSE, warning=FALSE}
+
+set.seed(5006)
+data.test.sdMove <- data.frame(x=replicate(1000, sdMove_fct(1), simplify=TRUE))
+
+ggplot(data=data.test.sdMove, aes(x=x)) + geom_histogram() + theme_minimal() + labs(x="Brownian motion sd", y="Host count")
+```
+
+As you can this, this tend to favor shorter standard deviation, so shorter movements in space, but allows for important movements to occur.
+
+## `nContact`
+
+Daily number of infection contacts `nContact` per infected host will be fixed at 5, but will depend on the number of hosts (i.e. population) around. It will thus depend on the "environmental value" `current.env.value` provided by the raster. To avoid reaching unrealistic values (i.e. more infected hosts than hosts leaving there), a cap provided by `host.count` (number of hosts currently in the raster cell) will be used:
+
+```{r nContact, eval = FALSE}
+n_contact = function(t, current.env.value, host.count){ 
+  if(host.count < current.env.value){5}
+  if(host.count >= current.env.value){0}
+   }
+```
+
+## `pTrans`
+
+Once contact has been made, the probability of transmission itself will depend of the incubation time `t_incub` (see above). The probability to transmit, if `t_incub` is reached, will be 0.025 (lossely based on ( [Skrip et al. 2017 Philos Trans R Soc Lond B Biol Sci](https://www.ncbi.nlm.nih.gov/pubmed/28396472) ) ):
+
+```{r pTrans, eval = FALSE}
+proba = function(t, t_incub) {
+  if (t <= t_incub) { p = 0 }
+  if (t > t_incub) { p = 0.025 } # REF: PMID-28396472
+  return(p)
 }
 ```
 
@@ -128,10 +156,13 @@ p_Exit_fct = function(t, t_incub){
 p_Move_fct = function(t){ return(0.01) }
 
 # sdMove:
-sdMove_fct = function(t){ sample(seq(1,100),1,prob=(1/(seq(1,100)^2))/sum((1/(seq(1,100)^2)))) }
+sdMove_fct = function(t){ sample(seq(1,50),1,prob=(1/(seq(1,50)^2))/sum((1/(seq(1,50)^2)))) }
 
 # nContact:
-n_contact = function(t, current.env.value){ current.env.value/100 }
+n_contact = function(t, current.env.value, host.count){ 
+  if(host.count < current.env.value){return(3)}
+  if(host.count >= current.env.value){return(0)}
+}
 
 # pTrans:
 t_incub_fct = function(x){
@@ -159,10 +190,10 @@ proba = function(t, t_incub) {
 }
 
 # Starting the simulation ------------------------------------
-
+set.seed(600)
 test.nosoiA = nosoiSim(
 	type = "single", popStructure = "continuous",
-	length = 365, 
+	length = 98, 
 	max.infected = 10000, 
 	init.individuals = 1, 
 	init.structure = start.pos,
@@ -190,6 +221,7 @@ test.nosoiA = nosoiSim(
 	# nContact:
 	diff.nContact = TRUE, 
 	timeDep.nContact = FALSE, 
+	hostCount.nContact = TRUE,
 	nContact = n_contact,
 	param.nContact = NA,
 	
@@ -213,9 +245,6 @@ test.data = test.nosoiA$host.info.A$table.state
 
 library(ggspatial)
 
-rast = raster::brick("Forest.asc", crs="+proj=longlat +datum=WGS84") # re-read the raster
-rast = crop(rast, e_WestAfrica)
-
 # This plots everything on one picture (messy):
 
 test.plot = ggplot() +
@@ -234,14 +263,14 @@ library(gganimate)
 # The following script gives the position of every host at every time point:
 
 results=data.frame()
-for (i in 1:max(test$time.from)) {
-	temp = subset(test, (time.from <= i)&c((time.to > i)|is.na(time.to)))[,c("hosts.ID","state.x","state.y","current.env.value")]
+for (i in 1:max(test.data$time.from)) {
+	temp = subset(test.data, (time.from <= i)&c((time.to > i)|is.na(time.to)))[,c("hosts.ID","state.x","state.y","current.env.value")]
 	temp$time = i
 	results=data.table::rbindlist(c(list(temp),list(results)))
 }
 
 ggplot() +
-	layer_spatial(rast) +
+	layer_spatial(population) +
 	scale_fill_gradient(low="gray95", high="blue3", limits=c(0,NA), na.value="white", name=NULL) +
 	labs(caption="Human population grid") +
 	geom_point(data=results, aes(state.x,state.y), show.legend=F, color="firebrick3", alpha=0.1) +
@@ -255,7 +284,7 @@ ggplot() +
 # This is for the animated plot:
 
 animated.plot = ggplot() +
-	layer_spatial(rast) +
+	layer_spatial(population) +
 	scale_fill_gradient(low="gray95", high="forestgreen", limits=c(0,NA), na.value="white", name=NULL) +
 	labs(caption="Forest Cover") +
 	geom_point(data=results, aes(state.x,state.y) ,show.legend=F, color="firebrick3", alpha=0.1) + transition_states(time) +
@@ -266,9 +295,9 @@ animated.plot = ggplot() +
 		plot.caption=element_text(size=10)) +
 	labs(title = "Time: {closest_state}")
 
-animate(animated.plot, nframes=test.nosoiA$pres.time*2+10,duration=40,end_pause=10)
+animate(animated.plot, nframes=test.nosoiA$total.time*2+10,duration=40,end_pause=10)
 
 setwd("~/Desktop")
-anim_save(filename = "testZ")
+anim_save(filename = "testZ", animation = animate(animated.plot, nframes=test.nosoiA$tot*2+10,duration=40,end_pause=10))
 ```
 

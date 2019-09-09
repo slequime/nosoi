@@ -26,7 +26,7 @@ The continuous space is intended to allow the simulation to take place in a geog
 
 In the continuous space, the simulation will take place on a map defined by its coordinates. This map is actually a raster, called `structure.raster`, that also holds an environmental value of interest that may influence the epidemic process. Areas were hosts cannot move (water, unaccessible areas, etc) must be defined by the value `NA`.
 
-Here, we will generate a random raster for the purpose of this tutorial, but you can use a "real" world raster and simulate your epidemic on it ( [see this example](example/ebola.html) ).
+Here, we will generate a random raster for the purpose of this tutorial, but you can use a "real" world raster and simulate your epidemic on it ( [see this example](examples/ebola.html) ).
 
 <details>
 <summary>Code used to create the random raster used in this tutorial</summary>

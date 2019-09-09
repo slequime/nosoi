@@ -278,3 +278,145 @@ transition_states(time) + scale_size_continuous(guide=FALSE,range = c(5, 30)) +
 
 animate(animated.plot, nframes=test.nosoiA$total.time*2+10,duration=40,end_pause=10)
 ```
+
+## Spread in structured populations in continuous space
+
+Similarly one cas try to represent the spread of pathogen in a continuous space. Here, we will generate a random raster for the purpose of this tutorial, but you can use a "real" world raster and simulate your epidemic on it ( [see this example](examples/ebola.html) ).
+
+```{r setupF, message=FALSE,warning=FALSE}
+#Generating the raster
+library(raster)
+set.seed(860)
+test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
+test.raster[] <- runif(10000, -80, 150)
+test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
+
+library(nosoi)
+
+#Starting position will be
+start.pos <- c(0,0) # c(x,y)
+
+#pExit
+p_Exit_fct  <- function(t, current.env.value){
+  if(current.env.value > 60){p=0.02}
+  if(current.env.value < 60 && current.env.value > 30){p=0.04}
+  if(current.env.value < 30){p=0.08}
+  return(p)
+}
+
+#pMove
+p_Move_fct  <- function(t){return(0.1)}
+
+#sdMove
+sd_Move_fct  <- function(t){return(0.9)}
+
+#nContact
+n_contact_fct = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
+
+#pTrans
+proba <- function(t,p_max,t_incub){
+  if(t <= t_incub){p=0}
+  if(t >= t_incub){p=p_max}
+  return(p)
+}
+
+t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+
+param_pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct)
+
+# Starting the simulation ------------------------------------
+
+set.seed(846)
+SimulationA <- nosoiSim(type="single", popStructure="continuous",
+                        length.sim=300, max.infected=500, init.individuals=1, 
+                        
+                        init.structure=start.pos, 
+                        
+                        structure.raster=test.raster,
+                        
+                        pExit = p_Exit_fct,
+                        param.pExit = NA,
+                        timeDep.pExit=FALSE,
+                        diff.pExit=TRUE,
+                        
+                        pMove = p_Move_fct,
+                        param.pMove = NA,
+                        timeDep.pMove=FALSE,
+                        diff.pMove=FALSE,
+                        
+                        sdMove = sd_Move_fct,
+                        param.sdMove = NA,
+                        timeDep.sdMove=FALSE,
+                        diff.sdMove=FALSE,
+                        
+                        attracted.by.raster=TRUE,
+                        
+                        nContact=n_contact_fct,
+                        param.nContact=NA,
+                        timeDep.nContact=FALSE,
+                        diff.nContact=FALSE,
+
+                        pTrans = proba,
+                        param.pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct),
+                        timeDep.pTrans=FALSE,
+                        diff.pTrans=FALSE,
+                      
+                        prefix.host="H",
+                        print.progress=FALSE,
+                        print.step=10)
+```
+
+The following plot gvies a static representation of all positions occupied by all hosts during the simulation:
+
+```{r plotcontinuous, message=FALSE,warning=FALSE}
+
+library(ggplot2)
+library(ggspatial)
+
+test <- getTableState(SimulationA)
+
+ggplot() +
+  layer_spatial(test.raster) +
+  scale_fill_gradient(low = "gray95", high = "forestgreen", limits=c(0,NA),na.value="white", name=NULL) +
+  theme(panel.background = element_blank(),
+        panel.ontop = TRUE,
+        panel.grid.major = element_line(size = 0.25, linetype = 'dashed',colour = "grey70"),
+        axis.ticks=element_blank(),
+        plot.caption=element_text(size=10)) +
+  labs(caption = "nosoi simulation output",x="",y="") + xlim(c(-10,10)) + ylim(c(-10,10)) + 
+  geom_spatial_point(data=test,aes(state.x,state.y),color="firebrick3",alpha=0.5)
+```
+
+This representation can be a little messy however, and not very informative. Using the time information, one can represent the dynamics of the spreads using an animated representation:
+```{r plotcontinuous2,message=FALSE,warning=FALSE }
+library(ggplot2)
+library(ggspatial)
+library(gganimate)
+
+test <- getTableState(SimulationA)
+
+#Following script gives the position of every host at every time point
+
+results <- data.frame()
+for (i in 1:max(test$time.from)) {
+  temp = subset(test, time.from <= i & c(time.to > i |is.na(time.to)))[,c("hosts.ID","state.x","state.y","current.env.value")]
+  temp$time = i
+  results=data.table::rbindlist(c(list(temp),list(results)))
+}
+
+animated.plot2 <- ggplot() +
+  layer_spatial(test.raster) +
+  scale_fill_gradient(low = "gray95", high = "forestgreen", limits=c(0,NA),na.value="white", name=NULL) +
+  labs(caption = "Forest Cover") +
+  geom_point(data=results,aes(state.x,state.y),show.legend = FALSE,color="firebrick3",alpha=0.5) + transition_states(time) +
+  theme(panel.background = element_blank(),
+        panel.ontop = TRUE,
+        panel.grid.major = element_line(size = 0.25, linetype = 'dashed',colour = "grey70"),
+        axis.ticks=element_blank(),
+        plot.caption=element_text(size=10)) + xlim(c(-10,10)) + ylim(c(-10,10)) + 
+  labs(title = "Time: {closest_state}")
+
+gganimate::animate(animated.plot2, nframes=SimulationA$total.time*2+10,duration=40,end_pause=10)
+```
+
