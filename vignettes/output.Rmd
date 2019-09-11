@@ -106,10 +106,10 @@ Both the `cumulative` and `dynamics` tables can be directly extracted using the 
 
 - `state` (only if discrete structure) is the state (a string of characters, usually).
 - `Count` is the number of active infected hosts at given time-step (an integer) by state (if discrete structure).
-- `type` is the host-type, idenfitied by its user-defined prefix (string of characters).
+- `type` is the host-type, identified by its user-defined prefix (string of characters).
 - `t` is the time-step (an integer).
 
-These can be used to plot the epidemiological dynamics of the simulated transmission chain. Here for example, we simulate a single introduction of a single-host pathogen between 3 differents states (named "A", "B", and "C"), with a constant exit and move probabilityn as well as a number of contacts dependant of the location and host count in each location:
+These can be used to plot the epidemiological dynamics of the simulated transmission chain. Here for example, we simulate a single introduction of a single-host pathogen between 3 differents states (named "A", "B", and "C"), with constant exit and move probabilities as well as a number of contacts dependant of the location and host count in each location:
 ```{r simDynamics, message=FALSE}
 library(nosoi)
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
