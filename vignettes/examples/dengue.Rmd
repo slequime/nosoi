@@ -9,4 +9,27 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-##WORK IN PROGRESS
+# Introduction
+
+Most of the host parameters used for the simulation will be taken from the following published article:
+> A. Fontaine, S. Lequime, I. Moltini-Conclois, D. Jiolle, I. Leparc-Goffart, R. C. Reiner Jr. & L. Lambrechts (2018) *Epidemiological significance of dengue virus genetic variation in mosquito infection dynamics*. **PLoS Pathog.** 14(7): e1007187. [Link](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1007187)
+
+# Connectivity data
+
+# Simulation parameters
+
+## Host A: Humans
+
+## Host B: Mosquitoes
+
+# Running `nosoi`
+
+# Analyzing the results
+
+## Other use
+
+External software could be used to explore more into details the dynamic of this epidemic and transmission chain. The `write.beast` function of the `treeio` package allows for an easy export of the transmssion chain as a phylogenetic-like tree, in a similar format as [BEAST](https://beast.community/) trees.
+
+```{r writing, eval=FALSE}
+treeio::write.beast(test.nosoiA.tree, file = "test.tre", translate = TRUE, tree.name = "UNTITLED")
+```

@@ -249,7 +249,7 @@ test.nosoiA <- nosoiSim(
 
 The simulation has run for `r test.nosoiA$total.time` days and has infected `r test.nosoiA$host.info.A$N.infected` individual hosts.
 
-# Analyzing the results and conclusions
+# Analyzing the results
 
 ## Vizualisation
 

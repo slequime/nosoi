@@ -13,8 +13,9 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Spread of a pathogen in a homogeneous population">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
@@ -170,13 +171,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Spread of a pathogen in a homogeneous population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-09-03</h4>
+            <h4 class="date">2019-09-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/none.Rmd"><code>vignettes/none.Rmd</code></a></small>
       <div class="hidden name"><code>none.Rmd</code></div>
@@ -227,7 +229,7 @@
 </blockquote>
 <p>You can combine the influence of several parameters, such as the time since infection, the “absolute” time of the simulation and individual-based parameters within the same function.</p>
 <blockquote>
-<p>In any case, time since infection and “absolute” time should ALWAYS be designated by <code>t</code> and <code>prestime</code> respectively, and be in that order and before of the individual-based parameters. #GB: please rewrite the part after the last comma as that part is not clear.</p>
+<p>In any case, time since infection and “absolute” time should ALWAYS be designated by <code>t</code> and <code>prestime</code> respectively. They also have to be used in the order: (1) <code>t</code>; (2) <code>prestime</code> and (3) individual-based parameters. This is necessary for the function to be properly parsed by <code>nosoi</code>.</p>
 </blockquote>
 <div id="pexit-param-pexit-and-timedep-pexit" class="section level3">
 <h3 class="hasAnchor">
@@ -305,14 +307,14 @@
 <h3 class="hasAnchor">
 <a href="#pexit" class="anchor"></a>pExit</h3>
 <p>For <code>pExit</code>, we will choose a constant value, namely 0.08, i.e. an infected host has 8% chance to leave the simulation at each unit of time:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.08</span>)}</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.08</span>)}</a></code></pre></div>
 <p>Remember that <code>pExit</code>, like the other core functions has to be function of <code>t</code>, even if <code>t</code> is not used. Since <code>pExit</code> is constant here, there is no use for the “absolute” time of the simulation nor for the individual-based parameters. So <code>param.pExit = NA</code>, and <code>timeDep.pExit = FALSE</code>.</p>
 </div>
 <div id="ncontact" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ncontact" class="anchor"></a>nContact</h3>
 <p>For <code>nContact</code>, we will choose a constant function that will draw a value from a normal distribution with <em>mean</em> = 0.5 and <em>sd</em> = 1, round it, and take its absolute value:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">n_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">n_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a></code></pre></div>
 <p>The distribution of <code>nContact</code> looks as follows:</p>
 <pre><code>#&gt; 
 #&gt; Attaching package: 'dplyr'
@@ -332,25 +334,25 @@
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">p_Trans_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t, p_max, t_incub){</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">    <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5">}</a></code></pre></div>
 <p>Because each host is different (slightly different biotic and abiotic factors), you can expect each host to exhibit differences in the dynamics of infection, and hence the probability of transmission over time. Thus, <code>t_incub</code> and <code>p_max</code> will be sampled for each host individually according to a certain distribution. <code>t_incub</code> will be sampled from a normal distribution of <span class="math inline">\(mean\)</span> = 7 and <span class="math inline">\(sd\)</span> = 1, while <code>p_max</code> will be sampled from a beta distribution with shape parameters <span class="math inline">\(\alpha\)</span> = 5 and <span class="math inline">\(\beta\)</span> = 2:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a></code></pre></div>
 <p>Note that here <code>t_incub</code> and <code>p_max</code> are functions of <code>x</code> and not <code>t</code> (they are not core functions but individual-based parameters), and <code>x</code> enters the function as the number of draws to make.</p>
 <p>Taken together, the profile for pTrans for a subset of 200 individuals in the population will look as follows:</p>
 <p><img src="none_files/figure-html/pTrans3-1.png" width="700"></p>
 <p>Since <code>pTrans</code> is not dependent on the “absolute” time of the simulation. So <code>timeDep.pTrans = FALSE</code>. However, since we make use of individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The name of each element within this list should have the same name that the core function (here <code>pTrans</code>) uses as argument, e.g.:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">param_pTrans =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct)</a></code></pre></div>
+<a class="sourceLine" id="cb9-4" data-line-number="4">param_pTrans =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct)</a></code></pre></div>
 </div>
 <div id="running" class="section level3">
 <h3 class="hasAnchor">
 <a href="#running" class="anchor"></a>Running</h3>
 <p>Once <code>nosoiSim</code> is set up, you can run the simulation (here the “seed” ensures that you will obtain the same results as in this tutorial):</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)  </a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nosoi)  </a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; Loading required package: data.table</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Attaching package: 'data.table'</span></a>
@@ -359,26 +361,26 @@
 <a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;     between, first, last</span></a>
 <a class="sourceLine" id="cb10-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#pExit</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.08</span>)}</a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.08</span>)}</a>
 <a class="sourceLine" id="cb10-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#nContact</span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13">n_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb10-13" data-line-number="13">n_contact_fct =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
 <a class="sourceLine" id="cb10-14" data-line-number="14"></a>
 <a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#pTrans</span></a>
 <a class="sourceLine" id="cb10-16" data-line-number="16">p_Trans_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){</a>
 <a class="sourceLine" id="cb10-17" data-line-number="17">    <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}</a>
 <a class="sourceLine" id="cb10-18" data-line-number="18">    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}</a>
-<a class="sourceLine" id="cb10-19" data-line-number="19">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)</a>
+<a class="sourceLine" id="cb10-19" data-line-number="19">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
 <a class="sourceLine" id="cb10-20" data-line-number="20">}</a>
 <a class="sourceLine" id="cb10-21" data-line-number="21"> </a>
-<a class="sourceLine" id="cb10-22" data-line-number="22">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
-<a class="sourceLine" id="cb10-23" data-line-number="23">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
+<a class="sourceLine" id="cb10-22" data-line-number="22">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb10-23" data-line-number="23">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
 <a class="sourceLine" id="cb10-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb10-25" data-line-number="25">param_pTrans =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct)</a>
+<a class="sourceLine" id="cb10-25" data-line-number="25">param_pTrans =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct)</a>
 <a class="sourceLine" id="cb10-26" data-line-number="26"></a>
 <a class="sourceLine" id="cb10-27" data-line-number="27"><span class="co"># Starting the simulation ------------------------------------</span></a>
 <a class="sourceLine" id="cb10-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb10-29" data-line-number="29"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">805</span>)</a>
+<a class="sourceLine" id="cb10-29" data-line-number="29"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">805</span>)</a>
 <a class="sourceLine" id="cb10-30" data-line-number="30">SimulationSingle &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"none"</span>,</a>
 <a class="sourceLine" id="cb10-31" data-line-number="31">                        <span class="dt">length.sim=</span><span class="dv">100</span>, <span class="dt">max.infected=</span><span class="dv">100</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, </a>
 <a class="sourceLine" id="cb10-32" data-line-number="32">                        <span class="dt">nContact=</span>n_contact_fct,</a>
@@ -407,8 +409,8 @@
 <div id="pexit-b" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pexit-b" class="anchor"></a>pExit.B</h3>
-<p>For <code>pExit.B</code>, we will choàse a value that depends on the “absolute” time of the simulation, for example cyclic climatic conditions (temperature). In that case, the function’s arguments should be <code>t</code> and <code>prestime</code> (the “absolute” time of the simulation), in that order: #GB: I don’t understand why the order is important?</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">p_Exit_fctB  &lt;-<span class="st"> </span><span class="cf">function</span>(t,prestime){(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Trig">sin</a></span>(prestime<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span><span class="dv">10</span>))<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">16</span>} <span class="co">#for a periodic function</span></a></code></pre></div>
+<p>For <code>pExit.B</code>, we will choàse a value that depends on the “absolute” time of the simulation, for example cyclic climatic conditions (temperature). In that case, the function’s arguments should be <code>t</code> and <code>prestime</code> (the “absolute” time of the simulation), in that order:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">p_Exit_fctB  &lt;-<span class="st"> </span><span class="cf">function</span>(t,prestime){(<span class="kw"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span>(prestime<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span><span class="dv">10</span>))<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">16</span>} <span class="co">#for a periodic function</span></a></code></pre></div>
 <p>The values of <code>pExit.B</code> across the “absolute time” of the simulation will be the following:</p>
 <p><img src="none_files/figure-html/pExit2-dual-1.png" width="700"></p>
 <p>Since <code>pExit.B</code> is dependent on the simulation’s absolute time, do not forget to set <code>timeDep.pExit.B</code> to <code>TRUE</code>. Since there are no individual-based parameters, <code>param.pExit.B = NA</code>.</p>
@@ -417,7 +419,7 @@
 <h3 class="hasAnchor">
 <a href="#ncontact-b" class="anchor"></a>nContact.B</h3>
 <p>For <code>nContact.B</code>, we will choose a constant function that will sample a value out of a provided range of possible values, each with a certain probability:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">n_contact_fct.B =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.6</span>,<span class="fl">0.3</span>,<span class="fl">0.1</span>))}</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">n_contact_fct.B =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.6</span>,<span class="fl">0.3</span>,<span class="fl">0.1</span>))}</a></code></pre></div>
 <p>The distribution of <code>nContact.B</code> looks as follows:</p>
 <p><img src="none_files/figure-html/nContact2.B-1.png" width="700"></p>
 <p>At each time and for each infected host, <code>nContact.B</code> will be drawn anew. Remember that <code>nContact.B</code>, like the other core functions has to be function of <code>t</code>, even if <code>t</code> is not used. Since <code>nContact.B</code> is constant here, there is no use for the “absolute” time of the simulation nor for the individual-based parameters. So <code>param.nContact.B = NA</code>, and <code>timeDep.nContact.B = FALSE</code>.</p>
@@ -427,64 +429,64 @@
 <a href="#ptrans-b" class="anchor"></a>pTrans.B</h3>
 <p><code>pTrans.B</code> will be provided in the form of a gaussian function: it will reach its maximum value at a certain time point (mean) after initial infection and will subsequently decrease until it reaches 0:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">p_Trans_fct.B &lt;-<span class="st"> </span><span class="cf">function</span>(t, max.time){</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">dnorm</a></span>(t, <span class="dt">mean=</span>max.time, <span class="dt">sd=</span><span class="dv">2</span>)<span class="op">*</span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">  <span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span>(t, <span class="dt">mean=</span>max.time, <span class="dt">sd=</span><span class="dv">2</span>)<span class="op">*</span><span class="dv">5</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">}</a></code></pre></div>
 <p>Because each host is here also different (slightly different biotic and abiotic factors), you can expect each host to exhibit differences in the dynamics of infection, and hence the probability of transmission over time. Thus, <code>max.time</code> will be sampled for each host individually according to a certain distribution. <code>max.time</code> will be sampled from a normal distribution of parameters <span class="math inline">\(mean\)</span> = 5 and <span class="math inline">\(sd\)</span> = 1:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a></code></pre></div>
 <p>Note again that here <code>max.time</code> is a function of <code>x</code> and not <code>t</code> (not a core function but individual-based parameters), and <code>x</code> enters the function as the number of draws to make.</p>
 <p>Taken together, the profile for pTrans for a subset of 200 individuals in the population will look as follows:</p>
 <p><img src="none_files/figure-html/pTrans3.B-1.png" width="700"></p>
 <p>Since <code>pTrans.B</code> is not dependent on the “absolute” time of the simulation, <code>timeDep.pTrans.B = FALSE</code>. However, since we make use of individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The name of each element of the list should have the same name as the core function (here <code>pTrans.B</code>) uses as argument, as shown here:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">param_pTrans.B =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">max.time=</span>max.time_fct)</a></code></pre></div>
+<a class="sourceLine" id="cb15-3" data-line-number="3">param_pTrans.B =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">max.time=</span>max.time_fct)</a></code></pre></div>
 </div>
 <div id="running-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#running-1" class="anchor"></a>Running</h3>
 <p>Once <code>nosoiSim</code> is set up, you can run the simulation (here the “seed” ensures that you will obtain the same results as in this tutorial):</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nosoi)</a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nosoi)</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#HostA ------------------------------------</span></a>
 <a class="sourceLine" id="cb16-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#pExit</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">p_Exit_fct.A  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="fl">0.08</span>)}</a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">p_Exit_fct.A  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.08</span>)}</a>
 <a class="sourceLine" id="cb16-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#nContact</span></a>
-<a class="sourceLine" id="cb16-9" data-line-number="9">n_contact_fct.A =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb16-9" data-line-number="9">n_contact_fct.A =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
 <a class="sourceLine" id="cb16-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb16-11" data-line-number="11"><span class="co">#pTrans</span></a>
 <a class="sourceLine" id="cb16-12" data-line-number="12">p_Trans_fct.A &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){</a>
 <a class="sourceLine" id="cb16-13" data-line-number="13">    <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}</a>
 <a class="sourceLine" id="cb16-14" data-line-number="14">    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}</a>
-<a class="sourceLine" id="cb16-15" data-line-number="15">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(p)</a>
+<a class="sourceLine" id="cb16-15" data-line-number="15">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
 <a class="sourceLine" id="cb16-16" data-line-number="16">}</a>
 <a class="sourceLine" id="cb16-17" data-line-number="17"> </a>
-<a class="sourceLine" id="cb16-18" data-line-number="18">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
-<a class="sourceLine" id="cb16-19" data-line-number="19">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Beta">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
+<a class="sourceLine" id="cb16-18" data-line-number="18">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb16-19" data-line-number="19">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
 <a class="sourceLine" id="cb16-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb16-21" data-line-number="21">param_pTrans.A =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct)</a>
+<a class="sourceLine" id="cb16-21" data-line-number="21">param_pTrans.A =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct,<span class="dt">t_incub=</span>t_incub_fct)</a>
 <a class="sourceLine" id="cb16-22" data-line-number="22"></a>
 <a class="sourceLine" id="cb16-23" data-line-number="23"><span class="co">#Host B ------------------------------------</span></a>
 <a class="sourceLine" id="cb16-24" data-line-number="24"></a>
 <a class="sourceLine" id="cb16-25" data-line-number="25"><span class="co">#pExit</span></a>
-<a class="sourceLine" id="cb16-26" data-line-number="26">p_Exit_fct.B  &lt;-<span class="st"> </span><span class="cf">function</span>(t,prestime){(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Trig">sin</a></span>(prestime<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span><span class="dv">10</span>))<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">16</span>}</a>
+<a class="sourceLine" id="cb16-26" data-line-number="26">p_Exit_fct.B  &lt;-<span class="st"> </span><span class="cf">function</span>(t,prestime){(<span class="kw"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span>(prestime<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span><span class="dv">10</span>))<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">16</span>}</a>
 <a class="sourceLine" id="cb16-27" data-line-number="27"></a>
 <a class="sourceLine" id="cb16-28" data-line-number="28"><span class="co">#nContact</span></a>
-<a class="sourceLine" id="cb16-29" data-line-number="29">n_contact_fct.B =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.6</span>,<span class="fl">0.3</span>,<span class="fl">0.1</span>))}</a>
+<a class="sourceLine" id="cb16-29" data-line-number="29">n_contact_fct.B =<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.6</span>,<span class="fl">0.3</span>,<span class="fl">0.1</span>))}</a>
 <a class="sourceLine" id="cb16-30" data-line-number="30"></a>
 <a class="sourceLine" id="cb16-31" data-line-number="31"><span class="co">#pTrans</span></a>
 <a class="sourceLine" id="cb16-32" data-line-number="32">p_Trans_fct.B &lt;-<span class="st"> </span><span class="cf">function</span>(t, max.time){</a>
-<a class="sourceLine" id="cb16-33" data-line-number="33">  <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">dnorm</a></span>(t, <span class="dt">mean=</span>max.time, <span class="dt">sd=</span><span class="dv">2</span>)<span class="op">*</span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb16-33" data-line-number="33">  <span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span>(t, <span class="dt">mean=</span>max.time, <span class="dt">sd=</span><span class="dv">2</span>)<span class="op">*</span><span class="dv">5</span></a>
 <a class="sourceLine" id="cb16-34" data-line-number="34">}</a>
 <a class="sourceLine" id="cb16-35" data-line-number="35"> </a>
-<a class="sourceLine" id="cb16-36" data-line-number="36">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb16-36" data-line-number="36">max.time_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
 <a class="sourceLine" id="cb16-37" data-line-number="37"></a>
-<a class="sourceLine" id="cb16-38" data-line-number="38">param_pTrans.B =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">max.time=</span>max.time_fct)</a>
+<a class="sourceLine" id="cb16-38" data-line-number="38">param_pTrans.B =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">max.time=</span>max.time_fct)</a>
 <a class="sourceLine" id="cb16-39" data-line-number="39"></a>
 <a class="sourceLine" id="cb16-40" data-line-number="40"><span class="co"># Starting the simulation ------------------------------------</span></a>
 <a class="sourceLine" id="cb16-41" data-line-number="41"></a>
-<a class="sourceLine" id="cb16-42" data-line-number="42"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">606</span>)</a>
+<a class="sourceLine" id="cb16-42" data-line-number="42"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">606</span>)</a>
 <a class="sourceLine" id="cb16-43" data-line-number="43">SimulationDual &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"dual"</span>, <span class="dt">popStructure=</span><span class="st">"none"</span>,</a>
 <a class="sourceLine" id="cb16-44" data-line-number="44">                        <span class="dt">length.sim=</span><span class="dv">100</span>, </a>
 <a class="sourceLine" id="cb16-45" data-line-number="45">                        <span class="dt">max.infected.A=</span><span class="dv">100</span>, </a>
@@ -571,17 +573,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Sebastian Lequime, Paul Bastide, Simon Dellicour, Philippe Lemey, Guy Baele.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

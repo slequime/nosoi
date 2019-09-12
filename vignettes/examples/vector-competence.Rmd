@@ -8,10 +8,7 @@ output: rmarkdown::html_vignette
 # Introduction
 
 Vector competence (VC) defines the intrinsic ability of a vector to carry and transmit a pathogen. VC is usually scored experimentally as the prevalence of infected and infectious vectors at given times post-pathogen exposure.
-Each year, numerous experimental studies aim to evaluate vector species or local population’s competence for vector-borne pathogens, #GB: this sentence/structure isn't clear to me; perhaps 'competence' should be replaced by a different term or the first part of the sentence rewritten?
-which is ultimately intended to understand epidemiology and assess local risk of transmission for potentially introduced vector-borne pathogens.
-
-These experimental data however usually remain purely descriptive and poorly reflect the dynamic nature of VC. `nosoi` can be used to easily translate such empirically observed within-host dynamics into their impact on an epidemic process through simulations, without the use of advanced mathematics. The epidemic process can be tailored to mimic known parameters of a particular place of interest, or can be "fixed" to allow easy comparison of one or several key variables.
+Each year, numerous experimental studies aim to evaluate vector competence for various arthropod species or populations for vector-borne pathogens, which ultimately aims to understand epidemiology and assess local risk of transmission for potentially introduced vector-borne pathogens. These experimental data however usually remain purely descriptive and poorly reflect the dynamic nature of VC. `nosoi` can be used to easily translate such empirically observed within-host dynamics into their impact on an epidemic process through simulations, without the use of advanced mathematics. The epidemic process can be tailored to mimic known parameters of a particular place of interest, or can be "fixed" to allow easy comparison of one or several key variables.
 
 This example aims to illustrate how to use `nosoi` to perform such a study. We will use data derived from the following published article:
 
@@ -24,7 +21,7 @@ In this paper, Fontaine *et al.* explore the impact of variation of within-host 
 We will restrict ourselves to a relatively simple simulation, as the idea is to compare three viral isolates under the same set of parameters except for the ones linked to vector competence in the mosquito. Time steps will be in days. This simulation obviously puts us in the case of a dual-host pathogen, but we will not use any spatial or population structure (for more details on this type of simulation, see the [relevant tutorial](nosoi.html#setting-up-the-core-functions)). Hence, only 3 core functions of `nosoi` need to be parameterized for each host:
 
 - the daily probability to exit the simulation (`pExit`), either being cured of the disease for a human or dying for a mosquito.
-- the daily number of infectious contacts with different potential hosts (`nContact`), which would be the number of times per day a human is bitten by a sensitive mosquito, or the number of times per day a mosquito is biting a different human. #GB: replace 'sensitive' by 'susceptible' (sensitive has a different meaning in general)?
+- the daily number of infectious contacts with different potential hosts (`nContact`), which would be the number of times per day a human is bitten by a susceptible mosquito, or the number of times per day a mosquito is biting a different human.
 - the probability to transmit the virus once an infectious contact occurs (`pTrans`). This will be dependent on the within-host dynamics in each host, and will be the place where vector competence will influence the epidemic process.
 
 ## Host A: Humans
@@ -39,9 +36,6 @@ p_Exit_fct_human <- function(t,Md_human){
   if(t >= 3*Md_human){p=1}
   return(p)
 }
-
-param.pExit_human <- list(Md_human=Md_human_fct)
-
 ```
 
 ### `nContact`
@@ -151,9 +145,7 @@ p_Trans_fct <- function(t, p_max, t_EIP){
 }
 ```
 
-`pTrans` will of course vary according the the viral isolate studied. EIP was measured dynamically over time as the proportion of mosquitoes with disseminated viral infection. #GB: 'with' or 'which'?
-This experimental measure is then a mean of the whole population and follows a logistic function characterized by three parameters:
-#GB: mention again where the values below were obtained from.
+`pTrans` will of course vary according the the viral isolate studied. EIP was measured dynamically for each mosquito population over time as the proportion of mosquitoes with disseminated viral infections. This experimental measure, a mean of the whole population, is modelled as a logistic function characterized by three parameters:
 
 - $K_{mosquito}$ (`K_mosquito`), the maximum probability of transmission.
 - $M_{mosquito}$ (`M_mosquito`), the time when 50% $K_{mosquito}$ is reached during the ascending phase.
@@ -175,9 +167,11 @@ ggplot(data=data.frame(x=0), aes(x=x)) + stat_function(fun=viral.mos.Laos, color
 ```
 
 According to our initial hypothesis, these population curves are actually formed by a heterogeneous population of mosquitoes "switching" from infected to infectious, thus `t_EIP` is individually set and can be extracted from the logistic curve of the population, representing the probability distribution, and `p_max` is actually 1 for most of the mosquitoes, but can be 0 (some will never transmit despite being infected) for a few others:
-#GB: mention again where the values below were obtained from.
 
 ```{r pTrans.B-params, eval = FALSE}
+
+#values will be drawn from a logistic distribution with location M and scale 1/B (see above)
+
 p_max_fct_Laos <- function(x){rbinom(x,1, 1)}
 t_EIP_Laos <- function(x){rlogis(x, location = 4.9, scale = 1/2.37)}
 
@@ -229,7 +223,7 @@ As we can see, this perfectly mimics the observed population pattern for each vi
 
 Since all core functions have been set, we can now proceed with the simulation. We will set a maximum total length of 400 units of time as in Fontaine *et al.*, with a maximum of 10,000 infected humans, and 1,000,000 infected mosquitoes (to be sure the total number of mosquitoes will not be a limiting factor). The epidemic will start with one infected human. The `nosoi` script will then look like:
 
-```{r setupF.B, eval=FALSE}
+```{r setupF.B}
 library(nosoi)
 
 #HostA, Humans ------------------------------------
@@ -294,7 +288,7 @@ t_EIP_Thai <- function(x){rlogis(x, location = 5.15, scale = 1/1.24)}
 param_pTrans_mosquito_Thai <- list(p_max=p_max_fct_Thai,t_EIP=t_EIP_Thai)
 
 # Starting the simulation ------------------------------------
-
+set.seed(800)
 SimulationDual <- nosoiSim(type="dual", popStructure="none",
                         length.sim=400, 
                         max.infected.A=10000, 
@@ -327,8 +321,6 @@ SimulationDual <- nosoiSim(type="dual", popStructure="none",
                         
                         print.progress=FALSE)
 ```
-
-#GB: it would be good so show here what is being printed to screen when you actually run the simulation.
 
 # Analyzing the results and conclusions
 
@@ -365,8 +357,6 @@ plotF = ggplot(results2, aes(x = as.factor(isolate) , y =N , alpha= as.factor(ty
 plotF
 ```
 
-#GB: I think it would be good/helpful to explicitly mention VC again here, as that's what this page is about, i.e. an additional sentence regarding VC related to what is shown in the figure.
-
-As we can see, the isolate Haiti2012 yielded less "big outbreaks" (> 100 humans infected) compared to the two other isolates, which is coherent with its slower within-host dynamics. This result is similar to the one obtained in the original paper which used an earlier version of `nosoi` in a closed population.
+As we can see, the isolate Haiti2012 yielded less "big outbreaks" (> 100 humans infected) compared to the two other isolates, which is coherent with its slower within-host dynamics (i.e. variations in vector competence, defined as the intrinsic ability of a vector to carry and transmit a pathogen). This result is similar to the one obtained in the original paper which used an earlier version of `nosoi` in a closed population.
 
 With a set of simulated transmission chains and associated metadata anchoring them in time, and sometimes space, `nosoi` offers a perfect setting to explore how within-host dynamics can drastically influence a pathogen's epidemiology. Changes in any of the parameters are easy to implement, including drastic changes on how a certain probability or number is computed, allowing for maximum flexibility.
