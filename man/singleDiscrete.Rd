@@ -109,7 +109,9 @@ proba <- function(t,p_max,t_incub){
 
 time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
-transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),
+                           nrow = 3, ncol = 3,
+                           dimnames=list(c("A","B","C"),c("A","B","C")))
 
 set.seed(805)
 test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
