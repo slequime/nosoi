@@ -319,7 +319,7 @@ library(ggtree)
 
 test.nosoiA.tree = getTransmissionTree(test.nosoiA)
 
-ggtree(test.nosoiA.tree) + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + 
+ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + 
     theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
         legend.title = element_blank(),
         legend.key = element_blank()) 
@@ -365,7 +365,7 @@ test.nosoiA.tree.sampled <- sampleTransmissionTree(test.nosoiA, test.nosoiA.tree
 As before, the tree obtained is a `treedata` object, and can be plotted:
 
 ```{r treeB, message=FALSE}
-ggtree(test.nosoiA.tree.sampled) + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
+ggtree(test.nosoiA.tree.sampled, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
     theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
         legend.title = element_blank(),
         legend.key = element_blank()) 
@@ -394,7 +394,7 @@ test.nosoiA.tree.sampled.exiting <- sampleTransmissionTreeFromExiting(test.nosoi
 As before, the tree obtained is a `treedata` object, and can be plotted:
 
 ```{r treeC, message=FALSE}
-ggtree(test.nosoiA.tree.sampled.exiting) + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
+ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
     theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
         legend.title = element_blank(),
         legend.key = element_blank()) 

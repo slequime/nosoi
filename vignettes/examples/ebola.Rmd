@@ -11,7 +11,7 @@ vignette: >
 
 # Introduction
 
-In this example, we will simulate an Ebola-like epidemic in Western Africa. We will use the distribution of the population in this region as the "environmental factor" to be included in our simulation (origin: [WorldPop](https://www.worldpop.org/)). The map will be the following (here represented on a log scale to show efficiently differences in distribution):
+In this example, we aim to simulate an Ebola-like epidemic in Western Africa. We will use the distribution of the population in this region as the "environmental factor" to be included in our simulation (origin: [WorldPop](https://www.worldpop.org/)). The map will be the following (here represented on a log scale to show efficiently differences in distribution):
 
 ```{r importRaster, echo = FALSE, message=FALSE, warning=FALSE}
 library(raster)
@@ -19,18 +19,16 @@ library(viridis)
 library(ggplot2)
 library(ggspatial)
 
-e_WestAfrica = extent(-18, -3, 3, 15) 
-# WorldPop Africa raster:
-e_WestAfrica = extent(-18, -3, 3, 15) #to crop the raster to the study site
-population = crop(raster("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Nosoi_EBOV_simus/Africa_pop_2015.tif"), e_WestAfrica)
+#WorldPop Africa raster:
+e_WestAfrica <- extent(-18, -3, 3, 15) #to crop the raster to the study site
+population <- crop(raster("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Nosoi_EBOV_simus/Africa_pop_2015.tif"), e_WestAfrica)
 
 ggplot() +
-	layer_spatial(population) + 
-	labs(caption="Human population grid", x="longitude", y="latitude") +  
-  scale_fill_viridis(trans = "log1p", option="A", limits=c(0,NA), na.value="white", 
+  layer_spatial(population) + labs(x="", y="") +  
+  scale_fill_viridis(trans = "log1p", option="A", limits=c(0,NA), na.value="NA", 
                      name="Environmental\nvalue (number of\ninhabitants)", position="bottom", 
                      breaks=c(6,60,600,6000,60000),labels=c(6,60,600,6000,60000)) + 
-	theme(panel.background = element_blank(), panel.ontop = TRUE,
+	theme(panel.background = element_blank(), panel.ontop = FALSE,
 		panel.grid.major = element_line(size=0.25, linetype="dashed", colour ="grey70"),
 		axis.ticks=element_blank(),
 		plot.caption=element_text(size=10))
@@ -47,7 +45,7 @@ Ebola will here be considered a single-host pathogen, and some of the pathogen r
 The probability of exiting (i.e. in our case recovering or dying from the infection) for each host will depend on (1) time since infection and (2) a host parameter called `t_incub` for "incubation time" that will be sampled, for each host, based on a published article ( [Casillas et al. 2003 Biol Res Nurs](https://www.ncbi.nlm.nih.gov/pubmed/12698919) ):
 
 ```{r tincub}
-t_incub_fct = function(x){
+t_incub_fct <- function(x){
 	t_incub = c()
 	while (length(t_incub) == 0)
 		{
@@ -77,7 +75,7 @@ ggplot(data=data.test.tincub, aes(x=x)) + geom_histogram() + theme_minimal() + l
 If "time since infection" (hereafter `t`) is below the incubation time (`t_incub`), then the probability to exit is null. If `t` is greater that `t_incub` but below a recovery time (`t_recovery` fixed at 20 days after symptom onset), then the daily probability to exit (by dying) is 2.5\%. If `t` is greater than `t_recovery`, then the probability to exit is (by being cured) is 1.
 
 ```{r pExit, eval = FALSE}
-p_Exit_fct = function(t, t_incub){ # return(0.1)} # should return a value between 0 and 1 (probability)
+p_Exit_fct <- function(t, t_incub){ # return(0.1)} # should return a value between 0 and 1 (probability)
   t_recovery = 20 # days before recovery
   if (t <= t_incub) { p = 0 }
   if ((t > t_incub)&(t < (t_incub+t_recovery))) { p = 0.025 } # 50% chance to die before recovery
@@ -91,7 +89,7 @@ p_Exit_fct = function(t, t_incub){ # return(0.1)} # should return a value betwee
 The daily probability to move `pMove` for a host is empirically set to 0.01 (1\% chance for a host to move each day) before onset of symptoms. We will assume here that every infection will be symptomatic (although this is a crude assumption). Once symptoms are here, `pMove` will be set at 0.
 
 ```{r pMove, eval = FALSE}
-p_Move_fct = function(t, t_incub){ 
+p_Move_fct <- function(t, t_incub){ 
    if (t <= t_incub) { p = 0.01 }
    if (t > t_incub) { p = 0}
        return(p)}
@@ -100,13 +98,12 @@ p_Move_fct = function(t, t_incub){
 The distance travelled is determined by the standard deviation of the Brownian motion (`sdMove`) used as the movement kernel in `nosoi`. Keep in mind that this standard deviation is in your coordinate space, so the actual distance travelled by the host may actually vary according to your space. For each host that moves, a standard deviation will be sampled using this function:
 
 ```{r sdMove}
- sdMove_fct = function(t){runif(1,min=0.5,max=3)}
+ sdMove_fct <- function(t){runif(1,min=0.5,max=3)}
 ```
 
 This function will lead the following distribution for 1,000 hosts:
 
 ```{r sdMove2, echo = FALSE, message=FALSE, warning=FALSE}
-
 set.seed(5006)
 data.test.sdMove <- data.frame(x=replicate(1000, sdMove_fct(1), simplify=TRUE))
 
@@ -118,7 +115,7 @@ ggplot(data=data.test.sdMove, aes(x=x)) + geom_histogram() + theme_minimal() + l
 Daily number of infection contacts `nContact` per infected host will be fixed at 5, but will depend on the number of hosts (i.e. population) around. It will thus depend on the "environmental value" `current.env.value` provided by the raster. To avoid reaching unrealistic values (i.e. much more infected hosts than hosts leaving there), a cap provided by `host.count` (number of hosts currently in the raster cell) will be used:
 
 ```{r nContact, eval = FALSE}
-n_contact = function(t, current.env.value, host.count){ 
+n_contact <- function(t, current.env.value, host.count){ 
   if(host.count < current.env.value){5}
   if(host.count >= current.env.value){0}
    }
@@ -129,9 +126,9 @@ n_contact = function(t, current.env.value, host.count){
 Once contact has been made, the probability of transmission itself will depend of the incubation time `t_incub` (see above). The probability to transmit, if `t_incub` is reached, will be 0.025 (lossely based on [Skrip et al. 2017 Philos Trans R Soc Lond B Biol Sci](https://www.ncbi.nlm.nih.gov/pubmed/28396472) ):
 
 ```{r pTrans, eval = FALSE}
-proba = function(t, t_incub) {
+proba <- function(t, t_incub) {
   if (t <= t_incub) { p = 0 }
-  if (t > t_incub) { p = 0.025 } # REF: PMID-28396472
+  if (t > t_incub) { p = 0.025 }
   return(p)
 }
 ```
@@ -144,16 +141,16 @@ Now that every parameter and function has been chosen and set up, we can run the
 library(raster)
 library(nosoi)
 
-#Raster (to uncomment in your case)
+#Raster (to uncomment in your case):
 
 # e_WestAfrica = extent(-18, -3, 3, 15) # WorldPop Africa raster:
 # population = crop(raster("~/path/to/the/raster.tif"), e_WestAfrica)
 
-# Starting parameter:
-start.pos = c(-10.132, 8.561) # Guéckédou in Guinea
+#Starting parameter:
+start.pos <- c(-10.132, 8.561) # Guéckédou in Guinea
 
-# pExit:
-p_Exit_fct = function(t, t_incub){
+#pExit:
+p_Exit_fct <- function(t, t_incub){
   t_recovery = 20 # days before recovery
   if (t <= t_incub) { p = 0 }
   if ((t > t_incub)&(t < (t_incub+t_recovery))) { p = 0.025 } # 50% chance to dye before recovery
@@ -161,23 +158,24 @@ p_Exit_fct = function(t, t_incub){
   return(p)
 }
 
-# pMove:
-p_Move_fct = function(t, t_incub){ 
+#pMove:
+p_Move_fct <- function(t, t_incub){ 
    if (t <= t_incub) { p = 0.01 }
    if (t > t_incub) { p = 0}
        return(p)}
 
-# sdMove:
- sdMove_fct = function(t){runif(1,min=0.5,max=3)}
-# nContact:
-n_contact = function(t, current.env.value, host.count){ 
+#sdMove:
+ sdMove_fct <- function(t){runif(1,min=0.5,max=3)}
+ 
+#nContact:
+n_contact <- function(t, current.env.value, host.count){ 
   if(host.count < current.env.value){return(3)}
   if(host.count >= current.env.value){return(0)}
 }
 
-# pTrans:
-t_incub_fct = function(x){
-	t_incub = c()
+#pTrans:
+t_incub_fct <- function(x){
+	t_incub <- c()
 	while (length(t_incub) == 0)
 		{
 			t_incub = rnorm(x, mean=6.5, sd=2.5)
@@ -187,7 +185,7 @@ t_incub_fct = function(x){
 					if (length(t_incub) < x)
 						{
 							print(t_incub)
-							t_incub = c(t_incub, sample(t_incub,x-length(t_incub)))
+							t_incub <- c(t_incub, sample(t_incub,x-length(t_incub)))
 						}
 				}	
 		}
@@ -200,9 +198,9 @@ proba = function(t, t_incub) {
   return(p)
 }
 
-# Starting the simulation ------------------------------------
+#Starting the simulation ------------------------------------
 set.seed(505060)
-test.nosoiA = nosoiSim(
+test.nosoiA <- nosoiSim(
 	type = "single", popStructure = "continuous",
 	length = 365, 
 	max.infected = 10000, 
@@ -210,39 +208,39 @@ test.nosoiA = nosoiSim(
 	init.structure = start.pos,
 	structure.raster = population,
 	
-	# pExit:
+	#pExit:
 	diff.pExit = FALSE,
 	timeDep.pExit = FALSE, 
 	pExit = p_Exit_fct, 
 	param.pExit = list(t_incub = t_incub_fct),
 	
-	# pMove:
+	#pMove:
 	diff.pMove = FALSE, 
 	timeDep.pMove = FALSE,
 	pMove = p_Move_fct,
 	param.pMove = list(t_incub = t_incub_fct),
 	
-	# sdMove:
+	#sdMove:
 	diff.sdMove = FALSE, 
 	timeDep.sdMove = FALSE, 
 	sdMove = sdMove_fct, 
 	param.sdMove = NA, 
 	attracted.by.raster = FALSE,
 	
-	# nContact:
+	#nContact:
 	diff.nContact = TRUE, 
 	timeDep.nContact = FALSE, 
 	hostCount.nContact = TRUE,
 	nContact = n_contact,
 	param.nContact = NA,
 	
-	# pTrans:
+	#pTrans:
 	diff.pTrans = FALSE, 
 	timeDep.pTrans = FALSE, 
 	pTrans = proba, 
 	param.pTrans = list(t_incub = t_incub_fct),
 
-  	# Closing parameters:
+  #Closing parameters:
 	prefix.host = "H", 
 	print.progress = TRUE,
 	print.step = 1
@@ -258,14 +256,14 @@ The simulation has run for `r test.nosoiA$total.time` days and has infected `r t
 Our first step will be to vizualise this epidemic on the map. We can use the following code to produce an animation (in time) of the epidemic:
 
 ```{r output, eval = FALSE}
-test.data = getTableState(test.nosoiA)
+test.data <- getTableState(test.nosoiA)
 
 library(ggspatial)
 library(gganimate)
 
-# The following script gives the position of every host at every time point:
+#The following script gives the position of every host at every time point:
 
-results=data.frame()
+results <- data.frame()
 
 for (i in 1:max(test.data$time.from)) {
 	temp = subset(test.data, (time.from <= i)&c((time.to > i)|is.na(time.to)))[,c("hosts.ID","state.x","state.y","current.env.value")]
@@ -273,16 +271,16 @@ for (i in 1:max(test.data$time.from)) {
 	results=data.table::rbindlist(c(list(temp),list(results)))
 }
 
-# This is for the animated plot:
+#This is for the animated plot:
 
-animated.plot = ggplot() +
+animated.plot <- ggplot() +
 	 layer_spatial(population) +
-	scale_fill_viridis(trans = "log1p",option="A",limits=c(0,NA),na.value="white", name="Environmental\nvalue (number of\ninhabitants)",
+	scale_fill_viridis(trans = "log1p",option="A",limits=c(0,NA),na.value="NA", name="Environmental\nvalue (number of\ninhabitants)",
                      position="bottom",breaks=c(6,60,600,6000,60000),labels=c(6,60,600,6000,60000)) + 
-	labs(caption="Simulated Ebola-like epidemic in West Africa", x="longitude", y="latitude") +
+	labs(x="", y="") +
 	geom_point(data=results, aes(state.x,state.y) ,show.legend=F, color="firebrick3", alpha=0.5) + transition_states(time) +
 	theme(panel.background = element_blank(),
-		panel.ontop = TRUE,
+		panel.ontop = FALSE,
 		panel.grid.major = element_line(size=0.25, linetype="dashed", colour="grey70"),
 		axis.ticks=element_blank(),
 		plot.caption=element_text(size=10)) +
@@ -301,7 +299,7 @@ In this animation, green dots represent the infected hosts, each dot being an in
 As interesting as the vizualisation might be, we can also explore a bit the epidemic parameters, for example the "real" $R_0$, defined as the average number of cases one case generates, often estimated in epidemiological studies. For this we can use the following code:
 
 ```{r generalEpi}
-R0.sim = getR0(test.nosoiA)
+R0.sim <- getR0(test.nosoiA)
 ```
 
 Mean value for $R_0$ is `r round(R0.sim$R0.mean,2)`, which is coherent with epidemiological estimates for Ebola virus. This distribution is also coherent, with most hosts not transmitting:
@@ -332,11 +330,11 @@ Since `nosoi` relies on the simulation of a transmission chain, we can also visu
 test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 ```
 
-This function gives you a `treedata` object that can be visualized as a phylogenetic-tree:
+This function gives you a `treedata` object that can be visualized as a phylogenetic-tree with the package :
 
 ```{r treeC, message=FALSE}
 library(ggtree)
-ggtree(test.nosoiA.tree) + geom_nodepoint() + geom_tippoint() + # geom_tiplab(aes(label=host)) + 
+ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(color = "gray30") + geom_tippoint(color = "gray30") + # geom_tiplab(aes(label=host)) + 
     theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
         legend.title = element_blank(),
         legend.key = element_blank())
@@ -345,26 +343,25 @@ ggtree(test.nosoiA.tree) + geom_nodepoint() + geom_tippoint() + # geom_tiplab(ae
 Of course this does not give us much information about the spatial distribution of this transmission tree. We can use data contained into this `treedata` object to plot our transmission tree on our environmental raster:
 
 ```{r transmissionTree-Full2, message=FALSE, warning=FALSE, error=FALSE}
-#extracting node data from the tree (including long/lat coordinates):
-tree.node = test.nosoiA.tree@data
+#Extracting node data from the tree (including long/lat coordinates):
+tree.node <- test.nosoiA.tree@data
 
-#extracting link between nodes from the tree:
-tree.link = as.data.frame(test.nosoiA.tree@phylo$edge)
+#Extracting link between nodes from the tree:
+tree.link <- as.data.frame(test.nosoiA.tree@phylo$edge)
 
-#joining both tables to get coordinates of starting and ending nodes:
+#Joining both tables to get coordinates of starting and ending nodes:
 library(dplyr)
-join1 = left_join(tree.link, tree.node, by=c("parent" = "node"))
-join2 = left_join(join1, tree.node, by=c("node" = "node"), suffix = c(".from", ".to"))
+join1 <- left_join(tree.link, tree.node, by=c("parent" = "node"))
+join2 <- left_join(join1, tree.node, by=c("node" = "node"), suffix = c(".from", ".to"))
 
-#plotting everything
+#Plotting everything:
 ggplot() +
-  layer_spatial(population) + 
-  labs(caption="Simulated Ebola-like transmission chain in West Africa", x="longitude", y="latitude") +  
-  scale_fill_viridis(trans = "log1p",option="A",limits=c(0,NA),na.value="white", 
+  layer_spatial(population) + labs(x="", y="") +  
+  scale_fill_viridis(trans = "log1p",option="A",limits=c(0,NA),na.value="NA", 
                      name="Environmental\nvalue (number of\ninhabitants)", position="bottom", 
                      breaks=c(6,60,600,6000,60000),labels=c(6,60,600,6000,60000)) + 
   scale_color_viridis(option="D",limits=c(0,NA),na.value="white", name="time") + 
-  theme(panel.background = element_blank(), panel.ontop = TRUE,
+  theme(panel.background = element_blank(), panel.ontop = FALSE,
         panel.grid.major = element_line(size=0.25, linetype="dashed", colour ="grey70"),
         axis.ticks=element_blank(), plot.caption=element_text(size=10)) +
   geom_segment(data=join2, aes(x = state.x.from, y = state.y.from, xend = state.x.to, yend = state.y.to),
@@ -391,7 +388,7 @@ This new tree can be also plotted as before:
 
 ```{r treeC2, message=FALSE}
 library(ggtree)
-ggtree(test.nosoiA.tree.sampled.exiting) + geom_nodepoint() + geom_tippoint() + # geom_tiplab(aes(label=host)) + 
+ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(color = "gray30") + geom_tippoint(color = "gray30") + # geom_tiplab(aes(label=host)) + 
     theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
         legend.title = element_blank(),
         legend.key = element_blank())
@@ -401,25 +398,24 @@ We can also represent it in space:
 
 ```{r transmissionTree-Full3, message=FALSE, warning=FALSE, error=FALSE}
 #extracting node data from the tree (including long/lat coordinates):
-tree.node = test.nosoiA.tree.sampled.exiting@data
+tree.node <- test.nosoiA.tree.sampled.exiting@data
 
 #extracting link between nodes from the tree:
-tree.link = as.data.frame(test.nosoiA.tree.sampled.exiting@phylo$edge)
+tree.link <- as.data.frame(test.nosoiA.tree.sampled.exiting@phylo$edge)
 
 #joining both tables to get coordinates of starting and ending nodes:
 library(dplyr)
-join1 = left_join(tree.link, tree.node, by=c("parent" = "node"))
-join2 = left_join(join1, tree.node, by=c("node" = "node"), suffix = c(".from", ".to"))
+join1 <- left_join(tree.link, tree.node, by=c("parent" = "node"))
+join2 <- left_join(join1, tree.node, by=c("node" = "node"), suffix = c(".from", ".to"))
 
 #plotting everything
 ggplot() +
-  layer_spatial(population) + 
-  labs(caption="Simulated Ebola-like transmission chain in West Africa", x="longitude", y="latitude") +  
-  scale_fill_viridis(trans = "log1p",option="A",limits=c(0,NA),na.value="white", 
+  layer_spatial(population) + labs(x="", y="") +  
+  scale_fill_viridis(trans = "log1p",option="A",limits=c(0,NA),na.value="NA", 
                      name="Environmental\nvalue (number of\ninhabitants)", position="bottom", 
                      breaks=c(6,60,600,6000,60000),labels=c(6,60,600,6000,60000)) + 
   scale_color_viridis(option="D",limits=c(0,NA),na.value="white", name="time") + 
-  theme(panel.background = element_blank(), panel.ontop = TRUE,
+  theme(panel.background = element_blank(), panel.ontop = FALSE,
         panel.grid.major = element_line(size=0.25, linetype="dashed", colour ="grey70"),
         axis.ticks=element_blank(), plot.caption=element_text(size=10)) +
   geom_segment(data=join2, aes(x = state.x.from, y = state.y.from, xend = state.x.to, yend = state.y.to),
@@ -429,7 +425,7 @@ ggplot() +
 
 ## Other use
 
-External software could be used to explore more into details the dynamics of this epidemic and transmission chain. The `write.beast` function of the `treeio` package allows for an easy export of the transmssion chain as a phylogenetic-like tree, in a similar format as [BEAST](https://beast.community/) trees.
+External software could be used to explore more into details the dynamic of this epidemic and transmission chain. The `write.beast` function of the `treeio` package allows for an easy export of the transmssion chain as a phylogenetic-like tree, in a similar format as [BEAST](https://beast.community/) trees.
 
 ```{r writing, eval=FALSE}
 treeio::write.beast(test.nosoiA.tree, file = "test.tre", translate = TRUE, tree.name = "UNTITLED")
