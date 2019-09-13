@@ -251,13 +251,25 @@ ggplot(data=data, aes(x=R0)) + geom_histogram() + theme_minimal()
 # Transmission chains
 
 ## Full transmission chain
-The transmission chain is the main product of a `nosoi` simulation. It can be extracted or visualized as such using the `table.hosts` table that links in time hosts. It can also be extracted in a form mimicking a phylogenetic tree, and visualized or saved as such using available tools for phylogenetic trees. To do so, you can use the `getTransmissionTree` function, which arguments are the `nosoi` simulation output and which host-type would be the tips of the tree ("A" by default, or "B" in case a dual-host simulation).
+The transmission chain is the main product of a `nosoi` simulation.
+It can be extracted or visualized as such using the `table.hosts` table that links hosts in time.
+It can also be extracted in a form mimicking a phylogenetic tree, 
+and visualized or saved as such using available tools for phylogenetic trees 
+such as [`ape`](https://CRAN.R-project.org/package=ape)
+and [`tidytree`](https://yulab-smu.github.io/treedata-book/).
+To do so, you can use the `getTransmissionTree()` function,
+which arguments are the `nosoi` simulation output and which host-type would be
+the tips of the tree ("A" by default, or "B" in case a dual-host simulation).
 
 <!-- put here more info on how the transmissiont tree is actually reconstructed. Paul? --> 
 
-> `getTransmissionTree` extracts the full transmission tree. In case of a big simulated epidemic, this can take some time. It can also be very complicated to plot/visualise.
 
-As an exemple, we simulate a single introduction of a single-host pathogen between 3 differents states (named "A", "B", and "C"), with a constant exit and move probabilityn as well as a number of contacts dependant of the location and host count in each location:
+> `getTransmissionTree()` extracts the full transmission tree. In case of a big simulated epidemic, this can take some time. It can also be very complicated to plot/visualise.
+
+As an exemple, we simulate a single introduction of a single-host pathogen
+between 3 differents states (named "A", "B", and "C"),
+with a constant exit and move probabilityn as well as a number of contacts
+dependant of the location and host count in each location:
 
 ```{r simDynamics-ter, eval=FALSE, message=FALSE}
 library(nosoi)
@@ -289,7 +301,7 @@ library(nosoi)
     }
   }
 
-  transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+  transition.matrix <- matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   set.seed(1050)
   test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
@@ -312,12 +324,17 @@ library(nosoi)
   )
 ```
 
-The simulation runs for 46 time-steps and infected 204 hosts. The following transmission tree can thus be extracted (as a `treedata` object) and plotted:
+The simulation runs for `r test.nosoiA$total.time` time-steps
+and infected `r getHostData(test.nosoiA, "N.infected")` hosts. 
+The following transmission tree can thus be extracted 
+(as a `tidytere::treedata` object) and plotted using
+[`ggtree`](10.18129/B9.bioc.ggtree):
 
 ```{r treeA, message=FALSE}
+library(ggplot2)
 library(ggtree)
 
-test.nosoiA.tree = getTransmissionTree(test.nosoiA)
+test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 
 ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + 
     theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
@@ -325,7 +342,12 @@ ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(aes(color=state)) + 
         legend.key = element_blank()) 
 ```
 
-Each color point represent the state, either at transmission (a node) or a host when it exits the simulation (or the end point of the simulation; a tip). This transmission tree is timed (time-steps of the simulation). As you can see, no transmission ever occurs at location "B" (green); this is coherent with the chosen `nContact` function, where no infectious contact occurs when the hosts is in "B".
+Each color point represents the state, either at transmission (a node)
+or a host when it exits the simulation (or the end point of the simulation; a tip).
+This transmission tree is timed (time-steps of the simulation).
+As you can see, no transmission ever occurs at location "B" (green);
+this is coherent with the chosen `nContact` function, where no infectious contact
+occurs when the host is in "B".
 
 ## Sampling the transmission chain
 

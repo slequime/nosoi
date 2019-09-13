@@ -105,7 +105,7 @@ plot2 <- ggplot(graph.simA.network, aes(x = x, y = y, xend = xend, yend = yend))
   geom_nodes(aes(color=inf.in)) + scale_color_discrete(name="State of infection") + 
   theme_blank()
 
-ggarrange(plot1,plot2,widths = 2, heights = 1, legend="bottom")
+ggpubr::ggarrange(plot1,plot2,widths = 2, heights = 1, legend="bottom")
 ```
 
 An animated version over time can also be rendered:
