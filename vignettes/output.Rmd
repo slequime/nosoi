@@ -263,10 +263,11 @@ the tips of the tree ("A" by default, or "B" in case a dual-host simulation).
 
 <!-- put here more info on how the transmission tree is actually reconstructed. Paul? --> 
 Formally, the transmission tree is extracted as a dated phylogenetic tree where:  
-  - each branch represents the living span of an host;
-  - each internal node represents a transmission event;
-  - each tip represents the exiting point of an host;
-  - the root represents the entering point of the first host.
+
+- each branch represents the living span of an host;
+- each internal node represents a transmission event;
+- each tip represents the exiting point of an host;
+- the root represents the entering point of the first host.
   
 <!-- TODO: Figure with strait lines like here: https://xavierdidelot.github.io/TransPhylo/articles/TransPhylo.html --> 
 <!-- TODO: add reference to TransPhylo ? --> 
