@@ -11,7 +11,29 @@ vignette: >
 
 # Introduction
 
-In this example, we aim to simulate an Ebola-like epidemic in Western Africa. We will use the distribution of the population in this region as the "environmental factor" to be included in our simulation (origin: [WorldPop](https://www.worldpop.org/)). The map will be the following (here represented on a log scale to show efficiently differences in distribution):
+In this example, we aim to simulate an Ebola-like epidemic in Western Africa.
+We will use the distribution of the population in this region as the
+"environmental factor" to be included in our simulation (origin: [WorldPop](https://www.worldpop.org/)).
+
+A compressed version of the raster can be found on the 
+[GitHub repository](https://github.com/slequime/nosoi/blob/master/docs/articles/examples/Africa_pop_2015.tif.zip).
+The following chunk of code can be used to download it in `R`:
+```{r downloadData, eval = FALSE}
+# Create tmp file and download WorldPop Africa raster data
+tmp_dir = tempdir()
+tmp_file = tempfile(tmpdir = tmp_dir, fileext = ".zip")
+raster_url <- "https://github.com/slequime/nosoi/raw/master/docs/articles/examples/Africa_pop_2015.tif.zip"
+download.file(raster_url, tmp_file)
+data_file <- unzip(tmp_file, exdir = tmp_dir, overwrite = TRUE)[1]
+unlink(c(tmp_dir, tmp_file))
+```
+
+```{r getDataLoal, echo = FALSE, message=FALSE, warning=FALSE}
+data_file <- "~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Nosoi_EBOV_simus/Africa_pop_2015.tif"
+```
+
+We can then plot the map used in this example
+(here represented on a log scale to show efficiently differences in distribution):
 
 ```{r importRaster, echo = FALSE, message=FALSE, warning=FALSE}
 library(raster)
@@ -21,7 +43,7 @@ library(ggspatial)
 
 #WorldPop Africa raster:
 e_WestAfrica <- extent(-18, -3, 3, 15) #to crop the raster to the study site
-population <- crop(raster("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Nosoi_EBOV_simus/Africa_pop_2015.tif"), e_WestAfrica)
+population <- crop(raster(data_file), e_WestAfrica)
 
 ggplot() +
   layer_spatial(population) + labs(x="", y="") +  
@@ -34,7 +56,6 @@ ggplot() +
 		plot.caption=element_text(size=10))
 ```
 
-A compressed version of the raster can be found on the [GitHub repository](https://github.com/slequime/nosoi/blob/master/docs/articles/examples/Africa_pop_2015.tif.zip).
 
 Ebola will here be considered a single-host pathogen, and some of the pathogen related parameters will be found in the literature. The others will be empirically fixed to realistic values. As estimated for the 2013 epidemic, the first infected host will start at Gueckedou in Guinea.
 
