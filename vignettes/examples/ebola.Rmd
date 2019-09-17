@@ -116,7 +116,7 @@ p_Move_fct <- function(t, t_incub){
        return(p)}
 ```
 
-The distance travelled is determined by the standard deviation of the Brownian motion (`sdMove`) used as the movement kernel in `nosoi`. Keep in mind that this standard deviation is in your coordinate space, so the actual distance travelled by the host may actually vary according to your space. For each host that moves, a standard deviation will be sampled using this function:
+The distance traveled is determined by the standard deviation of the Brownian motion (`sdMove`) used as the movement kernel in `nosoi`. Keep in mind that this standard deviation is in your coordinate space, so the actual distance traveled by the host may actually vary according to your space. For each host that moves, a standard deviation will be sampled using this function:
 
 ```{r sdMove}
  sdMove_fct <- function(t){runif(1,min=0.5,max=3)}
@@ -144,7 +144,7 @@ n_contact <- function(t, current.env.value, host.count){
 
 ## `pTrans`
 
-Once contact has been made, the probability of transmission itself will depend of the incubation time `t_incub` (see above). The probability to transmit, if `t_incub` is reached, will be 0.025 (lossely based on [Skrip et al. 2017 Philos Trans R Soc Lond B Biol Sci](https://www.ncbi.nlm.nih.gov/pubmed/28396472) ):
+Once contact has been made, the probability of transmission itself will depend of the incubation time `t_incub` (see above). The probability to transmit, if `t_incub` is reached, will be 0.025 (loosely based on [Skrip et al. 2017 Philos Trans R Soc Lond B Biol Sci](https://www.ncbi.nlm.nih.gov/pubmed/28396472) ):
 
 ```{r pTrans, eval = FALSE}
 proba <- function(t, t_incub) {
@@ -272,9 +272,9 @@ The simulation has run for `r test.nosoiA$total.time` days and has infected `r t
 
 # Analyzing the results
 
-## Vizualisation
+## Visualization
 
-Our first step will be to vizualise this epidemic on the map. We can use the following code to produce an animation (in time) of the epidemic:
+Our first step will be to visualize this epidemic on the map. We can use the following code to produce an animation (in time) of the epidemic:
 
 ```{r output, eval = FALSE}
 test.data <- getTableState(test.nosoiA)
@@ -311,13 +311,13 @@ animate(animated.plot, nframes=test.nosoiA$total.time*2+10,duration=40,end_pause
 ```
 ![](ebola-like.gif)
 
-In this animation, green dots represent the infected hosts, each dot being an individual host (beware, dots can overlap). The transparency for each dot allows to visualise superposition of dots, in a certain measure. Time is in days.
+In this animation, green dots represent the infected hosts, each dot being an individual host (beware, dots can overlap). The transparency for each dot allows to visualize superposition of dots, in a certain measure. Time is in days.
 
 > Beware, the gif file displayed here as been produced with a lower resolution raster to avoid big file size. If you try to prepare this gif without reducing the raster resolution, it might take several hours (or days!) to finish.
 
 ## Epidemiological analysis
 
-As interesting as the vizualisation might be, we can also explore a bit the epidemic parameters, for example the "real" $R_0$, defined as the average number of cases one case generates, often estimated in epidemiological studies. For this we can use the following code:
+As interesting as the visualization might be, we can also explore a bit the epidemic parameters, for example the "real" $R_0$, defined as the average number of cases one case generates, often estimated in epidemiological studies. For this we can use the following code:
 
 ```{r generalEpi}
 R0.sim <- getR0(test.nosoiA)
@@ -386,7 +386,7 @@ ggplot() +
   geom_point(data=tree.node, aes(x=state.x, y=state.y,color=time))
 ```
 
-The full transmission chain is a bit messy, because of the number of infected individuals. We can also subsample it randomly. We will select here 250 individuals sampled at the time of their exit (either death or recovery):
+The full transmission chain is a bit messy, because of the number of infected individuals. We can also sub-sample it randomly. We will select here 250 individuals sampled at the time of their exit (either death or recovery):
 
 ```{r transmissionTree2}
 #Extracts data from the nosoiSim object:
@@ -438,7 +438,7 @@ ggplot() +
 
 ## Other use
 
-External software could be used to explore more into details the dynamic of this epidemic and transmission chain. The `write.beast` function of the `treeio` package allows for an easy export of the transmssion chain as a phylogenetic-like tree, in a similar format as [BEAST](https://beast.community/) trees.
+External software could be used to explore more into details the dynamic of this epidemic and transmission chain. The `write.beast` function of the `treeio` package allows for an easy export of the transmission chain as a phylogenetic-like tree, in a similar format as [BEAST](https://beast.community/) trees.
 
 ```{r writing, eval=FALSE}
 treeio::write.beast(test.nosoiA.tree, file = "test.tre", translate = TRUE, tree.name = "UNTITLED")
