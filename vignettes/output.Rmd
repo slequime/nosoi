@@ -421,3 +421,20 @@ ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(
         legend.title = element_blank(),
         legend.key = element_blank()) 
 ```
+
+## Exporting the Transmission Tree
+
+All the functions mentioned above produce a `tidytere::treedata` object.
+It is a phylogenetic tree, with nodes and tips anotated with all the charasteristics
+of the epidemics, including the geographical location when applicable.
+This format is described in details by his developer in 
+this [ebook](https://yulab-smu.github.io/treedata-book/).
+
+This makes it easy to export the generated data to other softwares for downstream
+analyses, thanks to the package [treeio](https://guangchuangyu.github.io/software/treeio/).
+For instance, the tree can be written in a [beast](http://beast.community/)
+compatible format thanks to function `treeio::write.beast()`:
+
+```{r writeTree, message=FALSE}
+treeio::write.beast(test.nosoiA.tree.sampled.exiting)
+```
