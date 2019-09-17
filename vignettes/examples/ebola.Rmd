@@ -364,16 +364,12 @@ ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(color = "gray30") + 
 Of course this does not give us much information about the spatial distribution of this transmission tree. We can use data contained into this `treedata` object to plot our transmission tree on our environmental raster:
 
 ```{r transmissionTree-Full2, message=FALSE, warning=FALSE, error=FALSE}
-#Extracting node data from the tree (including long/lat coordinates):
-tree.node <- test.nosoiA.tree@data
+# Extracting node data from the tree (including long/lat coordinates):
+tree.node <- tidytree::as_tibble(test.nosoiA.tree)
 
-#Extracting link between nodes from the tree:
-tree.link <- as.data.frame(test.nosoiA.tree@phylo$edge)
-
-#Joining both tables to get coordinates of starting and ending nodes:
+# Joining table to get coordinates of starting and ending nodes:
 library(dplyr)
-join1 <- left_join(tree.link, tree.node, by=c("parent" = "node"))
-join2 <- left_join(join1, tree.node, by=c("node" = "node"), suffix = c(".from", ".to"))
+tree.links <- left_join(tree.node, tree.node, by = c("parent" = "node"), suffix = c(".to", ".from"))
 
 #Plotting everything:
 ggplot() +
@@ -385,7 +381,7 @@ ggplot() +
   theme(panel.background = element_blank(), panel.ontop = FALSE,
         panel.grid.major = element_line(size=0.25, linetype="dashed", colour ="grey70"),
         axis.ticks=element_blank(), plot.caption=element_text(size=10)) +
-  geom_segment(data=join2, aes(x = state.x.from, y = state.y.from, xend = state.x.to, yend = state.y.to),
+  geom_segment(data=tree.links, aes(x = state.x.from, y = state.y.from, xend = state.x.to, yend = state.y.to),
                color="gray50") + 
   geom_point(data=tree.node, aes(x=state.x, y=state.y,color=time))
 ```
@@ -418,16 +414,12 @@ ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(colo
 We can also represent it in space:
 
 ```{r transmissionTree-Full3, message=FALSE, warning=FALSE, error=FALSE}
-#extracting node data from the tree (including long/lat coordinates):
-tree.node <- test.nosoiA.tree.sampled.exiting@data
+# Extracting node data from the tree (including long/lat coordinates):
+tree.node <- tidytree::as_tibble(test.nosoiA.tree.sampled.exiting)
 
-#extracting link between nodes from the tree:
-tree.link <- as.data.frame(test.nosoiA.tree.sampled.exiting@phylo$edge)
-
-#joining both tables to get coordinates of starting and ending nodes:
+# Joining table to get coordinates of starting and ending nodes:
 library(dplyr)
-join1 <- left_join(tree.link, tree.node, by=c("parent" = "node"))
-join2 <- left_join(join1, tree.node, by=c("node" = "node"), suffix = c(".from", ".to"))
+tree.links <- left_join(tree.node, tree.node, by = c("parent" = "node"), suffix = c(".to", ".from"))
 
 #plotting everything
 ggplot() +
@@ -439,7 +431,7 @@ ggplot() +
   theme(panel.background = element_blank(), panel.ontop = FALSE,
         panel.grid.major = element_line(size=0.25, linetype="dashed", colour ="grey70"),
         axis.ticks=element_blank(), plot.caption=element_text(size=10)) +
-  geom_segment(data=join2, aes(x = state.x.from, y = state.y.from, xend = state.x.to, yend = state.y.to),
+  geom_segment(data=tree.links, aes(x = state.x.from, y = state.y.from, xend = state.x.to, yend = state.y.to),
                color="gray50") + 
   geom_point(data=tree.node, aes(x=state.x, y=state.y,color=time))
 ```
