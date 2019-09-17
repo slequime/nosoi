@@ -262,6 +262,22 @@ which arguments are the `nosoi` simulation output and which host-type would be
 the tips of the tree ("A" by default, or "B" in case a dual-host simulation).
 
 <!-- put here more info on how the transmissiont tree is actually reconstructed. Paul? --> 
+Formally, the transmission tree is extracted as a dated phylogenetic tree where:  
+  - each branch represents the living span of an host;
+  - each internal node represents a transmission event;
+  - each tip represents the exiting point of an host;
+  - the root represents the entering point of the first host.
+  
+<!-- TODO: Figure with strait lines like here: https://xavierdidelot.github.io/TransPhylo/articles/TransPhylo.html --> 
+<!-- TODO: add reference to TransPhylo ? --> 
+
+Such a tree is bniary, and has as many tips as the total number of infected hosts,
+and as many nodes as then number of transmission events.
+It spans a time going from the first entry of the first host (usually, by convention, 0),
+to the exiting of the last host.
+
+It can be seen as a proxy to represent the molecular evolution of the pathogen infecting 
+each of the host.
 
 
 > `getTransmissionTree()` extracts the full transmission tree. In case of a big simulated epidemic, this can take some time. It can also be very complicated to plot/visualise.
