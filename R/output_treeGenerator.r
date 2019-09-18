@@ -8,7 +8,6 @@
 #'  that rely on \code{\link[ape:ape-package]{ape}}.
 #'
 #' @param nosoiInf an object of class \code{\link{nosoiSim}}
-#' @param pop the population to be considered (one of "A" or "B")
 #'
 #' @return A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
 #' phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
@@ -20,15 +19,15 @@
 #'
 #' @export getTransmissionTree
 
-getTransmissionTree <- function(nosoiInf, pop = "A") {
+getTransmissionTree <- function(nosoiInf) {
   if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
     stop("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.",
          call. = FALSE)
   }
   #To avoid notes (use of dplyr)
-  node<- NULL
+  node <- NULL
 
-  table.hosts <- getTableHosts(nosoiInf, pop = pop)
+  table.hosts <- merge_host_tables(nosoiInf)
   setorder(table.hosts, "inf.time")
 
   # Indicators for tips and nodes
@@ -121,7 +120,7 @@ getTransmissionTree <- function(nosoiInf, pop = "A") {
 
   }
   # Remove NAs
-  popStructure <- getHostData(nosoiInf, "popStructure", pop = pop)
+  popStructure <- getHostData(nosoiInf, "popStructure")
   switch(popStructure,
          discrete = treeTable$state.x <- treeTable$state.y <- NULL,
          continuous = treeTable$state <- NULL)
@@ -132,8 +131,43 @@ getTransmissionTree <- function(nosoiInf, pop = "A") {
   class(treeTable) <- c("tbl_tree", class(treeTable))
   resTree <- tidytree::as.treedata(treeTable)
   resTree@phylo$root.edge <- root_length
-  resTree@info <- list(pop = pop)
+  # resTree@info <- list(pop = pop)
   return(resTree)
+}
+
+#' @title Merge Population Data
+#'
+#' @description
+#'  Utility function to get merged hosts data if dual.
+#'
+#' @param nosoiInf an object of class \code{\link{nosoiSim}}
+#'
+#' @return the merged `table.hosts` or `table.state` of the two populations.
+#'
+#' @keywords internal
+#'
+merge_host_tables <- function(nosoiInf) {
+  if (nosoiInf$type == "single") {
+    return(nosoiInf$host.info.A$table.hosts) # Just the bare table
+  } else if (nosoiInf$type == "dual") {
+    # table_A <- getTableHosts(nosoiInf, pop = target_pop)
+    # table_B <- getTableHosts(nosoiInf, pop = vector_pop)
+    # table_A[table_B, on="inf.by == hosts.ID", nomatch = NULL] # For keeping only one host
+    # return(merge(table_A, table_B, by = intersect(colnames(table_A), colnames(table_B)), all = TRUE))
+    return(rbindlist(list(nosoiInf$host.info.A$table.hosts, nosoiInf$host.info.B$table.hosts)))
+  }
+  stop("Type of transmission should be 'single' or 'dual'-host.")
+}
+
+
+#' @rdname merge_host_tables
+merge_state_tables <- function(nosoiInf) {
+  if (nosoiInf$type == "single") {
+    return(nosoiInf$host.info.A$table.state) # Just the bare table
+  } else if (nosoiInf$type == "dual") {
+    return(rbindlist(list(nosoiInf$host.info.A$table.state, nosoiInf$host.info.B$table.state)))
+  }
+  stop("Type of transmission should be 'single' or 'dual'-host.")
 }
 
 ## Utility functions to get entries in the table, returning NA if does not exist.
@@ -343,11 +377,11 @@ draw_one_sample <- function(table.states, total.time, tree, sample) {
 
 sampleTransmissionTree <- function(nosoiInf, tree, samples) {
   ## Extract table state
-  pop <- tree@info$pop
-  if (is.null(pop) || !(pop == "A" || pop == "B")){
-    stop("The tree object has an incorect format. It should be produced by function 'getTransmissionTree'. See documentation.")
-  }
-  table.states <- getTableState(nosoiInf, pop = pop)
+  # pop <- tree@info$pop
+  # if (is.null(pop) || !(pop == "A" || pop == "B")){
+  #   stop("The tree object has an incorect format. It should be produced by function 'getTransmissionTree'. See documentation.")
+  # }
+  table.states <- merge_state_tables(nosoiInf)
   tottime <- nosoiInf$total.time
   ## Add all tips
   for (i in 1:nrow(samples)) {

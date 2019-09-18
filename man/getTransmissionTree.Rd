@@ -4,12 +4,10 @@
 \alias{getTransmissionTree}
 \title{Gets the full transmission tree (phylogenetic tree-like) from a \code{nosoi} simulation}
 \usage{
-getTransmissionTree(nosoiInf, pop = "A")
+getTransmissionTree(nosoiInf)
 }
 \arguments{
 \item{nosoiInf}{an object of class \code{\link{nosoiSim}}}
-
-\item{pop}{the population to be considered (one of "A" or "B")}
 }
 \value{
 A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
