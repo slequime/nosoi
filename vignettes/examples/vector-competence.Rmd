@@ -46,7 +46,11 @@ n_contact_fct_human <- function(t){rpois(1,0.9)}
 ```
 
 ```{r nContact2, echo = FALSE}
+set.seed(5006)
+data.test.nContact_human <- data.frame(x=replicate(1000, n_contact_fct_human(1), simplify=TRUE))
+
 #plot the distribution of bitten
+ggplot(data=data.test.nContact_human, aes(x=x)) + geom_histogram() + theme_minimal() + labs(x="Number of time bitten by a mosquito", y="Host count") 
 ```
 ### `pTrans`
 
