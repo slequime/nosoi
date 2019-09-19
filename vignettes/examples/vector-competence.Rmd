@@ -28,7 +28,7 @@ We will restrict ourselves to a relatively simple simulation, as the idea is to 
 
 ### `pExit`
 
-In Fontaine *et al.*, humans do not die from the dengue infection, but exit the simulation when their transmission probability approaches 0 on its way down (see below). To approximate this behaviour, we will use one of the parameters used in `pTrans`, called  `Md_human`, which is the time since infection at which `pTrans` equals 50% of its maximum value. We will assume here that after three times this period, an infected human cannot transmit the virus any more and will thus exit the simulation:
+In Fontaine *et al.*, humans do not die from the dengue infection, but exit the simulation when their transmission probability approaches 0 on its way down (see below). To approximate this behavior, we will use one of the parameters used in `pTrans`, called  `Md_human`, which is the time since infection at which `pTrans` equals 50% of its maximum value. We will assume here that after three times this period, an infected human cannot transmit the virus any more and will thus exit the simulation:
 
 ```{r pExit1, eval = FALSE}
 p_Exit_fct_human <- function(t,Md_human){
@@ -39,7 +39,7 @@ p_Exit_fct_human <- function(t,Md_human){
 ```
 
 ### `nContact`
-This parameter was not determined in Fontaine *et al.*, as unlike in `nosoi`, each mosquito in the simulation was simulated. Since the daily probability of a mosquito to bite is 0.3 and the relative density of mosquitoes compared to humans equalled 3, we can estimate that the daily probability to get bitten by a mosquito is approximately 0.9. Of course, this should correspond to a distribution of integer numbers (such as 0, 1, 2). We will therefore make draws from a Poisson distribution with rate parameter $\lambda$ = 0.9.
+This parameter was not determined in Fontaine *et al.*, as unlike in `nosoi`, each mosquito in the simulation was simulated. Since the daily probability of a mosquito to bite is 0.3 and the relative density of mosquitoes compared to humans equaled 3, we can estimate that the daily probability to get bitten by a mosquito is approximately 0.9. Of course, this should correspond to a distribution of integer numbers (such as 0, 1, 2). We will therefore make draws from a Poisson distribution with rate parameter $\lambda$ = 0.9.
 
 ```{r nContact1, eval = FALSE}
 n_contact_fct_human <- function(t){rpois(1,0.9)}
@@ -149,7 +149,7 @@ p_Trans_fct <- function(t, p_max, t_EIP){
 }
 ```
 
-`pTrans` will of course vary according the the viral isolate studied. EIP was measured dynamically for each mosquito population over time as the proportion of mosquitoes with disseminated viral infections. This experimental measure, a mean of the whole population, is modelled as a logistic function characterized by three parameters:
+`pTrans` will of course vary according the the viral isolate studied. EIP was measured dynamically for each mosquito population over time as the proportion of mosquitoes with disseminated viral infections. This experimental measure, a mean of the whole population, is modeled as a logistic function characterized by three parameters:
 
 - $K_{mosquito}$ (`K_mosquito`), the maximum probability of transmission.
 - $M_{mosquito}$ (`M_mosquito`), the time when 50% $K_{mosquito}$ is reached during the ascending phase.
@@ -328,7 +328,7 @@ SimulationDual <- nosoiSim(type="dual", popStructure="none",
 
 # Analyzing the results and conclusions
 
-To analyse the results, we classify each simulation into 3 categories based on the number of humans infected: over 100 infected, below 100 infected and no secondary cases (i.e. just one infected). We then plot the results as follows:
+To analyze the results, we classify each simulation into 3 categories based on the number of humans infected: over 100 infected, below 100 infected and no secondary cases (i.e. just one infected). We then plot the results as follows:
 
 ```{r Output1, echo = FALSE, message=FALSE, warning=FALSE}
 load("/Users/slequime/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/runFontaine2/results.Haiti.RData")

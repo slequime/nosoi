@@ -27,7 +27,7 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 
 \item{diff.pExit}{is pExit different between states of the structured population (TRUE/FALSE)}
 
-\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation? (TRUE/FALSE)}
+\item{timeDep.pExit}{is pExit dependent on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{hostCount.pExit}{does pExit varies with the host count in the state? (TRUE/FALSE); diff.pExit should be TRUE.}
 
@@ -37,7 +37,7 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 
 \item{diff.pMove}{is pMove different between states of the structured population (TRUE/FALSE)}
 
-\item{timeDep.pMove}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE)}
+\item{timeDep.pMove}{is pMove dependent on the absolute time of the simulation (TRUE/FALSE)}
 
 \item{hostCount.pMove}{does pMove varies with the host count in the state? (TRUE/FALSE); diff.pMove should be TRUE.}
 
@@ -47,7 +47,7 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 
 \item{diff.nContact}{is nContact different between states of the structured population (TRUE/FALSE)}
 
-\item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation? (TRUE/FALSE)}
+\item{timeDep.nContact}{is nContact dependent on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{hostCount.nContact}{does nContact varies with the host count in the state? (TRUE/FALSE); diff.nContact should be TRUE.}
 
@@ -57,7 +57,7 @@ singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
 
 \item{diff.pTrans}{is pTrans different between states of the structured population (TRUE/FALSE)}
 
-\item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation? (TRUE/FALSE)}
+\item{timeDep.pTrans}{is pTrans dependent on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{hostCount.pTrans}{does pTrans varies with the host count in the state? (TRUE/FALSE); diff.pTrans should be TRUE.}
 
@@ -79,7 +79,7 @@ This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-
 the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
 }
 \details{
-The structure matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing depature state and column the arrival state. All rows should add to 1.
+The structure matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing departure state and column the arrival state. All rows should add to 1.
 
 The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
 

@@ -52,7 +52,7 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pExit.A}{parameter names (list of functions) for the pExit for host-type A.}
 
-\item{timeDep.pExit.A}{is pExit of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pExit.A}{is pExit of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pExit.A}{does pExit of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
@@ -62,19 +62,19 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pMove.A}{parameter names (list of functions) for the pMove for host-type A.}
 
-\item{timeDep.pMove.A}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host-type A.}
+\item{timeDep.pMove.A}{is pMove dependent on the absolute time of the simulation (TRUE/FALSE) for host-type A.}
 
 \item{diff.pMove.A}{does pMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).A.}
 
 \item{hostCount.pMove.A}{does pMove of host-type A vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove.A should be TRUE.}
 
-\item{sdMove.A}{function that gives the distance travelled for host-type A (based on coordinates); output is the standard deviation value for the Brownian motion.}
+\item{sdMove.A}{function that gives the distance traveled for host-type A (based on coordinates); output is the standard deviation value for the Brownian motion.}
 
 \item{param.sdMove.A}{parameter names (list of functions) for sdMove for host-type A.}
 
 \item{diff.sdMove.A}{does sdMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{timeDep.sdMove.A}{is sdMove of host-type A dependant on the absolute time of the simulation (TRUE/FALSE) .}
+\item{timeDep.sdMove.A}{is sdMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE) .}
 
 \item{hostCount.sdMove.A}{does sdMove varies with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); diff.sdMove.A should be TRUE.}
 
@@ -84,7 +84,7 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{param.nContact.A}{parameter names (list of functions) for param.nContact for host-type A.}
 
-\item{timeDep.nContact.A}{is nContact of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.nContact.A}{is nContact of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.nContact.A}{does nContact of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
@@ -94,7 +94,7 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pTrans.A}{parameter names (list of functions) for the pExit  for host A.}
 
-\item{timeDep.pTrans.A}{is pTrans of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pTrans.A}{is pTrans of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pTrans.A}{does pTrans of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
@@ -106,7 +106,7 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pExit.B}{parameter names (list of functions) for the pExit for host-type B.}
 
-\item{timeDep.pExit.B}{is pExit of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pExit.B}{is pExit of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pExit.B}{does pExit of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
@@ -116,19 +116,19 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pMove.B}{parameter names (list of functions) for the pMove for host-type B.}
 
-\item{timeDep.pMove.B}{is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host-type B.}
+\item{timeDep.pMove.B}{is pMove dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.}
 
 \item{diff.pMove.B}{does pMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
 \item{hostCount.pMove.B}{does pMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove.B should be TRUE.}
 
-\item{sdMove.B}{function that gives the distance travelled for host-type B (based on coordinates); output is the standard deviation value for the Brownian motion.}
+\item{sdMove.B}{function that gives the distance traveled for host-type B (based on coordinates); output is the standard deviation value for the Brownian motion.}
 
 \item{param.sdMove.B}{parameter names (list of functions) for sdMove for host-type B.}
 
 \item{diff.sdMove.B}{does sdMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{timeDep.sdMove.B}{is sdMove of host-type B dependant on the absolute time of the simulation (TRUE/FALSE) for host-type B.}
+\item{timeDep.sdMove.B}{is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.}
 
 \item{hostCount.sdMove.B}{does sdMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove.B should be TRUE.}
 
@@ -138,7 +138,7 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{param.nContact.B}{parameter names (list of functions) for param.nContact for host-type B.}
 
-\item{timeDep.nContact.B}{is nContact of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.nContact.B}{is nContact of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.nContact.B}{does nContact of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
@@ -148,7 +148,7 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pTrans.B}{parameter names (list of functions) for the pExit for host-type B.}
 
-\item{timeDep.pTrans.B}{is pTrans of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pTrans.B}{is pTrans of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pTrans.B}{does pTrans of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
@@ -171,7 +171,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 \details{
 The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host-type A or B.
 
-The structure raster(s) provided provided should of class \code{raster}. High values of the environemental variable can attract hosts if \code{attracted.by.raster} is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).
+The structure raster(s) provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).
 
 The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), \code{sdMove} a real number (keep in mind this number is related to your coordinate space), and \code{nContact} a positive natural number (positive integer) or 0.
 

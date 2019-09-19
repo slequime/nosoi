@@ -18,10 +18,10 @@ CoreSanityChecks <- function(length.sim, max.infected, init.individuals) {
   if (is.na(init.individuals) || init.individuals < 1 || !init.individuals%%1==0) stop("The transmission chain should be started by 1 or more (integer) individuals.")
 }
 
-#' @title Checks if a function is properly formated
+#' @title Checks if a function is properly formatted
 #'
 #' @description
-#' Checks if the function is properly formated given the user's input and nosoi's requirements.
+#' Checks if the function is properly formatted given the user's input and nosoi's requirements.
 #'
 #' @param pFunc a function
 #' @param name the name of the function
@@ -76,10 +76,10 @@ FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, hostCo
   if(timeDep == TRUE && diff == TRUE && continuous == TRUE && formalArgs(pFunc)[3] != "current.env.value") stop(name, " should have 'current.env.value' as the third variable. diff.", name, " is TRUE.")
 }
 
-#' @title Checks if the matrix is properly formated
+#' @title Checks if the matrix is properly formatted
 #'
 #' @description
-#' Checks if the transition matrix is properly formated given the user's input and nosoi's requirements.
+#' Checks if the transition matrix is properly formatted given the user's input and nosoi's requirements.
 #'
 #' @param structure.matrix transition matrix (probabilities) to go from location A (row) to B (column)
 #' @param init.structure which state (i.e. location) the initially infected individuals are located.
@@ -98,10 +98,10 @@ MatrixSanityChecks <- function(structure.matrix, init.structure, none.at.start=N
   if(!is.null(none.at.start) && none.at.start==FALSE && !(init.structure %in% rownames(structure.matrix))) stop("init.structure should be a state present in structure.matrix.")
 }
 
-#' @title Checks if the raster is properly formated
+#' @title Checks if the raster is properly formatted
 #'
 #' @description
-#' Checks if the environmental raster is properly formated given the user's input and nosoi's requirements.
+#' Checks if the environmental raster is properly formatted given the user's input and nosoi's requirements.
 #'
 #' @param structure.raster raster object defining the environmental variable.
 #' @param init.structure which state (i.e. location) the initially infected individuals are located.

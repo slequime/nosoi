@@ -18,7 +18,7 @@ Number of infected units at time t
 For a given time t, this function returns the number of infected active units.
 The difference with \code{\link{numberInfected}} is that it counts an "out"
 individual as still there, but with no children.
-This is for comparision with the BGW process, should be internal only.
+This is for comparison with the BGW process, should be internal only.
 }
 \seealso{
 \code{\link{nosoiSim}}

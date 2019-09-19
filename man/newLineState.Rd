@@ -2,7 +2,7 @@
 % Please edit documentation in R/nosoi_tablesManagment.R
 \name{newLineState}
 \alias{newLineState}
-\title{Creates a new line to be added to the movement table when hosts moves (internal fonction)}
+\title{Creates a new line to be added to the movement table when hosts moves (internal function)}
 \usage{
 newLineState(hosts.ID, state.pres, time.is,
   current.environmental.value = NA, current.cell.number.raster = NA)
@@ -14,7 +14,7 @@ newLineState(hosts.ID, state.pres, time.is,
 
 \item{time.is}{time in the simulation, when the infection takes place}
 
-\item{current.environmental.value}{current value of environemental variable (from raster) according to coordinates in current.in.}
+\item{current.environmental.value}{current value of environmental  variable (from raster) according to coordinates in current.in.}
 
 \item{current.cell.number.raster}{unique number of the raster cell where the host is}
 }

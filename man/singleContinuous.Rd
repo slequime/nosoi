@@ -29,7 +29,7 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{diff.pExit}{does pExit depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation? (TRUE/FALSE)}
+\item{timeDep.pExit}{is pExit dependent on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{hostCount.pExit}{does pExit vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit should be TRUE.}
 
@@ -53,7 +53,7 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{hostCount.sdMove}{does sdMove vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove should be TRUE.}
 
-\item{sdMove}{function that gives the distance travelled (based on coordinates); output is the standard deviation value for the Brownian motion.}
+\item{sdMove}{function that gives the distance traveled (based on coordinates); output is the standard deviation value for the Brownian motion.}
 
 \item{param.sdMove}{parameter names (list of functions) for sdMove.}
 
@@ -61,7 +61,7 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{diff.nContact}{does nContact depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation? (TRUE/FALSE)}
+\item{timeDep.nContact}{is nContact dependent on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{hostCount.nContact}{does nContact vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.nContact should be TRUE.}
 
@@ -71,7 +71,7 @@ singleContinuous(length.sim, max.infected, init.individuals,
 
 \item{diff.pTrans}{does pTrans depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation? (TRUE/FALSE)}
+\item{timeDep.pTrans}{is pTrans dependent on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{hostCount.pTrans}{does pTrans vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.pTrans should be TRUE.}
 
@@ -94,7 +94,7 @@ The simulation stops either at the end of given time (specified by length.sim) o
 is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.
 }
 \details{
-The structure raster provided provided should of class \code{raster}. High values of the environemental variable can attract hosts if \code{attracted.by.raster} is TRUE.
+The structure raster provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE.
 
 The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), \code{sdMove} a real number (keep in mind this number is related to your coordinate space), and \code{nContact} a positive natural number (positive integer) or 0
 

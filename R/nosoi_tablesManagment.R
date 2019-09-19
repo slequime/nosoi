@@ -1,6 +1,6 @@
 #This file holds all the function needed to create and update the tables used in nosoi
 
-#' @title Creates a new line to be added to the table when new host is infected (internal fonction)
+#' @title Creates a new line to be added to the table when new host is infected (internal function)
 #'
 #' @description
 #' This function creates a new line for the table.
@@ -64,7 +64,7 @@ newLine <- function(hosts.ID,
   }
 }
 
-#' Generates initial table to start the simulation (internal fonction)
+#' Generates initial table to start the simulation (internal function)
 #'
 #' @description This function creates the initial table for the host.
 #'
@@ -72,7 +72,7 @@ newLine <- function(hosts.ID,
 #' @param init.structure State (or coordinates) of the initially infected individuals.
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
 #' @param ParamHost list of individual based parameters.
-#' @param current.environmental.value current value of the environemental variable provided by the raster according to its position in init.structure.
+#' @param current.environmental.value current value of the environmental  variable provided by the raster according to its position in init.structure.
 #' @param current.cell.number.raster unique number of the raster cell where the host is
 #' @param current.count.A current count of host A
 #' @param current.count.B current count of host B
@@ -125,7 +125,7 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost,
   return(table.hosts)
 }
 
-#' @title Creates a new line to be added to the movement table when hosts moves (internal fonction)
+#' @title Creates a new line to be added to the movement table when hosts moves (internal function)
 #'
 #' @description
 #' This function creates a new line for the table,
@@ -134,7 +134,7 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost,
 #' @param hosts.ID unique ID for the new host
 #' @param state.pres state in which host currently is
 #' @param time.is time in the simulation, when the infection takes place
-#' @param current.environmental.value current value of environemental variable (from raster) according to coordinates in current.in.
+#' @param current.environmental.value current value of environmental  variable (from raster) according to coordinates in current.in.
 #' @param current.cell.number.raster unique number of the raster cell where the host is
 #' @return a list with the new line to add.
 #'
@@ -164,14 +164,14 @@ newLineState <- function(hosts.ID, state.pres, time.is, current.environmental.va
   }
 }
 
-#' Generates initial movement table to start the simulation (internal fonction)
+#' Generates initial movement table to start the simulation (internal function)
 #'
-#' @description This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s).
+#' @description This function creates the initial table for the host, with 5+number of parameters of the transmission probability function parameters, and init.individuals row(s).
 #'
 #' @param init.individuals number of initially infected individuals (i.e. number of lines at time 0).
 #' @param init.structure State of the initially infected individuals.
 #' @param prefix.host character(s) to be used as a prefix for the hosts identification number.
-#' @param current.environmental.value current value of the environemental variable provided by the raster according to its position in init.structure.
+#' @param current.environmental.value current value of the environmental  variable provided by the raster according to its position in init.structure.
 #' @param current.cell.number.raster unique number of the raster cell where the host is
 #'
 #' @keywords internal

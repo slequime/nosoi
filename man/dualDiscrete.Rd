@@ -48,7 +48,7 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pExit.A}{parameter names (list of functions) for the pExit for host-type A.}
 
-\item{timeDep.pExit.A}{is pExit of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pExit.A}{is pExit of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pExit.A}{is pExit of host-type A different between states of the structured population (TRUE/FALSE)?}
 
@@ -58,7 +58,7 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pMove.A}{parameter names (list of functions) for the pMove for host-type A.}
 
-\item{timeDep.pMove.A}{is pMove of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pMove.A}{is pMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pMove.A}{is pMove of host-type A different between states of the structured population (TRUE/FALSE)?}
 
@@ -68,7 +68,7 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{param.nContact.A}{parameter names (list of functions) for param.nContact for host-type A.}
 
-\item{timeDep.nContact.A}{is nContact of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.nContact.A}{is nContact of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.nContact.A}{is nContact of host-type A different between states of the structured population (TRUE/FALSE)?}
 
@@ -78,7 +78,7 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pTrans.A}{parameter names (list of functions) for the pExit  for host A.}
 
-\item{timeDep.pTrans.A}{is pTrans of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pTrans.A}{is pTrans of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pTrans.A}{is pTrans of host-type A different between states of the structured population (TRUE/FALSE)?}
 
@@ -90,7 +90,7 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pExit.B}{parameter names (list of functions) for the pExit for host-type B.}
 
-\item{timeDep.pExit.B}{is pExit of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pExit.B}{is pExit of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pExit.B}{is pExit of host-type B different between states of the structured population (TRUE/FALSE)?}
 
@@ -100,7 +100,7 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pMove.B}{parameter names (list of functions) for the pMove for host-type B.}
 
-\item{timeDep.pMove.B}{is pMove of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pMove.B}{is pMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pMove.B}{is pMove of host-type B different between states of the structured population (TRUE/FALSE)?}
 
@@ -110,7 +110,7 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{param.nContact.B}{parameter names (list of functions) for param.nContact for host-type B.}
 
-\item{timeDep.nContact.B}{is nContact of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.nContact.B}{is nContact of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.nContact.B}{is nContact of host-type B different between states of the structured population (TRUE/FALSE)?}
 
@@ -120,7 +120,7 @@ dualDiscrete(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pTrans.B}{parameter names (list of functions) for the pExit for host-type B.}
 
-\item{timeDep.pTrans.B}{is pTrans of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pTrans.B}{is pTrans of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pTrans.B}{is pTrans host-type B different between states of the structured population (TRUE/FALSE)?}
 
@@ -142,7 +142,7 @@ the end of given time (specified by \code{length.sim}) or when the number of hos
 \details{
 The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host-type A or B.
 
-The structure/transition matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing depature state and column the arrival state. All rows should add to 1. Probability values can be different for hosts A and B (so two different matrices), but the name of the column and the rows should be shared.
+The structure/transition matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing departure state and column the arrival state. All rows should add to 1. Probability values can be different for hosts A and B (so two different matrices), but the name of the column and the rows should be shared.
 
 The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
 

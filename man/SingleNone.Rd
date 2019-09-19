@@ -21,19 +21,19 @@ singleNone(length.sim, max.infected, init.individuals, pExit, param.pExit,
 
 \item{param.pExit}{parameter names (list of functions) for the pExit.}
 
-\item{timeDep.pExit}{is pExit dependant on the absolute time of the simulation? (TRUE/FALSE)}
+\item{timeDep.pExit}{is pExit dependent on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{nContact}{function that gives the number of potential transmission events per unit of time.}
 
 \item{param.nContact}{parameter names (list of functions) for param.nContact.}
 
-\item{timeDep.nContact}{is nContact dependant on the absolute time of the simulation? (TRUE/FALSE)}
+\item{timeDep.nContact}{is nContact dependent on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{pTrans}{function that gives the probability of transmit a pathogen as a function of time since infection.}
 
 \item{param.pTrans}{parameter names (list of functions) for the pExit.}
 
-\item{timeDep.pTrans}{is pTrans dependant on the absolute time of the simulation? (TRUE/FALSE)}
+\item{timeDep.pTrans}{is pTrans dependent on the absolute time of the simulation? (TRUE/FALSE)}
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
@@ -85,5 +85,5 @@ test.nosoiA <- nosoiSim(type="single", popStructure="none",
 }
 }
 \seealso{
-For simulations with a discrete structered host population, see \code{\link{singleDiscrete}}. For simulations with a structured population in continuous space, \code{\link{singleContinuous}}
+For simulations with a discrete structured host population, see \code{\link{singleDiscrete}}. For simulations with a structured population in continuous space, \code{\link{singleContinuous}}
 }

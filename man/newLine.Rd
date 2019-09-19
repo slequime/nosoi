@@ -2,7 +2,7 @@
 % Please edit documentation in R/nosoi_tablesManagment.R
 \name{newLine}
 \alias{newLine}
-\title{Creates a new line to be added to the table when new host is infected (internal fonction)}
+\title{Creates a new line to be added to the table when new host is infected (internal function)}
 \usage{
 newLine(hosts.ID, infected.by, infected.in, time.is, ParamHost,
   current.environmental.value = NULL,

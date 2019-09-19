@@ -16,9 +16,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-Aside from the simple simulation set up, explored in [another tutorial](none.html), where hosts are "not structured", `nosoi` can take into account a population structured either in discrete states or in a continuous space. We will here focus on a discrete state structuration (for the continuous structuration, see [this tutorial](continuous.html)).
+Aside from the simple simulation set up, explored in [another tutorial](none.html), where hosts are "not structured", `nosoi` can take into account a population structured either in discrete states or in a continuous space. We will here focus on a discrete state structure (for the continuous structure, see [this tutorial](continuous.html)).
 
-The discrete structuration is intended to allow the simulation to take place into a geographical context between discrete states such as countries, regions, islands, cities. However, other kind of structure could be taken into account (high risk/low risk, etc). This also allows parameter values to change according to the host's current location among the available states. This tutorial will focus on setting up a `nosoi` simulation for a pathogen whose host population is structured between different locations.
+The discrete structure is intended to allow the simulation to take place into a geographical context between discrete states such as countries, regions, islands, cities. However, other kind of structure could be taken into account (high risk/low risk, etc). This also allows parameter values to change according to the host's current location among the available states. This tutorial will focus on setting up a `nosoi` simulation for a pathogen whose host population is structured between different locations.
 
 # Structure of the population
 
@@ -128,8 +128,8 @@ If one of the argument is not used (except `t`), then you do not have to provide
 ### `pMove`, `param.pMove`, `timeDep.pMove`, `diff.pMove` and `hostCount.pMove`
 
 `pMove` is the probability (per unit of time) for a host to move to a different state (for example, leaving state "A"). It should not be confused with the probabilities extracted from the `structure.matrix`, which represent the probability to go to a specific location once a movement is ongoing (for example, going to "B" or "C" while coming from "A").
-`param.pMove` is the list of function need to individually paramterize `pMove` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `pMove`. `timeDep.pMove` allows for `pMove` to be dependent of the "absolute" time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, `timeDep.pMove` is set to `FALSE`.
-`diff.pMove` allows `pMove` to be different according to the current discrete state of the host, to account, for example, of different travelling rates in different states. By default, `diff.pMove` is set to `FALSE`. Be careful, every state should give back a result for `pMove`.
+`param.pMove` is the list of function need to individually parameterize `pMove` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `pMove`. `timeDep.pMove` allows for `pMove` to be dependent of the "absolute" time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, `timeDep.pMove` is set to `FALSE`.
+`diff.pMove` allows `pMove` to be different according to the current discrete state of the host, to account, for example, of different traveling rates in different states. By default, `diff.pMove` is set to `FALSE`. Be careful, every state should give back a result for `pMove`.
 `hostCount.pMove` allows `pMove` to differ according to the number of hosts currently in a state. By default, `hostCount.pMove` is set to `FALSE`. To use `hostCount.pMove`, `diff.pMove` has to be set to `TRUE` too. 
 
 ### `nContact`, `param.nContact`, `timeDep.nContact`, `diff.nContact` and `hostCount.nContact`
@@ -435,7 +435,7 @@ At each time and for each infected host, `nContact.B` will be drawn anew. Rememb
 
 ### pTrans.B
 
-`pTrans.B` will be in the form of a gaussian function: it will its maximum value at a certain time point (mean) after initial infection and then will decrease until it reaches 0.
+`pTrans.B` will be in the form of a Gaussian function: it will its maximum value at a certain time point (mean) after initial infection and then will decrease until it reaches 0.
 
 ```{r pTrans1.B, eval = FALSE}
 p_Trans_fct.B <- function(t, max.time){
@@ -605,7 +605,7 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 
 # Going further
 
-To analyse and visualise your `nosoi` simulation output, you can have a look on [this page](examples/viz.html).
+To analyze and visualize your `nosoi` simulation output, you can have a look on [this page](examples/viz.html).
 
 A practical example using a dual host type of simulation with a discrete population structure is also available: 
 

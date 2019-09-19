@@ -74,7 +74,7 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE, h
 #' @title Draw newly infected
 #'
 #' @description
-#' For each encounter, simulate wether a new individual is infected.
+#' For each encounter, simulate whether a new individual is infected.
 #'
 #' @param p vector of size K, giving the probability that each encounter
 #' leads to an infection.
@@ -91,7 +91,7 @@ drawBernouilli <- function(p) {
 #' @title get Position Infected
 #'
 #' @description
-#' Return the relevent position of the infected individual.
+#' Return the relevant position of the infected individual.
 #'
 #' @param nosoiSim an object of class \code{nosoiSim}.
 #' @param df.meetTransmit current data.table for transmission

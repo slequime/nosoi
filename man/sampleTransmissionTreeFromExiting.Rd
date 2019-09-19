@@ -26,7 +26,7 @@ The tree needs to be produced by function \code{\link{getTransmissionTree}}
  applied on the same \code{nosoiSim} object.
 }
 \seealso{
-For exporting the annotated tree to other softwares, see functions
+For exporting the annotated tree to other software packages, see functions
 in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
 
 For sampling non-dead individuals, see \code{\link{sampleTransmissionTree}}.

@@ -275,7 +275,7 @@ Setting up a dual host simulation is similar to the single host version describe
 
 ### pExit.B
 
-For `pExit.B`, we will choàse a value that depends on the "absolute" time of the simulation, for example cyclic climatic conditions (temperature). In that case, the function's arguments should be `t` and `prestime` (the "absolute" time of the simulation), in that order:
+For `pExit.B`, we will choose a value that depends on the "absolute" time of the simulation, for example cyclic climatic conditions (temperature). In that case, the function's arguments should be `t` and `prestime` (the "absolute" time of the simulation), in that order:
 ```{r pExit1-dual, eval = FALSE}
 p_Exit_fctB  <- function(t,prestime){(sin(prestime/(2*pi*10))+1)/16} #for a periodic function
 ```
@@ -314,7 +314,7 @@ At each time and for each infected host, `nContact.B` will be drawn anew. Rememb
 
 ### pTrans.B
 
-`pTrans.B` will be provided in the form of a gaussian function: it will reach its maximum value at a certain time point (mean) after initial infection and will subsequently decrease until it reaches 0:
+`pTrans.B` will be provided in the form of a Gaussian function: it will reach its maximum value at a certain time point (mean) after initial infection and will subsequently decrease until it reaches 0:
 
 ```{r pTrans1.B, eval = FALSE}
 p_Trans_fct.B <- function(t, max.time){
@@ -449,7 +449,7 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 
 # Going further
 
-To analyse and visualise your `nosoi` simulation output, you can have a look on [this page](examples/viz.html).
+To analyze and visualize your `nosoi` simulation output, you can have a look on [this page](examples/viz.html).
 
 You may also want to compose a more complex model by adding some structure (e.g. geography) to your simulation. Two tutorials can guide you on how to set up such structured scenarios:
 

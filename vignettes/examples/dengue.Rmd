@@ -23,7 +23,7 @@ Our study will focus on 5 south-east Asian countries: China (only the southern p
 
 ## Average annual temperature
 
-Here we use [WorldClim v2](http://worldclim.org/version2) data (average temperature (°C) - tavg 10m). The rasters are loaded, cut to fit the study site, and the temperature value averaged for each countries (i.e. states in our simulation) each month. Country spatial polygones come from [GADM](https://gadm.org/data.html).
+Here we use [WorldClim v2](http://worldclim.org/version2) data (average temperature (°C) - tavg 10m). The rasters are loaded, cut to fit the study site, and the temperature value averaged for each countries (i.e. states in our simulation) each month. Country spatial polygons come from [GADM](https://gadm.org/data.html).
 
 ```{r avgTemp1, eval = FALSE}
 #Initial data
@@ -226,7 +226,7 @@ This fitted function for each location will be used to compute the number of mos
 
 ## Air transportation
 
-We will also model the movement of humans between these different countries assuming they use airtransportation. We use here data available at [OpenFlights](https://openflights.org/data.html). This website contains information about the airports and the routes linking two airports together. Since we have no information about the number of passenger on each route, we will assume that the more route link two countries together, the more passenger flight between them.
+We will also model the movement of humans between these different countries assuming they use air transportation. We use here data available at [OpenFlights](https://openflights.org/data.html). This website contains information about the airports and the routes linking two airports together. Since we have no information about the number of passenger on each route, we will assume that the more route link two countries together, the more passenger flight between them.
 
 First we extract the airports of our study site:
 ```{r air1, message = FALSE, error=FALSE, warning=FALSE}
@@ -365,7 +365,7 @@ ggplot() +
 
 ### `pExit`
 
-In Fontaine *et al.*, humans do not die from the dengue infection, but exit the simulation when their transmission probability approaches 0 on its way down (see below). To approximate this behaviour, we will use one of the parameters used in `pTrans`, called  `Md_human`, which is the time since infection at which `pTrans` equals 50% of its maximum value. We will assume here that after three times this period, an infected human cannot transmit the virus any more and will thus exit the simulation:
+In Fontaine *et al.*, humans do not die from the dengue infection, but exit the simulation when their transmission probability approaches 0 on its way down (see below). To approximate this behavior, we will use one of the parameters used in `pTrans`, called  `Md_human`, which is the time since infection at which `pTrans` equals 50% of its maximum value. We will assume here that after three times this period, an infected human cannot transmit the virus any more and will thus exit the simulation:
 
 ```{r pExit1, eval = FALSE}
 p_Exit_fct_human <- function(t,Md_human){
@@ -668,7 +668,7 @@ test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
                         print.progress=FALSE)
 ```
 
-The simulation has run for `r test.nosoiA$total.time` and has infected `r test.nosoiA$host.info.A$N.infected` humans and `r test.nosoiA$host.info.B$N.infected` mosquitoes. The simulation was stoped because it reached the infected human cap `max.infected.A`.
+The simulation has run for `r test.nosoiA$total.time` and has infected `r test.nosoiA$host.info.A$N.infected` humans and `r test.nosoiA$host.info.B$N.infected` mosquitoes. The simulation was stopped because it reached the infected human cap `max.infected.A`.
 
 # Analyzing the results
 

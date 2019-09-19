@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-> This page presents various ways to visualize a `nosoiSim` simulation output. Because this output contains all the data simulated, you can develop your own visualisation procedure. The approaches presented here all rely on external packages.
+> This page presents various ways to visualize a `nosoiSim` simulation output. Because this output contains all the data simulated, you can develop your own visualization procedure. The approaches presented here all rely on external packages.
 
 # Transmission chain
 
@@ -76,7 +76,7 @@ library(nosoi)
 
 ## As a network
 
-To visualize the transmission chain as a network, I typically use `igraph` with `ggnetwork`. Keep in mind that the more nodes (i.e. infected hosts) you have, the more messy (or difficult) the visualisation will be.
+To visualize the transmission chain as a network, I typically use `igraph` with `ggnetwork`. Keep in mind that the more nodes (i.e. infected hosts) you have, the more messy (or difficult) the visualization will be.
 
 ```{r visualisation1, message=FALSE}
 library(ggplot2)
@@ -281,7 +281,7 @@ animate(animated.plot, nframes=test.nosoiA$total.time*2+10,duration=40,end_pause
 
 ## Spread in structured populations in continuous space
 
-Similarly one cas try to represent the spread of pathogen in a continuous space. Here, we will generate a random raster for the purpose of this tutorial, but you can use a "real" world raster and simulate your epidemic on it ( [see this example](examples/ebola.html) ).
+Similarly one can try to represent the spread of pathogen in a continuous space. Here, we will generate a random raster for the purpose of this tutorial, but you can use a "real" world raster and simulate your epidemic on it ( [see this example](examples/ebola.html) ).
 
 ```{r setupF, message=FALSE,warning=FALSE}
 #Generating the raster
@@ -367,7 +367,7 @@ SimulationA <- nosoiSim(type="single", popStructure="continuous",
                         print.step=10)
 ```
 
-The following plot gvies a static representation of all positions occupied by all hosts during the simulation:
+The following plot gives a static representation of all positions occupied by all hosts during the simulation:
 
 ```{r plotcontinuous, message=FALSE,warning=FALSE}
 

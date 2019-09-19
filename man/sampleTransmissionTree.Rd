@@ -24,7 +24,7 @@ phylogenetic tree based on the transmission chain and the mapped data at all the
 }
 \description{
 Sample a full transmission tree. This function allows for sampling multiple
- times on the same lineage. When this happens, the sampled anscestor is
+ times on the same lineage. When this happens, the sampled ancestor is
  a tip with length zero.
 }
 \details{
@@ -32,7 +32,7 @@ The tree needs to be produced by function \code{\link{getTransmissionTree}}
  applied on the same \code{nosoiSim} object.
 }
 \seealso{
-For exporting the annotated tree to other softwares, see functions
+For exporting the annotated tree to other software packages, see functions
 in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
 
 For sampling only dead individuals, see \code{\link{sampleTransmissionTreeFromExiting}}.

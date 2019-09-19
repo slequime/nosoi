@@ -3,7 +3,7 @@
 #' @description This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-host transmission chain simulation, with a discrete host population structure (e.g. spatial, socio-economic, etc.). The simulation stops either at
 #' the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
 #'
-#' @details The structure matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing depature state and column the arrival state. All rows should add to 1.
+#' @details The structure matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing departure state and column the arrival state. All rows should add to 1.
 #' @details The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
 #' @details The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
 #' @details The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
@@ -16,7 +16,7 @@
 #' @param init.structure in which state (e.g. location) the initially infected individuals are located.
 #' @param structure.matrix transition matrix (probabilities) to go from location A (row) to B (column)
 #' @param diff.pMove is pMove different between states of the structured population (TRUE/FALSE)
-#' @param timeDep.pMove is pMove dependant on the absolute time of the simulation (TRUE/FALSE)
+#' @param timeDep.pMove is pMove dependent on the absolute time of the simulation (TRUE/FALSE)
 #' @param hostCount.pMove does pMove varies with the host count in the state? (TRUE/FALSE); diff.pMove should be TRUE.
 #' @param pMove function that gives the probability of a host moving as a function of time.
 #' @param param.pMove parameter names (list of functions) for the pMove.

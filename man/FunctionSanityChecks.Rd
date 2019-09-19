@@ -2,7 +2,7 @@
 % Please edit documentation in R/nosoi_sanityChecks-Messages.R
 \name{FunctionSanityChecks}
 \alias{FunctionSanityChecks}
-\title{Checks if a function is properly formated}
+\title{Checks if a function is properly formatted}
 \usage{
 FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, hostCount,
   continuous, stateNames)
@@ -27,6 +27,6 @@ FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, hostCount,
 \item{structure}{is the function to be used in a structured population? (TRUE/FALSE)}
 }
 \description{
-Checks if the function is properly formated given the user's input and nosoi's requirements.
+Checks if the function is properly formatted given the user's input and nosoi's requirements.
 }
 \keyword{internal}

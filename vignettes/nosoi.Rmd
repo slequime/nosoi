@@ -11,7 +11,7 @@ vignette: >
 
 # Introduction
 
-`nosoi` aims to provide a modular framework to conduct epidemiological simulations under a wide range of scenarios, varying from relatively simple to highly complex and parameteric. This flexibility allows `nosoi` to take into account the effect of numerous covariates, taken individually or in the form of interactions, on the epidemic process, without having to use advanced mathematics to formalize the model into differential equations. At its core, `nosoi` generates a transmission chain (a link between hosts), the foundation of every epidemic process, allowing to reconstruct in great detail the history of the epidemic.
+`nosoi` aims to provide a modular framework to conduct epidemiological simulations under a wide range of scenarios, varying from relatively simple to highly complex and parametric. This flexibility allows `nosoi` to take into account the effect of numerous covariates, taken individually or in the form of interactions, on the epidemic process, without having to use advanced mathematics to formalize the model into differential equations. At its core, `nosoi` generates a transmission chain (a link between hosts), the foundation of every epidemic process, allowing to reconstruct in great detail the history of the epidemic.
 
 `nosoi` is an agent-based model, which means it is centered on individuals, here called "hosts", that enter the simulation when they get infected. `nosoi` is also stochastic, and thus relies heavily on probabilities, mainly 4 core probabilities, and its time is discretized.
 
@@ -21,11 +21,11 @@ vignette: >
 
 ## Essential building blocks: 3 probabilities and 2 numbers
 
-At its core, `nosoi` can be summarised by 3 probabilities and 2 numbers at a specific time point:
+At its core, `nosoi` can be summarized by 3 probabilities and 2 numbers at a specific time point:
 
 - the probability to exit the simulation (here named `pExit`). For hosts, that means - for example - dying, being cured, leaving the study area, etc.
-- the probability to move (here named `pMove`), only relevant when your simulation has some kind of structure, either in a discrete or continuous space. For hosts, that could be - for example - travelling, changing status (gaining access to treatment), etc.
-- the standard deviation of the random walk (links to the distance travelled in coordinate space ; here named `sdMove`), only relevant when a structure is imposed or assumed in a continuous space.
+- the probability to move (here named `pMove`), only relevant when your simulation has some kind of structure, either in a discrete or continuous space. For hosts, that could be - for example - traveling, changing status (gaining access to treatment), etc.
+- the standard deviation of the random walk (links to the distance traveled in coordinate space ; here named `sdMove`), only relevant when a structure is imposed or assumed in a continuous space.
 - the number of contacts (here named `nContact`). How many potentially infectious contacts does an infected host have?
 - the probability to transmit (here named `pTrans`). When a contact occurs between two hosts, with one of them being infected, the probability that the infection gets transmitted to the uninfected one.
 

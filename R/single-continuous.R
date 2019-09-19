@@ -4,7 +4,7 @@
 #' The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
 #' is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.
 #'
-#' @details The structure raster provided provided should of class \code{raster}. High values of the environemental variable can attract hosts if \code{attracted.by.raster} is TRUE.
+#' @details The structure raster provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE.
 #' @details The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), \code{sdMove} a real number (keep in mind this number is related to your coordinate space), and \code{nContact} a positive natural number (positive integer) or 0
 #' @details The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
 #' @details The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
@@ -24,7 +24,7 @@
 #' @param diff.sdMove does sdMove depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param timeDep.sdMove does sdMove depend on the absolute time of the simulation (TRUE/FALSE).
 #' @param hostCount.sdMove does sdMove vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove should be TRUE.
-#' @param sdMove function that gives the distance travelled (based on coordinates); output is the standard deviation value for the Brownian motion.
+#' @param sdMove function that gives the distance traveled (based on coordinates); output is the standard deviation value for the Brownian motion.
 #' @param param.sdMove parameter names (list of functions) for sdMove.
 #' @param attracted.by.raster should the hosts be attracted by higher values in the environmental raster? (TRUE/FALSE).
 #' @param diff.nContact does nContact depend on the environmental variable (set by the raster) (TRUE/FALSE).

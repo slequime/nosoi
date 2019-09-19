@@ -5,7 +5,7 @@
 #' is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.
 #'
 #' @details The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host-type A or B.
-#' @details The structure raster(s) provided provided should of class \code{raster}. High values of the environemental variable can attract hosts if \code{attracted.by.raster} is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).
+#' @details The structure raster(s) provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).
 #' @details The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), \code{sdMove} a real number (keep in mind this number is related to your coordinate space), and \code{nContact} a positive natural number (positive integer) or 0.
 #' @details The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
 #' @details The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
@@ -23,13 +23,13 @@
 #' @param hostCount.pExit.A does pExit of host-type A vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit.A should be TRUE.
 #' @param pMove.A function that gives the probability of a host moving as a function of time for host-type A.
 #' @param param.pMove.A parameter names (list of functions) for the pMove for host-type A.
-#' @param timeDep.pMove.A is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host-type A.
+#' @param timeDep.pMove.A is pMove dependent on the absolute time of the simulation (TRUE/FALSE) for host-type A.
 #' @param diff.pMove.A does pMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).A.
 #' @param hostCount.pMove.A does pMove of host-type A vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove.A should be TRUE.
-#' @param sdMove.A function that gives the distance travelled for host-type A (based on coordinates); output is the standard deviation value for the Brownian motion.
+#' @param sdMove.A function that gives the distance traveled for host-type A (based on coordinates); output is the standard deviation value for the Brownian motion.
 #' @param param.sdMove.A parameter names (list of functions) for sdMove for host-type A.
 #' @param diff.sdMove.A does sdMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).
-#' @param timeDep.sdMove.A is sdMove of host-type A dependant on the absolute time of the simulation (TRUE/FALSE) .
+#' @param timeDep.sdMove.A is sdMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE) .
 #' @param hostCount.sdMove.A does sdMove varies with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); diff.sdMove.A should be TRUE.
 #' @param attracted.by.raster.A should the host-type A be attracted by higher values in the environmental raster? (TRUE/FALSE).
 #' @param diff.nContact.A does nContact of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).
@@ -40,12 +40,12 @@
 #' @param hostCount.pExit.B does pExit of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit.B should be TRUE.
 #' @param pMove.B function that gives the probability of a host moving as a function of time for host-type B.
 #' @param param.pMove.B parameter names (list of functions) for the pMove for host-type B.
-#' @param timeDep.pMove.B is pMove dependant on the absolute time of the simulation (TRUE/FALSE) for host-type B.
+#' @param timeDep.pMove.B is pMove dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.
 #' @param diff.pMove.B does pMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param hostCount.pMove.B does pMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove.B should be TRUE.
-#' @param sdMove.B function that gives the distance travelled for host-type B (based on coordinates); output is the standard deviation value for the Brownian motion.
+#' @param sdMove.B function that gives the distance traveled for host-type B (based on coordinates); output is the standard deviation value for the Brownian motion.
 #' @param param.sdMove.B parameter names (list of functions) for sdMove for host-type B.
-#' @param timeDep.sdMove.B is sdMove of host-type B dependant on the absolute time of the simulation (TRUE/FALSE) for host-type B.
+#' @param timeDep.sdMove.B is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.
 #' @param diff.sdMove.B does sdMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param hostCount.sdMove.B does sdMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove.B should be TRUE.
 #' @param attracted.by.raster.B should the host-type B be attracted by higher values in the environmental raster? (TRUE/FALSE)

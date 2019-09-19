@@ -14,6 +14,6 @@ leads to an infection.}
 Boolean vector giving the newly infected individuals.
 }
 \description{
-For each encounter, simulate wether a new individual is infected.
+For each encounter, simulate whether a new individual is infected.
 }
 \keyword{internal}

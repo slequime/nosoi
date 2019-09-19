@@ -21,7 +21,7 @@ This function uses packages \pkg{tidytree} and \pkg{treeio},
  that rely on \code{\link[ape:ape-package]{ape}}.
 }
 \seealso{
-For exporting the annotated tree to other softwares, see functions
+For exporting the annotated tree to other software packages, see functions
 in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
 
 To sub-sample this tree, see function \code{\link{sampleTransmissionTree}}

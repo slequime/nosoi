@@ -16,30 +16,30 @@
 #' @param init.individuals.B number of initially infected individuals (hosts B).
 #' @param pExit.A function that gives the probability to exit the simulation for an infected host A (either moving out, dying, etc.).
 #' @param param.pExit.A parameter names (list of functions) for the pExit for host-type A.
-#' @param timeDep.pExit.A is pExit of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param timeDep.pExit.A is pExit of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?
 #' @param nContact.A function that gives the number of potential transmission events per unit of time  for host-type A.
 #' @param param.nContact.A parameter names (list of functions) for param.nContact for host-type A.
-#' @param timeDep.nContact.A is nContact of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param timeDep.nContact.A is nContact of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?
 #' @param pTrans.A function that gives the probability of transmit a pathogen as a function of time since infection for host A.
 #' @param param.pTrans.A parameter names (list of functions) for the pExit  for host A.
-#' @param timeDep.pTrans.A is pTrans of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param timeDep.pTrans.A is pTrans of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?
 #' @param prefix.host.A character(s) to be used as a prefix for the host A identification number.
 #' @param pExit.B function that gives the probability to exit the simulation for an infected host B (either moving out, dying, etc.).
 #' @param param.pExit.B parameter names (list of functions) for the pExit for host-type B.
-#' @param timeDep.pExit.B is pExit of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param timeDep.pExit.B is pExit of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?
 #' @param nContact.B function that gives the number of potential transmission events per unit of time for host B.
 #' @param param.nContact.B parameter names (list of functions) for param.nContact for host-type B.
-#' @param timeDep.nContact.B is nContact of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param timeDep.nContact.B is nContact of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?
 #' @param pTrans.B function that gives the probability of transmit a pathogen as a function of time since infection for host B.
 #' @param param.pTrans.B parameter names (list of functions) for the pExit for host-type B.
-#' @param timeDep.pTrans.B is pTrans of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param timeDep.pTrans.B is pTrans of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?
 #' @param prefix.host.B character(s) to be used as a prefix for the host B identification number.
 #' @param print.progress if TRUE, displays a progress bar (current time/length.sim).
 #' @param print.step print.progress is TRUE, step with which the progress message will be printed.
 #'
 #' @return An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
 #'
-#' @seealso For simulations with a discrete structered host population, see \code{\link{dualDiscrete}}. For simulations with a structured population in continuous space, \code{\link{dualContinuous}}
+#' @seealso For simulations with a discrete structured host population, see \code{\link{dualDiscrete}}. For simulations with a structured population in continuous space, \code{\link{dualContinuous}}
 #'
 #' @examples
 #' \dontrun{

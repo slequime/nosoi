@@ -2,7 +2,7 @@
 % Please edit documentation in R/nosoi_sanityChecks-Messages.R
 \name{RasterSanityChecks}
 \alias{RasterSanityChecks}
-\title{Checks if the raster is properly formated}
+\title{Checks if the raster is properly formatted}
 \usage{
 RasterSanityChecks(structure.raster, init.structure,
   none.at.start = NULL)
@@ -13,6 +13,6 @@ RasterSanityChecks(structure.raster, init.structure,
 \item{init.structure}{which state (i.e. location) the initially infected individuals are located.}
 }
 \description{
-Checks if the environmental raster is properly formated given the user's input and nosoi's requirements.
+Checks if the environmental raster is properly formatted given the user's input and nosoi's requirements.
 }
 \keyword{internal}

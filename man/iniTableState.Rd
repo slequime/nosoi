@@ -2,7 +2,7 @@
 % Please edit documentation in R/nosoi_tablesManagment.R
 \name{iniTableState}
 \alias{iniTableState}
-\title{Generates initial movement table to start the simulation (internal fonction)}
+\title{Generates initial movement table to start the simulation (internal function)}
 \usage{
 iniTableState(init.individuals, init.structure, prefix.host,
   current.environmental.value = NULL, current.cell.number.raster = NA)
@@ -14,11 +14,11 @@ iniTableState(init.individuals, init.structure, prefix.host,
 
 \item{prefix.host}{character(s) to be used as a prefix for the hosts identification number.}
 
-\item{current.environmental.value}{current value of the environemental variable provided by the raster according to its position in init.structure.}
+\item{current.environmental.value}{current value of the environmental  variable provided by the raster according to its position in init.structure.}
 
 \item{current.cell.number.raster}{unique number of the raster cell where the host is}
 }
 \description{
-This function creates the initial table for the host, with 5+number of parameters of the transmission probability function paramters, and init.individuals row(s).
+This function creates the initial table for the host, with 5+number of parameters of the transmission probability function parameters, and init.individuals row(s).
 }
 \keyword{internal}

@@ -319,7 +319,7 @@ test_that("Movement is coherent with single introduction, constant but different
   expect_equal(subset(Where.at.end, current.in == "C")$N,138)
 })
 
-test_that("Error message pops up if different pMove poorly formated", {
+test_that("Error message pops up if different pMove poorly formatted", {
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}

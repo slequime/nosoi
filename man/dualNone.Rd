@@ -28,19 +28,19 @@ dualNone(length.sim, max.infected.A, max.infected.B, init.individuals.A,
 
 \item{param.pExit.A}{parameter names (list of functions) for the pExit for host-type A.}
 
-\item{timeDep.pExit.A}{is pExit of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pExit.A}{is pExit of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{nContact.A}{function that gives the number of potential transmission events per unit of time  for host-type A.}
 
 \item{param.nContact.A}{parameter names (list of functions) for param.nContact for host-type A.}
 
-\item{timeDep.nContact.A}{is nContact of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.nContact.A}{is nContact of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{pTrans.A}{function that gives the probability of transmit a pathogen as a function of time since infection for host A.}
 
 \item{param.pTrans.A}{parameter names (list of functions) for the pExit  for host A.}
 
-\item{timeDep.pTrans.A}{is pTrans of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pTrans.A}{is pTrans of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{prefix.host.A}{character(s) to be used as a prefix for the host A identification number.}
 
@@ -48,19 +48,19 @@ dualNone(length.sim, max.infected.A, max.infected.B, init.individuals.A,
 
 \item{param.pExit.B}{parameter names (list of functions) for the pExit for host-type B.}
 
-\item{timeDep.pExit.B}{is pExit of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pExit.B}{is pExit of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{nContact.B}{function that gives the number of potential transmission events per unit of time for host B.}
 
 \item{param.nContact.B}{parameter names (list of functions) for param.nContact for host-type B.}
 
-\item{timeDep.nContact.B}{is nContact of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.nContact.B}{is nContact of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{pTrans.B}{function that gives the probability of transmit a pathogen as a function of time since infection for host B.}
 
 \item{param.pTrans.B}{parameter names (list of functions) for the pExit for host-type B.}
 
-\item{timeDep.pTrans.B}{is pTrans of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?}
+\item{timeDep.pTrans.B}{is pTrans of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{prefix.host.B}{character(s) to be used as a prefix for the host B identification number.}
 
@@ -150,5 +150,5 @@ test.nosoiA <- nosoiSim(type="dual", popStructure="none",
 
 }
 \seealso{
-For simulations with a discrete structered host population, see \code{\link{dualDiscrete}}. For simulations with a structured population in continuous space, \code{\link{dualContinuous}}
+For simulations with a discrete structured host population, see \code{\link{dualDiscrete}}. For simulations with a structured population in continuous space, \code{\link{dualContinuous}}
 }

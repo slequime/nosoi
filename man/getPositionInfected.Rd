@@ -17,6 +17,6 @@ getPositionInfected(nosoiSim, df.meetTransmit, i)
 A vector of positions
 }
 \description{
-Return the relevent position of the infected individual.
+Return the relevant position of the infected individual.
 }
 \keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/nosoi_tablesManagment.R
 \name{iniTable}
 \alias{iniTable}
-\title{Generates initial table to start the simulation (internal fonction)}
+\title{Generates initial table to start the simulation (internal function)}
 \usage{
 iniTable(init.individuals, init.structure, prefix.host, ParamHost,
   current.environmental.value = NULL,
@@ -18,7 +18,7 @@ iniTable(init.individuals, init.structure, prefix.host, ParamHost,
 
 \item{ParamHost}{list of individual based parameters.}
 
-\item{current.environmental.value}{current value of the environemental variable provided by the raster according to its position in init.structure.}
+\item{current.environmental.value}{current value of the environmental  variable provided by the raster according to its position in init.structure.}
 
 \item{current.cell.number.raster}{unique number of the raster cell where the host is}
 

@@ -448,7 +448,7 @@ This format is described in details by his developer in
 this [ebook](https://yulab-smu.github.io/treedata-book/).
 
 This makes it easy to export the generated data to other software for downstream
-analyses, thanks to the package [treeio](https://guangchuangyu.github.io/software/treeio/).
+analyzes, thanks to the package [treeio](https://guangchuangyu.github.io/software/treeio/).
 For instance, the tree can be written in a [beast](http://beast.community/)
 compatible format thanks to function `treeio::write.beast()`:
 

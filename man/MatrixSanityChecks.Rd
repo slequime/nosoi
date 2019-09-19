@@ -2,7 +2,7 @@
 % Please edit documentation in R/nosoi_sanityChecks-Messages.R
 \name{MatrixSanityChecks}
 \alias{MatrixSanityChecks}
-\title{Checks if the matrix is properly formated}
+\title{Checks if the matrix is properly formatted}
 \usage{
 MatrixSanityChecks(structure.matrix, init.structure,
   none.at.start = NULL)
@@ -13,6 +13,6 @@ MatrixSanityChecks(structure.matrix, init.structure,
 \item{init.structure}{which state (i.e. location) the initially infected individuals are located.}
 }
 \description{
-Checks if the transition matrix is properly formated given the user's input and nosoi's requirements.
+Checks if the transition matrix is properly formatted given the user's input and nosoi's requirements.
 }
 \keyword{internal}

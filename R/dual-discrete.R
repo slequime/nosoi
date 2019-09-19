@@ -4,7 +4,7 @@
 #' the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
 #'
 #' @details The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host-type A or B.
-#' @details The structure/transition matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing depature state and column the arrival state. All rows should add to 1. Probability values can be different for hosts A and B (so two different matrices), but the name of the column and the rows should be shared.
+#' @details The structure/transition matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing departure state and column the arrival state. All rows should add to 1. Probability values can be different for hosts A and B (so two different matrices), but the name of the column and the rows should be shared.
 #' @details The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
 #' @details The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
 #' @details The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
@@ -22,7 +22,7 @@
 #' @param hostCount.pExit.A does pExit of host-type A vary with the host count (of either host-type A or B) in the state? (TRUE/FALSE); diff.pExit.A should be TRUE.
 #' @param pMove.A function that gives the probability of a host moving as a function of time for host-type A.
 #' @param param.pMove.A parameter names (list of functions) for the pMove for host-type A.
-#' @param timeDep.pMove.A is pMove of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param timeDep.pMove.A is pMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?
 #' @param diff.pMove.A is pMove of host-type A different between states of the structured population (TRUE/FALSE)?
 #' @param hostCount.pMove.A does pMove of host-type A vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pMove.A should be TRUE.
 #' @param diff.nContact.A is nContact of host-type A different between states of the structured population (TRUE/FALSE)?
@@ -33,7 +33,7 @@
 #' @param hostCount.pExit.B does pExit of host-type B vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pExit.B should be TRUE.
 #' @param pMove.B function that gives the probability of a host moving as a function of time for host-type B.
 #' @param param.pMove.B parameter names (list of functions) for the pMove for host-type B.
-#' @param timeDep.pMove.B is pMove of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?
+#' @param timeDep.pMove.B is pMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?
 #' @param diff.pMove.B is pMove of host-type B different between states of the structured population (TRUE/FALSE)?
 #' @param hostCount.pMove.B does pMove of host-type B vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pMove.B should be TRUE.
 #' @param diff.nContact.B is nContact of host-type B different between states of the structured population (TRUE/FALSE)?

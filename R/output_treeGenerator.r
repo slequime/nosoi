@@ -12,7 +12,7 @@
 #' @return A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
 #' phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
 #'
-#' @seealso For exporting the annotated tree to other softwares, see functions
+#' @seealso For exporting the annotated tree to other software packages, see functions
 #' in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
 #'
 #' To sub-sample this tree, see function \code{\link{sampleTransmissionTree}}
@@ -349,7 +349,7 @@ draw_one_sample <- function(table.states, total.time, tree, sample) {
 #'
 #' @description
 #'  Sample a full transmission tree. This function allows for sampling multiple
-#'  times on the same lineage. When this happens, the sampled anscestor is
+#'  times on the same lineage. When this happens, the sampled ancestor is
 #'  a tip with length zero.
 #'
 #' @details
@@ -368,7 +368,7 @@ draw_one_sample <- function(table.states, total.time, tree, sample) {
 #' @return A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
 #' phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
 #'
-#' @seealso For exporting the annotated tree to other softwares, see functions
+#' @seealso For exporting the annotated tree to other software packages, see functions
 #' in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
 #'
 #' For sampling only dead individuals, see \code{\link{sampleTransmissionTreeFromExiting}}.
@@ -412,7 +412,7 @@ sampleTransmissionTree <- function(nosoiInf, tree, samples) {
 #' @return A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
 #' phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
 #'
-#' @seealso For exporting the annotated tree to other softwares, see functions
+#' @seealso For exporting the annotated tree to other software packages, see functions
 #' in \pkg{treeio} (e.g. \code{\link[treeio:write.beast]{write.beast}}).
 #'
 #' For sampling non-dead individuals, see \code{\link{sampleTransmissionTree}}.
