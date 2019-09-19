@@ -154,7 +154,7 @@ merge_host_tables <- function(nosoiInf) {
     # table_B <- getTableHosts(nosoiInf, pop = vector_pop)
     # table_A[table_B, on="inf.by == hosts.ID", nomatch = NULL] # For keeping only one host
     # return(merge(table_A, table_B, by = intersect(colnames(table_A), colnames(table_B)), all = TRUE))
-    return(rbindlist(list(nosoiInf$host.info.A$table.hosts, nosoiInf$host.info.B$table.hosts)))
+    return(rbindlist(list(nosoiInf$host.info.A$table.hosts, nosoiInf$host.info.B$table.hosts),fill=TRUE))
   }
   stop("Type of transmission should be 'single' or 'dual'-host.")
 }
