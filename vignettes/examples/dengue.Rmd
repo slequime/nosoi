@@ -233,6 +233,8 @@ First we extract the airports of our study site:
 airports <- read_csv("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Dengue Data/airports.dat", col_names = FALSE)
 colnames(airports)=c("AirportID","Name", "City", "Country", "IATA", "ICAO", "Latitude", "Longitude", "Altitude", "Timezone",	"DST", "Tz", "Type", "Source")
 
+SE.Asia <- c("CHN","KHM","LAO","THA","VNM")
+
 # AirportID: Unique OpenFlights identifier for this airport.
 # Name: Name of airport. May or may not contain the City name.
 # City: Main city served by airport. May be spelled differently from Name.
@@ -610,7 +612,7 @@ param_pTrans_mosquito <- list(p_max=p_max_fct,t_EIP=t_EIP_fct)
 set.seed(60)
 test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
                         length.sim=365, 
-                        max.infected.A=20000,
+                        max.infected.A=5000,
                         max.infected.B=200000,
                         init.individuals.A=1,
                         init.individuals.B=0,
@@ -761,36 +763,48 @@ ggplot(data=cumulative.table, aes(x=t, y=Count,linetype=type)) + geom_line() + t
 ```
 
 ```{r figureDynamics2, message=FALSE}
-ggplot(data=dynamics.table, aes(x=t, y=Count, color=state,linetype=type)) + geom_line() + theme_minimal() + labs(x="Time (t)",y="Number of active infected hosts")
+ggplot(data=dynamics.table, aes(x=t, y=log10(Count), color=state,linetype=type)) + geom_line() + theme_minimal() + labs(x="Time (t)",y="Number of active infected hosts\n(log10 scale)")
 ```
 
 ## Transmission chain
 
 The central transmission chain simulated by `nosoi` can also be visualized. For that, we generate the transmission tree as a phylogenetic tree-like object by using the `getTransmissionTree` function implemented in `nosoi`:
 
-```{r transmissionTree-Full1, eval=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+```{r transmissionTree-Full1, message=FALSE, warning=FALSE, error=FALSE}
 test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 ```
 
 This function gives you a `treedata` object that can be visualized as a phylogenetic-tree with the package :
 
-```{r transmissionTree2, eval=FALSE}
+```{r treeC,  message=FALSE, warning=FALSE, error=FALSE}
+library(ggtree)
+ggtree(test.nosoiA.tree, color = "gray30") + geom_tippoint(color = "gray30") + # geom_tiplab(aes(label=host)) + 
+    theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
+        legend.title = element_blank(),
+        legend.key = element_blank())
+```
+
+This tree is a bit messy, considering the number of transmission events and the overall size of this epidemic. We can also sub-sample it randomly. We will select here 150 individuals sampled at the time of their exit (either death or recovery):
+
+```{r transmissionTree2,  message=FALSE, warning=FALSE, error=FALSE}
 #Extracts data from the nosoiSim object:
 test.table.hosts <- getTableHosts(test.nosoiA, pop="A")
-test.nosoiA.tree <- getTransmissionTree(test.nosoiA, pop="A")
+# test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 
 #Sampling the names of individuals to be sampled:
 set.seed(5905950)
-sampled.hosts <- sample(subset(test.table.hosts, active == 0)$hosts.ID, 250)
+sampled.hosts <- sample(subset(test.table.hosts, active == 0)$hosts.ID, 150)
 
 #Subsampling:
 test.nosoiA.tree.sampled.exiting <- sampleTransmissionTreeFromExiting(test.nosoiA.tree, sampled.hosts)
 ```
 
-```{r treeC, message=FALSE, eval=FALSE}
+This new tree can be also plotted as before, with colors representing the state (i.e. country) of each tip and node:
+
+```{r treeC2,  message=FALSE, warning=FALSE, error=FALSE}
 library(ggtree)
-ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(color = "gray30") + geom_tippoint(color = "gray30") + # geom_tiplab(aes(label=host)) + 
-    theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
+ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + # geom_tiplab(aes(label=host)) + 
+    theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0.05,0.8), 
         legend.title = element_blank(),
         legend.key = element_blank())
 ```
