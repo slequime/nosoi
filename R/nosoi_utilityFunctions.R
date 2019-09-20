@@ -28,6 +28,13 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE, h
 
   pFunc <- match.fun(pFunc)
 
+  if (hostCount && any("host.count" == formalArgs(pFunc))) { ## Replace user defined "host.count" by "host.count.A"
+    ff <- formals(pFunc)
+    names(ff)["host.count" == names(ff)] <- "host.count.A"
+    formals(pFunc) <- ff
+    body(pFunc) <- substituteDirect(body(pFunc), list(host.count = substitute(host.count.A)))
+  }
+
   if (timeDep == FALSE){
     pFunc_eval <- function(prestime, inf.time,...) {
       t = prestime - inf.time
@@ -52,17 +59,8 @@ parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE, h
 
   pFunc_vect_args = pFunc_eval_args[-1]
 
-  if (hostCount && any("host.count" == pFunc_vect_args)) { ## Replace user defined "host.count" by "host.count.A"
-    pFunc_vect_args["host.count" == pFunc_vect_args] <- "host.count.A"
-
-    pFunc_vect <- function(prestime, parameters) {
-      names(parameters)[names(parameters) == "host.count.A"] <- "host.count"
-      do.call(pFunc_eval, c(list(prestime = prestime), parameters))
-    }
-  } else {
-    pFunc_vect <- function(prestime, parameters) {
-      do.call(pFunc_eval, c(list(prestime = prestime), parameters))
-    }
+  pFunc_vect <- function(prestime, parameters) {
+    do.call(pFunc_eval, c(list(prestime = prestime), parameters))
   }
 
   return(list(vect = pFunc_vect,
