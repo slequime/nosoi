@@ -109,9 +109,9 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
 
     for (i in 1:length(Move.ID)) {
 
-      current.move.pos <- res$table.hosts[Move.index[i],c("current.in.x", "current.in.y")]
+      current.move.pos <- c(res$table.hosts[[Move.index[i], "current.in.x"]], res$table.hosts[[Move.index[i], "current.in.y"]])
       # current.env.value = res$table.hosts[Move.index[i],"current.env.value"]
-      current.sdMove.value = as.numeric(sdMove.values[i])
+      current.sdMove.value = sdMove.values[[i]]
 
       positionFound1 <- FALSE
       counter1 <- 0
@@ -127,7 +127,7 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
           counter2 = counter2 + 1
 
           angle = (2*base::pi)*runif(1)
-          newP = moveRotateContinuous(as.numeric(current.move.pos), dX, dY, angle)
+          newP = moveRotateContinuous(current.move.pos, dX, dY, angle)
 
           temp.cell.number = raster::cellFromXY(structure.raster, cbind(newP[1],newP[2]))
           temp.env.value = raster::extract(structure.raster,temp.cell.number)

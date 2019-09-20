@@ -101,8 +101,8 @@ drawBernouilli <- function(p) {
 ##
 getPositionInfected <- function(nosoiSim, df.meetTransmit, i) {
   if (nosoiSim$popStructure == "none") return(NA)
-  if (nosoiSim$popStructure == "discrete") return(df.meetTransmit[i, ]$current.in)
-  if (nosoiSim$popStructure == "continuous") return(c(df.meetTransmit[i, ]$current.in.x, df.meetTransmit[i, ]$current.in.y))
+  if (nosoiSim$popStructure == "discrete") return(df.meetTransmit[[i, "current.in"]])
+  if (nosoiSim$popStructure == "continuous") return(c(df.meetTransmit[[i, "current.in.x"]], df.meetTransmit[[i, "current.in.y"]]))
   stop(paste0("Geographical structure ", nosoiSim$popStructure, " is not implemented."))
 }
 

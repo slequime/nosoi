@@ -88,8 +88,8 @@ writeInfected <- function(df.meetTransmit, res,
         table.state.temp[[i]] <- newLineState(hosts.ID,
                                               state.pres = getPositionInfected(res, df.meetTransmit, i),
                                               pres.time,
-                                              current.environmental.value = df.meetTransmit[i,]$current.env.value,
-                                              current.cell.number.raster = df.meetTransmit[i,]$current.cell.raster)
+                                              current.environmental.value = df.meetTransmit[[i, "current.env.value"]],
+                                              current.cell.number.raster = df.meetTransmit[[i, "current.cell.raster"]])
       }
     }
 
