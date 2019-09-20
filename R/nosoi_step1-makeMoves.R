@@ -55,7 +55,7 @@ moveFunction.discrete <- function(res, pres.time, moving.full, structure.matrix,
   if (length(Move.ID) > 0){
     #Updating state archive for moving individuals:
 
-    res$table.state[res$table.state[["hosts.ID"]] %in% Move.ID & is.na(res$table.state[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
+    res$table.state[res$table.state[["hosts.ID"]] %in% Move.ID & is.na(res$table.state[["time.to"]]), `:=` (time.to = pres.time)]
 
     table.state.temp <- vector("list", length(Move.ID))
 
@@ -101,7 +101,7 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
     # res$table.state[hosts.ID %in% Move.ID & is.na(time.to), `:=` (time.to = as.numeric(pres.time))]
     active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
 
-    res$table.state[res$table.state[["hosts.ID"]] %in% Move.ID & is.na(res$table.state[["time.to"]]), `:=` (time.to = as.numeric(pres.time))]
+    res$table.state[res$table.state[["hosts.ID"]] %in% Move.ID & is.na(res$table.state[["time.to"]]), `:=` (time.to = pres.time)]
 
     table.state.temp <- vector("list", length(Move.ID))
 

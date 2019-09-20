@@ -186,9 +186,9 @@ dualNone <- function(length.sim,
     exiting.full.A <- getExitingMoving(res$host.info.A, pres.time, pExitParsed.A)
     exiting.full.B <- getExitingMoving(res$host.info.B, pres.time, pExitParsed.B)
 
-    res$host.info.A$table.hosts[exiting.full.A, `:=` (out.time = as.numeric(pres.time),
+    res$host.info.A$table.hosts[exiting.full.A, `:=` (out.time = pres.time,
                                                       active = 0)]
-    res$host.info.B$table.hosts[exiting.full.B, `:=` (out.time = as.numeric(pres.time),
+    res$host.info.B$table.hosts[exiting.full.B, `:=` (out.time = pres.time,
                                                       active = 0)]
 
     if (all(c((res$host.info.A$table.hosts[["active"]] == 0),(res$host.info.B$table.hosts[["active"]] == 0)))) {break}

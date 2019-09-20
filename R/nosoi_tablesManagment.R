@@ -234,7 +234,7 @@ updateTableState <- function(res, exiting, pres.time) {
   exiting.ID <- res$table.hosts[exiting]$hosts.ID
   exiting.state <- res$table.state[,is.na(time.to) & hosts.ID %in% exiting.ID]
 
-  res$table.state[exiting.state, `:=` (time.to = as.numeric(pres.time))]
+  res$table.state[exiting.state, `:=` (time.to = pres.time)]
 
   return(res)
 }

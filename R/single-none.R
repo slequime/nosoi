@@ -105,7 +105,7 @@ singleNone <- function(length.sim,
     #Step 0: Active hosts ----------------------------------------------------------
     exiting.full <- getExitingMoving(res$host.info.A, pres.time, pExitParsed)
 
-    res$host.info.A$table.hosts[exiting.full, `:=` (out.time = as.numeric(pres.time),
+    res$host.info.A$table.hosts[exiting.full, `:=` (out.time = pres.time,
                                         active = 0)]
 
     if (all(res$host.info.A$table.hosts[["active"]] == 0)) {break}
