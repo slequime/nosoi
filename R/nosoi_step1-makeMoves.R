@@ -21,9 +21,7 @@ makeMoves <- function(res, pres.time, moving.full,
                           discrete = moveFunction.discrete,
                           continuous = moveFunction.continuous)
 
-  Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
-
-  return(moveFunction(res, pres.time, Move.ID,
+  return(moveFunction(res, pres.time, moving.full,
                       structure.matrix = structure.matrix,
                       sdMoveParsed = sdMoveParsed,
                       structure.raster = structure.raster,
@@ -44,7 +42,9 @@ makeMoves <- function(res, pres.time, moving.full,
 #'
 #' @keywords internal
 ##
-moveFunction.discrete <- function(res, pres.time, Move.ID, structure.matrix, ...) {
+moveFunction.discrete <- function(res, pres.time, moving.full, structure.matrix, ...) {
+
+  Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
 
   #melting the matrix go get from -> to in one line with probability
   melted.structure.matrix <- reshape2::melt(structure.matrix,
@@ -94,6 +94,7 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
                                     attracted.by.raster, max.raster, ...) {
 
   Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
+  Move.index <- which(moving.full)
 
   if (length(Move.ID) > 0){
     #Updating state archive for moving individuals:
@@ -108,9 +109,8 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
 
     for (i in 1:length(Move.ID)) {
 
-      current.move.pos.x = res$table.hosts[Move.ID[i],"current.in.x"]
-      current.move.pos.y = res$table.hosts[Move.ID[i],"current.in.y"]
-      current.env.value = res$table.hosts[Move.ID[i],"current.env.value"]
+      current.move.pos <- res$table.hosts[Move.index[i],c("current.in.x", "current.in.y")]
+      # current.env.value = res$table.hosts[Move.index[i],"current.env.value"]
       current.sdMove.value = as.numeric(sdMove.values[i])
 
       positionFound1 = FALSE
@@ -123,18 +123,17 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
         while (positionFound2 == FALSE)
         {
           angle = (2*base::pi)*runif(1)
-          newP = moveRotateContinuous(c(as.numeric(current.move.pos.x),as.numeric(current.move.pos.y)), dX, dY,angle)
+          newP = moveRotateContinuous(as.numeric(current.move.pos), dX, dY, angle)
 
           temp.cell.number = raster::cellFromXY(structure.raster, cbind(newP[1],newP[2]))
           temp.env.value = raster::extract(structure.raster,temp.cell.number)
 
           if (!is.na(temp.env.value)){
 
-            if (attracted.by.raster==FALSE) {
-              res$table.hosts[Move.ID[i], `:=` (current.in.x = newP[1])]
-              res$table.hosts[Move.ID[i], `:=` (current.in.y = newP[2])]
-              res$table.hosts[Move.ID[i], `:=` (current.env.value = temp.env.value)]
-              res$table.hosts[Move.ID[i], `:=` (current.cell.raster = temp.cell.number)]
+            if (!attracted.by.raster) {
+              set(res$table.hosts, Move.index[i],
+                  c("current.in.x", "current.in.y", "current.env.value", "current.cell.raster"),
+                  list(newP[1], newP[2], temp.env.value, temp.cell.number))
 
               table.state.temp[[i]] <- newLineState(Move.ID[i],newP,pres.time,current.environmental.value=temp.env.value,
                                                     current.cell.number.raster=temp.cell.number)
@@ -143,15 +142,13 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
               positionFound1 = TRUE
             }
 
-            if (attracted.by.raster==TRUE) {
+            if (attracted.by.raster) {
               counter = counter+1
               v2 = temp.env.value/max.raster
-              if (runif(1,0,1) < v2)
-              {
-                res$table.hosts[Move.ID[i], `:=` (current.in.x = newP[1])]
-                res$table.hosts[Move.ID[i], `:=` (current.in.y = newP[2])]
-                res$table.hosts[Move.ID[i], `:=` (current.env.value = temp.env.value)]
-                res$table.hosts[Move.ID[i], `:=` (current.cell.raster = temp.cell.number)]
+              if (runif(1,0,1) < v2) {
+                set(res$table.hosts, Move.index[i],
+                    c("current.in.x", "current.in.y", "current.env.value", "current.cell.raster"),
+                    list(newP[1], newP[2], temp.env.value, temp.cell.number))
 
                 table.state.temp[[i]] <- newLineState(Move.ID[i],newP,pres.time,current.environmental.value=temp.env.value,
                                                       current.cell.number.raster=temp.cell.number)

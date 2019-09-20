@@ -4,7 +4,7 @@
 \alias{moveFunction.discrete}
 \title{Make Discrete Move function}
 \usage{
-moveFunction.discrete(res, pres.time, Move.ID, structure.matrix, ...)
+moveFunction.discrete(res, pres.time, moving.full, structure.matrix, ...)
 }
 \arguments{
 \item{res}{an object of class \code{nosoiSimOne}.}
