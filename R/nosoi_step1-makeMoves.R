@@ -113,15 +113,19 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
       # current.env.value = res$table.hosts[Move.index[i],"current.env.value"]
       current.sdMove.value = as.numeric(sdMove.values[i])
 
-      positionFound1 = FALSE
-      while (positionFound1 == FALSE)
-      {
-        counter = 0
+      positionFound1 <- FALSE
+      counter1 <- 0
+      while (positionFound1 == FALSE && counter1 < 30) {
+        counter1 <- counter1 + 1
+
         dX = rnorm(1, 0, current.sdMove.value)
         dY = rnorm(1, 0, current.sdMove.value)
+
+        counter2 <- 0
         positionFound2 = FALSE
-        while (positionFound2 == FALSE)
-        {
+        while (positionFound2 == FALSE && counter2 <= 30) { # If counter2 > 30, try another move
+          counter2 = counter2 + 1
+
           angle = (2*base::pi)*runif(1)
           newP = moveRotateContinuous(as.numeric(current.move.pos), dX, dY, angle)
 
@@ -143,9 +147,8 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
             }
 
             if (attracted.by.raster) {
-              counter = counter+1
               v2 = temp.env.value/max.raster
-              if (runif(1,0,1) < v2) {
+              if ((runif(1,0,1) < v2) || (counter2 >= 30)) { # If counter2 == 30, just accept anyway.
                 set(res$table.hosts, Move.index[i],
                     c("current.in.x", "current.in.y", "current.env.value", "current.cell.raster"),
                     list(newP[1], newP[2], temp.env.value, temp.cell.number))
@@ -155,14 +158,16 @@ moveFunction.continuous <- function(res, pres.time, moving.full,
 
                 positionFound2 = TRUE
                 positionFound1 = TRUE
-                if (counter == 30) {
-                  positionFound1 = TRUE
-                  positionFound2 = TRUE
-                }
               }
             }
           }
         }
+      }
+      if (counter1 == 30) { # Just impossible to find a correct move, stay where you are
+        table.state.temp[[i]] <- newLineState(Move.ID[i],
+                                              current.move.pos, pres.time,
+                                              current.environmental.value = res$table.hosts[Move.index[i],"current.env.value"],
+                                              current.cell.number.raster = res$table.hosts[Move.index[i],"current.cell.number.raster"])
       }
     }
 
