@@ -36,7 +36,7 @@ newLine <- function(hosts.ID,
              host.count.A = as.integer(current.count.A),
              host.count.B = as.integer(current.count.B),
              inf.time = time.is,
-             out.time = NA_real_,
+             out.time = NA_integer_,
              active = 1,
              as.list(sapply(ParamHost, function(x) x(1)))
     )
@@ -56,7 +56,7 @@ newLine <- function(hosts.ID,
              host.count.A = as.integer(current.count.A),
              host.count.B = as.integer(current.count.B),
              inf.time = time.is,
-             out.time = NA_real_,
+             out.time = NA_integer_,
              active = 1,
              as.list(sapply(ParamHost, function(x) x(1)))
     )
@@ -90,7 +90,7 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost,
       list.init[[indiv]] <- newLine(hosts.ID = paste(prefix.host,indiv,sep="-"),
                                     infected.by = paste(NA,indiv,sep="-"),
                                     infected.in = init.structure,
-                                    time.is = 0,
+                                    time.is = 0L,
                                     ParamHost = ParamHost,
                                     current.environmental.value = current.environmental.value,
                                     current.cell.number.raster = current.cell.number.raster,
@@ -108,7 +108,7 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost,
       list.init[[indiv]] <- newLine(hosts.ID = paste(prefix.host,indiv,sep="-"),
                                     infected.by = paste(NA,indiv,sep="-"),
                                     infected.in = init.structure,
-                                    time.is = 0,
+                                    time.is = 0L,
                                     ParamHost = ParamHost,
                                     current.environmental.value = current.environmental.value,
                                     current.cell.number.raster = current.cell.number.raster,
@@ -140,13 +140,13 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost,
 #'
 #' @keywords internal
 
-newLineState <- function(hosts.ID, state.pres, time.is, current.environmental.value=NA,current.cell.number.raster=NA) {
+newLineState <- function(hosts.ID, state.pres, time.is, current.environmental.value = NA, current.cell.number.raster = NA) {
 
   if (length(state.pres) == 1){
     return(list(hosts.ID = hosts.ID,
                 state = state.pres,
                 time.from = time.is,
-                time.to = NA_real_
+                time.to = NA_integer_
     )
     )
   }
@@ -158,7 +158,7 @@ newLineState <- function(hosts.ID, state.pres, time.is, current.environmental.va
                 current.env.value = current.environmental.value,
                 current.cell.raster = current.cell.number.raster,
                 time.from = time.is,
-                time.to = NA_real_
+                time.to = NA_integer_
     )
     )
   }
@@ -176,7 +176,7 @@ newLineState <- function(hosts.ID, state.pres, time.is, current.environmental.va
 #'
 #' @keywords internal
 
-iniTableState <- function(init.individuals, init.structure, prefix.host, current.environmental.value=NULL,current.cell.number.raster=NA){
+iniTableState <- function(init.individuals, init.structure, prefix.host, current.environmental.value = NULL, current.cell.number.raster = NA){
 
   if (init.individuals >= 1){
     list.init <- vector("list", init.individuals)
@@ -184,9 +184,9 @@ iniTableState <- function(init.individuals, init.structure, prefix.host, current
     for (indiv in 1:init.individuals) {
       list.init[[indiv]] <- newLineState(hosts.ID = paste(prefix.host,indiv,sep="-"),
                                          state.pres = init.structure,
-                                         time.is = 0,
-                                         current.environmental.value=current.environmental.value,
-                                         current.cell.number.raster=current.cell.number.raster)
+                                         time.is = 0L,
+                                         current.environmental.value = current.environmental.value,
+                                         current.cell.number.raster = current.cell.number.raster)
     }
 
     table.mov <- data.table::rbindlist(list.init)
@@ -200,7 +200,7 @@ iniTableState <- function(init.individuals, init.structure, prefix.host, current
     for (indiv in 1:fake.init.individuals) {
       list.init[[indiv]] <- newLineState(hosts.ID = paste(prefix.host,indiv,sep="-"),
                                          state.pres = init.structure,
-                                         time.is = 0,
+                                         time.is = 0L,
                                          current.environmental.value=current.environmental.value,
                                          current.cell.number.raster=current.cell.number.raster)
     }
