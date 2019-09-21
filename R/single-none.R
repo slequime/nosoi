@@ -106,9 +106,9 @@ singleNone <- function(length.sim,
     exiting.full <- getExitingMoving(res$host.info.A, pres.time, pExitParsed)
 
     res$host.info.A$table.hosts[exiting.full, `:=` (out.time = pres.time,
-                                        active = 0)]
+                                        active = FALSE)]
 
-    if (all(res$host.info.A$table.hosts[["active"]] == 0)) {break}
+    if (!any(res$host.info.A$table.hosts[["active"]])) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
 

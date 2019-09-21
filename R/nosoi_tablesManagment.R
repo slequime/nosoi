@@ -37,7 +37,7 @@ newLine <- function(hosts.ID,
              host.count.B = as.integer(current.count.B),
              inf.time = time.is,
              out.time = NA_integer_,
-             active = 1,
+             active = TRUE,
              as.list(sapply(ParamHost, function(x) x(1)))
     )
     )
@@ -57,7 +57,7 @@ newLine <- function(hosts.ID,
              host.count.B = as.integer(current.count.B),
              inf.time = time.is,
              out.time = NA_integer_,
-             active = 1,
+             active = TRUE,
              as.list(sapply(ParamHost, function(x) x(1)))
     )
     )

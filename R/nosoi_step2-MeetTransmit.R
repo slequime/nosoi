@@ -18,7 +18,7 @@ meetTransmit <- function(res,
   #To avoids notes (use of dplyr functions)
   hosts.ID <- NULL
 
-  active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
+  active.hosts <- res$table.hosts[["active"]] #active hosts (boolean vector)
 
   df.meetTransmit <- res$table.hosts[active.hosts, c("hosts.ID", positions), with = FALSE]
   df.meetTransmit[, active.hosts:=hosts.ID]

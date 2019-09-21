@@ -187,11 +187,11 @@ dualNone <- function(length.sim,
     exiting.full.B <- getExitingMoving(res$host.info.B, pres.time, pExitParsed.B)
 
     res$host.info.A$table.hosts[exiting.full.A, `:=` (out.time = pres.time,
-                                                      active = 0)]
+                                                      active = FALSE)]
     res$host.info.B$table.hosts[exiting.full.B, `:=` (out.time = pres.time,
-                                                      active = 0)]
+                                                      active = FALSE)]
 
-    if (all(c((res$host.info.A$table.hosts[["active"]] == 0),(res$host.info.B$table.hosts[["active"]] == 0)))) {break}
+    if (!any(c(res$host.info.A$table.hosts[["active"]], res$host.info.B$table.hosts[["active"]]))) {break}
 
     #Step 1: Meeting & transmission ----------------------------------------------------
 

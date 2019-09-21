@@ -24,7 +24,7 @@ The structure of the table is the following:
    \item{host.count}{(only if structure is present) Host count in the current state or raster cell (beware, updated only if used).}
    \item{inf.time}{When did the host enter the simulation (infection time).}
    \item{out.time}{When did the host exit the simulation (NA if still active).}
-   \item{active}{Is the host still active at the end of the simulation (1 for YES, 0 for NO)?}
+   \item{active}{Is the host still active at the end of the simulation (TRUE for YES, FALSE for NO)?}
    \item{parameters}{The remaining columns are the sampled values for the individual-based parameters (if any) specified by the user.}
    }
 }

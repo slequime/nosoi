@@ -170,7 +170,7 @@ paramConstructor <- function(param.pExit, param.pMove, param.nContact, param.pTr
 applyFunctionToHosts <- function(res, pres.time, pasedFunction, active.hosts) {
   return(res$table.hosts[active.hosts,
                          pasedFunction$vect(prestime = pres.time, .SD),
-                         by="hosts.ID",
+                         by = "hosts.ID",
                          .SDcols = pasedFunction$vectArgs][["V1"]])
 }
 
@@ -189,7 +189,7 @@ applyFunctionToHosts <- function(res, pres.time, pasedFunction, active.hosts) {
 ##
 getExitingMoving <- function(res, pres.time, pasedFunction) {
 
-  active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
+  active.hosts <- res$table.hosts[["active"]] #active hosts (boolean vector)
 
   if (any(active.hosts)) {
 
@@ -198,7 +198,7 @@ getExitingMoving <- function(res, pres.time, pasedFunction) {
     exitMove <- drawBernouilli(p.exitMove.values) #Draws K bernouillis with various probability (see function for more detail)
   }
 
-  if(all(active.hosts == FALSE)) exitMove <- FALSE
+  if (!any(active.hosts)) exitMove <- FALSE
 
   exitMove.full <- active.hosts
   exitMove.full[exitMove.full] <- exitMove
@@ -225,12 +225,12 @@ updateHostCount <- function(res, res.B=NULL, type) {
     name_cur <- "current.cell.raster"
   }
 
-  active.hosts <- res$table.hosts[["active"]] == 1 #active hosts (boolean vector)
+  active.hosts <- res$table.hosts[["active"]] #active hosts (boolean vector)
 
   res$table.hosts[active.hosts, by=name_cur, `:=` (host.count.A = .N)]
 
   if(!is.null(res.B)){
-    active.hosts.B <- res.B$table.hosts[["active"]] == 1 #active hosts (boolean vector)
+    active.hosts.B <- res.B$table.hosts[["active"]] #active hosts (boolean vector)
 
     res.B$table.hosts[active.hosts.B, by=name_cur, `:=` (host.count.B = .N)]
 
