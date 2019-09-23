@@ -174,7 +174,7 @@
       <a href="../articles/discrete.html">Spread of a pathogen in a discrete structured population</a>
     </li>
     <li>
-      <a href="../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
+      <a href="../articles/examples/dengue.html">Spread of a dengue-like virus in a discrete space</a>
     </li>
     <li>
       <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
@@ -223,7 +223,7 @@
     <p>From a <code>nosoi</code> simulated epidemics, this function extract the full transmission tree in a form mimicking a phylogenetic tree.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getTransmissionTree</span>(<span class='no'>nosoiInf</span>, <span class='kw'>pop</span> <span class='kw'>=</span> <span class='st'>"A"</span>)</pre>
+    <pre class="usage"><span class='fu'>getTransmissionTree</span>(<span class='no'>nosoiInf</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -231,10 +231,6 @@
     <tr>
       <th>nosoiInf</th>
       <td><p>an object of class <code><a href='nosoiSim.html'>nosoiSim</a></code></p></td>
-    </tr>
-    <tr>
-      <th>pop</th>
-      <td><p>the population to be considered (one of "A" or "B")</p></td>
     </tr>
     </table>
 
@@ -248,7 +244,7 @@ phylogenetic tree based on the transmission chain and the mapped data at all the
  that rely on <code><a href='https://rdrr.io/pkg/ape/man/ape-package.html'>ape</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>For exporting the annotated tree to other softwares, see functions
+    <div class='dont-index'><p>For exporting the annotated tree to other software packages, see functions
 in <span class="pkg">treeio</span> (e.g. <code><a href='https://rdrr.io/pkg/treeio/man/write.beast.html'>write.beast</a></code>).</p>
 <p>To sub-sample this tree, see function <code><a href='sampleTransmissionTree.html'>sampleTransmissionTree</a></code></p></div>
 

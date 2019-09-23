@@ -175,7 +175,7 @@ the end of given time (specified by length.sim) or when the number of hosts infe
       <a href="../articles/discrete.html">Spread of a pathogen in a discrete structured population</a>
     </li>
     <li>
-      <a href="../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
+      <a href="../articles/examples/dengue.html">Spread of a dengue-like virus in a discrete space</a>
     </li>
     <li>
       <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
@@ -295,7 +295,7 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     </tr>
     <tr>
       <th>timeDep.pExit.A</th>
-      <td><p>is pExit of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
+      <td><p>is pExit of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pExit.A</th>
@@ -315,7 +315,7 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     </tr>
     <tr>
       <th>timeDep.pMove.A</th>
-      <td><p>is pMove of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
+      <td><p>is pMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pMove.A</th>
@@ -335,7 +335,7 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     </tr>
     <tr>
       <th>timeDep.nContact.A</th>
-      <td><p>is nContact of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
+      <td><p>is nContact of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.nContact.A</th>
@@ -355,7 +355,7 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     </tr>
     <tr>
       <th>timeDep.pTrans.A</th>
-      <td><p>is pTrans of host-type A dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
+      <td><p>is pTrans of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pTrans.A</th>
@@ -379,7 +379,7 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     </tr>
     <tr>
       <th>timeDep.pExit.B</th>
-      <td><p>is pExit of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
+      <td><p>is pExit of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pExit.B</th>
@@ -399,7 +399,7 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     </tr>
     <tr>
       <th>timeDep.pMove.B</th>
-      <td><p>is pMove of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
+      <td><p>is pMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pMove.B</th>
@@ -419,7 +419,7 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     </tr>
     <tr>
       <th>timeDep.nContact.B</th>
-      <td><p>is nContact of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
+      <td><p>is nContact of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.nContact.B</th>
@@ -439,7 +439,7 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     </tr>
     <tr>
       <th>timeDep.pTrans.B</th>
-      <td><p>is pTrans of host-type B dependant on the absolute time of the simulation (TRUE/FALSE)?</p></td>
+      <td><p>is pTrans of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pTrans.B</th>
@@ -469,7 +469,7 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The suffix <code>.A</code> or <code>.B</code> specifies if the considered function or parameter concerns host-type A or B.</p>
-<p>The structure/transition matrix provided provided should of class <code>matrix</code>, with the same number of rows and columns, rows representing depature state and column the arrival state. All rows should add to 1. Probability values can be different for hosts A and B (so two different matrices), but the name of the column and the rows should be shared.</p>
+<p>The structure/transition matrix provided provided should of class <code>matrix</code>, with the same number of rows and columns, rows representing departure state and column the arrival state. All rows should add to 1. Probability values can be different for hosts A and B (so two different matrices), but the name of the column and the rows should be shared.</p>
 <p>The <code>pExit</code>, <code>pMove</code> and <code>pTrans</code> function should return a single probability (a number between 0 and 1), and <code>nContact</code> a positive natural number (positive integer) or 0.</p>
 <p>The <code>param</code> arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.</p>
 <p>The use of <code>timeDep</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>prestime</code> (for "present time").</p>

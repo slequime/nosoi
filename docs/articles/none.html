@@ -135,7 +135,7 @@
       <a href="../articles/discrete.html">Spread of a pathogen in a discrete structured population</a>
     </li>
     <li>
-      <a href="../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
+      <a href="../articles/examples/dengue.html">Spread of a dengue-like virus in a discrete space</a>
     </li>
     <li>
       <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
@@ -178,7 +178,7 @@
       <h1>Spread of a pathogen in a homogeneous population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-09-12</h4>
+            <h4 class="date">2019-09-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/none.Rmd"><code>vignettes/none.Rmd</code></a></small>
       <div class="hidden name"><code>none.Rmd</code></div>
@@ -409,7 +409,7 @@
 <div id="pexit-b" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pexit-b" class="anchor"></a>pExit.B</h3>
-<p>For <code>pExit.B</code>, we will choàse a value that depends on the “absolute” time of the simulation, for example cyclic climatic conditions (temperature). In that case, the function’s arguments should be <code>t</code> and <code>prestime</code> (the “absolute” time of the simulation), in that order:</p>
+<p>For <code>pExit.B</code>, we will choose a value that depends on the “absolute” time of the simulation, for example cyclic climatic conditions (temperature). In that case, the function’s arguments should be <code>t</code> and <code>prestime</code> (the “absolute” time of the simulation), in that order:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">p_Exit_fctB  &lt;-<span class="st"> </span><span class="cf">function</span>(t,prestime){(<span class="kw"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span>(prestime<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span><span class="dv">10</span>))<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">16</span>} <span class="co">#for a periodic function</span></a></code></pre></div>
 <p>The values of <code>pExit.B</code> across the “absolute time” of the simulation will be the following:</p>
 <p><img src="none_files/figure-html/pExit2-dual-1.png" width="700"></p>
@@ -427,7 +427,7 @@
 <div id="ptrans-b" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ptrans-b" class="anchor"></a>pTrans.B</h3>
-<p><code>pTrans.B</code> will be provided in the form of a gaussian function: it will reach its maximum value at a certain time point (mean) after initial infection and will subsequently decrease until it reaches 0:</p>
+<p><code>pTrans.B</code> will be provided in the form of a Gaussian function: it will reach its maximum value at a certain time point (mean) after initial infection and will subsequently decrease until it reaches 0:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">p_Trans_fct.B &lt;-<span class="st"> </span><span class="cf">function</span>(t, max.time){</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">  <span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span>(t, <span class="dt">mean=</span>max.time, <span class="dt">sd=</span><span class="dv">2</span>)<span class="op">*</span><span class="dv">5</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">}</a></code></pre></div>
@@ -529,7 +529,7 @@
 <div id="going-further" class="section level1">
 <h1 class="hasAnchor">
 <a href="#going-further" class="anchor"></a>Going further</h1>
-<p>To analyse and visualise your <code>nosoi</code> simulation output, you can have a look on <a href="examples/viz.html">this page</a>.</p>
+<p>To analyze and visualize your <code>nosoi</code> simulation output, you can have a look on <a href="examples/viz.html">this page</a>.</p>
 <p>You may also want to compose a more complex model by adding some structure (e.g. geography) to your simulation. Two tutorials can guide you on how to set up such structured scenarios:</p>
 <ul>
 <li>

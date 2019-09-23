@@ -178,7 +178,7 @@
       <h1>Spread of a dengue-like virus in a discrete space</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-09-19</h4>
+            <h4 class="date">2019-09-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/dengue.Rmd"><code>vignettes/examples/dengue.Rmd</code></a></small>
       <div class="hidden name"><code>dengue.Rmd</code></div>
@@ -203,7 +203,7 @@
 <div id="average-annual-temperature" class="section level2">
 <h2 class="hasAnchor">
 <a href="#average-annual-temperature" class="anchor"></a>Average annual temperature</h2>
-<p>Here we use <a href="http://worldclim.org/version2">WorldClim v2</a> data (average temperature (°C) - tavg 10m). The rasters are loaded, cut to fit the study site, and the temperature value averaged for each countries (i.e. states in our simulation) each month. Country spatial polygones come from <a href="https://gadm.org/data.html">GADM</a>.</p>
+<p>Here we use <a href="http://worldclim.org/version2">WorldClim v2</a> data (average temperature (°C) - tavg 10m). The rasters are loaded, cut to fit the study site, and the temperature value averaged for each countries (i.e. states in our simulation) each month. Country spatial polygons come from <a href="https://gadm.org/data.html">GADM</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#Initial data</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#3 letter code of countries of interest:</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">SE.Asia &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"CHN"</span>,<span class="st">"KHM"</span>,<span class="st">"LAO"</span>,<span class="st">"THA"</span>,<span class="st">"VNM"</span>)</a>
@@ -340,7 +340,7 @@
 <div id="air-transportation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#air-transportation" class="anchor"></a>Air transportation</h2>
-<p>We will also model the movement of humans between these different countries assuming they use airtransportation. We use here data available at <a href="https://openflights.org/data.html">OpenFlights</a>. This website contains information about the airports and the routes linking two airports together. Since we have no information about the number of passenger on each route, we will assume that the more route link two countries together, the more passenger flight between them.</p>
+<p>We will also model the movement of humans between these different countries assuming they use air transportation. We use here data available at <a href="https://openflights.org/data.html">OpenFlights</a>. This website contains information about the airports and the routes linking two airports together. Since we have no information about the number of passenger on each route, we will assume that the more route link two countries together, the more passenger flight between them.</p>
 <p>First we extract the airports of our study site:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">airports &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Dengue Data/airports.dat"</span>, <span class="dt">col_names =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(airports)=<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AirportID"</span>,<span class="st">"Name"</span>, <span class="st">"City"</span>, <span class="st">"Country"</span>, <span class="st">"IATA"</span>, <span class="st">"ICAO"</span>, <span class="st">"Latitude"</span>, <span class="st">"Longitude"</span>, <span class="st">"Altitude"</span>, <span class="st">"Timezone"</span>,    <span class="st">"DST"</span>, <span class="st">"Tz"</span>, <span class="st">"Type"</span>, <span class="st">"Source"</span>)</a>
@@ -452,7 +452,7 @@
 <h3 class="hasAnchor">
 <a href="#pexit" class="anchor"></a><code>pExit</code>
 </h3>
-<p>In Fontaine <em>et al.</em>, humans do not die from the dengue infection, but exit the simulation when their transmission probability approaches 0 on its way down (see below). To approximate this behaviour, we will use one of the parameters used in <code>pTrans</code>, called <code>Md_human</code>, which is the time since infection at which <code>pTrans</code> equals 50% of its maximum value. We will assume here that after three times this period, an infected human cannot transmit the virus any more and will thus exit the simulation:</p>
+<p>In Fontaine <em>et al.</em>, humans do not die from the dengue infection, but exit the simulation when their transmission probability approaches 0 on its way down (see below). To approximate this behavior, we will use one of the parameters used in <code>pTrans</code>, called <code>Md_human</code>, which is the time since infection at which <code>pTrans</code> equals 50% of its maximum value. We will assume here that after three times this period, an infected human cannot transmit the virus any more and will thus exit the simulation:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">p_Exit_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t,Md_human){</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">  <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>Md_human){p=<span class="dv">0</span>}</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>Md_human){p=<span class="dv">1</span>}</a>
@@ -729,7 +729,7 @@
 <pre><code>##  running ...</code></pre>
 <pre><code>## done. 
 ## The simulation has run for 96 units of time and a total of 5253 (A) and 16699 (B) hosts have been infected.</code></pre>
-<p>The simulation has run for 96 and has infected 5253 humans and 1.669910^{4} mosquitoes. The simulation was stoped because it reached the infected human cap <code>max.infected.A</code>.</p>
+<p>The simulation has run for 96 and has infected 5253 humans and 1.669910^{4} mosquitoes. The simulation was stopped because it reached the infected human cap <code>max.infected.A</code>.</p>
 </div>
 <div id="analyzing-the-results" class="section level1">
 <h1 class="hasAnchor">

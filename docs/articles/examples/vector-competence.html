@@ -135,7 +135,7 @@
       <a href="../../articles/discrete.html">Spread of a pathogen in a discrete structured population</a>
     </li>
     <li>
-      <a href="../../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
+      <a href="../../articles/examples/dengue.html">Spread of a dengue-like virus in a discrete space</a>
     </li>
     <li>
       <a href="../../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
@@ -178,7 +178,7 @@
       <h1>Epidemiological impact of mosquito vector competence variation</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-09-12</h4>
+            <h4 class="date">2019-09-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/vector-competence.Rmd"><code>vignettes/examples/vector-competence.Rmd</code></a></small>
       <div class="hidden name"><code>vector-competence.Rmd</code></div>
@@ -213,7 +213,7 @@
 <h3 class="hasAnchor">
 <a href="#pexit" class="anchor"></a><code>pExit</code>
 </h3>
-<p>In Fontaine <em>et al.</em>, humans do not die from the dengue infection, but exit the simulation when their transmission probability approaches 0 on its way down (see below). To approximate this behaviour, we will use one of the parameters used in <code>pTrans</code>, called <code>Md_human</code>, which is the time since infection at which <code>pTrans</code> equals 50% of its maximum value. We will assume here that after three times this period, an infected human cannot transmit the virus any more and will thus exit the simulation:</p>
+<p>In Fontaine <em>et al.</em>, humans do not die from the dengue infection, but exit the simulation when their transmission probability approaches 0 on its way down (see below). To approximate this behavior, we will use one of the parameters used in <code>pTrans</code>, called <code>Md_human</code>, which is the time since infection at which <code>pTrans</code> equals 50% of its maximum value. We will assume here that after three times this period, an infected human cannot transmit the virus any more and will thus exit the simulation:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">p_Exit_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t,Md_human){</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">  <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>Md_human){p=<span class="dv">0</span>}</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>Md_human){p=<span class="dv">1</span>}</a>
@@ -224,17 +224,14 @@
 <h3 class="hasAnchor">
 <a href="#ncontact" class="anchor"></a><code>nContact</code>
 </h3>
-<p>This parameter was not determined in Fontaine <em>et al.</em>, as unlike in <code>nosoi</code>, each mosquito in the simulation was simulated. Since the daily probability of a mosquito to bite is 0.3 and the relative density of mosquitoes compared to humans equalled 3, we can estimate that the daily probability to get bitten by a mosquito is approximately 0.9. Of course, this should correspond to a distribution of integer numbers (such as 0, 1, 2). We will therefore make draws from a Poisson distribution with rate parameter <span class="math inline">\(\lambda\)</span> = 0.9.</p>
+<p>This parameter was not determined in Fontaine <em>et al.</em>, as unlike in <code>nosoi</code>, each mosquito in the simulation was simulated. Since the daily probability of a mosquito to bite is 0.3 and the relative density of mosquitoes compared to humans equaled 3, we can estimate that the daily probability to get bitten by a mosquito is approximately 0.9. Of course, this should correspond to a distribution of integer numbers (such as 0, 1, 2). We will therefore make draws from a Poisson distribution with rate parameter <span class="math inline">\(\lambda\)</span> = 0.9.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">n_contact_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span>(<span class="dv">1</span>,<span class="fl">0.9</span>)}</a></code></pre></div>
-</div>
-<div id="ptrans" class="section level3">
-<h3 class="hasAnchor">
-<a href="#ptrans" class="anchor"></a><code>pTrans</code>
-</h3>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="vector-competence_files/figure-html/nContact2-1.png" width="700"> ### <code>pTrans</code></p>
 <p>Fontaine <em>et al.</em> model the transmission probability of a human to a mosquito using a 5-parameter equation based on two logistic functions, allowing the value of <code>pTrans</code> to go up in time, reach a plateau and then decrease over time:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p_Trans_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t, K_human, Mg_human, Bg_human, Md_human, Bd_human) {</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  K_human<span class="op">*</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span><span class="op">*</span>((<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://rdrr.io/r/base/Hyperbolic.html">tanh</a></span>((t<span class="op">-</span>Mg_human)<span class="op">/</span>Bg_human))<span class="op">-</span>(<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://rdrr.io/r/base/Hyperbolic.html">tanh</a></span>((t<span class="op">-</span>Md_human)<span class="op">/</span>Bd_human)))</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">p_Trans_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t, K_human, Mg_human, Bg_human, Md_human, Bd_human) {</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  K_human<span class="op">*</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span><span class="op">*</span>((<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://rdrr.io/r/base/Hyperbolic.html">tanh</a></span>((t<span class="op">-</span>Mg_human)<span class="op">/</span>Bg_human))<span class="op">-</span>(<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://rdrr.io/r/base/Hyperbolic.html">tanh</a></span>((t<span class="op">-</span>Md_human)<span class="op">/</span>Bd_human)))</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">}</a></code></pre></div>
 <p>Each parameter, except <code>t</code> (time since infection), corresponds to individually set parameters, mimicking heterogeneity among hosts:</p>
 <ul>
 <li>
@@ -248,17 +245,17 @@
 <li>
 <span class="math inline">\(B\delta\)</span> (<code>Bd_human</code>), the slope of the descending curve.</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">#Dynamics of viremia in vertebrate (see EIP paper for justification)</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">K_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="fl">0.98</span>,<span class="fl">0.002</span>)}</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">  </a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">Mg_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">4.844</span>,<span class="fl">0.5</span>)}</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">Bg_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">2.536</span>,<span class="fl">0.2</span>)}</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">Md_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">8.392</span>,<span class="fl">0.5</span>)}</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">Bd_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">4.038</span>,<span class="fl">0.2</span>)}</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">param.pTrans_human &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">K_human=</span>K_human_fct, <span class="dt">Mg_human=</span>Mg_human_fct, <span class="dt">Bg_human=</span>Bg_human_fct, <span class="dt">Md_human=</span>Md_human_fct, <span class="dt">Bd_human=</span>Bd_human_fct) </a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">#Dynamics of viremia in vertebrate (see EIP paper for justification)</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">K_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="fl">0.98</span>,<span class="fl">0.002</span>)}</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  </a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">Mg_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">4.844</span>,<span class="fl">0.5</span>)}</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">Bg_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">2.536</span>,<span class="fl">0.2</span>)}</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">Md_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">8.392</span>,<span class="fl">0.5</span>)}</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">Bd_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">4.038</span>,<span class="fl">0.2</span>)}</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">param.pTrans_human &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">K_human=</span>K_human_fct, <span class="dt">Mg_human=</span>Mg_human_fct, <span class="dt">Bg_human=</span>Bg_human_fct, <span class="dt">Md_human=</span>Md_human_fct, <span class="dt">Bd_human=</span>Bd_human_fct) </a></code></pre></div>
 <p>The profile over time since infection of 150 unique hosts will look like this (red is the mean value for each parameter): <img src="vector-competence_files/figure-html/pTrans3-1.png" width="700"></p>
 </div>
 </div>
@@ -270,21 +267,21 @@
 <a href="#pexit-1" class="anchor"></a><code>pExit</code>
 </h3>
 <p>In Fontaine <em>et al.</em> the daily survival probability of a mosquito is 0.85, so its <code>pExit</code> is 1-0.85:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">p_Exit_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.15</span>)}</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">p_Exit_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.15</span>)}</a></code></pre></div>
 </div>
 <div id="ncontact-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ncontact-1" class="anchor"></a><code>nContact</code>
 </h3>
 <p>In Fontaine <em>et al.</em> the daily biting probability of a mosquito is 0.3. We assume that if a mosquito bites, it bites only one human:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">nContact_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.7</span>,<span class="fl">0.3</span>))}</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">nContact_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.7</span>,<span class="fl">0.3</span>))}</a></code></pre></div>
 </div>
-<div id="ptrans-1" class="section level3">
+<div id="ptrans" class="section level3">
 <h3 class="hasAnchor">
-<a href="#ptrans-1" class="anchor"></a><code>pTrans</code>
+<a href="#ptrans" class="anchor"></a><code>pTrans</code>
 </h3>
 <p>In Fontaine <em>et al.</em> the probability of transmission from a mosquito to a human is approximated by their measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that <code>pTrans</code> is defined in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (<code>t_EIP</code>), and after that time, it will transmit with a certain (constant) probability (which we will call <code>p_max</code>). This function will be dependent on the time since the mosquito’s infection <code>t</code>:</p>
-<p><code>pTrans</code> will of course vary according the the viral isolate studied. EIP was measured dynamically for each mosquito population over time as the proportion of mosquitoes with disseminated viral infections. This experimental measure, a mean of the whole population, is modelled as a logistic function characterized by three parameters:</p>
+<p><code>pTrans</code> will of course vary according the the viral isolate studied. EIP was measured dynamically for each mosquito population over time as the proportion of mosquitoes with disseminated viral infections. This experimental measure, a mean of the whole population, is modeled as a logistic function characterized by three parameters:</p>
 <ul>
 <li>
 <span class="math inline">\(K_{mosquito}\)</span> (<code>K_mosquito</code>), the maximum probability of transmission.</li>
@@ -295,22 +292,22 @@
 </ul>
 <p><img src="vector-competence_files/figure-html/pTrans.B-1.png" width="700"></p>
 <p>According to our initial hypothesis, these population curves are actually formed by a heterogeneous population of mosquitoes “switching” from infected to infectious, thus <code>t_EIP</code> is individually set and can be extracted from the logistic curve of the population, representing the probability distribution, and <code>p_max</code> is actually 1 for most of the mosquitoes, but can be 0 (some will never transmit despite being infected) for a few others:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">#values will be drawn from a logistic distribution with location M and scale 1/B (see above)</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">p_max_fct_Laos &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="dv">1</span>)}</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">t_EIP_Laos &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">4.9</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">2.37</span>)}</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">param_pTrans_mosquito_Laos &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Laos,<span class="dt">t_EIP=</span>t_EIP_Laos)</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8">p_max_fct_Haiti &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="fl">0.94</span>)}</a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">t_EIP_Haiti &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">7.36</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">0.92</span>)}</a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11">param_pTrans_mosquito_Haiti &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Haiti,<span class="dt">t_EIP=</span>t_EIP_Haiti)</a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13">p_max_fct_Thai &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="fl">0.98</span>)}</a>
-<a class="sourceLine" id="cb7-14" data-line-number="14">t_EIP_Thai &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">5.15</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">1.24</span>)}</a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16">param_pTrans_mosquito_Thai &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Thai,<span class="dt">t_EIP=</span>t_EIP_Thai)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">#values will be drawn from a logistic distribution with location M and scale 1/B (see above)</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">p_max_fct_Laos &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">t_EIP_Laos &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">4.9</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">2.37</span>)}</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">param_pTrans_mosquito_Laos &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Laos,<span class="dt">t_EIP=</span>t_EIP_Laos)</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">p_max_fct_Haiti &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="fl">0.94</span>)}</a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">t_EIP_Haiti &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">7.36</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">0.92</span>)}</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">param_pTrans_mosquito_Haiti &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Haiti,<span class="dt">t_EIP=</span>t_EIP_Haiti)</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13">p_max_fct_Thai &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="fl">0.98</span>)}</a>
+<a class="sourceLine" id="cb8-14" data-line-number="14">t_EIP_Thai &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">5.15</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">1.24</span>)}</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">param_pTrans_mosquito_Thai &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Thai,<span class="dt">t_EIP=</span>t_EIP_Thai)</a></code></pre></div>
 <p>Here is what this looks like for 150 mosquitoes with each isolate:</p>
 <p><img src="vector-competence_files/figure-html/popDemo-1.png" width="700"></p>
 <p>As we can see, this perfectly mimics the observed population pattern for each virus.</p>
@@ -322,107 +319,107 @@
 <a href="#running-nosoi" class="anchor"></a>Running <code>nosoi</code>
 </h1>
 <p>Since all core functions have been set, we can now proceed with the simulation. We will set a maximum total length of 400 units of time as in Fontaine <em>et al.</em>, with a maximum of 10,000 infected humans, and 1,000,000 infected mosquitoes (to be sure the total number of mosquitoes will not be a limiting factor). The epidemic will start with one infected human. The <code>nosoi</code> script will then look like:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nosoi)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nosoi)</a></code></pre></div>
 <pre><code>## Loading required package: data.table</code></pre>
 <pre><code>## 
 ## Attaching package: 'data.table'</code></pre>
 <pre><code>## The following objects are masked from 'package:dplyr':
 ## 
 ##     between, first, last</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">#HostA, Humans ------------------------------------</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#pExit</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">p_Exit_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t,Md_human){</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">  <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>Md_human){p=<span class="dv">0</span>}</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6">  <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>Md_human){p=<span class="dv">1</span>}</a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">}</a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">Md_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">8.392</span>,<span class="fl">0.5</span>)}</a>
-<a class="sourceLine" id="cb12-11" data-line-number="11">param.pExit_human &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">Md_human=</span>Md_human_fct)</a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#nContact</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14">n_contact_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span>(<span class="dv">1</span>,<span class="fl">0.9</span>)}</a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#pTrans</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17">p_Trans_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t, K_human, Mg_human, Bg_human, Md_human, Bd_human) {</a>
-<a class="sourceLine" id="cb12-18" data-line-number="18">  K_human<span class="op">*</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span><span class="op">*</span>((<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://rdrr.io/r/base/Hyperbolic.html">tanh</a></span>((t<span class="op">-</span>Mg_human)<span class="op">/</span>Bg_human))<span class="op">-</span>(<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://rdrr.io/r/base/Hyperbolic.html">tanh</a></span>((t<span class="op">-</span>Md_human)<span class="op">/</span>Bd_human)))</a>
-<a class="sourceLine" id="cb12-19" data-line-number="19">}</a>
-<a class="sourceLine" id="cb12-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb12-21" data-line-number="21">K_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="fl">0.98</span>,<span class="fl">0.002</span>)}</a>
-<a class="sourceLine" id="cb12-22" data-line-number="22">  </a>
-<a class="sourceLine" id="cb12-23" data-line-number="23">Mg_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">4.844</span>,<span class="fl">0.5</span>)}</a>
-<a class="sourceLine" id="cb12-24" data-line-number="24">Bg_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">2.536</span>,<span class="fl">0.2</span>)}</a>
-<a class="sourceLine" id="cb12-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb12-26" data-line-number="26"><span class="co"># Md_human_fct &lt;- function(x){rnorm(x,8.392,0.5)} (specified before)</span></a>
-<a class="sourceLine" id="cb12-27" data-line-number="27">Bd_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">4.038</span>,<span class="fl">0.2</span>)}</a>
-<a class="sourceLine" id="cb12-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb12-29" data-line-number="29">param.pTrans_human &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">K_human=</span>K_human_fct, <span class="dt">Mg_human=</span>Mg_human_fct, <span class="dt">Bg_human=</span>Bg_human_fct, <span class="dt">Md_human=</span>Md_human_fct, <span class="dt">Bd_human=</span>Bd_human_fct) </a>
-<a class="sourceLine" id="cb12-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb12-31" data-line-number="31"><span class="co">#Host B, Mosquitoes ------------------------------------</span></a>
-<a class="sourceLine" id="cb12-32" data-line-number="32"></a>
-<a class="sourceLine" id="cb12-33" data-line-number="33"><span class="co">#pExit</span></a>
-<a class="sourceLine" id="cb12-34" data-line-number="34">p_Exit_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.15</span>)}</a>
-<a class="sourceLine" id="cb12-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb12-36" data-line-number="36"><span class="co">#nContact</span></a>
-<a class="sourceLine" id="cb12-37" data-line-number="37">nContact_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.7</span>,<span class="fl">0.3</span>))}</a>
-<a class="sourceLine" id="cb12-38" data-line-number="38"></a>
-<a class="sourceLine" id="cb12-39" data-line-number="39"><span class="co">#pTrans</span></a>
-<a class="sourceLine" id="cb12-40" data-line-number="40">p_Trans_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t, p_max, t_EIP){</a>
-<a class="sourceLine" id="cb12-41" data-line-number="41">    <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span>t_EIP){p=<span class="dv">0</span>}</a>
-<a class="sourceLine" id="cb12-42" data-line-number="42">    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_EIP){p=p_max}</a>
-<a class="sourceLine" id="cb12-43" data-line-number="43">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
-<a class="sourceLine" id="cb12-44" data-line-number="44">}</a>
-<a class="sourceLine" id="cb12-45" data-line-number="45"></a>
-<a class="sourceLine" id="cb12-46" data-line-number="46"><span class="co">#Parameters for pTrans for each isolate:</span></a>
-<a class="sourceLine" id="cb12-47" data-line-number="47">p_max_fct_Laos &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="dv">1</span>)}</a>
-<a class="sourceLine" id="cb12-48" data-line-number="48">t_EIP_Laos &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">4.9</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">2.37</span>)}</a>
-<a class="sourceLine" id="cb12-49" data-line-number="49"></a>
-<a class="sourceLine" id="cb12-50" data-line-number="50">param_pTrans_mosquito_Laos &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Laos,<span class="dt">t_EIP=</span>t_EIP_Laos)</a>
-<a class="sourceLine" id="cb12-51" data-line-number="51"></a>
-<a class="sourceLine" id="cb12-52" data-line-number="52">p_max_fct_Haiti &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="fl">0.94</span>)}</a>
-<a class="sourceLine" id="cb12-53" data-line-number="53">t_EIP_Haiti &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">7.36</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">0.92</span>)}</a>
-<a class="sourceLine" id="cb12-54" data-line-number="54"></a>
-<a class="sourceLine" id="cb12-55" data-line-number="55">param_pTrans_mosquito_Haiti &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Haiti,<span class="dt">t_EIP=</span>t_EIP_Haiti)</a>
-<a class="sourceLine" id="cb12-56" data-line-number="56"></a>
-<a class="sourceLine" id="cb12-57" data-line-number="57">p_max_fct_Thai &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="fl">0.98</span>)}</a>
-<a class="sourceLine" id="cb12-58" data-line-number="58">t_EIP_Thai &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">5.15</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">1.24</span>)}</a>
-<a class="sourceLine" id="cb12-59" data-line-number="59"></a>
-<a class="sourceLine" id="cb12-60" data-line-number="60">param_pTrans_mosquito_Thai &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Thai,<span class="dt">t_EIP=</span>t_EIP_Thai)</a>
-<a class="sourceLine" id="cb12-61" data-line-number="61"></a>
-<a class="sourceLine" id="cb12-62" data-line-number="62"><span class="co"># Starting the simulation ------------------------------------</span></a>
-<a class="sourceLine" id="cb12-63" data-line-number="63"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">800</span>)</a>
-<a class="sourceLine" id="cb12-64" data-line-number="64">SimulationDual &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"dual"</span>, <span class="dt">popStructure=</span><span class="st">"none"</span>,</a>
-<a class="sourceLine" id="cb12-65" data-line-number="65">                        <span class="dt">length.sim=</span><span class="dv">400</span>, </a>
-<a class="sourceLine" id="cb12-66" data-line-number="66">                        <span class="dt">max.infected.A=</span><span class="dv">10000</span>, </a>
-<a class="sourceLine" id="cb12-67" data-line-number="67">                        <span class="dt">max.infected.B=</span><span class="dv">1000000</span>, </a>
-<a class="sourceLine" id="cb12-68" data-line-number="68">                        </a>
-<a class="sourceLine" id="cb12-69" data-line-number="69">                        <span class="dt">init.individuals.A=</span><span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb12-70" data-line-number="70">                        <span class="dt">init.individuals.B=</span><span class="dv">0</span>, </a>
-<a class="sourceLine" id="cb12-71" data-line-number="71">                        </a>
-<a class="sourceLine" id="cb12-72" data-line-number="72">                        <span class="dt">pExit.A=</span>p_Exit_fct_human,</a>
-<a class="sourceLine" id="cb12-73" data-line-number="73">                        <span class="dt">param.pExit.A=</span>param.pExit_human,</a>
-<a class="sourceLine" id="cb12-74" data-line-number="74">                        <span class="dt">timeDep.pExit.A=</span><span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb12-75" data-line-number="75">                        <span class="dt">nContact.A=</span>n_contact_fct_human,</a>
-<a class="sourceLine" id="cb12-76" data-line-number="76">                        <span class="dt">param.nContact.A=</span><span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb12-77" data-line-number="77">                        <span class="dt">timeDep.nContact.A=</span><span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb12-78" data-line-number="78">                        <span class="dt">pTrans.A=</span>p_Trans_fct_human,</a>
-<a class="sourceLine" id="cb12-79" data-line-number="79">                        <span class="dt">param.pTrans.A=</span>param.pTrans_human,</a>
-<a class="sourceLine" id="cb12-80" data-line-number="80">                        <span class="dt">timeDep.pTrans.A=</span><span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb12-81" data-line-number="81">                        <span class="dt">prefix.host.A=</span><span class="st">"H"</span>,</a>
-<a class="sourceLine" id="cb12-82" data-line-number="82">                        </a>
-<a class="sourceLine" id="cb12-83" data-line-number="83">                        <span class="dt">pExit.B=</span>p_Exit_fct_mosquito,</a>
-<a class="sourceLine" id="cb12-84" data-line-number="84">                        <span class="dt">param.pExit.B=</span><span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb12-85" data-line-number="85">                        <span class="dt">timeDep.pExit.B=</span><span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb12-86" data-line-number="86">                        <span class="dt">nContact.B=</span>nContact_fct_mosquito,</a>
-<a class="sourceLine" id="cb12-87" data-line-number="87">                        <span class="dt">param.nContact.B=</span><span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb12-88" data-line-number="88">                        <span class="dt">timeDep.nContact.B=</span><span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb12-89" data-line-number="89">                        <span class="dt">pTrans.B=</span>p_Trans_fct_mosquito,</a>
-<a class="sourceLine" id="cb12-90" data-line-number="90">                        <span class="dt">param.pTrans.B=</span>param_pTrans_mosquito_Laos,</a>
-<a class="sourceLine" id="cb12-91" data-line-number="91">                        <span class="dt">timeDep.pTrans.B=</span><span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb12-92" data-line-number="92">                        <span class="dt">prefix.host.B=</span><span class="st">"M"</span>,</a>
-<a class="sourceLine" id="cb12-93" data-line-number="93">                        </a>
-<a class="sourceLine" id="cb12-94" data-line-number="94">                        <span class="dt">print.progress=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">#HostA, Humans ------------------------------------</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#pExit</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">p_Exit_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t,Md_human){</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">  <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>Md_human){p=<span class="dv">0</span>}</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">  <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>Md_human){p=<span class="dv">1</span>}</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
+<a class="sourceLine" id="cb13-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10">Md_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">8.392</span>,<span class="fl">0.5</span>)}</a>
+<a class="sourceLine" id="cb13-11" data-line-number="11">param.pExit_human &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">Md_human=</span>Md_human_fct)</a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#nContact</span></a>
+<a class="sourceLine" id="cb13-14" data-line-number="14">n_contact_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span>(<span class="dv">1</span>,<span class="fl">0.9</span>)}</a>
+<a class="sourceLine" id="cb13-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co">#pTrans</span></a>
+<a class="sourceLine" id="cb13-17" data-line-number="17">p_Trans_fct_human &lt;-<span class="st"> </span><span class="cf">function</span>(t, K_human, Mg_human, Bg_human, Md_human, Bd_human) {</a>
+<a class="sourceLine" id="cb13-18" data-line-number="18">  K_human<span class="op">*</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span><span class="op">*</span>((<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://rdrr.io/r/base/Hyperbolic.html">tanh</a></span>((t<span class="op">-</span>Mg_human)<span class="op">/</span>Bg_human))<span class="op">-</span>(<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://rdrr.io/r/base/Hyperbolic.html">tanh</a></span>((t<span class="op">-</span>Md_human)<span class="op">/</span>Bd_human)))</a>
+<a class="sourceLine" id="cb13-19" data-line-number="19">}</a>
+<a class="sourceLine" id="cb13-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb13-21" data-line-number="21">K_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="fl">0.98</span>,<span class="fl">0.002</span>)}</a>
+<a class="sourceLine" id="cb13-22" data-line-number="22">  </a>
+<a class="sourceLine" id="cb13-23" data-line-number="23">Mg_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">4.844</span>,<span class="fl">0.5</span>)}</a>
+<a class="sourceLine" id="cb13-24" data-line-number="24">Bg_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">2.536</span>,<span class="fl">0.2</span>)}</a>
+<a class="sourceLine" id="cb13-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb13-26" data-line-number="26"><span class="co"># Md_human_fct &lt;- function(x){rnorm(x,8.392,0.5)} (specified before)</span></a>
+<a class="sourceLine" id="cb13-27" data-line-number="27">Bd_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">4.038</span>,<span class="fl">0.2</span>)}</a>
+<a class="sourceLine" id="cb13-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb13-29" data-line-number="29">param.pTrans_human &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">K_human=</span>K_human_fct, <span class="dt">Mg_human=</span>Mg_human_fct, <span class="dt">Bg_human=</span>Bg_human_fct, <span class="dt">Md_human=</span>Md_human_fct, <span class="dt">Bd_human=</span>Bd_human_fct) </a>
+<a class="sourceLine" id="cb13-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb13-31" data-line-number="31"><span class="co">#Host B, Mosquitoes ------------------------------------</span></a>
+<a class="sourceLine" id="cb13-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb13-33" data-line-number="33"><span class="co">#pExit</span></a>
+<a class="sourceLine" id="cb13-34" data-line-number="34">p_Exit_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.15</span>)}</a>
+<a class="sourceLine" id="cb13-35" data-line-number="35"></a>
+<a class="sourceLine" id="cb13-36" data-line-number="36"><span class="co">#nContact</span></a>
+<a class="sourceLine" id="cb13-37" data-line-number="37">nContact_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.7</span>,<span class="fl">0.3</span>))}</a>
+<a class="sourceLine" id="cb13-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb13-39" data-line-number="39"><span class="co">#pTrans</span></a>
+<a class="sourceLine" id="cb13-40" data-line-number="40">p_Trans_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t, p_max, t_EIP){</a>
+<a class="sourceLine" id="cb13-41" data-line-number="41">    <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span>t_EIP){p=<span class="dv">0</span>}</a>
+<a class="sourceLine" id="cb13-42" data-line-number="42">    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_EIP){p=p_max}</a>
+<a class="sourceLine" id="cb13-43" data-line-number="43">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
+<a class="sourceLine" id="cb13-44" data-line-number="44">}</a>
+<a class="sourceLine" id="cb13-45" data-line-number="45"></a>
+<a class="sourceLine" id="cb13-46" data-line-number="46"><span class="co">#Parameters for pTrans for each isolate:</span></a>
+<a class="sourceLine" id="cb13-47" data-line-number="47">p_max_fct_Laos &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb13-48" data-line-number="48">t_EIP_Laos &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">4.9</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">2.37</span>)}</a>
+<a class="sourceLine" id="cb13-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb13-50" data-line-number="50">param_pTrans_mosquito_Laos &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Laos,<span class="dt">t_EIP=</span>t_EIP_Laos)</a>
+<a class="sourceLine" id="cb13-51" data-line-number="51"></a>
+<a class="sourceLine" id="cb13-52" data-line-number="52">p_max_fct_Haiti &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="fl">0.94</span>)}</a>
+<a class="sourceLine" id="cb13-53" data-line-number="53">t_EIP_Haiti &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">7.36</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">0.92</span>)}</a>
+<a class="sourceLine" id="cb13-54" data-line-number="54"></a>
+<a class="sourceLine" id="cb13-55" data-line-number="55">param_pTrans_mosquito_Haiti &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Haiti,<span class="dt">t_EIP=</span>t_EIP_Haiti)</a>
+<a class="sourceLine" id="cb13-56" data-line-number="56"></a>
+<a class="sourceLine" id="cb13-57" data-line-number="57">p_max_fct_Thai &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(x,<span class="dv">1</span>, <span class="fl">0.98</span>)}</a>
+<a class="sourceLine" id="cb13-58" data-line-number="58">t_EIP_Thai &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">rlogis</a></span>(x, <span class="dt">location =</span> <span class="fl">5.15</span>, <span class="dt">scale =</span> <span class="dv">1</span><span class="op">/</span><span class="fl">1.24</span>)}</a>
+<a class="sourceLine" id="cb13-59" data-line-number="59"></a>
+<a class="sourceLine" id="cb13-60" data-line-number="60">param_pTrans_mosquito_Thai &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct_Thai,<span class="dt">t_EIP=</span>t_EIP_Thai)</a>
+<a class="sourceLine" id="cb13-61" data-line-number="61"></a>
+<a class="sourceLine" id="cb13-62" data-line-number="62"><span class="co"># Starting the simulation ------------------------------------</span></a>
+<a class="sourceLine" id="cb13-63" data-line-number="63"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">800</span>)</a>
+<a class="sourceLine" id="cb13-64" data-line-number="64">SimulationDual &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"dual"</span>, <span class="dt">popStructure=</span><span class="st">"none"</span>,</a>
+<a class="sourceLine" id="cb13-65" data-line-number="65">                        <span class="dt">length.sim=</span><span class="dv">400</span>, </a>
+<a class="sourceLine" id="cb13-66" data-line-number="66">                        <span class="dt">max.infected.A=</span><span class="dv">10000</span>, </a>
+<a class="sourceLine" id="cb13-67" data-line-number="67">                        <span class="dt">max.infected.B=</span><span class="dv">1000000</span>, </a>
+<a class="sourceLine" id="cb13-68" data-line-number="68">                        </a>
+<a class="sourceLine" id="cb13-69" data-line-number="69">                        <span class="dt">init.individuals.A=</span><span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb13-70" data-line-number="70">                        <span class="dt">init.individuals.B=</span><span class="dv">0</span>, </a>
+<a class="sourceLine" id="cb13-71" data-line-number="71">                        </a>
+<a class="sourceLine" id="cb13-72" data-line-number="72">                        <span class="dt">pExit.A=</span>p_Exit_fct_human,</a>
+<a class="sourceLine" id="cb13-73" data-line-number="73">                        <span class="dt">param.pExit.A=</span>param.pExit_human,</a>
+<a class="sourceLine" id="cb13-74" data-line-number="74">                        <span class="dt">timeDep.pExit.A=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb13-75" data-line-number="75">                        <span class="dt">nContact.A=</span>n_contact_fct_human,</a>
+<a class="sourceLine" id="cb13-76" data-line-number="76">                        <span class="dt">param.nContact.A=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb13-77" data-line-number="77">                        <span class="dt">timeDep.nContact.A=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb13-78" data-line-number="78">                        <span class="dt">pTrans.A=</span>p_Trans_fct_human,</a>
+<a class="sourceLine" id="cb13-79" data-line-number="79">                        <span class="dt">param.pTrans.A=</span>param.pTrans_human,</a>
+<a class="sourceLine" id="cb13-80" data-line-number="80">                        <span class="dt">timeDep.pTrans.A=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb13-81" data-line-number="81">                        <span class="dt">prefix.host.A=</span><span class="st">"H"</span>,</a>
+<a class="sourceLine" id="cb13-82" data-line-number="82">                        </a>
+<a class="sourceLine" id="cb13-83" data-line-number="83">                        <span class="dt">pExit.B=</span>p_Exit_fct_mosquito,</a>
+<a class="sourceLine" id="cb13-84" data-line-number="84">                        <span class="dt">param.pExit.B=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb13-85" data-line-number="85">                        <span class="dt">timeDep.pExit.B=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb13-86" data-line-number="86">                        <span class="dt">nContact.B=</span>nContact_fct_mosquito,</a>
+<a class="sourceLine" id="cb13-87" data-line-number="87">                        <span class="dt">param.nContact.B=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb13-88" data-line-number="88">                        <span class="dt">timeDep.nContact.B=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb13-89" data-line-number="89">                        <span class="dt">pTrans.B=</span>p_Trans_fct_mosquito,</a>
+<a class="sourceLine" id="cb13-90" data-line-number="90">                        <span class="dt">param.pTrans.B=</span>param_pTrans_mosquito_Laos,</a>
+<a class="sourceLine" id="cb13-91" data-line-number="91">                        <span class="dt">timeDep.pTrans.B=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb13-92" data-line-number="92">                        <span class="dt">prefix.host.B=</span><span class="st">"M"</span>,</a>
+<a class="sourceLine" id="cb13-93" data-line-number="93">                        </a>
+<a class="sourceLine" id="cb13-94" data-line-number="94">                        <span class="dt">print.progress=</span><span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## Starting the simulation
 ## Initializing ...</code></pre>
 <pre><code>##  running ...</code></pre>
@@ -432,7 +429,7 @@
 <div id="analyzing-the-results-and-conclusions" class="section level1">
 <h1 class="hasAnchor">
 <a href="#analyzing-the-results-and-conclusions" class="anchor"></a>Analyzing the results and conclusions</h1>
-<p>To analyse the results, we classify each simulation into 3 categories based on the number of humans infected: over 100 infected, below 100 infected and no secondary cases (i.e. just one infected). We then plot the results as follows:</p>
+<p>To analyze the results, we classify each simulation into 3 categories based on the number of humans infected: over 100 infected, below 100 infected and no secondary cases (i.e. just one infected). We then plot the results as follows:</p>
 <p><img src="vector-competence_files/figure-html/Output1-1.png" width="700"></p>
 <p>As we can see, the isolate Haiti2012 yielded less “big outbreaks” (&gt; 100 humans infected) compared to the two other isolates, which is coherent with its slower within-host dynamics (i.e. variations in vector competence, defined as the intrinsic ability of a vector to carry and transmit a pathogen). This result is similar to the one obtained in the original paper which used an earlier version of <code>nosoi</code> in a closed population.</p>
 <p>With a set of simulated transmission chains and associated metadata anchoring them in time, and sometimes space, <code>nosoi</code> offers a perfect setting to explore how within-host dynamics can drastically influence a pathogen’s epidemiology. Changes in any of the parameters are easy to implement, including drastic changes on how a certain probability or number is computed, allowing for maximum flexibility.</p>

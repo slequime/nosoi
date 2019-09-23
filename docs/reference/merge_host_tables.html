@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Param concatenator — paramConstructor • nosoi</title>
+<title>Merge Population Data — merge_host_tables • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Param concatenator — paramConstructor" />
-<meta property="og:description" content="Creates a ParamHost object." />
+<meta property="og:title" content="Merge Population Data — merge_host_tables" />
+<meta property="og:description" content="Utility function to get merged hosts data if dual." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -214,46 +214,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Param concatenator</h1>
-    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/nosoi_utilityFunctions.R'><code>R/nosoi_utilityFunctions.R</code></a></small>
-    <div class="hidden name"><code>paramConstructor.Rd</code></div>
+    <h1>Merge Population Data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_treeGenerator.r'><code>R/output_treeGenerator.r</code></a></small>
+    <div class="hidden name"><code>merge_host_tables.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Creates a <code>ParamHost</code> object.</p>
+    <p>Utility function to get merged hosts data if dual.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>paramConstructor</span>(<span class='no'>param.pExit</span>, <span class='no'>param.pMove</span>, <span class='no'>param.nContact</span>, <span class='no'>param.pTrans</span>,
-  <span class='no'>param.sdMove</span>)</pre>
+    <pre class="usage"><span class='fu'>merge_host_tables</span>(<span class='no'>nosoiInf</span>)
+
+<span class='fu'>merge_state_tables</span>(<span class='no'>nosoiInf</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>param.pExit</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
-    </tr>
-    <tr>
-      <th>param.pMove</th>
-      <td><p>parameter names (list of functions) for the pMove.</p></td>
-    </tr>
-    <tr>
-      <th>param.nContact</th>
-      <td><p>parameter names (list of functions) for param.nContact.</p></td>
-    </tr>
-    <tr>
-      <th>param.pTrans</th>
-      <td><p>parameter names (list of functions) for the pExit.</p></td>
-    </tr>
-    <tr>
-      <th>param.sdMove</th>
-      <td><p>parameter names (list of functions) for sdMove.</p></td>
+      <th>nosoiInf</th>
+      <td><p>an object of class <code><a href='nosoiSim.html'>nosoiSim</a></code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>ParamHost</code></p>
+    <p>the merged `table.hosts` or `table.state` of the two populations.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

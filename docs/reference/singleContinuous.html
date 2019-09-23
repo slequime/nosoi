@@ -176,7 +176,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
       <a href="../articles/discrete.html">Spread of a pathogen in a discrete structured population</a>
     </li>
     <li>
-      <a href="../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
+      <a href="../articles/examples/dengue.html">Spread of a dengue-like virus in a discrete space</a>
     </li>
     <li>
       <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
@@ -268,7 +268,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>timeDep.pExit</th>
-      <td><p>is pExit dependant on the absolute time of the simulation? (TRUE/FALSE)</p></td>
+      <td><p>is pExit dependent on the absolute time of the simulation? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>hostCount.pExit</th>
@@ -316,7 +316,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>sdMove</th>
-      <td><p>function that gives the distance travelled (based on coordinates); output is the standard deviation value for the Brownian motion.</p></td>
+      <td><p>function that gives the distance traveled (based on coordinates); output is the standard deviation value for the Brownian motion.</p></td>
     </tr>
     <tr>
       <th>param.sdMove</th>
@@ -332,7 +332,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>timeDep.nContact</th>
-      <td><p>is nContact dependant on the absolute time of the simulation? (TRUE/FALSE)</p></td>
+      <td><p>is nContact dependent on the absolute time of the simulation? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>hostCount.nContact</th>
@@ -352,7 +352,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>timeDep.pTrans</th>
-      <td><p>is pTrans dependant on the absolute time of the simulation? (TRUE/FALSE)</p></td>
+      <td><p>is pTrans dependent on the absolute time of the simulation? (TRUE/FALSE)</p></td>
     </tr>
     <tr>
       <th>hostCount.pTrans</th>
@@ -385,7 +385,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     <p>An object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>, containing all results of the simulation.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The structure raster provided provided should of class <code>raster</code>. High values of the environemental variable can attract hosts if <code>attracted.by.raster</code> is TRUE.</p>
+    <p>The structure raster provided provided should of class <code>raster</code>. High values of the environmental variable can attract hosts if <code>attracted.by.raster</code> is TRUE.</p>
 <p>The <code>pExit</code>, <code>pMove</code> and <code>pTrans</code> function should return a single probability (a number between 0 and 1), <code>sdMove</code> a real number (keep in mind this number is related to your coordinate space), and <code>nContact</code> a positive natural number (positive integer) or 0</p>
 <p>The <code>param</code> arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.</p>
 <p>The use of <code>timeDep</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>prestime</code> (for "present time").</p>

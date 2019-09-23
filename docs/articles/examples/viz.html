@@ -135,7 +135,7 @@
       <a href="../../articles/discrete.html">Spread of a pathogen in a discrete structured population</a>
     </li>
     <li>
-      <a href="../../articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>
+      <a href="../../articles/examples/dengue.html">Spread of a dengue-like virus in a discrete space</a>
     </li>
     <li>
       <a href="../../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
@@ -178,7 +178,7 @@
       <h1>Visualization tips</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-09-09</h4>
+            <h4 class="date">2019-09-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/viz.Rmd"><code>vignettes/examples/viz.Rmd</code></a></small>
       <div class="hidden name"><code>viz.Rmd</code></div>
@@ -188,7 +188,7 @@
     
     
 <blockquote>
-<p>This page presents various ways to visualize a <code>nosoiSim</code> simulation output. Because this output contains all the data simulated, you can develop your own visualisation procedure. The approaches presented here all rely on external packages.</p>
+<p>This page presents various ways to visualize a <code>nosoiSim</code> simulation output. Because this output contains all the data simulated, you can develop your own visualization procedure. The approaches presented here all rely on external packages.</p>
 </blockquote>
 <div id="transmission-chain" class="section level1">
 <h1 class="hasAnchor">
@@ -247,7 +247,7 @@
 <div id="as-a-network" class="section level2">
 <h2 class="hasAnchor">
 <a href="#as-a-network" class="anchor"></a>As a network</h2>
-<p>To visualize the transmission chain as a network, I typically use <code>igraph</code> with <code>ggnetwork</code>. Keep in mind that the more nodes (i.e. infected hosts) you have, the more messy (or difficult) the visualisation will be.</p>
+<p>To visualize the transmission chain as a network, I typically use <code>igraph</code> with <code>ggnetwork</code>. Keep in mind that the more nodes (i.e. infected hosts) you have, the more messy (or difficult) the visualization will be.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(viridis)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(igraph)</a>
@@ -274,7 +274,7 @@
 <a class="sourceLine" id="cb2-24" data-line-number="24"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggnetwork/man/geom_nodes.html">geom_nodes</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>inf.in)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_hue.html">scale_color_discrete</a></span>(<span class="dt">name=</span><span class="st">"State of infection"</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-25" data-line-number="25"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggnetwork/man/theme_blank.html">theme_blank</a></span>()</a>
 <a class="sourceLine" id="cb2-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(plot1,plot2,<span class="dt">widths =</span> <span class="dv">2</span>, <span class="dt">heights =</span> <span class="dv">1</span>, <span class="dt">legend=</span><span class="st">"bottom"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-27" data-line-number="27">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(plot1,plot2,<span class="dt">widths =</span> <span class="dv">2</span>, <span class="dt">heights =</span> <span class="dv">1</span>, <span class="dt">legend=</span><span class="st">"bottom"</span>)</a></code></pre></div>
 <p><img src="viz_files/figure-html/visualisation1-1.png" width="700"></p>
 <p>An animated version over time can also be rendered:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(networkDynamic)</a>
@@ -439,7 +439,7 @@
 <div id="spread-in-structured-populations-in-continuous-space" class="section level2">
 <h2 class="hasAnchor">
 <a href="#spread-in-structured-populations-in-continuous-space" class="anchor"></a>Spread in structured populations in continuous space</h2>
-<p>Similarly one cas try to represent the spread of pathogen in a continuous space. Here, we will generate a random raster for the purpose of this tutorial, but you can use a “real” world raster and simulate your epidemic on it ( <a href="examples/ebola.html">see this example</a> ).</p>
+<p>Similarly one can try to represent the spread of pathogen in a continuous space. Here, we will generate a random raster for the purpose of this tutorial, but you can use a “real” world raster and simulate your epidemic on it ( <a href="examples/ebola.html">see this example</a> ).</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">#Generating the raster</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(raster)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">860</span>)</a>
@@ -521,7 +521,7 @@
 <a class="sourceLine" id="cb7-79" data-line-number="79">                        <span class="dt">prefix.host=</span><span class="st">"H"</span>,</a>
 <a class="sourceLine" id="cb7-80" data-line-number="80">                        <span class="dt">print.progress=</span><span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb7-81" data-line-number="81">                        <span class="dt">print.step=</span><span class="dv">10</span>)</a></code></pre></div>
-<p>The following plot gvies a static representation of all positions occupied by all hosts during the simulation:</p>
+<p>The following plot gives a static representation of all positions occupied by all hosts during the simulation:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggspatial)</a>
