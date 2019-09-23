@@ -452,6 +452,6 @@ analyzes, thanks to the package [treeio](https://guangchuangyu.github.io/softwar
 For instance, the tree can be written in a [beast](http://beast.community/)
 compatible format thanks to function `treeio::write.beast()`:
 
-```{r writeTree, message=FALSE}
+```{r writeTree, eval=FALSE, message=FALSE}
 treeio::write.beast(test.nosoiA.tree.sampled.exiting)
 ```
