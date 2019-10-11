@@ -45,7 +45,9 @@ transition.matrix = matrix(c(0,0,0,0,0,
                              1,0,0,0,0,
                              0,1,0,0,0,
                              0,0,1,0,0,
-                             0,0,0,1,0),nrow = 5, ncol = 5,dimnames=list(c("pExit","pMove","sdMove","nContact","pTrans"),c("pExit","pMove","sdMove","nContact","pTrans")))
+                             0,0,0,1,0),nrow = 5, ncol = 5,
+                           dimnames=list(c("pExit","pMove","sdMove","nContact","pTrans"),
+                                         c("pExit","pMove","sdMove","nContact","pTrans")))
 
 melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
 
@@ -132,13 +134,13 @@ p_Function  <- function(t,current.env.value,host.count){(current.env.value-host.
 If you want one of the parameters of the logistic distribution (or any other function) to be dependent on the individual host (including some heterogeneity between hosts), then you can add a parameter:
 
 ```{r pFunction5, eval = FALSE}
-p_Function  <- function(t,pFunction.param1){plogis(t,pExit.param1,2)}
+p_Function  <- function(t,pFunction.param1){plogis(t,pFunction.param1,2)}
 ```
 
 In this case, the $\mu$ parameter will be determined for each individual host by another function that you have to specify. Here we will use:
 
 ```{r pFunction6, eval = FALSE}
-p_Function_param1 <- function(x){rnorm(x,mean = 10,sd=2)} #sampling one parameter for each infected individual
+p_Function_param1 <- function(x){rnorm(x,mean=10,sd=2)} #sampling one parameter for each infected individual
 ```
 
 $\mu$ will hence be sampled from a normal distribution (mean = 10 and sd = 2). Notice here that the function is expressed as a function of `x` instead of `t`. `x` is present in the body of the function as the number of draws to make from the distribution. Every parameter function you specify should be compiled into a list, where the function determining the parameter for each individual (right) can be named (left), using the name provided in `p_Function` for this parameter.
