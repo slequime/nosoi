@@ -5,7 +5,7 @@ nosoi <img src="man/figures/logo.png" align="right" alt="" width="120" />
 [![](https://img.shields.io/badge/docs-vignettes-blue.svg)](http://slequime.github.io/nosoi/)
 [![](https://img.shields.io/github/license/slequime/nosoi)](http://slequime.github.io/nosoi/)
 
-`nosoi` (pronounced no.so.i) is a flexible agent-based stochastic transmission chain/epidemic simulator in R, named after the *daimones* of plague, sickness and disease that escaped Pandora's jar in the Greek mythology. `nosoi` is able to take into account the influence of multiple variable on the transmission process (e.g. dual-host systems (such as arboviruses), within-host viral dynamics, transportation, population structure), alone or taken together, to create complex but relatively intuitive epidemiological simulations.
+`nosoi` (pronounced no.so.i) is a flexible agent-based stochastic transmission chain/epidemic simulator in R, named after the *daimones* of plague, sickness and disease that escaped Pandora's jar in Greek mythology. `nosoi` is able to take into account the impact of multiple variables on the transmission process (e.g. dual-host systems such as arboviruses, within-host viral dynamics, transportation, population structure, ...), alone or taken together, to create complex but relatively intuitive epidemiological simulations.
 
 ## Installation
 Stable version will be deposited on CRAN.
