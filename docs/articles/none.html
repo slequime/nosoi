@@ -178,7 +178,7 @@
       <h1>Spread of a pathogen in a homogeneous population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-09-23</h4>
+            <h4 class="date">2019-11-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/none.Rmd"><code>vignettes/none.Rmd</code></a></small>
       <div class="hidden name"><code>none.Rmd</code></div>
@@ -187,13 +187,13 @@
 
     
     
-<p><code>nosoi</code> can accommodate a wide range of epidemiological transmission scenarios, and doing so requires providing the proper parameter values. This tutorial aims to illustrate how to set up a <code>nosoi</code> simulation for a “simple” case: a pathogen being transmitted within a population without structure. We will present two cases, i.e. for a single-host and a dual-host pathogen.</p>
+<p><code>nosoi</code> can accommodate a wide range of epidemiological transmission scenarios. and doing so requires providing the proper parameter values. This tutorial aims to illustrate how to set up a <code>nosoi</code> simulation for a “simple” case: a pathogen being transmitted within a population without structure. We will present two cases, first for a single-host, and then a dual-host pathogen.</p>
 <div id="setting-up-the-simulation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#setting-up-the-simulation" class="anchor"></a>Setting up the simulation</h1>
 <p>The wrapper function <code>nosoiSim</code> takes all the arguments that will be passed down to the simulator, in the case of this tutorial <code>singleNone</code> (for “single host, no structure”). We thus start by providing the options <code>type="single"</code> and <code>popStructure="none"</code> to set up the analysis:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">SimulationA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"none"</span>, ...)</a></code></pre></div>
-<p>This simulation type takes several arguments or options to be able to run, namely:</p>
+<p>This simulation type requires several arguments or options in order to run, namely:</p>
 <ul>
 <li><code>length.sim</code></li>
 <li><code>max.infected</code></li>
@@ -211,7 +211,7 @@
 <li><code>progress.bar</code></li>
 <li><code>print.step</code></li>
 </ul>
-<p>All the <code>param</code> elements provide individual-level parameters to be taken into account, while the <code>timeDep</code> elements inform the simulator if the “absolute” simulation time should be taken into account.</p>
+<p>All the <code>param.*</code> elements provide individual-level parameters to be taken into account, while the <code>timeDep.*</code> elements inform the simulator if the “absolute” simulation time should be taken into account.</p>
 <div id="general-parameters" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-parameters" class="anchor"></a>General parameters</h2>
@@ -223,10 +223,11 @@
 <div id="core-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#core-functions" class="anchor"></a>Core functions</h2>
-<p>The core functions <code>pExit</code>, <code>nContact</code> and <code>pTrans</code> each follow the <a href="nosoi.html#setting-up-the-core-functions">same principles to be set up</a>. To accommodate different scenarios, they can be constant, time-dependent (using the relative time since infection for each individual or the “absolute”" time of the simulation) or even individually parameterized, to include some stochasticity at the individual-host level. In every case, the function provided, like all other core functions in <code>nosoi</code>, has to be expressed as a function of time <code>t</code>, even if time is not used to compute the probability. In case the function uses individual-based parameters, you have to specify a list of functions (called <code>param.pExit</code>, <code>param.nContact</code> or <code>param.pTrans</code>) ( <a href="nosoi.html#parameters">see Get started</a> ). If no individual-based parameters are used, then they are set to <code>NA</code>.</p>
+<p>The core functions <code>pExit</code>, <code>nContact</code> and <code>pTrans</code> each follow the <a href="nosoi.html#setting-up-the-core-functions">same principles to be set up</a>. To accommodate different scenarios, they can be constant, time-dependent (using the relative time since infection for each individual or the “absolute” time of the simulation) or even individually parameterized, to include some stochasticity at the individual-host level. In every case, the function provided, like all other core functions in <code>nosoi</code>, has to be expressed as a function of time <code>t</code>, even if time is not used to compute the probability. In case the function uses individual-based parameters, you have to specify a list of functions (called <code>param.pExit</code>, <code>param.nContact</code> or <code>param.pTrans</code>) ( <a href="nosoi.html#parameters">see Get started</a> ). If no individual-based parameters are used, then they are set to <code>NA</code>.</p>
 <blockquote>
 <p>Keep in mind that <code>pExit</code> and <code>pTrans</code> have to return a probability (i.e. a number between 0 and 1) while <code>nContact</code> should return a positive natural number (positive integer).</p>
 </blockquote>
+<!-- To Seb: in English, "positive" means "strictly supperior to 0" (while in French in means "supperior or equal to zero"). Just checking, is that what you had in mind here ? -->
 <p>You can combine the influence of several parameters, such as the time since infection, the “absolute” time of the simulation and individual-based parameters within the same function.</p>
 <blockquote>
 <p>In any case, time since infection and “absolute” time should ALWAYS be designated by <code>t</code> and <code>prestime</code> respectively. They also have to be used in the order: (1) <code>t</code>; (2) <code>prestime</code> and (3) individual-based parameters. This is necessary for the function to be properly parsed by <code>nosoi</code>.</p>
@@ -241,7 +242,7 @@
 <h3 class="hasAnchor">
 <a href="#ncontact-param-ncontact-and-timedep-ncontact" class="anchor"></a><code>nContact</code>, <code>param.nContact</code> and <code>timeDep.nContact</code>
 </h3>
-<p>`<code>nContact</code> represents the number (expressed as a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation. The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero. <code>param.nContact</code> is the list of functions needed to individually parameterize <code>nContact</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>nContact</code>. <code>timeDep.nContact</code> allows for <code>nContact</code> to be dependent on the “absolute” time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, <code>timeDep.nContact</code> is set to <code>FALSE</code>.</p>
+<p><code>nContact</code> represents the number (expressed as a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation. The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero. <code>param.nContact</code> is the list of functions needed to individually parameterize <code>nContact</code> ( <a href="nosoi.html#parameters">see Get started</a> ). The name of each function in the list has to have the same name as the parameter it is sampling for <code>nContact</code>. <code>timeDep.nContact</code> allows for <code>nContact</code> to be dependent on the “absolute” time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, <code>timeDep.nContact</code> is set to <code>FALSE</code>.</p>
 </div>
 <div id="ptrans-param-ptrans-and-timedep-ptrans" class="section level3">
 <h3 class="hasAnchor">
@@ -254,7 +255,7 @@
 <h2 class="hasAnchor">
 <a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
 <p><code>prefix.host</code> allows you to define the first character(s) for the hosts’ unique ID. It will be followed by a hyphen and a unique number. By default, <code>prefix.host</code> is “H” for “Host”.</p>
-<p><code>print.progress</code> allows you to have some information printed on the screen about the simulation as it is running. It will print something every <code>print.step</code>. By default, <code>print.progress</code> is activated with a <code>print.step = 10</code> (you can change this frequency), but you may want to deactivate it by providing <code>print.progress = FALSE</code>.</p>
+<p><code>print.progress</code> allows you to have some information printed on the screen about the simulation as it is running. It will print something every <code>print.step</code>. By default, <code>print.progress</code> is activated with a <code>print.step = 10</code> (you can change this frequency), but you may want to desactivate it by providing <code>print.progress = FALSE</code>.</p>
 </div>
 <div id="dual-host" class="section level2">
 <h2 class="hasAnchor">
@@ -340,9 +341,9 @@
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a></code></pre></div>
 <p>Note that here <code>t_incub</code> and <code>p_max</code> are functions of <code>x</code> and not <code>t</code> (they are not core functions but individual-based parameters), and <code>x</code> enters the function as the number of draws to make.</p>
-<p>Taken together, the profile for pTrans for a subset of 200 individuals in the population will look as follows:</p>
+<p>Taken together, the profile for <code>pTrans</code> for a subset of 200 individuals in the population will look as follows:</p>
 <p><img src="none_files/figure-html/pTrans3-1.png" width="700"></p>
-<p>Since <code>pTrans</code> is not dependent on the “absolute” time of the simulation. So <code>timeDep.pTrans = FALSE</code>. However, since we make use of individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The name of each element within this list should have the same name that the core function (here <code>pTrans</code>) uses as argument, e.g.:</p>
+<p><code>pTrans</code> is not dependent on the “absolute” time of the simulation, so <code>timeDep.pTrans = FALSE</code>. However, since we make use of individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The name of each element within this list should have the same name that the core function (here <code>pTrans</code>) uses as argument, e.g.:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"></a>
@@ -427,7 +428,7 @@
 <div id="ptrans-b" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ptrans-b" class="anchor"></a>pTrans.B</h3>
-<p><code>pTrans.B</code> will be provided in the form of a Gaussian function: it will reach its maximum value at a certain time point (mean) after initial infection and will subsequently decrease until it reaches 0:</p>
+<p><code>pTrans.B</code> will be provided in the form of a Gaussian function. It will reach its maximum value at a certain time point (mean) after initial infection and will subsequently decrease until it reaches 0:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">p_Trans_fct.B &lt;-<span class="st"> </span><span class="cf">function</span>(t, max.time){</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">  <span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span>(t, <span class="dt">mean=</span>max.time, <span class="dt">sd=</span><span class="dv">2</span>)<span class="op">*</span><span class="dv">5</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">}</a></code></pre></div>
