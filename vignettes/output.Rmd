@@ -17,24 +17,24 @@ knitr::opts_chunk$set(
 
 # `nosoiSim` object
 
-The output of a `nosoi` simulation is a class `nosoiSim` object. It contains all data generated during the simulation into the following slots:
+The output of a `nosoi` simulation is a `nosoiSim` class object that contains all the data generated during the simulation into the following slots:
 
-- `total.time` is the number of time-steps (an integer) during which the simulation has run.
+- `total.time` is the number of time steps (an integer) during which the simulation has run.
 - `type` is the simulation type that was ran (either "single" or "dual" host).
-- `host.info.A` is an object of class `nosoiSimOne`, itself a list of elements concerning host-type A (or the unique host type in case of a single-host simulation), with the following slots:
+- `host.info.A` is an object of the class `nosoiSimOne`, itself a list of elements concerning host type A (or the unique host type in case of a single-host simulation), with the following slots:
   - `N.infected` is the final number (an integer) of infected hosts.
-  - `table.hosts` is a table containing the results of the simulations focusing on each individual hosts. For more details on its structure, see below.
+  - `table.hosts` is a table containing the results of the simulations focusing on each individual host. For more details on its structure, see below.
   - `table.state` is a table containing the results of the simulations concerning the movement history of the infected hosts. For more details on its structure, see below.
   - `prefix.host` is the string containing the prefix used to name the hosts (user-defined `prefix.host` in the `nosoiSim` function).
   - `popStructure` is the population structure used (either "none", "discrete" or "continuous").
-- `host.info.B` is the same as above, but for host-type B (is `NA` if a single-host was run).
+- `host.info.B` is the same as above, but for host type B (but is set to `NA` if a single-host was run).
 
-Host-specific element (i.e. in `host.info.A` or `host.info.B`) in this object can be easily extracted by using the function `getHostData`:
+Host-specific elements (i.e. in `host.info.A` or `host.info.B`) in this object can be easily extracted using the function `getHostData`:
 ```{r getHostData, eval = FALSE}
 getHostData(nosoi.output, what, pop)
 ```                        
 
-This function takes as arguments your nosoi output object (class `nosoiSim`), what you want to extract (either `N.infected`, `table.hosts`, `table.state` or `prefix.host`), and which host-type (here `pop`) you are interested in (`A` (by default) but can be `B` in case of dual hosts simulations).
+This function takes as its arguments your nosoi output object (of class `nosoiSim`), `what` you want to extract (either `N.infected`, `table.hosts`, `table.state` or `prefix.host`), and which host type (here `pop`) you are interested in (`A` by default, but can be `B` in case of dual-host simulations).
 
 ## `table.hosts`
 
@@ -43,19 +43,19 @@ This function takes as arguments your nosoi output object (class `nosoiSim`), wh
 getTableHosts(nosoi.output, pop)
 ``` 
 
-This function takes as arguments your nosoi output object (class `nosoiSim`) and which host-type (here `pop`) you are interested in (`A` (by default) but can be `B` in case of dual hosts simulations).
+This function takes as its arguments your nosoi output object (of class `nosoiSim`) and which host type (here `pop`) you are interested in (`A` by default but can be `B` in case of dual-host simulations).
 
 The structure of the table is the following:
 
-- `hosts.ID` is the unique identifier for the host (a string of characters), based on user-defined prefix and an integer.
+- `hosts.ID` is the unique identifier for the host (a string of characters), based on a user-defined prefix and an integer.
 - `inf.by` is the unique identifier of the host that infected the current one (stands for "infected by").
-- `inf.in` (only if structure is present) is the state or coordinates (in that case `inf.in.x` and `inf.in.y`) in which the host was initially infected (stands for "infected in").
-- `current.in` (only if structure is present) is the state or coordinates (in that case `current.in.x` and `current.in.y`) in which the host is at the end of the simulation (stands for "currently in"). A complete history of hosts movements is stored in the other table `table.state` (see following section).
+- `inf.in` (only if structure is present) is the (discrete) location (e.g. province, country, ...) or coordinates (in that case `inf.in.x` and `inf.in.y`) in which the host was initially infected (stands for "infected in").
+- `current.in` (only if structure is present) is the (discrete) location (e.g. province, country, ...) or coordinates (in that case `current.in.x` and `current.in.y`) in which the host is at the end of the simulation (stands for "currently in"). A complete history of hosts movements is stored in the other table `table.state` (see following section).
 - `current.env.value` (only if continuous structure is present) is the environmental value (i.e. raster cell value) in which the host is at the end of the simulation (stands for "current environmental value"). A complete history of the environmental value encountered by the host is stored in the other table `table.state` (see following section).
 - `current.cell.raster` (only if continuous structure is present) is the raster cell numeric identifier in which the host is at the end of the simulation. Here also, a complete history of raster cell occupied during the simulation is stored in the other table `table.state` (see following section).
 - `host.count` (only if structure is present) is the host count in the current state or raster cell. This value is only updated if the host count is actually used as a parameter in the simulation.
-- `inf.time` is the time (in time-steps) at which the host entered the simulation (i.e. got infected) (stands for "infection time").
-- `out.time` is the time (in time-steps) at which the host exited the simulation.
+- `inf.time` is the time (in time steps) at which the host entered the simulation (i.e. got infected) (stands for "infection time").
+- `out.time` is the time (in time steps) at which the host exited the simulation.
 - `active` is a number (either 0 or 1) indicating if the host is still active at the end of the simulation (1 for yes, 0 for no).
 - the rest stores the user-defined individual-specific parameters used by the functions (i.e. specified by the `param` arguments in the simulator's functions).
 
@@ -66,50 +66,50 @@ The structure of the table is the following:
 getTableState(nosoi.output, pop)
 ``` 
 
-This function takes as arguments your nosoi output object (class `nosoiSim`) and which host-type (here `pop`) you are interested in (`A` (by default) but can be `B` in case of dual hosts simulations).
+This function takes as its arguments your nosoi output object (of class `nosoiSim`) and which host type (here `pop`) you are interested in (`A` by default but can be `B` in case of dual-host simulations).
 
 The structure of the table is the following:
 
-- `hosts.ID` is the unique identifier for the host (a string of characters), based on user-defined prefix and an integer.
-- `state` is the state or coordinates (in that case `state.x` and `state.y`) in which the host is located during the time interval.
+- `hosts.ID` is the unique identifier for the host (a string of characters), based on a user-defined prefix and an integer.
+- `state` is the (discrete) location (e.g. province, country, ...) or coordinates (in that case `state.x` and `state.y`) in which the host is located during the time interval.
 - `current.env.value` (only if continuous structure is present) is the environmental value (i.e. raster cell value) in which the host is at the end of the simulation (stands for "current environmental value").
 - `current.cell.raster` (only if continuous structure is present) is the raster cell numeric identifier in which the host is at the end of the simulation.
-- `time.from` is the time (in time-steps) at which the host entered (i.e. got infected or moved) into the state.
-- `time.to` is the time (in time-steps) at which the host left (i.e. excited or moved) out of the state.
+- `time.from` is the time (in time steps) at which the host entered (i.e. got infected or moved) into the state.
+- `time.to` is the time (in time steps) at which the host left (i.e. excited or moved) out of the state.
 
 # Epidemiological insights
 
-By simulating transmission chains, `nosoi` also simulates an epidemic process. `nosoi` provides some solutions to easily explore the dynamics of this epidemic process by following through time the number of active infected hosts as well as the cumulative number of infected hosts. It also allows to compute the exact basic reproduction number $R_0$, defined as the average number of cases one case generates. Since the whole data generated is stored in the output `nosoiSim` object, more advanced exploration could also be done.
+By simulating transmission chains, `nosoi` also simulates an epidemic process. `nosoi` provides some solutions to easily explore the dynamics of this epidemic process by following through time the number of active infected hosts as well as the cumulative number of infected hosts. It also allows to compute the exact basic reproduction number $R_0$, defined as the average number of cases one case generates. Since all of the data generated are stored in the output `nosoiSim` object, more advanced exploration could also be done.
 
 ## Epidemiological summary
 
-The `nosoiSummary` is a turnkey solution that computes both the dynamics of the epidemic and $R_0$. Its only argument is your nosoi output object (class `nosoiSim`):
+The `nosoiSummary` is a turnkey solution that computes both the dynamics of the epidemic and $R_0$. Its only argument is your nosoi output object (of class `nosoiSim`):
 ```{r nosoiSummary, eval = FALSE}
 nosoiSummary(nosoi.output)
 ``` 
 
 It returns a list containing the slots:
 
-- `R0` a sub-list with number of inactive hosts at the end of the simulation `N.inactive` on which the calculation is done, mean $R_0$ `R0.mean`, and $R_0$ distribution `R0.dist`. For more details on the computation behind, see below.
-- `dynamics` is a `data.table` object with the count of the sum of infected and active host at each time of the simulation (by state if this simulation has been done in a discrete structured host population). See below for more details.
+- `R0`, a sub-list with number of inactive hosts at the end of the simulation `N.inactive` on which the calculation is done, mean $R_0$ `R0.mean`, and $R_0$ distribution `R0.dist`. For more details on the computation behind, see below.
+- `dynamics` is a `data.table` object with the count of the sum of infected and active host at each time of the simulation (by location/state if this simulation has been done in a discrete structured host population). See below for more details.
 - `cumulative` is a `data.table` object with the cumulative sum of infected hosts at each time step of the simulation. See below for more details.
 
 ## Epidemiological dynamics
 
-Both the `cumulative` and `dynamics` tables can be directly extracted using the functions `getCumulative` and `getDynamic` respectively. Both function yield a `data.table` object, but its structures varies slightly.  `cumulative` has the following structure:
+Both the `cumulative` and `dynamics` tables can be directly extracted using the functions `getCumulative` and `getDynamic` respectively. Both functions yield a `data.table` object, but their structures vary slightly. `cumulative` has the following structure:
 
-- `t` is the time-step (an integer).
-- `Count` is the cumulative number of infected hosts at given time-step (an integer).
-- `type` is the host-type, identified by its user-defined prefix (string of characters).
+- `t` is the time step (an integer).
+- `Count` is the cumulative number of infected hosts at given time step (an integer).
+- `type` is the host type, identified by its user-defined prefix (string of characters).
 
 `dynamics` has the following structure:
 
-- `state` (only if discrete structure) is the state (a string of characters, usually).
-- `Count` is the number of active infected hosts at given time-step (an integer) by state (if discrete structure).
-- `type` is the host-type, identified by its user-defined prefix (string of characters).
-- `t` is the time-step (an integer).
+- `state` (only in the case of a discrete structure) is the state (a string of characters, usually).
+- `Count` is the number of active infected hosts at given time step (an integer) by state (in the case of a discrete structure).
+- `type` is the host type, identified by its user-defined prefix (string of characters).
+- `t` is the time step (an integer).
 
-These can be used to plot the epidemiological dynamics of the simulated transmission chain. Here for example, we simulate a single introduction of a single-host pathogen between 3 different states (named "A", "B", and "C"), with constant exit and move probabilities as well as a number of contacts dependent of the location and host count in each location:
+These can be used to plot the epidemiological dynamics of the simulated transmission chain. Here for example, we simulate a single introduction of a single-host pathogen between 3 different locations/states (named "A", "B", and "C"), with constant exit and move probabilities as well as a number of contacts dependent on the location and host count in each location:
 ```{r simDynamics, message=FALSE}
 library(nosoi)
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
@@ -177,7 +177,7 @@ ggplot(data=dynamics.table, aes(x=t, y=Count, color=state)) + geom_line() + them
 
 ## $R_0$
 
-The output `nosoiSim` object can be used to compute the "real" $R_0$, defined as the average number of cases one case generates, often estimated in epidemiological studies. The function `getRO` can be used directly, with the `nosoiSim` output as unique argument, to generate a list containing:
+The output `nosoiSim` object can be used to compute the "real" $R_0$, defined as the average number of cases one case generates, often estimated in epidemiological studies. The function `getRO` can be used directly, with the `nosoiSim` output as its unique argument, to generate a list containing:
 
 - `N.inactive`, the number of inactive hosts at the end of the simulation on which the $R_0$ calculation is made. This is to avoid bias introduced by hosts that have not accomplished their full transmission potential (i.e. are still active).
 - `R0.mean` is the $R_0$ estimate, mean of the following `R0.dist`.
@@ -258,13 +258,13 @@ and visualized or saved as such using available tools for phylogenetic trees
 such as [`ape`](https://CRAN.R-project.org/package=ape)
 and [`tidytree`](https://yulab-smu.github.io/treedata-book/).
 To do so, you can use the `getTransmissionTree()` function,
-which arguments are the `nosoi` simulation output and which host-type would be
+which arguments are the `nosoi` simulation output and which host type would be
 the tips of the tree ("A" by default, or "B" in case a dual-host simulation).
 
 <!-- put here more info on how the transmission tree is actually reconstructed. Paul? --> 
 Formally, the transmission tree is extracted as a dated phylogenetic tree where:  
 
-- each branch represents the living span of an host;
+- each branch represents the life span of an host;
 - each internal node represents a transmission event;
 - each tip represents the exiting point of an host;
 - the root represents the entering point of the first host.
@@ -273,12 +273,12 @@ Formally, the transmission tree is extracted as a dated phylogenetic tree where:
 <!-- TODO: add reference to TransPhylo ? --> 
 
 Such a tree is binary, and has as many tips as the total number of infected hosts,
-and as many nodes as then number of transmission events.
+and as many nodes as the number of transmission events.
 It spans a time going from the first entry of the first host (usually, by convention, 0),
 to the exiting of the last host.
 
 It can be seen as a proxy to represent the molecular evolution of the pathogen infecting 
-each of the host.
+each of the hosts.
 
 
 > `getTransmissionTree()` extracts the full transmission tree. In case of a big simulated epidemic, this can take some time. It can also be very complicated to plot/visualize.
@@ -341,7 +341,7 @@ library(nosoi)
   )
 ```
 
-The simulation runs for `r test.nosoiA$total.time` time-steps
+The simulation runs for `r test.nosoiA$total.time` time steps
 and infected `r getHostData(test.nosoiA, "N.infected")` hosts. 
 The following transmission tree can thus be extracted 
 (as a `tidytere::treedata` object) and plotted using
@@ -359,16 +359,16 @@ ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(aes(color=state)) + 
         legend.key = element_blank()) 
 ```
 
-Each color point represents the state, either at transmission (a node)
+Each color point represents the location/state, either at transmission (a node)
 or a host when it exits the simulation (or the end point of the simulation; a tip).
-This transmission tree is timed (time-steps of the simulation).
+This transmission tree is timed (time steps of the simulation).
 As you can see, no transmission ever occurs at location "B" (green);
 this is coherent with the chosen `nContact` function, where no infectious contact
 occurs when the host is in "B".
 
 ## Sampling the transmission chain
 
-Usually, it is unlikely that the whole transmission chain (i.e. every host) will be sampled during surveillance of an epidemic outbreak or endemic transmission. The functions `sampleTransmissionTree()` and `sampleTransmissionTreeFromExiting()` can both be used to sample hosts in this transmission chain and construct the new tree based on the existing hosts (tips).
+Usually, it is unlikely that the whole transmission chain (i.e. every host) will be sampled during surveillance of an epidemic outbreak or endemic transmission. The functions `sampleTransmissionTree()` and `sampleTransmissionTreeFromExiting()` can both be used to sample hosts from this transmission chain and construct the new tree based on the existing hosts (tips).
 
 `sampleTransmissionTree()` needs the following arguments:
 
@@ -449,7 +449,7 @@ this [ebook](https://yulab-smu.github.io/treedata-book/).
 
 This makes it easy to export the generated data to other software for downstream
 analyzes, thanks to the package [treeio](https://guangchuangyu.github.io/software/treeio/).
-For instance, the tree can be written in a [beast](http://beast.community/)
+For instance, the tree can be written in a [BEAST](http://beast.community/)
 compatible format thanks to function `treeio::write.beast()`:
 
 ```{r writeTree, eval=FALSE, message=FALSE}
