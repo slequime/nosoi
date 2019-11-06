@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 # Transmission chain
 
-The transmission chain can be visualized using some of the packages dealing with networks in R, or, alternatively, as a phylogenetic-like tree. For both example, we will use the following simulation:
+The transmission chain can be visualized using some of the packages dealing with networks in R, or, alternatively, as a phylogenetic-like tree. For both examples, we will use the following simulation:
 
 ```{r simDynamics, message=FALSE}
 library(nosoi)
@@ -163,7 +163,7 @@ saveVideo(render.animation(test.network,vertex.col = "color",
   <source src="transmission-nosoi.mp4" type="video/mp4">
 </video>
 
-In this video, nodes (i.e. hosts) come from the center of the network: this does not mean anything in particular and is due to layout constrains. Nodes in red are active (i.e. infectious) hosts whereas nodes in gray are exited hosts. Time steps considered is displayed at the bottom of the frame.
+In this video, nodes (i.e. hosts) come from the center of the network: this does not mean anything in particular and is due to layout constrains. Nodes in red are active (i.e. infectious) hosts whereas nodes in gray are exited hosts. The time steps considered are displayed at the bottom of the frame.
 
 ## As a phylogenetic-like tree
 
