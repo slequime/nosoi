@@ -178,7 +178,7 @@
       <h1>Visualization tips</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-09-23</h4>
+            <h4 class="date">2019-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/viz.Rmd"><code>vignettes/examples/viz.Rmd</code></a></small>
       <div class="hidden name"><code>viz.Rmd</code></div>
@@ -193,7 +193,7 @@
 <div id="transmission-chain" class="section level1">
 <h1 class="hasAnchor">
 <a href="#transmission-chain" class="anchor"></a>Transmission chain</h1>
-<p>The transmission chain can be visualized using some of the packages dealing with networks in R, or, alternatively, as a phylogenetic-like tree. For both example, we will use the following simulation:</p>
+<p>The transmission chain can be visualized using some of the packages dealing with networks in R, or, alternatively, as a phylogenetic-like tree. For both examples, we will use the following simulation:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nosoi)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">  t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">  p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
@@ -323,7 +323,7 @@
 <a class="sourceLine" id="cb3-44" data-line-number="44">                           <span class="dt">render.par=</span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">show.time=</span><span class="ot">TRUE</span>),</a>
 <a class="sourceLine" id="cb3-45" data-line-number="45">                           <span class="dt">edge.col =</span> <span class="st">"gray60"</span>,</a>
 <a class="sourceLine" id="cb3-46" data-line-number="46">                           <span class="dt">displaylabels=</span><span class="ot">FALSE</span>, <span class="dt">render.cache=</span><span class="st">'none'</span>,<span class="dt">mode=</span><span class="st">"kamadakawai"</span>),<span class="dt">video.name=</span><span class="st">"transmission-nosoi.mp4"</span>)</a></code></pre></div>
-<video width="600" height="600" controls><source src="transmission-nosoi.mp4" type="video/mp4"></source></video><p>In this video, nodes (i.e. hosts) come from the center of the network: this does not mean anything in particular and is due to layout constrains. Nodes in red are active (i.e. infectious) hosts whereas nodes in gray are exited hosts. Time steps considered is displayed at the bottom of the frame.</p>
+<video width="600" height="600" controls><source src="transmission-nosoi.mp4" type="video/mp4"></source></video><p>In this video, nodes (i.e. hosts) come from the center of the network: this does not mean anything in particular and is due to layout constrains. Nodes in red are active (i.e. infectious) hosts whereas nodes in gray are exited hosts. The time steps considered are displayed at the bottom of the frame.</p>
 </div>
 <div id="as-a-phylogenetic-like-tree" class="section level2">
 <h2 class="hasAnchor">
