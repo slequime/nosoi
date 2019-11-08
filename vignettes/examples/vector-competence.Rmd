@@ -8,7 +8,7 @@ output: rmarkdown::html_vignette
 # Introduction
 
 Vector competence (VC) defines the intrinsic ability of a vector to carry and transmit a pathogen. VC is usually scored experimentally as the prevalence of infected and infectious vectors at given times post-pathogen exposure.
-Each year, numerous experimental studies aim to evaluate vector competence for various arthropod species or populations for vector-borne pathogens, which ultimately aims to understand epidemiology and assess local risk of transmission for potentially introduced vector-borne pathogens. These experimental data however usually remain purely descriptive and poorly reflect the dynamic nature of VC. `nosoi` can be used to easily translate such empirically observed within-host dynamics into their impact on an epidemic process through simulations, without the use of advanced mathematics. The epidemic process can be tailored to mimic known parameters of a particular place of interest, or can be "fixed" to allow easy comparison of one or several key variables.
+Each year, numerous experimental studies aim to evaluate VC for various arthropod species or populations for vector-borne pathogens, which ultimately aims to understand epidemiology and assess local risk of transmission for potentially introduced vector-borne pathogens. These experimental data however usually remain purely descriptive and poorly reflect the dynamic nature of VC. `nosoi` can be used to easily translate such empirically observed within-host dynamics into their impact on an epidemic process through simulations, without the use of advanced mathematics. The epidemic process can be tailored to mimic known parameters of a particular place of interest, or can be "fixed" to allow easy comparison of one or several key variables.
 
 This example aims to illustrate how to use `nosoi` to perform such a study. We will use data derived from the following published article:
 
@@ -125,7 +125,7 @@ ggplot() + geom_line(data=curve.df, aes(x=t,y=pTrans,group=Hosts.ID), alpha=0.5)
 
 ### `pExit`
 
-In Fontaine *et al.* the daily survival probability of a mosquito is 0.85, so its `pExit` is 1-0.85:
+In Fontaine *et al.*, the daily survival probability of a mosquito is 0.85, so its `pExit` equals 1-0.85:
 
 ```{r pExit1.B, eval = FALSE}
 p_Exit_fct_mosquito <- function(t){return(0.15)}
@@ -133,7 +133,7 @@ p_Exit_fct_mosquito <- function(t){return(0.15)}
 
 ### `nContact`
 
-In Fontaine *et al.* the daily biting probability of a mosquito is 0.3. We assume that if a mosquito bites, it bites only one human:
+In Fontaine *et al.*, the daily biting probability of a mosquito is 0.3. We assume that if a mosquito bites, it bites only one human:
 
 ```{r nContact.B, eval = FALSE}
 nContact_fct_mosquito <- function(t){sample(c(0,1),1,prob=c(0.7,0.3))}
@@ -141,7 +141,7 @@ nContact_fct_mosquito <- function(t){sample(c(0,1),1,prob=c(0.7,0.3))}
 
 ### `pTrans`
 
-In Fontaine *et al.* the probability of transmission from a mosquito to a human is approximated by their measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that `pTrans` is defined in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (`t_EIP`), and after that time, it will transmit with a certain (constant) probability (which we will call `p_max`). This function will be dependent on the time since the mosquito's infection `t`:
+In Fontaine *et al.*, the probability of transmission from a mosquito to a human is approximated by the measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that `pTrans` is defined in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (`t_EIP`), and after that time, it will transmit with a certain (constant) probability (which we will call `p_max`). This function will be dependent on the time since the mosquito's infection `t`:
 
 ```{r pTrans.B0, echo = FALSE}
 p_Trans_fct <- function(t, p_max, t_EIP){
@@ -151,7 +151,7 @@ p_Trans_fct <- function(t, p_max, t_EIP){
 }
 ```
 
-`pTrans` will of course vary according the the viral isolate studied. EIP was measured dynamically for each mosquito population over time as the proportion of mosquitoes with disseminated viral infections. This experimental measure, a mean of the whole population, is modeled as a logistic function characterized by three parameters:
+`pTrans` will of course vary according to the viral isolate studied. EIP was measured dynamically for each mosquito population over time as the proportion of mosquitoes with disseminated viral infections. This experimental measure, a mean of the whole population, is modeled as a logistic function characterized by three parameters:
 
 - $K_{mosquito}$ (`K_mosquito`), the maximum probability of transmission.
 - $M_{mosquito}$ (`M_mosquito`), the time when 50% $K_{mosquito}$ is reached during the ascending phase.
@@ -227,7 +227,7 @@ As we can see, this perfectly mimics the observed population pattern for each vi
 
 # Running `nosoi`
 
-Since all core functions have been set, we can now proceed with the simulation. We will set a maximum total length of 400 units of time as in Fontaine *et al.*, with a maximum of 10,000 infected humans, and 1,000,000 infected mosquitoes (to be sure the total number of mosquitoes will not be a limiting factor). The epidemic will start with one infected human. The `nosoi` script will then look like:
+Since all core functions have been set, we can now proceed with the simulation. We will set a maximum total length of 400 units of time as in Fontaine *et al.*, with a maximum of 10,000 infected humans and 1,000,000 infected mosquitoes (to be sure the total number of mosquitoes will not be a limiting factor). The epidemic will start with one infected human. The `nosoi` script will then look like:
 
 ```{r setupF.B}
 library(nosoi)
