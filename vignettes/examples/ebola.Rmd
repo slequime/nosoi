@@ -57,7 +57,7 @@ ggplot() +
 ```
 
 
-Ebola will here be considered a single-host pathogen, and some of the pathogen related parameters will be found in the literature. The others will be empirically fixed to realistic values. As estimated for the 2013 epidemic, the first infected host will start at Gueckedou in Guinea.
+Ebola will here be considered a single-host pathogen, and some of the pathogen-related parameters can be found in the literature. The others will be empirically fixed to realistic values. As estimated for the 2013 epidemic, the first infected host will start at Gueckedou in Guinea.
 
 # Host parameters
 
@@ -84,7 +84,7 @@ t_incub_fct <- function(x){
 }
 ```
 
-Which gives the following distribution for 1,000 hosts:
+which gives the following distribution for 1,000 hosts:
 
 ```{r tincubDemo, echo = FALSE, error=FALSE, message=FALSE, warning=FALSE}
 set.seed(5006)
@@ -93,7 +93,7 @@ data.test.tincub <- data.frame(x=t_incub_fct(1000))
 ggplot(data=data.test.tincub, aes(x=x)) + geom_histogram() + theme_minimal() + labs(x="Incubation time", y="Host count")
 ```
 
-If "time since infection" (hereafter `t`) is below the incubation time (`t_incub`), then the probability to exit is null. If `t` is greater that `t_incub` but below a recovery time (`t_recovery` fixed at 20 days after symptom onset), then the daily probability to exit (by dying) is 2.5\%. If `t` is greater than `t_recovery`, then the probability to exit is (by being cured) is 1.
+If "time since infection" (hereafter `t`) is below the incubation time (`t_incub`), then the probability to exit is null. If `t` is greater that `t_incub` but below a recovery time (`t_recovery` fixed at 20 days after symptom onset), then the daily probability to exit (by dying) is 2.5\%. If `t` is greater than `t_recovery`, then the probability to exit (by being cured) is 1.
 
 ```{r pExit, eval = FALSE}
 p_Exit_fct <- function(t, t_incub){ # return(0.1)} # should return a value between 0 and 1 (probability)
@@ -107,7 +107,7 @@ p_Exit_fct <- function(t, t_incub){ # return(0.1)} # should return a value betwe
 
 ## Movement
 
-The daily probability to move `pMove` for a host is empirically set to 0.01 (1\% chance for a host to move each day) before onset of symptoms. We will assume here that every infection will be symptomatic (although this is a crude assumption). Once symptoms are here, `pMove` will be set at 0.
+The daily probability to move `pMove` for a host is empirically set to 0.01 (1\% chance for a host to move each day) before onset of symptoms. We will assume here that every infection will be symptomatic (although this is a crude assumption). Once symptoms are apparent, `pMove` will be set at 0.
 
 ```{r pMove, eval = FALSE}
 p_Move_fct <- function(t, t_incub){ 
@@ -122,7 +122,7 @@ The distance traveled is determined by the standard deviation of the Brownian mo
  sdMove_fct <- function(t){runif(1,min=0.5,max=3)}
 ```
 
-This function will lead the following distribution for 1,000 hosts:
+This function will lead to the following distribution for 1,000 hosts:
 
 ```{r sdMove2, echo = FALSE, message=FALSE, warning=FALSE}
 set.seed(5006)
@@ -133,7 +133,7 @@ ggplot(data=data.test.sdMove, aes(x=x)) + geom_histogram() + theme_minimal() + l
 
 ## `nContact`
 
-Daily number of infection contacts `nContact` per infected host will be fixed at 5, but will depend on the number of hosts (i.e. population) around. It will thus depend on the "environmental value" `current.env.value` provided by the raster. To avoid reaching unrealistic values (i.e. much more infected hosts than hosts leaving there), a cap provided by `host.count` (number of hosts currently in the raster cell) will be used:
+The daily number of infection contacts `nContact` per infected host will be fixed at 5, but will depend on the number of hosts (i.e. population) around. It will thus depend on the "environmental value" `current.env.value` provided by the raster. To avoid reaching unrealistic values (i.e. much more infected hosts than hosts leaving there), a cap provided by `host.count` (number of hosts currently in the raster cell) will be used:
 
 ```{r nContact, eval = FALSE}
 n_contact <- function(t, current.env.value, host.count){ 
@@ -274,7 +274,7 @@ The simulation has run for `r test.nosoiA$total.time` days and has infected `r t
 
 ## Visualization
 
-Our first step will be to visualize this epidemic on the map. We can use the following code to produce an animation (in time) of the epidemic:
+Our first step will be to visualize this simulated epidemic on the map. We can use the following code to produce an animation (in time) of the epidemic:
 
 ```{r output, eval = FALSE}
 test.data <- getTableState(test.nosoiA)
@@ -313,17 +313,17 @@ animate(animated.plot, nframes=test.nosoiA$total.time*2+10,duration=40,end_pause
 
 In this animation, green dots represent the infected hosts, each dot being an individual host (beware, dots can overlap). The transparency for each dot allows to visualize superposition of dots, in a certain measure. Time is in days.
 
-> Beware, the gif file displayed here as been produced with a lower resolution raster to avoid big file size. If you try to prepare this gif without reducing the raster resolution, it might take several hours (or days!) to finish.
+> Beware, the gif file displayed here has been produced with a lower resolution raster to avoid a big file size. If you try to prepare this gif without reducing the raster resolution, it might take several hours (or days!) to finish.
 
 ## Epidemiological analysis
 
-As interesting as the visualization might be, we can also explore a bit the epidemic parameters, for example the "real" $R_0$, defined as the average number of cases one case generates, often estimated in epidemiological studies. For this we can use the following code:
+As interesting as the visualization might be, we can also explore the epidemic parameters, for example the "real" $R_0$, defined as the average number of cases one case generates, often estimated in epidemiological studies. To this end, we can use the following code:
 
 ```{r generalEpi}
 R0.sim <- getR0(test.nosoiA)
 ```
 
-Mean value for $R_0$ is `r round(R0.sim$R0.mean,2)`, which is coherent with epidemiological estimates for Ebola virus. This distribution is also coherent, with most hosts not transmitting:
+The mean value for $R_0$ is `r round(R0.sim$R0.mean,2)`, which is coherent with epidemiological estimates for Ebola virus. Its distribution is also coherent with most hosts not transmitting:
 
 ```{r generalEpi3, echo = FALSE, message=FALSE, warning=FALSE}
 ggplot(data=data.frame(x=R0.sim$R0.dist), aes(x=x)) + geom_histogram(binwidth=1) + theme_minimal() +
@@ -345,13 +345,13 @@ ggplot(data=cumulative.sim, aes(x=t, y=Count)) + geom_line() + theme_minimal() +
 
 ## Transmission chain
 
-Since `nosoi` relies on the simulation of a transmission chain, we can also visualize the transmission in space. For that, we will first generate the transmission tree as a phylogenetic tree-like object by using the `getTransmissionTree` function implemented in `nosoi`:
+Since `nosoi` relies on the simulation of a transmission chain, we can also visualize the transmission in geographic space. To do this, we will first generate the transmission tree as a phylogenetic tree-like object by using the `getTransmissionTree` function implemented in `nosoi`:
 
 ```{r transmissionTree-Full1, message=FALSE, warning=FALSE, error=FALSE}
 test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 ```
 
-This function gives you a `treedata` object that can be visualized as a phylogenetic-tree with the package :
+This function gives you a `treedata` object that can be visualized as a phylogenetic tree with the package :
 
 ```{r treeC, message=FALSE}
 library(ggtree)
@@ -386,7 +386,7 @@ ggplot() +
   geom_point(data=tree.node, aes(x=state.x, y=state.y,color=time))
 ```
 
-The full transmission chain is a bit messy, because of the number of infected individuals. We can also sub-sample it randomly. We will select here 250 individuals sampled at the time of their exit (either death or recovery):
+The full transmission chain is a bit messy, because of the number of infected individuals. We can also subsample it randomly. We will here select 250 individuals sampled at the time of their exit (either death or recovery):
 
 ```{r transmissionTree2}
 #Extracts data from the nosoiSim object:
@@ -401,7 +401,7 @@ sampled.hosts <- sample(subset(test.table.hosts, active == 0)$hosts.ID, 250)
 test.nosoiA.tree.sampled.exiting <- sampleTransmissionTreeFromExiting(test.nosoiA.tree, sampled.hosts)
 ```
 
-This new tree can be also plotted as before:
+This new tree can be plotted as before:
 
 ```{r treeC2, message=FALSE}
 library(ggtree)
@@ -411,7 +411,7 @@ ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(colo
         legend.key = element_blank())
 ```
 
-We can also represent it in space:
+We can also draw it in geographic space:
 
 ```{r transmissionTree-Full3, message=FALSE, warning=FALSE, error=FALSE}
 # Extracting node data from the tree (including long/lat coordinates):
@@ -438,7 +438,7 @@ ggplot() +
 
 ## Other use
 
-External software could be used to explore more into details the dynamic of this epidemic and transmission chain. The `write.beast` function of the `treeio` package allows for an easy export of the transmission chain as a phylogenetic-like tree, in a similar format as [BEAST](https://beast.community/) trees.
+External software can be used to perform a more detailed exploration of the dynamics of this epidemic and transmission chain. The `write.beast` function of the `treeio` package allows for an easy export of the transmission chain as a phylogenetic-like tree, in a similar format as [BEAST](https://beast.community/) trees.
 
 ```{r writing, eval=FALSE}
 treeio::write.beast(test.nosoiA.tree, file = "test.tre", translate = TRUE, tree.name = "UNTITLED")
