@@ -11,7 +11,7 @@ vignette: >
 
 # Introduction
 
-In this example, our objective is to simulate a dengue-like epidemic in South-East Asia. Dengue is a dual-host pathogen (arbovirus) that spreads between mosquitoes and humans, with very different within-host dynamics. We will also take into account the location's influence on the mosquito activity by using the local monthly average temperature : the higher the temperature, the more mosquito activity there is (i.e. the more mosquitoes will bite a human at each time step). Mosquitoes will not move between countries, but humans will; we will use air transportation data to approximate the transition probability matrix between the different countries.
+In this example, our objective is to simulate a dengue-like epidemic in South-East Asia. Dengue is a dual-host pathogen (arbovirus) that spreads between mosquitoes and humans, with very different within-host dynamics. We will also take into account the location's influence on mosquito activity by using the local monthly average temperature: the higher the temperature, the more mosquito activity (i.e. the more mosquitoes will bite a human at each time step). Mosquitoes will not move between countries, but humans will; we will use air transportation data to approximate the transition probability matrix between the different countries.
 
 Most of the host parameters used for the simulation will be taken from the following published article:
 
@@ -23,7 +23,7 @@ Our study will focus on 5 south-east Asian countries: China (only the southern p
 
 ## Average annual temperature
 
-Here we use [WorldClim v2](http://worldclim.org/version2) data (average temperature (°C) - tavg 10m). The rasters are loaded, cut to fit the study site, and the temperature value averaged for each countries (i.e. states in our simulation) each month. Country spatial polygons come from [GADM](https://gadm.org/data.html).
+Here we use [WorldClim v2](http://worldclim.org/version2) data (average temperature (°C) - tavg 10m). The rasters are loaded, cut to fit the study site, and the temperature value averaged for all countries (i.e. states in our simulation) each month. Country spatial polygons come from [GADM](https://gadm.org/data.html).
 
 ```{r avgTemp1, eval = FALSE}
 #Initial data
@@ -63,7 +63,7 @@ for(i in 1:12){
 # write.csv(final.results, file="avgTemp_data.csv", row.names = FALSE)
 ```
 
-For convenience, you can find this data [here](https://github.com/slequime/nosoi/blob/master/vignettes/examples/avgTemp_data.csv). We can visualize this data on a map:
+For convenience, you can find this data [here](https://github.com/slequime/nosoi/blob/master/vignettes/examples/avgTemp_data.csv). We can visualize these data on a map:
 
 ```{r avgTemp2, echo=FALSE, message = FALSE, error=FALSE, warning=FALSE}
 library(rgdal); library(raster); library(rgeos)
@@ -115,7 +115,7 @@ ggplot(final.results, aes(x=Day, y=Temp, color=country)) + geom_point() + geom_l
   scale_color_discrete(name="Country") + labs(x="Day (within the year)", y="Average temperature (in °C)")
 ```
 
-Using this data, we will fit a trigonometric function to each of the location to get a function that links day of the year to the mean temperature. The function will be of the form $T_{avg} = k_1 \times sin(\frac{2\pi}{365}t) + k_2 \times cos(\frac{2\pi}{365}t) + \beta$ (Eq. 1). We fit this function on data from each location to get the values of $k_1$, $k_2$ and $\beta$:
+Using these data, we will fit a trigonometric function to each of the locations to obtain a function that links day of the year to mean temperature. The function will be of the form $T_{avg} = k_1 \times sin(\frac{2\pi}{365}t) + k_2 \times cos(\frac{2\pi}{365}t) + \beta$ (Eq. 1). We fit this function on data from each location to get the values of $k_1$, $k_2$ and $\beta$:
 
 ```{r avgTemp4, message = FALSE, error=FALSE, warning=FALSE}
 model.coef <- NULL
@@ -132,7 +132,7 @@ for(current.country in SE.Asia){
 }
 ```
 
-Using the data from [Rossi et al. (2014) Ecological Modelling Applied to Entomology](https://link.springer.com/chapter/10.1007/978-3-319-06877-0_4), we have a link between temperature and oviposition. Since mosquito feeding is directly linked to their oviposition, we will assume that feeding activity follows the same relationship with temperature, i.e. $R_{activity} = \alpha_0 \times (1-e^{\alpha_1(T_{air}-T_{max})}) \times (T_{air}-T_{min})^{\alpha_2}$ (Eq. 2). Temperature is modeled according to (Eq. 1) as a function of time, so we can combine both functions to obtain a direct link, for each location, between mosquito activity and time. This will be then rescale to vary between 0 and 1:
+Using the data from [Rossi et al. (2014) Ecological Modelling Applied to Entomology](https://link.springer.com/chapter/10.1007/978-3-319-06877-0_4), we have a link between temperature and oviposition. Since mosquito feeding is directly linked to their oviposition, we will assume that feeding activity follows the same relationship with temperature, i.e. $R_{activity} = \alpha_0 \times (1-e^{\alpha_1(T_{air}-T_{max})}) \times (T_{air}-T_{min})^{\alpha_2}$ (Eq. 2). Temperature is modeled according to (Eq. 1) as a function of time, so we can combine both functions to obtain a direct link, for each location, between mosquito activity and time. This will be then rescaled to vary between 0 and 1:
 
 ```{r avgTemp5, message = FALSE, error=FALSE, warning=FALSE}
 #According to Rossi et al:
@@ -183,7 +183,7 @@ ggplot() +
   labs(x="Time (in days)", y="Mosquito activity")
 ```
 
-Since this mosquito activity index we have generated should only vary between 0 and 1, when can reformulate `fun2` as:
+Since this mosquito activity index we have generated should only vary between 0 and 1, we can reformulate `fun2` as:
 
 ```{r avgTemp6, eval = FALSE}
 fun2 = function(x, k1, k2, Beta) {
@@ -193,7 +193,7 @@ fun2 = function(x, k1, k2, Beta) {
   if (temp > 0) return(temp)}
 ```
 
-Now we can plug everything together to have the full expression of our n_contact function for humans, depending on mosquito activity for each location, itself depending on mean temperature. For each individual host, the daily number of contact is the rounded random draw from a normal distribution with $mean = mosquito.activity \times 2$ (2 being here chosen empirically) and $sd = 1$ (chosen empirically). `nContact` here thus depends on `prestime` ("absolute time" of the simulation), and `current.in` the location of the hosts, thus both `timeDep.nContact` and `diff.nContact` should be `TRUE`.
+Now we can plug everything together to have the full expression of our `n_contact` function for humans, depending on mosquito activity for each location, which itself depends on the mean temperature. For each individual host, the daily number of contacts is the rounded random draw from a normal distribution with $mean = mosquito.activity \times 2$ (2 being here chosen empirically) and $sd = 1$ (chosen empirically). `nContact` here thus depends on `prestime` ("absolute time" of the simulation), and `current.in`, i.e. the location of the hosts, thus both `timeDep.nContact` and `diff.nContact` should be `TRUE`.
 
 ```{r avgTemp7, eval = FALSE}
 n_contact = function(t, prestime, current.in) {
@@ -226,9 +226,9 @@ This fitted function for each location will be used to compute the number of mos
 
 ## Air transportation
 
-We will also model the movement of humans between these different countries assuming they use air transportation. We use here data available at [OpenFlights](https://openflights.org/data.html). This website contains information about the airports and the routes linking two airports together. Since we have no information about the number of passenger on each route, we will assume that the more route link two countries together, the more passenger flight between them.
+We will also model the movement of humans between these different countries assuming they use air transportation. We use here data available at [OpenFlights](https://openflights.org/data.html). This website contains information about the airports and the routes linking two airports together. Since we have no information about the number of passengers on each route, we will assume that the more routes link two countries together, the more passengers travel between them.
 
-First we extract the airports of our study site:
+First, we extract the airports of our study site:
 ```{r air1, message = FALSE, error=FALSE, warning=FALSE}
 airports <- read_csv("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Dengue Data/airports.dat", col_names = FALSE)
 colnames(airports)=c("AirportID","Name", "City", "Country", "IATA", "ICAO", "Latitude", "Longitude", "Altitude", "Timezone",	"DST", "Tz", "Type", "Source")
@@ -445,7 +445,7 @@ Bd_human_fct <- function(x){rnorm(x,4.038,0.2)}
 param.pTrans_human <- list(K_human=K_human_fct, Mg_human=Mg_human_fct, Bg_human=Bg_human_fct, Md_human=Md_human_fct, Bd_human=Bd_human_fct) 
 ```
 
-The profile over time since infection of 150 unique hosts will look like this (red is the mean value for each parameter):
+The profile of `pTrans` over time since infection of 150 unique hosts will look like this (red is the mean value for each parameter):
 ```{r pTrans3, echo = FALSE, message=FALSE}
 library(ggplot2)
 library(dplyr)
@@ -484,7 +484,7 @@ ggplot() + geom_line(data=curve.df, aes(x=t,y=pTrans,group=Hosts.ID), alpha=0.5)
 
 ### `pExit`
 
-In Fontaine *et al.* the daily survival probability of a mosquito is 0.85, so its `pExit` is 1-0.85:
+In Fontaine *et al.*, the daily survival probability of a mosquito is 0.85, so its `pExit` equals 1-0.85:
 
 ```{r pExit1.B, eval = FALSE}
 p_Exit_fct_mosquito <- function(t){return(0.15)}
@@ -500,7 +500,7 @@ p_Move_fct_mosquito  <- NA
 
 ### `nContact`
 
-In Fontaine *et al.* the daily biting probability of a mosquito is 0.3. We assume that if a mosquito bites, it bites only one human:
+In Fontaine *et al.*, the daily biting probability of a mosquito is 0.3. We assume that if a mosquito bites, it bites only one human:
 
 ```{r nContact.B, eval = FALSE}
 nContact_fct_mosquito <- function(t){sample(c(0,1),1,prob=c(0.7,0.3))}
@@ -508,7 +508,7 @@ nContact_fct_mosquito <- function(t){sample(c(0,1),1,prob=c(0.7,0.3))}
 
 ### `pTrans`
 
-In Fontaine *et al.* the probability of transmission from a mosquito to a human is approximated by their measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that `pTrans` is defined in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (`t_EIP`), and after that time, it will transmit with a certain (constant) probability (which we will call `p_max`). This function will be dependent on the time since the mosquito's infection `t`:
+In Fontaine *et al.*, the probability of transmission from a mosquito to a human is approximated by the measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that `pTrans` is defined in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (`t_EIP`), and after that time, it will transmit with a certain (constant) probability (which we will call `p_max`). This function will be dependent on the time since the mosquito's infection `t`:
 
 ```{r pTrans.B0, eval = FALSE}
 p_Trans_fct <- function(t, p_max, t_EIP){
@@ -668,7 +668,7 @@ test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
                         print.progress=FALSE)
 ```
 
-The simulation has run for `r test.nosoiA$total.time` and has infected `r test.nosoiA$host.info.A$N.infected` humans and `r test.nosoiA$host.info.B$N.infected` mosquitoes. The simulation was stopped because it reached the infected human cap `max.infected.A`.
+The simulation has run for `r test.nosoiA$total.time` units of time and has infected `r test.nosoiA$host.info.A$N.infected` humans and `r test.nosoiA$host.info.B$N.infected` mosquitoes. The simulation was stopped because it reached the infected human cap `max.infected.A`.
 
 # Analyzing the results
 
@@ -731,28 +731,28 @@ animate(animated.plot, nframes=test.nosoiA$total.time*2+10,duration=40,end_pause
 
 ## Epidemiological analysis
 
-As interesting as the visualization might be, we can also explore a bit the epidemic parameters, for example the "real" $R_0$, defined as the average number of cases one case generates, often estimated in epidemiological studies. 
-For this we can use the following code:
+As interesting as the visualization might be, we can also explore the epidemic parameters, for example the "real" $R_0$, defined as the average number of cases one case generates, often estimated in epidemiological studies.
+To this end, we can use the following code:
 
 ```{r generalEpi}
 R0.sim <- getR0(test.nosoiA)
 ```
 
-Mean value for $R_0$ is `r round(R0.sim$R0.hostA.mean,2)`, which is coherent with $R_0$ estimates for dengue (see for example [Nishiura 2006 *Dengue Bulletin*](https://apps.who.int/iris/handle/10665/170261). 
-Its distribution shows that most of the human hosts are responsible for the infection of a least one other human hosts:
+The mean value for $R_0$ is `r round(R0.sim$R0.hostA.mean,2)`, which is coherent with $R_0$ estimates for dengue (see for example [Nishiura 2006 *Dengue Bulletin*](https://apps.who.int/iris/handle/10665/170261)).
+Its distribution shows that most of the human hosts are responsible for the infection of a least one other human host:
 
 ```{r generalEpi2, echo = FALSE, message=FALSE, warning=FALSE}
 ggplot(data=data.frame(x=R0.sim$R0.hostA.dist), aes(x=x)) + geom_histogram(binwidth=1) + theme_minimal() +
   labs(x=expression(Individual~R[0]),y="Number of hosts")
 ```
 
-On the mosquito side, mean value for $R_0$ is `r round(R0.sim$R0.hostB.mean,2)` and the distribution shows that most of the mosquitoes, except a few, are actually dead-end hosts:
+On the mosquito side, the mean value for $R_0$ is `r round(R0.sim$R0.hostB.mean,2)` and the distribution shows that most of the mosquitoes, except for a few, are actually dead-end hosts:
 ```{r generalEpi3, echo = FALSE, message=FALSE, warning=FALSE}
 ggplot(data=data.frame(x=R0.sim$R0.hostB.dist), aes(x=x)) + geom_histogram(binwidth=1) + theme_minimal() +
   labs(x=expression(Individual~R[0]),y="Number of hosts")
 ```
 
-The two following figures also give the epidemiological dynamics of the simulation:
+The two following figures also provide the epidemiological dynamics of the simulation:
 
 ```{r figureDynamics1, message=FALSE}
 library(ggplot2)
@@ -768,13 +768,13 @@ ggplot(data=dynamics.table, aes(x=t, y=log10(Count), color=state,linetype=type))
 
 ## Transmission chain
 
-The central transmission chain simulated by `nosoi` can also be visualized. For that, we generate the transmission tree as a phylogenetic tree-like object by using the `getTransmissionTree` function implemented in `nosoi`:
+The central transmission chain simulated by `nosoi` can also be visualized. To achieve this, we generate the transmission tree as a phylogenetic tree-like object by using the `getTransmissionTree` function implemented in `nosoi`:
 
 ```{r transmissionTree-Full1, message=FALSE, warning=FALSE, error=FALSE}
 test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 ```
 
-This function gives you a `treedata` object that can be visualized as a phylogenetic-tree with the package :
+This function gives you a `treedata` object that can be visualized as a phylogenetic tree with the package :
 
 ```{r treeC,  message=FALSE, warning=FALSE, error=FALSE}
 library(ggtree)
@@ -784,7 +784,7 @@ ggtree(test.nosoiA.tree, color = "gray30") + geom_tippoint(color = "gray30") + #
         legend.key = element_blank())
 ```
 
-This tree is a bit messy, considering the number of transmission events and the overall size of this epidemic. We can also sub-sample it randomly. We will select here 150 individuals sampled at the time of their exit (either death or recovery):
+This tree is a bit messy, which was to be expected considering the number of transmission events and the overall size of this epidemic. We can also subsample it randomly. We will here select 150 individuals sampled at the time of their exit (either death or recovery):
 
 ```{r transmissionTree2,  message=FALSE, warning=FALSE, error=FALSE}
 #Extracts data from the nosoiSim object:
