@@ -811,7 +811,7 @@ ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(
 
 ## Other use
 
-External software could be used to explore more into details the dynamic of this epidemic and transmission chain. The `write.beast` function of the `treeio` package allows for an easy export of the transmission chain as a phylogenetic-like tree, in a similar format as [BEAST](https://beast.community/) trees.
+External software can be used to perform a more detailed exploration of the dynamics of this epidemic and transmission chain. The `write.beast` function of the `treeio` package allows for an easy export of the transmission chain as a phylogenetic-like tree, in a similar format as [BEAST](https://beast.community/) trees.
 
 ```{r writing, eval=FALSE}
 treeio::write.beast(test.nosoiA.tree, file = "test.tre", translate = TRUE, tree.name = "UNTITLED")
