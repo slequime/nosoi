@@ -30,7 +30,7 @@ dualNone(length.sim, max.infected.A, max.infected.B, init.individuals.A,
 
 \item{timeDep.pExit.A}{is pExit of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
-\item{nContact.A}{function that gives the number of potential transmission events per unit of time  for host-type A.}
+\item{nContact.A}{function that gives the number of potential transmission events per unit of time for host-type A.}
 
 \item{param.nContact.A}{parameter names (list of functions) for param.nContact for host-type A.}
 
@@ -76,16 +76,22 @@ This function, that can be wrapped within \code{\link{nosoiSim}}, runs a dual-ho
 the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
 }
 \details{
-The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host type A or B.
-
-The \code{pExit} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
+The \code{pExit} and \code{pTrans} functions should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
 
 The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
 
 The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
+}
+\section{Suffixes}{
+
+The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host type A or B.
+}
+
+\section{Order of Arguments}{
 
 The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE), \code{parameters} specified in the list.
 }
+
 \examples{
 \dontrun{
  #Host A
@@ -119,33 +125,35 @@ pTrans_hostB <- function(t,p_max,t_incub){
 time_contact_B = function(t){round(rnorm(1, 3, 1), 0)}
 
 set.seed(90)
-test.nosoiA <- nosoiSim(type="dual", popStructure="none",
-                        length.sim=40,
-                        max.infected.A=100,
-                        max.infected.B=200,
-                        init.individuals.A=1,
-                        init.individuals.B=0,
-                        pExit.A = p_Exit_fctA,
-                        param.pExit.A = list(t_infectA = t_infectA_fct),
-                        timeDep.pExit.A=FALSE,
-                        nContact.A = time_contact_A,
-                        param.nContact.A = NA,
-                        timeDep.nContact.A=FALSE,
-                        pTrans.A = pTrans_hostA,
-                        param.pTrans.A = list(t_infectA=t_infectA_fct),
-                                              timeDep.pTrans.A=FALSE,
-                        prefix.host.A="H",
-                        pExit.B = p_Exit_fct_B,
-                        param.pExit.B = NA,
-                        timeDep.pExit.B=TRUE,
-                        nContact.B = time_contact_B,
-                        param.nContact.B = NA,
-                        timeDep.nContact.B=FALSE,
-                        pTrans.B = pTrans_hostB,
-                        param.pTrans.B = list(p_max=p_max_fct_B,
-                                             t_incub=t_incub_fct_B),
-                        timeDep.pTrans.B=FALSE,
-                        prefix.host.B="V")
+test.nosoi <- nosoiSim(type="dual", popStructure="none",
+                       length.sim=40,
+                       max.infected.A=100,
+                       max.infected.B=200,
+                       init.individuals.A=1,
+                       init.individuals.B=0,
+                       pExit.A = p_Exit_fctA,
+                       param.pExit.A = list(t_infectA = t_infectA_fct),
+                       timeDep.pExit.A=FALSE,
+                       nContact.A = time_contact_A,
+                       param.nContact.A = NA,
+                       timeDep.nContact.A=FALSE,
+                       pTrans.A = pTrans_hostA,
+                       param.pTrans.A = list(t_infectA=t_infectA_fct),
+                                             timeDep.pTrans.A=FALSE,
+                       prefix.host.A="H",
+                       pExit.B = p_Exit_fct_B,
+                       param.pExit.B = NA,
+                       timeDep.pExit.B=TRUE,
+                       nContact.B = time_contact_B,
+                       param.nContact.B = NA,
+                       timeDep.nContact.B=FALSE,
+                       pTrans.B = pTrans_hostB,
+                       param.pTrans.B = list(p_max=p_max_fct_B,
+                                            t_incub=t_incub_fct_B),
+                       timeDep.pTrans.B=FALSE,
+                       prefix.host.B="V")
+
+test.nosoi
 }
 
 }

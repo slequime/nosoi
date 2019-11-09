@@ -4,32 +4,26 @@
 #' The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
 #' is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.
 #'
-#' @details The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host-type A or B.
-#' @details The structure raster(s) provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).
-#' @details The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), \code{sdMove} a real number (keep in mind this number is related to your coordinate space), and \code{nContact} a positive natural number (positive integer) or 0.
-#' @details The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
-#' @details The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
-#' @details The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.env.value} (for "current environmental value").
-#' @details The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count.A} or \code{host.count.B}.
-#' @details The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
+#' @section Raster:
+#' The structure raster(s) provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).
+#' @section Order of Arguments:
+#' The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
 #' \code{current.env.value} (optional, only if diff is TRUE), \code{host.count.A} or \code{host.count.B} (optional, only if hostCount is TRUE) and \code{parameters} specified in the list.
 #'
 #' @inheritParams dualNone
+#' @inheritParams dualDiscrete
 #' @param init.structure.A in which location the initially infected host-A individuals are located. A vector of coordinates in the same coordinate space as the raster (NA if init.individual.A is 0).
 #' @param init.structure.B in which location the initially infected host-B individuals are located. A vector of coordinates in the same coordinate space as the raster (NA if init.individual.B is 0).
 #' @param structure.raster.A raster object defining the environmental variable for host-type A.
 #' @param structure.raster.B raster object defining the environmental variable for host B.
 #' @param diff.pExit.A does pExit of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param hostCount.pExit.A does pExit of host-type A vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit.A should be TRUE.
-#' @param pMove.A function that gives the probability of a host moving as a function of time for host-type A.
-#' @param param.pMove.A parameter names (list of functions) for the pMove for host-type A.
-#' @param timeDep.pMove.A is pMove dependent on the absolute time of the simulation (TRUE/FALSE) for host-type A.
 #' @param diff.pMove.A does pMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).A.
 #' @param hostCount.pMove.A does pMove of host-type A vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove.A should be TRUE.
 #' @param sdMove.A function that gives the distance traveled for host-type A (based on coordinates); output is the standard deviation value for the Brownian motion.
 #' @param param.sdMove.A parameter names (list of functions) for sdMove for host-type A.
 #' @param diff.sdMove.A does sdMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).
-#' @param timeDep.sdMove.A is sdMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE) .
+#' @param timeDep.sdMove.A is sdMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE) ?
 #' @param hostCount.sdMove.A does sdMove varies with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); diff.sdMove.A should be TRUE.
 #' @param attracted.by.raster.A should the host-type A be attracted by higher values in the environmental raster? (TRUE/FALSE).
 #' @param diff.nContact.A does nContact of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).
@@ -38,14 +32,11 @@
 #' @param hostCount.pTrans.A does pTrans vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); diff.pTrans.A should be TRUE.
 #' @param diff.pExit.B does pExit of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param hostCount.pExit.B does pExit of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit.B should be TRUE.
-#' @param pMove.B function that gives the probability of a host moving as a function of time for host-type B.
-#' @param param.pMove.B parameter names (list of functions) for the pMove for host-type B.
-#' @param timeDep.pMove.B is pMove dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.
 #' @param diff.pMove.B does pMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param hostCount.pMove.B does pMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove.B should be TRUE.
 #' @param sdMove.B function that gives the distance traveled for host-type B (based on coordinates); output is the standard deviation value for the Brownian motion.
 #' @param param.sdMove.B parameter names (list of functions) for sdMove for host-type B.
-#' @param timeDep.sdMove.B is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.
+#' @param timeDep.sdMove.B is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) ?
 #' @param diff.sdMove.B does sdMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param hostCount.sdMove.B does sdMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove.B should be TRUE.
 #' @param attracted.by.raster.B should the host-type B be attracted by higher values in the environmental raster? (TRUE/FALSE)
@@ -54,7 +45,9 @@
 #' @param diff.pTrans.B does pTrans of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param hostCount.pTrans.B does pTrans of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.pTrans.B should be TRUE.
 #'
-#' @return An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
+#' @inherit singleNone return details
+#' @inheritSection singleContinuous Structure Parameters
+#' @inheritSection dualNone Suffixes
 #'
 #' @seealso For simulations with a discrete structure, see \code{\link{dualDiscrete}}. For simulations without any structures, see \code{\link{dualNone}}.
 #'
@@ -90,7 +83,7 @@
 #'start.pos <- c(0,0)
 #'
 #' set.seed(805)
-#' test.nosoiA <- nosoiSim(type="dual", popStructure="continuous",
+#' test.nosoi <- nosoiSim(type="dual", popStructure="continuous",
 #'                        length.sim=200,
 #'                        max.infected.A=500,
 #'                        max.infected.B=500,
@@ -144,6 +137,7 @@
 #'                        timeDep.pTrans.B=FALSE,
 #'                        diff.pTrans.B=FALSE,
 #'                        prefix.host.B="V")
+#' test.nosoi
 #'}
 #'
 #' @export dualContinuous

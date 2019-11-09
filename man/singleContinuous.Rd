@@ -94,21 +94,34 @@ The simulation stops either at the end of given time (specified by length.sim) o
 is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.
 }
 \details{
-The structure raster provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE.
-
-The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), \code{sdMove} a real number (keep in mind this number is related to your coordinate space), and \code{nContact} a positive natural number (positive integer) or 0
+The \code{pExit} and \code{pTrans} functions should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
 
 The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
 
 The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
+}
+\section{Raster}{
+
+The structure raster provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE.
+}
+
+\section{Structure Parameters}{
+
+The \code{pMove} function should return a single probability (a number between 0 and 1), and \code{sdMove} a real number (keep in mind this number is related to your coordinate space).
+
 
 The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.env.value} (for "current environmental value").
 
+
 The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count}.
+}
+
+\section{Order of Arguments}{
 
 The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
 \code{current.env.value} (optional, only if diff is TRUE), \code{host.count} (optional, only if hostCount is TRUE) and \code{parameters} specified in the list.
 }
+
 \examples{
 \dontrun{
 library(raster)

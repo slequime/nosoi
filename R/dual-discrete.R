@@ -3,14 +3,10 @@
 #' @description This function, that can be wrapped within \code{\link{nosoiSim}}, runs a dual-host transmission chain simulation, with discrete hosts populations structures (e.g. spatial, socio-economic, etc.). The simulation stops either at
 #' the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
 #'
-#' @details The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host-type A or B.
-#' @details The structure/transition matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing departure state and column the arrival state. All rows should add to 1. Probability values can be different for hosts A and B (so two different matrices), but the name of the column and the rows should be shared.
-#' @details The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
-#' @details The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
-#' @details The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
-#' @details The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.in} (for "currently in"). Your function should in that case give a result for every possible discrete state.
-#' @details The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count.A} or \code{host.count.B}.
-#' @details The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
+#' @section Structure Matrix:
+#' The structure/transition matrix provided provided should of class \code{matrix}, with the same number of rows and columns, rows representing departure state and column the arrival state. All rows should add to 1. Probability values can be different for hosts A and B (so two different matrices), but the name of the column and the rows should be shared.
+#' @section Order of Arguments:
+#' The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
 #' \code{current.in} (optional, only if diff is TRUE), \code{host.count.A} or \code{host.count.B} (optional, only if hostCount is TRUE) and \code{parameters} specified in the list.
 #'
 #' @inheritParams dualNone
@@ -33,7 +29,7 @@
 #' @param hostCount.pExit.B does pExit of host-type B vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pExit.B should be TRUE.
 #' @param pMove.B function that gives the probability of a host moving as a function of time for host-type B.
 #' @param param.pMove.B parameter names (list of functions) for the pMove for host-type B.
-#' @param timeDep.pMove.B is pMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE)?
+#' @param timeDep.pMove.B is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.
 #' @param diff.pMove.B is pMove of host-type B different between states of the structured population (TRUE/FALSE)?
 #' @param hostCount.pMove.B does pMove of host-type B vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pMove.B should be TRUE.
 #' @param diff.nContact.B is nContact of host-type B different between states of the structured population (TRUE/FALSE)?
@@ -41,12 +37,15 @@
 #' @param diff.pTrans.B is pTrans host-type B different between states of the structured population (TRUE/FALSE)?
 #' @param hostCount.pTrans.B does pTrans of host-type B vary with the host count (of either host A or B) in the state? (TRUE/FALSE); diff.pTrans.B should be TRUE.
 #'
-#' @return An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
+#' @inherit singleNone return details
+#' @inheritSection singleDiscrete Structure Parameters
+#' @inheritSection dualNone Suffixes
 #'
 #' @seealso For simulations with a structure in continuous space, see \code{\link{dualContinuous}}. For simulations without any structures, see \code{\link{dualNone}}.
 #'
 #' @examples
-#' \dontrun{#Host A
+#' \dontrun{
+#'#Host A
 #'t_infectA_fct <- function(x){rnorm(x,mean = 12,sd=3)}
 #'pTrans_hostA <- function(t,t_infectA){
 #'  if(t/t_infectA <= 1){p=sin(pi*t/t_infectA)}
@@ -86,46 +85,48 @@
 #'                           dimnames=list(c("A","B","C"),c("A","B","C")))
 #'
 #'set.seed(6262)
-#'test.nosoiA <- nosoiSim(type="dual", popStructure="discrete",
-#'                        length.sim=40,
-#'                        max.infected.A=100,
-#'                        max.infected.B=200,
-#'                        init.individuals.A=1,
-#'                        init.individuals.B=0,
-#'                        init.structure.A="A",
-#'                        init.structure.B=NA,
-#'                        structure.matrix.A=transition.matrix,
-#'                        structure.matrix.B=transition.matrix,
-#'                        pExit.A = p_Exit_fctA,
-#'                        param.pExit.A = list(t_infectA = t_infectA_fct),
-#'                        pMove.A=p_Move_fctA,
-#'                        param.pMove.A=NA,
-#'                        timeDep.pMove.A=FALSE,
-#'                        diff.pMove.A=FALSE,
-#'                        timeDep.pExit.A=FALSE,
-#'                        nContact.A = time_contact_A,
-#'                        param.nContact.A = NA,
-#'                        timeDep.nContact.A=FALSE,
-#'                        pTrans.A = pTrans_hostA,
-#'                        param.pTrans.A = list(t_infectA=t_infectA_fct),
-#'                        timeDep.pTrans.A=FALSE,
-#'                        prefix.host.A="H",
-#'                        pExit.B = p_Exit_fct_B,
-#'                        param.pExit.B = NA,
-#'                        timeDep.pExit.B=FALSE,
-#'                        diff.pExit.B=TRUE,
-#'                        pMove.B=NA,
-#'                        param.pMove.B=NA,
-#'                        timeDep.pMove.B=FALSE,
-#'                        diff.pMove.B=FALSE,
-#'                        nContact.B = time_contact_B,
-#'                        param.nContact.B = NA,
-#'                        timeDep.nContact.B=FALSE,
-#'                        pTrans.B = pTrans_hostB,
-#'                        param.pTrans.B = list(p_max=p_max_fct_B,
-#'                                              t_incub=t_incub_fct_B),
-#'                        timeDep.pTrans.B=FALSE,
-#'                        prefix.host.B="V")
+#'test.nosoi <- nosoiSim(type="dual", popStructure="discrete",
+#'                       length.sim=40,
+#'                       max.infected.A=100,
+#'                       max.infected.B=200,
+#'                       init.individuals.A=1,
+#'                       init.individuals.B=0,
+#'                       init.structure.A="A",
+#'                       init.structure.B=NA,
+#'                       structure.matrix.A=transition.matrix,
+#'                       structure.matrix.B=transition.matrix,
+#'                       pExit.A = p_Exit_fctA,
+#'                       param.pExit.A = list(t_infectA = t_infectA_fct),
+#'                       pMove.A=p_Move_fctA,
+#'                       param.pMove.A=NA,
+#'                       timeDep.pMove.A=FALSE,
+#'                       diff.pMove.A=FALSE,
+#'                       timeDep.pExit.A=FALSE,
+#'                       nContact.A = time_contact_A,
+#'                       param.nContact.A = NA,
+#'                       timeDep.nContact.A=FALSE,
+#'                       pTrans.A = pTrans_hostA,
+#'                       param.pTrans.A = list(t_infectA=t_infectA_fct),
+#'                       timeDep.pTrans.A=FALSE,
+#'                       prefix.host.A="H",
+#'                       pExit.B = p_Exit_fct_B,
+#'                       param.pExit.B = NA,
+#'                       timeDep.pExit.B=FALSE,
+#'                       diff.pExit.B=TRUE,
+#'                       pMove.B=NA,
+#'                       param.pMove.B=NA,
+#'                       timeDep.pMove.B=FALSE,
+#'                       diff.pMove.B=FALSE,
+#'                       nContact.B = time_contact_B,
+#'                       param.nContact.B = NA,
+#'                       timeDep.nContact.B=FALSE,
+#'                       pTrans.B = pTrans_hostB,
+#'                       param.pTrans.B = list(p_max=p_max_fct_B,
+#'                                             t_incub=t_incub_fct_B),
+#'                       timeDep.pTrans.B=FALSE,
+#'                       prefix.host.B="V")
+#'
+#'test.nosoi
 #' }
 #' @export dualDiscrete
 

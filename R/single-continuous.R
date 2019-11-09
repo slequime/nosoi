@@ -4,23 +4,25 @@
 #' The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
 #' is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.
 #'
-#' @details The structure raster provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE.
-#' @details The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), \code{sdMove} a real number (keep in mind this number is related to your coordinate space), and \code{nContact} a positive natural number (positive integer) or 0
-#' @details The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
-#' @details The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
-#' @details The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.env.value} (for "current environmental value").
-#' @details The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count}.
-#' @details The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
+#' @section Raster:
+#' The structure raster provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE.
+#' @section Structure Parameters:
+#' The \code{pMove} function should return a single probability (a number between 0 and 1), and \code{sdMove} a real number (keep in mind this number is related to your coordinate space).
+#' @section Structure Parameters:
+#' The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.env.value} (for "current environmental value").
+#' @section Structure Parameters:
+#' The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count}.
+#' @section Order of Arguments:
+#' The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
 #' \code{current.env.value} (optional, only if diff is TRUE), \code{host.count} (optional, only if hostCount is TRUE) and \code{parameters} specified in the list.
-
+#'
 #' @inheritParams singleNone
+#' @inheritParams singleDiscrete
 #' @param init.structure in which location the initially infected individuals are located. A vector of coordinates in the same coordinate space as the raster.
 #' @param structure.raster raster object defining the environmental variable.
 #' @param diff.pMove does pMove depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param timeDep.pMove does pMove depend on the absolute time of the simulation (TRUE/FALSE).
 #' @param hostCount.pMove does pMove vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.pMove should also be TRUE.
-#' @param pMove function that gives the probability of a host moving as a function of time.
-#' @param param.pMove parameter names (list of functions) for the pMove.
 #' @param diff.sdMove does sdMove depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param timeDep.sdMove does sdMove depend on the absolute time of the simulation (TRUE/FALSE).
 #' @param hostCount.sdMove does sdMove vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove should be TRUE.
@@ -34,7 +36,7 @@
 #' @param diff.pExit does pExit depend on the environmental variable (set by the raster) (TRUE/FALSE).
 #' @param hostCount.pExit does pExit vary with the host count in each raster cell? (TRUE/FALSE); if TRUE, diff.pExit should be TRUE.
 #'
-#' @return An object of class \code{\link{nosoiSim}}, containing all results of the simulation.
+#' @inherit singleNone return details
 #'
 #' @seealso For simulations with a discrete structure, see \code{\link{singleDiscrete}}. For simulations without any structures, see \code{\link{singleNone}}.
 #'

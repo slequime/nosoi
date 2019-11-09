@@ -62,7 +62,7 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pMove.A}{parameter names (list of functions) for the pMove for host-type A.}
 
-\item{timeDep.pMove.A}{is pMove dependent on the absolute time of the simulation (TRUE/FALSE) for host-type A.}
+\item{timeDep.pMove.A}{is pMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?}
 
 \item{diff.pMove.A}{does pMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).A.}
 
@@ -74,13 +74,13 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{diff.sdMove.A}{does sdMove of host-type A depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{timeDep.sdMove.A}{is sdMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE) .}
+\item{timeDep.sdMove.A}{is sdMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE) ?}
 
 \item{hostCount.sdMove.A}{does sdMove varies with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); diff.sdMove.A should be TRUE.}
 
 \item{attracted.by.raster.A}{should the host-type A be attracted by higher values in the environmental raster? (TRUE/FALSE).}
 
-\item{nContact.A}{function that gives the number of potential transmission events per unit of time  for host-type A.}
+\item{nContact.A}{function that gives the number of potential transmission events per unit of time for host-type A.}
 
 \item{param.nContact.A}{parameter names (list of functions) for param.nContact for host-type A.}
 
@@ -116,7 +116,7 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{param.pMove.B}{parameter names (list of functions) for the pMove for host-type B.}
 
-\item{timeDep.pMove.B}{is pMove dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.}
+\item{timeDep.pMove.B}{is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.}
 
 \item{diff.pMove.B}{does pMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
@@ -128,7 +128,7 @@ dualContinuous(length.sim, max.infected.A, max.infected.B,
 
 \item{diff.sdMove.B}{does sdMove of host-type B depend on the environmental variable (set by the raster) (TRUE/FALSE).}
 
-\item{timeDep.sdMove.B}{is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.}
+\item{timeDep.sdMove.B}{is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) ?}
 
 \item{hostCount.sdMove.B}{does sdMove of host-type B vary with the host count (of either host-type A or B) in each raster cell? (TRUE/FALSE); if TRUE, diff.sdMove.B should be TRUE.}
 
@@ -169,23 +169,39 @@ The simulation stops either at the end of given time (specified by length.sim) o
 is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.
 }
 \details{
-The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host-type A or B.
-
-The structure raster(s) provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).
-
-The \code{pExit}, \code{pMove} and \code{pTrans} function should return a single probability (a number between 0 and 1), \code{sdMove} a real number (keep in mind this number is related to your coordinate space), and \code{nContact} a positive natural number (positive integer) or 0.
+The \code{pExit} and \code{pTrans} functions should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
 
 The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
 
 The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
+}
+\section{Raster}{
 
-The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.env.value} (for "current environmental value").
+The structure raster(s) provided provided should of class \code{raster}. High values of the environmental variable can attract hosts if \code{attracted.by.raster} is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).
+}
 
-The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count.A} or \code{host.count.B}.
+\section{Order of Arguments}{
 
 The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE),
 \code{current.env.value} (optional, only if diff is TRUE), \code{host.count.A} or \code{host.count.B} (optional, only if hostCount is TRUE) and \code{parameters} specified in the list.
 }
+
+\section{Structure Parameters}{
+
+The \code{pMove} function should return a single probability (a number between 0 and 1), and \code{sdMove} a real number (keep in mind this number is related to your coordinate space).
+
+
+The use of \code{diff} (switch to \code{TRUE}) makes the corresponding function use the argument \code{current.env.value} (for "current environmental value").
+
+
+The use of \code{hostCount} (switch to \code{TRUE}) makes the corresponding function use the argument \code{host.count}.
+}
+
+\section{Suffixes}{
+
+The suffix \code{.A} or \code{.B} specifies if the considered function or parameter concerns host type A or B.
+}
+
 \examples{
 \dontrun{
 library(raster)
@@ -217,7 +233,7 @@ time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 start.pos <- c(0,0)
 
 set.seed(805)
-test.nosoiA <- nosoiSim(type="dual", popStructure="continuous",
+test.nosoi <- nosoiSim(type="dual", popStructure="continuous",
                        length.sim=200,
                        max.infected.A=500,
                        max.infected.B=500,
@@ -271,6 +287,7 @@ test.nosoiA <- nosoiSim(type="dual", popStructure="continuous",
                        timeDep.pTrans.B=FALSE,
                        diff.pTrans.B=FALSE,
                        prefix.host.B="V")
+test.nosoi
 }
 
 }

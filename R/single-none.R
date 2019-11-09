@@ -3,10 +3,14 @@
 #' @description This function, that can be wrapped within \code{\link{nosoiSim}}, runs a single-host transmission chain simulation, without any structure features in the host population. The simulation stops either at
 #' the end of given time (specified by \code{length.sim}) or when the number of hosts infected threshold (\code{max.infected}) is crossed.
 #'
-#' @details The \code{pExit} and \code{pTrans} function should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
-#' @details The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
-#' @details The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
-#' @details The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE), \code{parameters} specified in the list.
+#' @details
+#' The \code{pExit} and \code{pTrans} functions should return a single probability (a number between 0 and 1), and \code{nContact} a positive natural number (positive integer) or 0.
+#' @details
+#' The \code{param} arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.
+#' @details
+#' The use of \code{timeDep} (switch to \code{TRUE}) makes the corresponding function use the argument \code{prestime} (for "present time").
+#' @section Order of Arguments:
+#' The user specified function's arguments should follow this order: \code{t} (mandatory), \code{prestime} (optional, only if timeDep is TRUE), \code{parameters} specified in the list.
 #'
 #' @param length.sim specifies the length (in unit of time) over which the simulation should be run.
 #' @param max.infected specifies the maximum number of hosts that can be infected in the simulation.
@@ -42,17 +46,19 @@
 #'
 #'time_contact <- function(t){round(rnorm(1, 3, 1), 0)}
 #'
-#'test.nosoiA <- nosoiSim(type="single", popStructure="none",
-#'                         length=40,
-#'                         max.infected=100,
-#'                         init.individuals=1,
-#'                         nContact=time_contact,
-#'                         param.nContact=NA,
-#'                         pTrans = proba,
-#'                         param.pTrans = list(p_max=p_max_fct,
-#'                                             t_incub=t_incub_fct),
-#'                         pExit=p_Exit_fct,
-#'                         param.pExit=NA)
+#'test.nosoi <- nosoiSim(type="single", popStructure="none",
+#'                       length=40,
+#'                       max.infected=100,
+#'                       init.individuals=1,
+#'                       nContact=time_contact,
+#'                       param.nContact=NA,
+#'                       pTrans = proba,
+#'                       param.pTrans = list(p_max=p_max_fct,
+#'                                           t_incub=t_incub_fct),
+#'                       pExit=p_Exit_fct,
+#'                       param.pExit=NA)
+#'
+#'test.nosoi
 #'}
 #' @export singleNone
 
