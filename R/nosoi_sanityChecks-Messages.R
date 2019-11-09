@@ -169,11 +169,15 @@ progressMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, print.st
 #' @keywords internal
 ##
 
-endMessage <- function(Host.count.A, Host.count.B=NULL, pres.time, type="single") {
+endMessage <- function(Host.count.A, Host.count.B = NULL, pres.time, type="single") {
+  message(endMessageText(Host.count.A, Host.count.B, pres.time, type))
+}
+
+endMessageText <- function(Host.count.A, Host.count.B = NULL, pres.time, type="single", done = "done. ") {
   if(type == "single"){
-    message("done. \nThe simulation has run for ",pres.time," units of time and a total of ",Host.count.A," hosts have been infected.")
+    return(paste0(done, "\nThe simulation has run for ",pres.time," units of time and a total of ",Host.count.A," hosts have been infected."))
   }
   if(type == "dual"){
-    message("done. \nThe simulation has run for ",pres.time," units of time and a total of ",Host.count.A," (A) and ",Host.count.B, " (B) hosts have been infected.")
+    return(paste0(done, "\nThe simulation has run for ",pres.time," units of time and a total of ",Host.count.A," (A) and ",Host.count.B, " (B) hosts have been infected."))
   }
 }

@@ -20,6 +20,6 @@ nosoiSimOneConstructor(N.infected, table.hosts, table.state, prefix.host,
 An object of class \code{nosoiSimOne}
 }
 \description{
-Creates a \code{nosoiSim} object.
+Creates a \code{nosoiSimOne} object.
 }
 \keyword{internal}

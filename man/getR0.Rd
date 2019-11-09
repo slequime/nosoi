@@ -20,3 +20,6 @@ A list with the following items:
 \description{
 Gets an estimate of secondary cases (what R0 usually tries to estimate) and its distribution from the output of a \code{nosoiSim} simulation. The actual calculation is based on inactive hosts at the end of the simulation to avoid bias introduced by hosts that have not finished their transmission potential.
 }
+\seealso{
+\code{\link{nosoiSummary}}
+}

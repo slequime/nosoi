@@ -18,24 +18,20 @@ An object of class \code{nosoiSim}, containing all results of the simulation. Cl
 \describe{
    \item{total.time}{Number of time steps the simulation ran (integer).}
 
-   \item{type}{String about the simulation type (\code{single} or \code{dual} host).}
+   \item{type}{String giving the simulation type ("single" or "dual" host).}
 
-   \item{host.info.A (object of class \code{nosoiSimOne})}{
+   \item{host.info.A: object of class \code{nosoiSimOne}}{
        \describe{
           \item{N.infected}{Number of infected hosts (integer).}
           \item{table.hosts}{Table containing the results of the simulation  (see \code{\link{getTableHosts}} for more details on the table).}
           \item{table.state}{Table containing the results of the simulation, focusing on the movement history of each host (see \code{\link{getTableState}} for more details on the table).}
           \item{prefix.host}{String containing the prefix used to name hosts (character string).}
-          \item{popStructure}{String about the population structure (either \code{none}, \code{discrete} or \code{continuous}).}
+          \item{popStructure}{String giving the population structure (one of "none", "discrete" or "continuous").}
    }}
 
-   \item{host.info.B (object of class \code{nosoiSimOne})}{\describe{
-          \item{N.infected}{Number of infected hosts (integer)}
-          \item{table.hosts}{Table containing the results of the simulation, (see \code{\link{getTableHosts}} for more details on the table).}
-          \item{table.state}{Table containing the results of the simulation, focusing on the movement history of each host (see \code{\link{getTableState}} for more details on the table).}
-          \item{prefix.host}{String containing the prefix used to name hosts (character string).}
-          \item{popStructure}{String about the population structure (either \code{none}, \code{discrete} or \code{continuous}).}
-   }}
+   \item{host.info.B: object of class \code{nosoiSimOne}}{
+   Same structure as \code{host.info.A}, but for host B (if it exists).
+   }
    }
 }
 \description{
@@ -55,17 +51,34 @@ proba <- function(t,p_max,t_incub){
 
 time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
-test.nosoiA <- nosoiSim(type="single", popStructure="none",
-                        length=40,
-                        max.infected=100,
-                        init.individuals=1,
-                        nContact=time_contact,
-                        param.nContact=NA,
-                        pTrans = proba,
-                        param.pTrans = list(p_max=p_max_fct,
-                                            t_incub=t_incub_fct),
-                        pExit=p_Exit_fct,
-                        param.pExit=NA)
+test.nosoi <- nosoiSim(type="single", popStructure="none",
+                      length=40,
+                      max.infected=100,
+                      init.individuals=1,
+                      nContact=time_contact,
+                      param.nContact=NA,
+                      pTrans = proba,
+                      param.pTrans = list(p_max=p_max_fct,
+                                          t_incub=t_incub_fct),
+                      pExit=p_Exit_fct,
+                      param.pExit=NA)
+test.nosoi
 }
 
+}
+\seealso{
+\describe{
+  \item{Individual simulation functions:}{
+    \code{\link{singleNone}}, \code{\link{singleDiscrete}},
+    \code{\link{singleContinuous}}, \code{\link{dualNone}},
+    \code{\link{dualDiscrete}} and \code{\link{dualContinuous}}.
+    }
+    \item{Functions to extract the results:}{
+    \code{\link{getTableHosts}}, \code{\link{getTableState}}
+    }
+    \item{Summary statistics functions:}{
+    \code{\link{nosoiSummary}},
+    \code{\link{getCumulative}}, \code{\link{getDynamic}}, \code{\link{getR0}}
+    }
+}
 }
