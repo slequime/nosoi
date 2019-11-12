@@ -178,7 +178,7 @@
       <h1>Epidemiological impact of mosquito vector competence variation</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-09-23</h4>
+            <h4 class="date">2019-11-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/vector-competence.Rmd"><code>vignettes/examples/vector-competence.Rmd</code></a></small>
       <div class="hidden name"><code>vector-competence.Rmd</code></div>
@@ -190,7 +190,7 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>Vector competence (VC) defines the intrinsic ability of a vector to carry and transmit a pathogen. VC is usually scored experimentally as the prevalence of infected and infectious vectors at given times post-pathogen exposure. Each year, numerous experimental studies aim to evaluate vector competence for various arthropod species or populations for vector-borne pathogens, which ultimately aims to understand epidemiology and assess local risk of transmission for potentially introduced vector-borne pathogens. These experimental data however usually remain purely descriptive and poorly reflect the dynamic nature of VC. <code>nosoi</code> can be used to easily translate such empirically observed within-host dynamics into their impact on an epidemic process through simulations, without the use of advanced mathematics. The epidemic process can be tailored to mimic known parameters of a particular place of interest, or can be “fixed” to allow easy comparison of one or several key variables.</p>
+<p>Vector competence (VC) defines the intrinsic ability of a vector to carry and transmit a pathogen. VC is usually scored experimentally as the prevalence of infected and infectious vectors at given times post-pathogen exposure. Each year, numerous experimental studies aim to evaluate VC for various arthropod species or populations for vector-borne pathogens, which ultimately aims to understand epidemiology and assess local risk of transmission for potentially introduced vector-borne pathogens. These experimental data however usually remain purely descriptive and poorly reflect the dynamic nature of VC. <code>nosoi</code> can be used to easily translate such empirically observed within-host dynamics into their impact on an epidemic process through simulations, without the use of advanced mathematics. The epidemic process can be tailored to mimic known parameters of a particular place of interest, or can be “fixed” to allow easy comparison of one or several key variables.</p>
 <p>This example aims to illustrate how to use <code>nosoi</code> to perform such a study. We will use data derived from the following published article:</p>
 <blockquote>
 <p>A. Fontaine, S. Lequime, I. Moltini-Conclois, D. Jiolle, I. Leparc-Goffart, R. C. Reiner Jr. &amp; L. Lambrechts (2018) <em>Epidemiological significance of dengue virus genetic variation in mosquito infection dynamics</em>. <strong>PLoS Pathog.</strong> 14(7): e1007187. <a href="https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1007187">Link</a></p>
@@ -266,22 +266,22 @@
 <h3 class="hasAnchor">
 <a href="#pexit-1" class="anchor"></a><code>pExit</code>
 </h3>
-<p>In Fontaine <em>et al.</em> the daily survival probability of a mosquito is 0.85, so its <code>pExit</code> is 1-0.85:</p>
+<p>In Fontaine <em>et al.</em>, the daily survival probability of a mosquito is 0.85, so its <code>pExit</code> equals 1-0.85:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">p_Exit_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.15</span>)}</a></code></pre></div>
 </div>
 <div id="ncontact-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ncontact-1" class="anchor"></a><code>nContact</code>
 </h3>
-<p>In Fontaine <em>et al.</em> the daily biting probability of a mosquito is 0.3. We assume that if a mosquito bites, it bites only one human:</p>
+<p>In Fontaine <em>et al.</em>, the daily biting probability of a mosquito is 0.3. We assume that if a mosquito bites, it bites only one human:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">nContact_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.7</span>,<span class="fl">0.3</span>))}</a></code></pre></div>
 </div>
 <div id="ptrans" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ptrans" class="anchor"></a><code>pTrans</code>
 </h3>
-<p>In Fontaine <em>et al.</em> the probability of transmission from a mosquito to a human is approximated by their measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that <code>pTrans</code> is defined in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (<code>t_EIP</code>), and after that time, it will transmit with a certain (constant) probability (which we will call <code>p_max</code>). This function will be dependent on the time since the mosquito’s infection <code>t</code>:</p>
-<p><code>pTrans</code> will of course vary according the the viral isolate studied. EIP was measured dynamically for each mosquito population over time as the proportion of mosquitoes with disseminated viral infections. This experimental measure, a mean of the whole population, is modeled as a logistic function characterized by three parameters:</p>
+<p>In Fontaine <em>et al.</em>, the probability of transmission from a mosquito to a human is approximated by the measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that <code>pTrans</code> is defined in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (<code>t_EIP</code>), and after that time, it will transmit with a certain (constant) probability (which we will call <code>p_max</code>). This function will be dependent on the time since the mosquito’s infection <code>t</code>:</p>
+<p><code>pTrans</code> will of course vary according to the viral isolate studied. EIP was measured dynamically for each mosquito population over time as the proportion of mosquitoes with disseminated viral infections. This experimental measure, a mean of the whole population, is modeled as a logistic function characterized by three parameters:</p>
 <ul>
 <li>
 <span class="math inline">\(K_{mosquito}\)</span> (<code>K_mosquito</code>), the maximum probability of transmission.</li>
@@ -318,7 +318,7 @@
 <h1 class="hasAnchor">
 <a href="#running-nosoi" class="anchor"></a>Running <code>nosoi</code>
 </h1>
-<p>Since all core functions have been set, we can now proceed with the simulation. We will set a maximum total length of 400 units of time as in Fontaine <em>et al.</em>, with a maximum of 10,000 infected humans, and 1,000,000 infected mosquitoes (to be sure the total number of mosquitoes will not be a limiting factor). The epidemic will start with one infected human. The <code>nosoi</code> script will then look like:</p>
+<p>Since all core functions have been set, we can now proceed with the simulation. We will set a maximum total length of 400 units of time as in Fontaine <em>et al.</em>, with a maximum of 10,000 infected humans and 1,000,000 infected mosquitoes (to be sure the total number of mosquitoes will not be a limiting factor). The epidemic will start with one infected human. The <code>nosoi</code> script will then look like:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nosoi)</a></code></pre></div>
 <pre><code>## Loading required package: data.table</code></pre>
 <pre><code>## 

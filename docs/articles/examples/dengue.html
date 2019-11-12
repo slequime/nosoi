@@ -178,7 +178,7 @@
       <h1>Spread of a dengue-like virus in a discrete space</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-09-23</h4>
+            <h4 class="date">2019-11-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/dengue.Rmd"><code>vignettes/examples/dengue.Rmd</code></a></small>
       <div class="hidden name"><code>dengue.Rmd</code></div>
@@ -190,7 +190,7 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>In this example, our objective is to simulate a dengue-like epidemic in South-East Asia. Dengue is a dual-host pathogen (arbovirus) that spreads between mosquitoes and humans, with very different within-host dynamics. We will also take into account the location’s influence on the mosquito activity by using the local monthly average temperature : the higher the temperature, the more mosquito activity there is (i.e. the more mosquitoes will bite a human at each time step). Mosquitoes will not move between countries, but humans will; we will use air transportation data to approximate the transition probability matrix between the different countries.</p>
+<p>In this example, our objective is to simulate a dengue-like epidemic in South-East Asia. Dengue is a dual-host pathogen (arbovirus) that spreads between mosquitoes and humans, with very different within-host dynamics. We will also take into account the location’s influence on mosquito activity by using the local monthly average temperature: the higher the temperature, the more mosquito activity (i.e. the more mosquitoes will bite a human at each time step). Mosquitoes will not move between countries, but humans will; we will use air transportation data to approximate the transition probability matrix between the different countries.</p>
 <p>Most of the host parameters used for the simulation will be taken from the following published article:</p>
 <blockquote>
 <p>A. Fontaine, S. Lequime, I. Moltini-Conclois, D. Jiolle, I. Leparc-Goffart, R. C. Reiner Jr. &amp; L. Lambrechts (2018) <em>Epidemiological significance of dengue virus genetic variation in mosquito infection dynamics</em>. <strong>PLoS Pathog.</strong> 14(7): e1007187. <a href="https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1007187">Link</a></p>
@@ -203,7 +203,7 @@
 <div id="average-annual-temperature" class="section level2">
 <h2 class="hasAnchor">
 <a href="#average-annual-temperature" class="anchor"></a>Average annual temperature</h2>
-<p>Here we use <a href="http://worldclim.org/version2">WorldClim v2</a> data (average temperature (°C) - tavg 10m). The rasters are loaded, cut to fit the study site, and the temperature value averaged for each countries (i.e. states in our simulation) each month. Country spatial polygons come from <a href="https://gadm.org/data.html">GADM</a>.</p>
+<p>Here we use <a href="http://worldclim.org/version2">WorldClim v2</a> data (average temperature (°C) - tavg 10m). The rasters are loaded, cut to fit the study site, and the temperature value averaged for all countries (i.e. states in our simulation) each month. Country spatial polygons come from <a href="https://gadm.org/data.html">GADM</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#Initial data</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#3 letter code of countries of interest:</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">SE.Asia &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"CHN"</span>,<span class="st">"KHM"</span>,<span class="st">"LAO"</span>,<span class="st">"THA"</span>,<span class="st">"VNM"</span>)</a>
@@ -239,11 +239,11 @@
 <a class="sourceLine" id="cb1-33" data-line-number="33">}</a>
 <a class="sourceLine" id="cb1-34" data-line-number="34"></a>
 <a class="sourceLine" id="cb1-35" data-line-number="35"><span class="co"># write.csv(final.results, file="avgTemp_data.csv", row.names = FALSE)</span></a></code></pre></div>
-<p>For convenience, you can find this data <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/avgTemp_data.csv">here</a>. We can visualize this data on a map:</p>
+<p>For convenience, you can find this data <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/avgTemp_data.csv">here</a>. We can visualize these data on a map:</p>
 <p><img src="dengue_files/figure-html/avgTemp2-1.png" width="700"></p>
 <p>This is the pattern of average temperature for each country over the year:</p>
 <p><img src="dengue_files/figure-html/avgTemp3-1.png" width="700"></p>
-<p>Using this data, we will fit a trigonometric function to each of the location to get a function that links day of the year to the mean temperature. The function will be of the form <span class="math inline">\(T_{avg} = k_1 \times sin(\frac{2\pi}{365}t) + k_2 \times cos(\frac{2\pi}{365}t) + \beta\)</span> (Eq. 1). We fit this function on data from each location to get the values of <span class="math inline">\(k_1\)</span>, <span class="math inline">\(k_2\)</span> and <span class="math inline">\(\beta\)</span>:</p>
+<p>Using these data, we will fit a trigonometric function to each of the locations to obtain a function that links day of the year to mean temperature. The function will be of the form <span class="math inline">\(T_{avg} = k_1 \times sin(\frac{2\pi}{365}t) + k_2 \times cos(\frac{2\pi}{365}t) + \beta\)</span> (Eq. 1). We fit this function on data from each location to get the values of <span class="math inline">\(k_1\)</span>, <span class="math inline">\(k_2\)</span> and <span class="math inline">\(\beta\)</span>:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">model.coef &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="cf">for</span>(current.country <span class="cf">in</span> SE.Asia){</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">  final.results.country &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(final.results, country <span class="op">==</span><span class="st"> </span>current.country)</a>
@@ -256,7 +256,7 @@
 <a class="sourceLine" id="cb2-10" data-line-number="10">                                            <span class="dt">k1=</span>reslm<span class="op">$</span>coefficients[<span class="dv">2</span>], </a>
 <a class="sourceLine" id="cb2-11" data-line-number="11">                                            <span class="dt">k2=</span>reslm<span class="op">$</span>coefficients[<span class="dv">3</span>]))</a>
 <a class="sourceLine" id="cb2-12" data-line-number="12">}</a></code></pre></div>
-<p>Using the data from <a href="https://link.springer.com/chapter/10.1007/978-3-319-06877-0_4">Rossi et al. (2014) Ecological Modelling Applied to Entomology</a>, we have a link between temperature and oviposition. Since mosquito feeding is directly linked to their oviposition, we will assume that feeding activity follows the same relationship with temperature, i.e. <span class="math inline">\(R_{activity} = \alpha_0 \times (1-e^{\alpha_1(T_{air}-T_{max})}) \times (T_{air}-T_{min})^{\alpha_2}\)</span> (Eq. 2). Temperature is modeled according to (Eq. 1) as a function of time, so we can combine both functions to obtain a direct link, for each location, between mosquito activity and time. This will be then rescale to vary between 0 and 1:</p>
+<p>Using the data from <a href="https://link.springer.com/chapter/10.1007/978-3-319-06877-0_4">Rossi et al. (2014) Ecological Modelling Applied to Entomology</a>, we have a link between temperature and oviposition. Since mosquito feeding is directly linked to their oviposition, we will assume that feeding activity follows the same relationship with temperature, i.e. <span class="math inline">\(R_{activity} = \alpha_0 \times (1-e^{\alpha_1(T_{air}-T_{max})}) \times (T_{air}-T_{min})^{\alpha_2}\)</span> (Eq. 2). Temperature is modeled according to (Eq. 1) as a function of time, so we can combine both functions to obtain a direct link, for each location, between mosquito activity and time. This will be then rescaled to vary between 0 and 1:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#According to Rossi et al:</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#a0 = 0.0011</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#a1 = 0.0101</span></a>
@@ -304,13 +304,13 @@
 <a class="sourceLine" id="cb3-45" data-line-number="45"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">xlim</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">750</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_minimal</span>() <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-46" data-line-number="46"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">"Time (in days)"</span>, <span class="dt">y=</span><span class="st">"Mosquito activity"</span>)</a></code></pre></div>
 <p><img src="dengue_files/figure-html/avgTemp5-1.png" width="700"></p>
-<p>Since this mosquito activity index we have generated should only vary between 0 and 1, when can reformulate <code>fun2</code> as:</p>
+<p>Since this mosquito activity index we have generated should only vary between 0 and 1, we can reformulate <code>fun2</code> as:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">fun2 =<span class="st"> </span><span class="cf">function</span>(x, k1, k2, Beta) {</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">  R.activity =<span class="st"> </span><span class="cf">function</span>(temp){<span class="fl">0.0011</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fl">0.0101</span><span class="op">*</span>(temp<span class="dv">-40</span>)))<span class="op">*</span>(temp<span class="dv">-10</span>)<span class="op">*</span><span class="fl">3.445</span>}</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">  temp =<span class="st"> </span><span class="kw">R.activity</span>(<span class="kw">fun1</span>(x, k1, k2, Beta))<span class="op">/</span><span class="fl">0.008001941</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="cf">if</span> (temp <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>) <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">  <span class="cf">if</span> (temp <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(temp)}</a></code></pre></div>
-<p>Now we can plug everything together to have the full expression of our n_contact function for humans, depending on mosquito activity for each location, itself depending on mean temperature. For each individual host, the daily number of contact is the rounded random draw from a normal distribution with <span class="math inline">\(mean = mosquito.activity \times 2\)</span> (2 being here chosen empirically) and <span class="math inline">\(sd = 1\)</span> (chosen empirically). <code>nContact</code> here thus depends on <code>prestime</code> (“absolute time” of the simulation), and <code>current.in</code> the location of the hosts, thus both <code>timeDep.nContact</code> and <code>diff.nContact</code> should be <code>TRUE</code>.</p>
+<p>Now we can plug everything together to have the full expression of our <code>n_contact</code> function for humans, depending on mosquito activity for each location, which itself depends on the mean temperature. For each individual host, the daily number of contacts is the rounded random draw from a normal distribution with <span class="math inline">\(mean = mosquito.activity \times 2\)</span> (2 being here chosen empirically) and <span class="math inline">\(sd = 1\)</span> (chosen empirically). <code>nContact</code> here thus depends on <code>prestime</code> (“absolute time” of the simulation), and <code>current.in</code>, i.e. the location of the hosts, thus both <code>timeDep.nContact</code> and <code>diff.nContact</code> should be <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">n_contact =<span class="st"> </span><span class="cf">function</span>(t, prestime, current.in) {</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#functions</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">R.activity =<span class="st"> </span><span class="cf">function</span>(temp){<span class="fl">0.0011</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fl">0.0101</span><span class="op">*</span>(temp<span class="dv">-40</span>)))<span class="op">*</span>(temp<span class="dv">-10</span>)<span class="op">*</span><span class="fl">3.445</span>}</a>
@@ -340,8 +340,8 @@
 <div id="air-transportation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#air-transportation" class="anchor"></a>Air transportation</h2>
-<p>We will also model the movement of humans between these different countries assuming they use air transportation. We use here data available at <a href="https://openflights.org/data.html">OpenFlights</a>. This website contains information about the airports and the routes linking two airports together. Since we have no information about the number of passenger on each route, we will assume that the more route link two countries together, the more passenger flight between them.</p>
-<p>First we extract the airports of our study site:</p>
+<p>We will also model the movement of humans between these different countries assuming they use air transportation. We use here data available at <a href="https://openflights.org/data.html">OpenFlights</a>. This website contains information about the airports and the routes linking two airports together. Since we have no information about the number of passengers on each route, we will assume that the more routes link two countries together, the more passengers travel between them.</p>
+<p>First, we extract the airports of our study site:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">airports &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Dengue Data/airports.dat"</span>, <span class="dt">col_names =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(airports)=<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AirportID"</span>,<span class="st">"Name"</span>, <span class="st">"City"</span>, <span class="st">"Country"</span>, <span class="st">"IATA"</span>, <span class="st">"ICAO"</span>, <span class="st">"Latitude"</span>, <span class="st">"Longitude"</span>, <span class="st">"Altitude"</span>, <span class="st">"Timezone"</span>,    <span class="st">"DST"</span>, <span class="st">"Tz"</span>, <span class="st">"Type"</span>, <span class="st">"Source"</span>)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"></a>
@@ -528,7 +528,7 @@
 <a class="sourceLine" id="cb13-9" data-line-number="9">Bd_human_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="fl">4.038</span>,<span class="fl">0.2</span>)}</a>
 <a class="sourceLine" id="cb13-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb13-11" data-line-number="11">param.pTrans_human &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">K_human=</span>K_human_fct, <span class="dt">Mg_human=</span>Mg_human_fct, <span class="dt">Bg_human=</span>Bg_human_fct, <span class="dt">Md_human=</span>Md_human_fct, <span class="dt">Bd_human=</span>Bd_human_fct) </a></code></pre></div>
-<p>The profile over time since infection of 150 unique hosts will look like this (red is the mean value for each parameter): <img src="dengue_files/figure-html/pTrans3-1.png" width="700"></p>
+<p>The profile of <code>pTrans</code> over time since infection of 150 unique hosts will look like this (red is the mean value for each parameter): <img src="dengue_files/figure-html/pTrans3-1.png" width="700"></p>
 </div>
 </div>
 <div id="host-b-mosquitoes" class="section level2">
@@ -538,7 +538,7 @@
 <h3 class="hasAnchor">
 <a href="#pexit-1" class="anchor"></a><code>pExit</code>
 </h3>
-<p>In Fontaine <em>et al.</em> the daily survival probability of a mosquito is 0.85, so its <code>pExit</code> is 1-0.85:</p>
+<p>In Fontaine <em>et al.</em>, the daily survival probability of a mosquito is 0.85, so its <code>pExit</code> equals 1-0.85:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">p_Exit_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.15</span>)}</a></code></pre></div>
 </div>
 <div id="pmove-1" class="section level3">
@@ -552,14 +552,14 @@
 <h3 class="hasAnchor">
 <a href="#ncontact-1" class="anchor"></a><code>nContact</code>
 </h3>
-<p>In Fontaine <em>et al.</em> the daily biting probability of a mosquito is 0.3. We assume that if a mosquito bites, it bites only one human:</p>
+<p>In Fontaine <em>et al.</em>, the daily biting probability of a mosquito is 0.3. We assume that if a mosquito bites, it bites only one human:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">nContact_fct_mosquito &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="dv">1</span>,<span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.7</span>,<span class="fl">0.3</span>))}</a></code></pre></div>
 </div>
 <div id="ptrans-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ptrans-1" class="anchor"></a><code>pTrans</code>
 </h3>
-<p>In Fontaine <em>et al.</em> the probability of transmission from a mosquito to a human is approximated by their measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that <code>pTrans</code> is defined in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (<code>t_EIP</code>), and after that time, it will transmit with a certain (constant) probability (which we will call <code>p_max</code>). This function will be dependent on the time since the mosquito’s infection <code>t</code>:</p>
+<p>In Fontaine <em>et al.</em>, the probability of transmission from a mosquito to a human is approximated by the measure of dissemination, a proxy for the extrinsic incubation period (EIP). We will assume here that <code>pTrans</code> is defined in the form of a threshold function: before a certain amount of time since initial infection (EIP), the mosquito does not transmit (<code>t_EIP</code>), and after that time, it will transmit with a certain (constant) probability (which we will call <code>p_max</code>). This function will be dependent on the time since the mosquito’s infection <code>t</code>:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">p_Trans_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t, p_max, t_EIP){</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2">    <span class="cf">if</span>(t <span class="op">&lt;</span><span class="st"> </span>t_EIP){p=<span class="dv">0</span>}</a>
 <a class="sourceLine" id="cb17-3" data-line-number="3">    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_EIP){p=p_max}</a>
@@ -729,7 +729,7 @@
 <pre><code>##  running ...</code></pre>
 <pre><code>## done. 
 ## The simulation has run for 96 units of time and a total of 5253 (A) and 16699 (B) hosts have been infected.</code></pre>
-<p>The simulation has run for 96 and has infected 5253 humans and 1.669910^{4} mosquitoes. The simulation was stopped because it reached the infected human cap <code>max.infected.A</code>.</p>
+<p>The simulation has run for 96 units of time and has infected 5253 humans and 1.669910^{4} mosquitoes. The simulation was stopped because it reached the infected human cap <code>max.infected.A</code>.</p>
 </div>
 <div id="analyzing-the-results" class="section level1">
 <h1 class="hasAnchor">
@@ -793,12 +793,12 @@
 <div id="epidemiological-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#epidemiological-analysis" class="anchor"></a>Epidemiological analysis</h2>
-<p>As interesting as the visualization might be, we can also explore a bit the epidemic parameters, for example the “real” <span class="math inline">\(R_0\)</span>, defined as the average number of cases one case generates, often estimated in epidemiological studies. For this we can use the following code:</p>
+<p>As interesting as the visualization might be, we can also explore the epidemic parameters, for example the “real” <span class="math inline">\(R_0\)</span>, defined as the average number of cases one case generates, often estimated in epidemiological studies. To this end, we can use the following code:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">R0.sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getR0.html">getR0</a></span>(test.nosoiA)</a></code></pre></div>
-<p>Mean value for <span class="math inline">\(R_0\)</span> is 3.23, which is coherent with <span class="math inline">\(R_0\)</span> estimates for dengue (see for example <a href="https://apps.who.int/iris/handle/10665/170261">Nishiura 2006 <em>Dengue Bulletin</em></a>. Its distribution shows that most of the human hosts are responsible for the infection of a least one other human hosts:</p>
+<p>The mean value for <span class="math inline">\(R_0\)</span> is 3.23, which is coherent with <span class="math inline">\(R_0\)</span> estimates for dengue (see for example <a href="https://apps.who.int/iris/handle/10665/170261">Nishiura 2006 <em>Dengue Bulletin</em></a>). Its distribution shows that most of the human hosts are responsible for the infection of a least one other human host:</p>
 <p><img src="dengue_files/figure-html/generalEpi2-1.png" width="700"></p>
-<p>On the mosquito side, mean value for <span class="math inline">\(R_0\)</span> is 0.27 and the distribution shows that most of the mosquitoes, except a few, are actually dead-end hosts: <img src="dengue_files/figure-html/generalEpi3-1.png" width="700"></p>
-<p>The two following figures also give the epidemiological dynamics of the simulation:</p>
+<p>On the mosquito side, the mean value for <span class="math inline">\(R_0\)</span> is 0.27 and the distribution shows that most of the mosquitoes, except for a few, are actually dead-end hosts: <img src="dengue_files/figure-html/generalEpi3-1.png" width="700"></p>
+<p>The two following figures also provide the epidemiological dynamics of the simulation:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
 <a class="sourceLine" id="cb31-2" data-line-number="2">cumulative.table &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getCumulative.html">getCumulative</a></span>(test.nosoiA)</a>
 <a class="sourceLine" id="cb31-3" data-line-number="3">dynamics.table &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getDynamic.html">getDynamic</a></span>(test.nosoiA)</a>
@@ -811,16 +811,16 @@
 <div id="transmission-chain" class="section level2">
 <h2 class="hasAnchor">
 <a href="#transmission-chain" class="anchor"></a>Transmission chain</h2>
-<p>The central transmission chain simulated by <code>nosoi</code> can also be visualized. For that, we generate the transmission tree as a phylogenetic tree-like object by using the <code>getTransmissionTree</code> function implemented in <code>nosoi</code>:</p>
+<p>The central transmission chain simulated by <code>nosoi</code> can also be visualized. To achieve this, we generate the transmission tree as a phylogenetic tree-like object by using the <code>getTransmissionTree</code> function implemented in <code>nosoi</code>:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">test.nosoiA.tree &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getTransmissionTree.html">getTransmissionTree</a></span>(test.nosoiA)</a></code></pre></div>
-<p>This function gives you a <code>treedata</code> object that can be visualized as a phylogenetic-tree with the package :</p>
+<p>This function gives you a <code>treedata</code> object that can be visualized as a phylogenetic tree with the package :</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggtree)</a>
 <a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span>(test.nosoiA.tree, <span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span>(<span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="co"># geom_tiplab(aes(label=host)) + </span></a>
 <a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
 <a class="sourceLine" id="cb34-4" data-line-number="4">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
 <a class="sourceLine" id="cb34-5" data-line-number="5">        <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())</a></code></pre></div>
 <p><img src="dengue_files/figure-html/treeC-1.png" width="700"></p>
-<p>This tree is a bit messy, considering the number of transmission events and the overall size of this epidemic. We can also sub-sample it randomly. We will select here 150 individuals sampled at the time of their exit (either death or recovery):</p>
+<p>This tree is a bit messy, which was to be expected considering the number of transmission events and the overall size of this epidemic. We can also subsample it randomly. We will here select 150 individuals sampled at the time of their exit (either death or recovery):</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="co">#Extracts data from the nosoiSim object:</span></a>
 <a class="sourceLine" id="cb35-2" data-line-number="2">test.table.hosts &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getTableHosts.html">getTableHosts</a></span>(test.nosoiA, <span class="dt">pop=</span><span class="st">"A"</span>)</a>
 <a class="sourceLine" id="cb35-3" data-line-number="3"><span class="co"># test.nosoiA.tree &lt;- getTransmissionTree(test.nosoiA)</span></a>
@@ -842,7 +842,7 @@
 <div id="other-use" class="section level2">
 <h2 class="hasAnchor">
 <a href="#other-use" class="anchor"></a>Other use</h2>
-<p>External software could be used to explore more into details the dynamic of this epidemic and transmission chain. The <code>write.beast</code> function of the <code>treeio</code> package allows for an easy export of the transmission chain as a phylogenetic-like tree, in a similar format as <a href="https://beast.community/">BEAST</a> trees.</p>
+<p>External software can be used to perform a more detailed exploration of the dynamics of this epidemic and transmission chain. The <code>write.beast</code> function of the <code>treeio</code> package allows for an easy export of the transmission chain as a phylogenetic-like tree, in a similar format as <a href="https://beast.community/">BEAST</a> trees.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">treeio<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treeio/man/write.beast.html">write.beast</a></span>(test.nosoiA.tree, <span class="dt">file =</span> <span class="st">"test.tre"</span>, <span class="dt">translate =</span> <span class="ot">TRUE</span>, <span class="dt">tree.name =</span> <span class="st">"UNTITLED"</span>)</a></code></pre></div>
 </div>
 </div>
