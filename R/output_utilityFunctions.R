@@ -12,32 +12,32 @@
 #' @seealso To directly extract \code{table.hosts} or \code{table.state}, you can also use \code{\link{getTableHosts}} and \code{\link{getTableState}} respectively.
 #' @examples
 #' \dontrun{
-#'t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
-#'p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-#'p_Exit_fct  <- function(t){return(0.08)}
+#' t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+#' p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+#' p_Exit_fct  <- function(t){return(0.08)}
 #'
-#'proba <- function(t,p_max,t_incub){
-#'  if(t <= t_incub){p=0}
-#'  if(t >= t_incub){p=p_max}
-#'  return(p)
-#'}
+#' proba <- function(t,p_max,t_incub){
+#'   if(t <= t_incub){p=0}
+#'   if(t >= t_incub){p=p_max}
+#'   return(p)
+#' }
 #'
-#'time_contact <- function(t){round(rnorm(1, 3, 1), 0)}
+#' time_contact <- function(t){round(rnorm(1, 3, 1), 0)}
 #'
-#'test.nosoiA <- nosoiSim(type="single", popStructure="none",
-#'                         length=40,
-#'                         max.infected=100,
-#'                         init.individuals=1,
-#'                         nContact=time_contact,
-#'                         param.nContact=NA,
-#'                         pTrans = proba,
-#'                         param.pTrans = list(p_max=p_max_fct,
-#'                                             t_incub=t_incub_fct),
-#'                         pExit=p_Exit_fct,
-#'                         param.pExit=NA)
+#' test.nosoi <- nosoiSim(type="single", popStructure="none",
+#'                        length=40,
+#'                        max.infected=100,
+#'                        init.individuals=1,
+#'                        nContact=time_contact,
+#'                        param.nContact=NA,
+#'                        pTrans = proba,
+#'                        param.pTrans = list(p_max=p_max_fct,
+#'                                            t_incub=t_incub_fct),
+#'                        pExit=p_Exit_fct,
+#'                        param.pExit=NA)
 #'
 #'
-#'data.extracted <- getHostData(test.nosoiA, "table.hosts", "A")
+#' data.extracted <- getHostData(test.nosoi, "table.hosts", "A")
 #'}
 #' @export getHostData
 
