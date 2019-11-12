@@ -4,7 +4,8 @@
 #'
 #' @description This function provides summary information about the simulation (number of infected hosts, R0, etc.) as a list.
 #'
-#' @param nosoi.output Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).
+#' @param object Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).
+#' @param ... further arguments passed to or from other methods.
 
 #' @return All computed data is provided in a list:
 #' \describe{
@@ -50,22 +51,31 @@
 #' @importFrom dplyr summarise
 #' @importFrom dplyr mutate
 
-nosoiSummary <- function(nosoi.output){
+nosoiSummary <- function(object){
 
   #Get R0
-  R0 <- getR0(nosoi.output)
+  R0 <- getR0(object)
 
   #Get Dynamics
-  Dynamics <- getDynamic(nosoi.output)
+  Dynamics <- getDynamic(object)
 
   #Get Cumulative
-  Cumulative <- getCumulative(nosoi.output)
+  Cumulative <- getCumulative(object)
 
-  summary.nosoi = list(R0=R0,
-                       dynamics=Dynamics,
-                       cumulative=Cumulative)
+  summary.nosoi = list(R0 = R0,
+                       dynamics = Dynamics,
+                       cumulative = Cumulative)
 
   return(summary.nosoi)
+}
+
+##
+#' @rdname nosoiSummary
+#' @export
+#' @method summary nosoiSim
+##
+summary.nosoiSim <- function(object, ...){
+  return(nosoiSummary(object))
 }
 
 #' @title Number of active infected hosts at time t
@@ -146,7 +156,7 @@ cumulativeInfected  <- function(table.nosoi, t) {
 #'    \item{type}{Host-type, identified by its user-defined prefix.}
 #'    }
 #'
-#' @seealso \code{\link{nosoiSummary}}
+#' @seealso \code{\link{summary.nosoiSim}}
 #'
 #' @export getCumulative
 
@@ -186,7 +196,7 @@ getCumulative  <- function(nosoi.output) {
 #'    \item{t}{Time-step (integer).}
 #'    }
 #'
-#' @seealso \code{\link{nosoiSummary}}
+#' @seealso \code{\link{summary.nosoiSim}}
 #'
 #' @import magrittr
 #' @importFrom dplyr group_by
@@ -259,7 +269,7 @@ getDynamic  <- function(nosoi.output) {
 #'    \item{R0.dist}{Distribution for each host of the secondary cases it generated (in case of dual-hosts, then the secondary cases of the same host-type).}
 #'    }
 #'
-#' @seealso \code{\link{nosoiSummary}}
+#' @seealso \code{\link{summary.nosoiSim}}
 #'
 #' @import stringr
 #' @import magrittr

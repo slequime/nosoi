@@ -179,7 +179,7 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   expect_equal(subset(Where.at.end, current.in == "C")$N,43)
 
   #Summary
-  test <- nosoiSummary(test.nosoiA)
+  test <- summary(test.nosoiA)
 
   expect_equal(test$R0$N.inactive, 31)
   expect_equal(test$dynamics[21]$t, 14)

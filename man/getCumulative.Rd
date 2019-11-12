@@ -21,5 +21,5 @@ The output is a \code{\link[data.table:data.table-package]{data.table}} with the
 This function computes from the output of a \code{nosoiSim} simulation the cumulative count of infected hosts at each time step of the simulation. The output is a \code{\link[data.table:data.table-package]{data.table}}.
 }
 \seealso{
-\code{\link{nosoiSummary}}
+\code{\link{summary.nosoiSim}}
 }

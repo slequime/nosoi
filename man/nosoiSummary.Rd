@@ -2,12 +2,17 @@
 % Please edit documentation in R/output_nosoiSummary.R
 \name{nosoiSummary}
 \alias{nosoiSummary}
+\alias{summary.nosoiSim}
 \title{Summarizes the epidemiological features of a \code{nosoi} simulation}
 \usage{
-nosoiSummary(nosoi.output)
+nosoiSummary(object)
+
+\method{summary}{nosoiSim}(object, ...)
 }
 \arguments{
-\item{nosoi.output}{Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).}
+\item{object}{Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).}
+
+\item{...}{further arguments passed to or from other methods.}
 }
 \value{
 All computed data is provided in a list:

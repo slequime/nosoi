@@ -154,7 +154,7 @@ print.nosoiSim <- function(x, ...){
   if (x$host.info.A$popStructure == "continuous") cat("a continuous structure.")
   cat(endMessageText(x$host.info.A$N.infected, x$host.info.A$N.infected,
                      x$total.time, x$type, ""))
-  cat("\nUse function 'nosoiSummary' for summary statistics, and functions 'getTableHosts' and 'getTableState' to extract the generated data.")
+  cat("\nUse function 'summary' for summary statistics, and functions 'getTableHosts' and 'getTableState' to extract the generated data.")
 }
 
 #' @title nosoiSimOne Constructor

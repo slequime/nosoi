@@ -71,7 +71,7 @@ test_that("Transmission is coherent with single introduction (host A) same for b
 
   #Test output
 
-  test <- nosoiSummary(test.nosoiA)
+  test <- summary(test.nosoiA)
 
   expect_equal(test$R0$N.inactive.A, 20)
   expect_equal(test$R0$N.inactive.B, 7)

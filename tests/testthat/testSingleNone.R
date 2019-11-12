@@ -63,7 +63,7 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
 
-  test <- nosoiSummary(test.nosoiA)
+  test <- summary(test.nosoiA)
 
   expect_equal(test$R0$N.inactive, 16)
   expect_equal(test$R0$R0.mean, 0)

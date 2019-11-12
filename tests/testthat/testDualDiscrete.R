@@ -106,7 +106,7 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
 
   #Test output
 
-  test <- nosoiSummary(test.nosoiA)
+  test <- summary(test.nosoiA)
 
   expect_equal(test$R0$N.inactive.A, 26)
   expect_equal(test$dynamics[21]$t, 11)
