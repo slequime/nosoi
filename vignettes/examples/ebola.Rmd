@@ -158,7 +158,7 @@ proba <- function(t, t_incub) {
 
 Now that every parameter and function has been chosen and set up, we can run the simulation. Most of the replicates will fail to yield a "successful" epidemic (i.e. with a lot of infected individuals) due to the high stochasticity of the model. However some will work; the following random number seed assures that a "successful" simulation will occur.
 
-```{r Runs, message=FALSE, warning=FALSE}
+```{r Runs, message=TRUE, warning=FALSE}
 library(raster)
 library(nosoi)
 
@@ -263,8 +263,7 @@ test.nosoiA <- nosoiSim(
 
   #Closing parameters:
 	prefix.host = "H", 
-	print.progress = TRUE,
-	print.step = 1
+	print.progress = FALSE
 )
 ```
 
@@ -311,7 +310,7 @@ animate(animated.plot, nframes=test.nosoiA$total.time*2+10,duration=40,end_pause
 ```
 ![](ebola-like.gif)
 
-In this animation, green dots represent the infected hosts, each dot being an individual host (beware, dots can overlap). The transparency for each dot allows to visualize superposition of dots, in a certain measure. Time is in days.
+In this animation, green dots represent the infected hosts, each dot being an individual host (beware, dots can overlap). The transparency for each dot allows to visualize superposition of dots, in a certain measure, and explains why some dots appear darker (no overlap) than others (overlap). Time is in days.
 
 > Beware, the gif file displayed here has been produced with a lower resolution raster to avoid a big file size. If you try to prepare this gif without reducing the raster resolution, it might take several hours (or days!) to finish.
 

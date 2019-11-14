@@ -178,7 +178,7 @@
       <h1>Spread of an Ebola-like virus in continuous space</h1>
                         <h4 class="author">Sebastian Lequime &amp; Simon Dellicour</h4>
             
-            <h4 class="date">2019-09-23</h4>
+            <h4 class="date">2019-11-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/ebola.Rmd"><code>vignettes/examples/ebola.Rmd</code></a></small>
       <div class="hidden name"><code>ebola.Rmd</code></div>
@@ -201,7 +201,7 @@
 <a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(tmp_dir, tmp_file))</a></code></pre></div>
 <p>We can then plot the map used in this example (here represented on a log scale to show efficiently differences in distribution):</p>
 <p><img src="ebola_files/figure-html/importRaster-1.png" width="700"></p>
-<p>Ebola will here be considered a single-host pathogen, and some of the pathogen related parameters will be found in the literature. The others will be empirically fixed to realistic values. As estimated for the 2013 epidemic, the first infected host will start at Gueckedou in Guinea.</p>
+<p>Ebola will here be considered a single-host pathogen, and some of the pathogen-related parameters can be found in the literature. The others will be empirically fixed to realistic values. As estimated for the 2013 epidemic, the first infected host will start at Gueckedou in Guinea.</p>
 </div>
 <div id="host-parameters" class="section level1">
 <h1 class="hasAnchor">
@@ -227,9 +227,9 @@
 <a class="sourceLine" id="cb2-14" data-line-number="14">        }</a>
 <a class="sourceLine" id="cb2-15" data-line-number="15">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(t_incub)</a>
 <a class="sourceLine" id="cb2-16" data-line-number="16">}</a></code></pre></div>
-<p>Which gives the following distribution for 1,000 hosts:</p>
+<p>which gives the following distribution for 1,000 hosts:</p>
 <p><img src="ebola_files/figure-html/tincubDemo-1.png" width="700"></p>
-<p>If “time since infection” (hereafter <code>t</code>) is below the incubation time (<code>t_incub</code>), then the probability to exit is null. If <code>t</code> is greater that <code>t_incub</code> but below a recovery time (<code>t_recovery</code> fixed at 20 days after symptom onset), then the daily probability to exit (by dying) is 2.5%. If <code>t</code> is greater than <code>t_recovery</code>, then the probability to exit is (by being cured) is 1.</p>
+<p>If “time since infection” (hereafter <code>t</code>) is below the incubation time (<code>t_incub</code>), then the probability to exit is null. If <code>t</code> is greater that <code>t_incub</code> but below a recovery time (<code>t_recovery</code> fixed at 20 days after symptom onset), then the daily probability to exit (by dying) is 2.5%. If <code>t</code> is greater than <code>t_recovery</code>, then the probability to exit (by being cured) is 1.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p_Exit_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t, t_incub){ <span class="co"># return(0.1)} # should return a value between 0 and 1 (probability)</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  t_recovery =<span class="st"> </span><span class="dv">20</span> <span class="co"># days before recovery</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span> }</a>
@@ -241,21 +241,21 @@
 <div id="movement" class="section level2">
 <h2 class="hasAnchor">
 <a href="#movement" class="anchor"></a>Movement</h2>
-<p>The daily probability to move <code>pMove</code> for a host is empirically set to 0.01 (1% chance for a host to move each day) before onset of symptoms. We will assume here that every infection will be symptomatic (although this is a crude assumption). Once symptoms are here, <code>pMove</code> will be set at 0.</p>
+<p>The daily probability to move <code>pMove</code> for a host is empirically set to 0.01 (1% chance for a host to move each day) before onset of symptoms. We will assume here that every infection will be symptomatic (although this is a crude assumption). Once symptoms are apparent, <code>pMove</code> will be set at 0.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">p_Move_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t, t_incub){ </a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">   <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="fl">0.01</span> }</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">   <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span>}</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">       <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)}</a></code></pre></div>
 <p>The distance traveled is determined by the standard deviation of the Brownian motion (<code>sdMove</code>) used as the movement kernel in <code>nosoi</code>. Keep in mind that this standard deviation is in your coordinate space, so the actual distance traveled by the host may actually vary according to your space. For each host that moves, a standard deviation will be sampled using this function:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"> sdMove_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dv">1</span>,<span class="dt">min=</span><span class="fl">0.5</span>,<span class="dt">max=</span><span class="dv">3</span>)}</a></code></pre></div>
-<p>This function will lead the following distribution for 1,000 hosts:</p>
+<p>This function will lead to the following distribution for 1,000 hosts:</p>
 <p><img src="ebola_files/figure-html/sdMove2-1.png" width="700"></p>
 </div>
 <div id="ncontact" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ncontact" class="anchor"></a><code>nContact</code>
 </h2>
-<p>Daily number of infection contacts <code>nContact</code> per infected host will be fixed at 5, but will depend on the number of hosts (i.e. population) around. It will thus depend on the “environmental value” <code>current.env.value</code> provided by the raster. To avoid reaching unrealistic values (i.e. much more infected hosts than hosts leaving there), a cap provided by <code>host.count</code> (number of hosts currently in the raster cell) will be used:</p>
+<p>The daily number of infection contacts <code>nContact</code> per infected host will be fixed at 5, but will depend on the number of hosts (i.e. population) around. It will thus depend on the “environmental value” <code>current.env.value</code> provided by the raster. To avoid reaching unrealistic values (i.e. much more infected hosts than hosts leaving there), a cap provided by <code>host.count</code> (number of hosts currently in the raster cell) will be used:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">n_contact &lt;-<span class="st"> </span><span class="cf">function</span>(t, current.env.value, host.count){ </a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="cf">if</span>(host.count <span class="op">&lt;</span><span class="st"> </span>current.env.value){<span class="dv">5</span>}</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="cf">if</span>(host.count <span class="op">&gt;=</span><span class="st"> </span>current.env.value){<span class="dv">0</span>}</a>
@@ -279,112 +279,121 @@
 </h1>
 <p>Now that every parameter and function has been chosen and set up, we can run the simulation. Most of the replicates will fail to yield a “successful” epidemic (i.e. with a lot of infected individuals) due to the high stochasticity of the model. However some will work; the following random number seed assures that a “successful” simulation will occur.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(raster)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nosoi)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#Raster (to uncomment in your case):</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># e_WestAfrica = extent(-18, -3, 3, 15) # WorldPop Africa raster:</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co"># population = crop(raster("~/path/to/the/raster.tif"), e_WestAfrica)</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#Starting parameter:</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10">start.pos &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">10.132</span>, <span class="fl">8.561</span>) <span class="co"># Guéckédou in Guinea</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#pExit:</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13">p_Exit_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t, t_incub){</a>
-<a class="sourceLine" id="cb8-14" data-line-number="14">  t_recovery =<span class="st"> </span><span class="dv">20</span> <span class="co"># days before recovery</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15">  <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span> }</a>
-<a class="sourceLine" id="cb8-16" data-line-number="16">  <span class="cf">if</span> ((t <span class="op">&gt;</span><span class="st"> </span>t_incub)<span class="op">&amp;</span>(t <span class="op">&lt;</span><span class="st"> </span>(t_incub<span class="op">+</span>t_recovery))) { p =<span class="st"> </span><span class="fl">0.025</span> } <span class="co"># 50% chance to dye before recovery</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17">  <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>(t_incub<span class="op">+</span>t_recovery)) { p =<span class="st"> </span><span class="dv">1</span> } </a>
-<a class="sourceLine" id="cb8-18" data-line-number="18">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
-<a class="sourceLine" id="cb8-19" data-line-number="19">}</a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#pMove:</span></a>
-<a class="sourceLine" id="cb8-22" data-line-number="22">p_Move_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t, t_incub){ </a>
-<a class="sourceLine" id="cb8-23" data-line-number="23">   <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="fl">0.01</span> }</a>
-<a class="sourceLine" id="cb8-24" data-line-number="24">   <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span>}</a>
-<a class="sourceLine" id="cb8-25" data-line-number="25">       <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)}</a>
-<a class="sourceLine" id="cb8-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#sdMove:</span></a>
-<a class="sourceLine" id="cb8-28" data-line-number="28"> sdMove_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dv">1</span>,<span class="dt">min=</span><span class="fl">0.5</span>,<span class="dt">max=</span><span class="dv">3</span>)}</a>
-<a class="sourceLine" id="cb8-29" data-line-number="29"> </a>
-<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#nContact:</span></a>
-<a class="sourceLine" id="cb8-31" data-line-number="31">n_contact &lt;-<span class="st"> </span><span class="cf">function</span>(t, current.env.value, host.count){ </a>
-<a class="sourceLine" id="cb8-32" data-line-number="32">  <span class="cf">if</span>(host.count <span class="op">&lt;</span><span class="st"> </span>current.env.value){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">3</span>)}</a>
-<a class="sourceLine" id="cb8-33" data-line-number="33">  <span class="cf">if</span>(host.count <span class="op">&gt;=</span><span class="st"> </span>current.env.value){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">0</span>)}</a>
-<a class="sourceLine" id="cb8-34" data-line-number="34">}</a>
-<a class="sourceLine" id="cb8-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#pTrans:</span></a>
-<a class="sourceLine" id="cb8-37" data-line-number="37">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb8-38" data-line-number="38">    t_incub &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>()</a>
-<a class="sourceLine" id="cb8-39" data-line-number="39">    <span class="cf">while</span> (<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(t_incub) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb8-40" data-line-number="40">        {</a>
-<a class="sourceLine" id="cb8-41" data-line-number="41">            t_incub =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x, <span class="dt">mean=</span><span class="fl">6.5</span>, <span class="dt">sd=</span><span class="fl">2.5</span>)</a>
-<a class="sourceLine" id="cb8-42" data-line-number="42">            t_incub =<span class="st"> </span>t_incub[(t_incub<span class="op">&gt;=</span><span class="dv">2</span>)<span class="op">&amp;</span>(t_incub<span class="op">&lt;=</span><span class="dv">21</span>)]</a>
-<a class="sourceLine" id="cb8-43" data-line-number="43">            <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(t_incub) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb8-44" data-line-number="44">                {</a>
-<a class="sourceLine" id="cb8-45" data-line-number="45">                    <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(t_incub) <span class="op">&lt;</span><span class="st"> </span>x)</a>
-<a class="sourceLine" id="cb8-46" data-line-number="46">                        {</a>
-<a class="sourceLine" id="cb8-47" data-line-number="47">                            <span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(t_incub)</a>
-<a class="sourceLine" id="cb8-48" data-line-number="48">                            t_incub &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(t_incub, <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(t_incub,x<span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(t_incub)))</a>
-<a class="sourceLine" id="cb8-49" data-line-number="49">                        }</a>
-<a class="sourceLine" id="cb8-50" data-line-number="50">                }   </a>
-<a class="sourceLine" id="cb8-51" data-line-number="51">        }</a>
-<a class="sourceLine" id="cb8-52" data-line-number="52">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(t_incub)</a>
-<a class="sourceLine" id="cb8-53" data-line-number="53">}</a>
-<a class="sourceLine" id="cb8-54" data-line-number="54"></a>
-<a class="sourceLine" id="cb8-55" data-line-number="55">proba =<span class="st"> </span><span class="cf">function</span>(t, t_incub) {</a>
-<a class="sourceLine" id="cb8-56" data-line-number="56">  <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span> }</a>
-<a class="sourceLine" id="cb8-57" data-line-number="57">  <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="fl">0.025</span> }</a>
-<a class="sourceLine" id="cb8-58" data-line-number="58">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
-<a class="sourceLine" id="cb8-59" data-line-number="59">}</a>
-<a class="sourceLine" id="cb8-60" data-line-number="60"></a>
-<a class="sourceLine" id="cb8-61" data-line-number="61"><span class="co">#Starting the simulation ------------------------------------</span></a>
-<a class="sourceLine" id="cb8-62" data-line-number="62"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">505060</span>)</a>
-<a class="sourceLine" id="cb8-63" data-line-number="63">test.nosoiA &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/nosoiSim.html">nosoiSim</a></span>(</a>
-<a class="sourceLine" id="cb8-64" data-line-number="64">    <span class="dt">type =</span> <span class="st">"single"</span>, <span class="dt">popStructure =</span> <span class="st">"continuous"</span>,</a>
-<a class="sourceLine" id="cb8-65" data-line-number="65">    <span class="dt">length =</span> <span class="dv">365</span>, </a>
-<a class="sourceLine" id="cb8-66" data-line-number="66">    <span class="dt">max.infected =</span> <span class="dv">10000</span>, </a>
-<a class="sourceLine" id="cb8-67" data-line-number="67">    <span class="dt">init.individuals =</span> <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb8-68" data-line-number="68">    <span class="dt">init.structure =</span> start.pos,</a>
-<a class="sourceLine" id="cb8-69" data-line-number="69">    <span class="dt">structure.raster =</span> population,</a>
-<a class="sourceLine" id="cb8-70" data-line-number="70">    </a>
-<a class="sourceLine" id="cb8-71" data-line-number="71">    <span class="co">#pExit:</span></a>
-<a class="sourceLine" id="cb8-72" data-line-number="72">    <span class="dt">diff.pExit =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb8-73" data-line-number="73">    <span class="dt">timeDep.pExit =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb8-74" data-line-number="74">    <span class="dt">pExit =</span> p_Exit_fct, </a>
-<a class="sourceLine" id="cb8-75" data-line-number="75">    <span class="dt">param.pExit =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">t_incub =</span> t_incub_fct),</a>
-<a class="sourceLine" id="cb8-76" data-line-number="76">    </a>
-<a class="sourceLine" id="cb8-77" data-line-number="77">    <span class="co">#pMove:</span></a>
-<a class="sourceLine" id="cb8-78" data-line-number="78">    <span class="dt">diff.pMove =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb8-79" data-line-number="79">    <span class="dt">timeDep.pMove =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb8-80" data-line-number="80">    <span class="dt">pMove =</span> p_Move_fct,</a>
-<a class="sourceLine" id="cb8-81" data-line-number="81">    <span class="dt">param.pMove =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">t_incub =</span> t_incub_fct),</a>
-<a class="sourceLine" id="cb8-82" data-line-number="82">    </a>
-<a class="sourceLine" id="cb8-83" data-line-number="83">    <span class="co">#sdMove:</span></a>
-<a class="sourceLine" id="cb8-84" data-line-number="84">    <span class="dt">diff.sdMove =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb8-85" data-line-number="85">    <span class="dt">timeDep.sdMove =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb8-86" data-line-number="86">    <span class="dt">sdMove =</span> sdMove_fct, </a>
-<a class="sourceLine" id="cb8-87" data-line-number="87">    <span class="dt">param.sdMove =</span> <span class="ot">NA</span>, </a>
-<a class="sourceLine" id="cb8-88" data-line-number="88">    <span class="dt">attracted.by.raster =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb8-89" data-line-number="89">    </a>
-<a class="sourceLine" id="cb8-90" data-line-number="90">    <span class="co">#nContact:</span></a>
-<a class="sourceLine" id="cb8-91" data-line-number="91">    <span class="dt">diff.nContact =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb8-92" data-line-number="92">    <span class="dt">timeDep.nContact =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb8-93" data-line-number="93">    <span class="dt">hostCount.nContact =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb8-94" data-line-number="94">    <span class="dt">nContact =</span> n_contact,</a>
-<a class="sourceLine" id="cb8-95" data-line-number="95">    <span class="dt">param.nContact =</span> <span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb8-96" data-line-number="96">    </a>
-<a class="sourceLine" id="cb8-97" data-line-number="97">    <span class="co">#pTrans:</span></a>
-<a class="sourceLine" id="cb8-98" data-line-number="98">    <span class="dt">diff.pTrans =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb8-99" data-line-number="99">    <span class="dt">timeDep.pTrans =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb8-100" data-line-number="100">    <span class="dt">pTrans =</span> proba, </a>
-<a class="sourceLine" id="cb8-101" data-line-number="101">    <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">t_incub =</span> t_incub_fct),</a>
-<a class="sourceLine" id="cb8-102" data-line-number="102"></a>
-<a class="sourceLine" id="cb8-103" data-line-number="103">  <span class="co">#Closing parameters:</span></a>
-<a class="sourceLine" id="cb8-104" data-line-number="104">    <span class="dt">prefix.host =</span> <span class="st">"H"</span>, </a>
-<a class="sourceLine" id="cb8-105" data-line-number="105">    <span class="dt">print.progress =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb8-106" data-line-number="106">    <span class="dt">print.step =</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb8-107" data-line-number="107">)</a></code></pre></div>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nosoi)</a></code></pre></div>
+<pre><code>## Loading required package: data.table</code></pre>
+<pre><code>## 
+## Attaching package: 'data.table'</code></pre>
+<pre><code>## The following object is masked from 'package:raster':
+## 
+##     shift</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">#Raster (to uncomment in your case):</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co"># e_WestAfrica = extent(-18, -3, 3, 15) # WorldPop Africa raster:</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co"># population = crop(raster("~/path/to/the/raster.tif"), e_WestAfrica)</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#Starting parameter:</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">start.pos &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">10.132</span>, <span class="fl">8.561</span>) <span class="co"># Guéckédou in Guinea</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#pExit:</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">p_Exit_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t, t_incub){</a>
+<a class="sourceLine" id="cb12-11" data-line-number="11">  t_recovery =<span class="st"> </span><span class="dv">20</span> <span class="co"># days before recovery</span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12">  <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span> }</a>
+<a class="sourceLine" id="cb12-13" data-line-number="13">  <span class="cf">if</span> ((t <span class="op">&gt;</span><span class="st"> </span>t_incub)<span class="op">&amp;</span>(t <span class="op">&lt;</span><span class="st"> </span>(t_incub<span class="op">+</span>t_recovery))) { p =<span class="st"> </span><span class="fl">0.025</span> } <span class="co"># 50% chance to dye before recovery</span></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14">  <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>(t_incub<span class="op">+</span>t_recovery)) { p =<span class="st"> </span><span class="dv">1</span> } </a>
+<a class="sourceLine" id="cb12-15" data-line-number="15">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
+<a class="sourceLine" id="cb12-16" data-line-number="16">}</a>
+<a class="sourceLine" id="cb12-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#pMove:</span></a>
+<a class="sourceLine" id="cb12-19" data-line-number="19">p_Move_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t, t_incub){ </a>
+<a class="sourceLine" id="cb12-20" data-line-number="20">   <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="fl">0.01</span> }</a>
+<a class="sourceLine" id="cb12-21" data-line-number="21">   <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span>}</a>
+<a class="sourceLine" id="cb12-22" data-line-number="22">       <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)}</a>
+<a class="sourceLine" id="cb12-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co">#sdMove:</span></a>
+<a class="sourceLine" id="cb12-25" data-line-number="25"> sdMove_fct &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dv">1</span>,<span class="dt">min=</span><span class="fl">0.5</span>,<span class="dt">max=</span><span class="dv">3</span>)}</a>
+<a class="sourceLine" id="cb12-26" data-line-number="26"> </a>
+<a class="sourceLine" id="cb12-27" data-line-number="27"><span class="co">#nContact:</span></a>
+<a class="sourceLine" id="cb12-28" data-line-number="28">n_contact &lt;-<span class="st"> </span><span class="cf">function</span>(t, current.env.value, host.count){ </a>
+<a class="sourceLine" id="cb12-29" data-line-number="29">  <span class="cf">if</span>(host.count <span class="op">&lt;</span><span class="st"> </span>current.env.value){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">3</span>)}</a>
+<a class="sourceLine" id="cb12-30" data-line-number="30">  <span class="cf">if</span>(host.count <span class="op">&gt;=</span><span class="st"> </span>current.env.value){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">0</span>)}</a>
+<a class="sourceLine" id="cb12-31" data-line-number="31">}</a>
+<a class="sourceLine" id="cb12-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb12-33" data-line-number="33"><span class="co">#pTrans:</span></a>
+<a class="sourceLine" id="cb12-34" data-line-number="34">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){</a>
+<a class="sourceLine" id="cb12-35" data-line-number="35">    t_incub &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>()</a>
+<a class="sourceLine" id="cb12-36" data-line-number="36">    <span class="cf">while</span> (<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(t_incub) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb12-37" data-line-number="37">        {</a>
+<a class="sourceLine" id="cb12-38" data-line-number="38">            t_incub =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x, <span class="dt">mean=</span><span class="fl">6.5</span>, <span class="dt">sd=</span><span class="fl">2.5</span>)</a>
+<a class="sourceLine" id="cb12-39" data-line-number="39">            t_incub =<span class="st"> </span>t_incub[(t_incub<span class="op">&gt;=</span><span class="dv">2</span>)<span class="op">&amp;</span>(t_incub<span class="op">&lt;=</span><span class="dv">21</span>)]</a>
+<a class="sourceLine" id="cb12-40" data-line-number="40">            <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(t_incub) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb12-41" data-line-number="41">                {</a>
+<a class="sourceLine" id="cb12-42" data-line-number="42">                    <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(t_incub) <span class="op">&lt;</span><span class="st"> </span>x)</a>
+<a class="sourceLine" id="cb12-43" data-line-number="43">                        {</a>
+<a class="sourceLine" id="cb12-44" data-line-number="44">                            <span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(t_incub)</a>
+<a class="sourceLine" id="cb12-45" data-line-number="45">                            t_incub &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(t_incub, <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(t_incub,x<span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(t_incub)))</a>
+<a class="sourceLine" id="cb12-46" data-line-number="46">                        }</a>
+<a class="sourceLine" id="cb12-47" data-line-number="47">                }   </a>
+<a class="sourceLine" id="cb12-48" data-line-number="48">        }</a>
+<a class="sourceLine" id="cb12-49" data-line-number="49">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(t_incub)</a>
+<a class="sourceLine" id="cb12-50" data-line-number="50">}</a>
+<a class="sourceLine" id="cb12-51" data-line-number="51"></a>
+<a class="sourceLine" id="cb12-52" data-line-number="52">proba =<span class="st"> </span><span class="cf">function</span>(t, t_incub) {</a>
+<a class="sourceLine" id="cb12-53" data-line-number="53">  <span class="cf">if</span> (t <span class="op">&lt;=</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="dv">0</span> }</a>
+<a class="sourceLine" id="cb12-54" data-line-number="54">  <span class="cf">if</span> (t <span class="op">&gt;</span><span class="st"> </span>t_incub) { p =<span class="st"> </span><span class="fl">0.025</span> }</a>
+<a class="sourceLine" id="cb12-55" data-line-number="55">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
+<a class="sourceLine" id="cb12-56" data-line-number="56">}</a>
+<a class="sourceLine" id="cb12-57" data-line-number="57"></a>
+<a class="sourceLine" id="cb12-58" data-line-number="58"><span class="co">#Starting the simulation ------------------------------------</span></a>
+<a class="sourceLine" id="cb12-59" data-line-number="59"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">505060</span>)</a>
+<a class="sourceLine" id="cb12-60" data-line-number="60">test.nosoiA &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/nosoiSim.html">nosoiSim</a></span>(</a>
+<a class="sourceLine" id="cb12-61" data-line-number="61">    <span class="dt">type =</span> <span class="st">"single"</span>, <span class="dt">popStructure =</span> <span class="st">"continuous"</span>,</a>
+<a class="sourceLine" id="cb12-62" data-line-number="62">    <span class="dt">length =</span> <span class="dv">365</span>, </a>
+<a class="sourceLine" id="cb12-63" data-line-number="63">    <span class="dt">max.infected =</span> <span class="dv">10000</span>, </a>
+<a class="sourceLine" id="cb12-64" data-line-number="64">    <span class="dt">init.individuals =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb12-65" data-line-number="65">    <span class="dt">init.structure =</span> start.pos,</a>
+<a class="sourceLine" id="cb12-66" data-line-number="66">    <span class="dt">structure.raster =</span> population,</a>
+<a class="sourceLine" id="cb12-67" data-line-number="67">    </a>
+<a class="sourceLine" id="cb12-68" data-line-number="68">    <span class="co">#pExit:</span></a>
+<a class="sourceLine" id="cb12-69" data-line-number="69">    <span class="dt">diff.pExit =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb12-70" data-line-number="70">    <span class="dt">timeDep.pExit =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb12-71" data-line-number="71">    <span class="dt">pExit =</span> p_Exit_fct, </a>
+<a class="sourceLine" id="cb12-72" data-line-number="72">    <span class="dt">param.pExit =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">t_incub =</span> t_incub_fct),</a>
+<a class="sourceLine" id="cb12-73" data-line-number="73">    </a>
+<a class="sourceLine" id="cb12-74" data-line-number="74">    <span class="co">#pMove:</span></a>
+<a class="sourceLine" id="cb12-75" data-line-number="75">    <span class="dt">diff.pMove =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb12-76" data-line-number="76">    <span class="dt">timeDep.pMove =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb12-77" data-line-number="77">    <span class="dt">pMove =</span> p_Move_fct,</a>
+<a class="sourceLine" id="cb12-78" data-line-number="78">    <span class="dt">param.pMove =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">t_incub =</span> t_incub_fct),</a>
+<a class="sourceLine" id="cb12-79" data-line-number="79">    </a>
+<a class="sourceLine" id="cb12-80" data-line-number="80">    <span class="co">#sdMove:</span></a>
+<a class="sourceLine" id="cb12-81" data-line-number="81">    <span class="dt">diff.sdMove =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb12-82" data-line-number="82">    <span class="dt">timeDep.sdMove =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb12-83" data-line-number="83">    <span class="dt">sdMove =</span> sdMove_fct, </a>
+<a class="sourceLine" id="cb12-84" data-line-number="84">    <span class="dt">param.sdMove =</span> <span class="ot">NA</span>, </a>
+<a class="sourceLine" id="cb12-85" data-line-number="85">    <span class="dt">attracted.by.raster =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb12-86" data-line-number="86">    </a>
+<a class="sourceLine" id="cb12-87" data-line-number="87">    <span class="co">#nContact:</span></a>
+<a class="sourceLine" id="cb12-88" data-line-number="88">    <span class="dt">diff.nContact =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb12-89" data-line-number="89">    <span class="dt">timeDep.nContact =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb12-90" data-line-number="90">    <span class="dt">hostCount.nContact =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb12-91" data-line-number="91">    <span class="dt">nContact =</span> n_contact,</a>
+<a class="sourceLine" id="cb12-92" data-line-number="92">    <span class="dt">param.nContact =</span> <span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb12-93" data-line-number="93">    </a>
+<a class="sourceLine" id="cb12-94" data-line-number="94">    <span class="co">#pTrans:</span></a>
+<a class="sourceLine" id="cb12-95" data-line-number="95">    <span class="dt">diff.pTrans =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb12-96" data-line-number="96">    <span class="dt">timeDep.pTrans =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb12-97" data-line-number="97">    <span class="dt">pTrans =</span> proba, </a>
+<a class="sourceLine" id="cb12-98" data-line-number="98">    <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">t_incub =</span> t_incub_fct),</a>
+<a class="sourceLine" id="cb12-99" data-line-number="99"></a>
+<a class="sourceLine" id="cb12-100" data-line-number="100">  <span class="co">#Closing parameters:</span></a>
+<a class="sourceLine" id="cb12-101" data-line-number="101">    <span class="dt">prefix.host =</span> <span class="st">"H"</span>, </a>
+<a class="sourceLine" id="cb12-102" data-line-number="102">    <span class="dt">print.progress =</span> <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb12-103" data-line-number="103">)</a></code></pre></div>
+<pre><code>## Starting the simulation
+## Initializing ...</code></pre>
+<pre><code>##  running ...</code></pre>
+<pre><code>## done. 
+## The simulation has run for 365 units of time and a total of 3603 hosts have been infected.</code></pre>
 <p>The simulation has run for 365 days and has infected 3603 individual hosts.</p>
 </div>
 <div id="analyzing-the-results" class="section level1">
@@ -393,142 +402,142 @@
 <div id="visualization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualization" class="anchor"></a>Visualization</h2>
-<p>Our first step will be to visualize this epidemic on the map. We can use the following code to produce an animation (in time) of the epidemic:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">test.data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getTableState.html">getTableState</a></span>(test.nosoiA)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggspatial)</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(gganimate)</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#The following script gives the position of every host at every time point:</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">results &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>()</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(test.data<span class="op">$</span>time.from)) {</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">    temp =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(test.data, (time.from <span class="op">&lt;=</span><span class="st"> </span>i)<span class="op">&amp;</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>((time.to <span class="op">&gt;</span><span class="st"> </span>i)<span class="op">|</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(time.to)))[,<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hosts.ID"</span>,<span class="st">"state.x"</span>,<span class="st">"state.y"</span>,<span class="st">"current.env.value"</span>)]</a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">    temp<span class="op">$</span>time =<span class="st"> </span>i</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13">    results=data.table<span class="op">::</span><span class="kw">rbindlist</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(temp),<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(results)))</a>
-<a class="sourceLine" id="cb9-14" data-line-number="14">}</a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#This is for the animated plot:</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18">animated.plot &lt;-<span class="st"> </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="st">     </span><span class="kw"><a href="https://rdrr.io/pkg/ggspatial/man/layer_spatial.html">layer_spatial</a></span>(population) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="st">    </span><span class="kw">scale_fill_viridis</span>(<span class="dt">trans =</span> <span class="st">"log1p"</span>,<span class="dt">option=</span><span class="st">"A"</span>,<span class="dt">limits=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"NA"</span>, <span class="dt">name=</span><span class="st">"Environmental</span><span class="ch">\n</span><span class="st">value (number of</span><span class="ch">\n</span><span class="st">inhabitants)"</span>,</a>
-<a class="sourceLine" id="cb9-21" data-line-number="21">                     <span class="dt">position=</span><span class="st">"bottom"</span>,<span class="dt">breaks=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>),<span class="dt">labels=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">""</span>, <span class="dt">y=</span><span class="st">""</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">data=</span>results, <span class="kw">aes</span>(state.x,state.y) ,<span class="dt">show.legend=</span>F, <span class="dt">color=</span><span class="st">"firebrick3"</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gganimate/man/transition_states.html">transition_states</a></span>(time) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb9-25" data-line-number="25">        <span class="dt">panel.ontop =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb9-26" data-line-number="26">        <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">linetype=</span><span class="st">"dashed"</span>, <span class="dt">colour=</span><span class="st">"grey70"</span>),</a>
-<a class="sourceLine" id="cb9-27" data-line-number="27">        <span class="dt">axis.ticks=</span><span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb9-28" data-line-number="28">        <span class="dt">plot.caption=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-29" data-line-number="29"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Time: {closest_state}"</span>)</a>
-<a class="sourceLine" id="cb9-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb9-31" data-line-number="31"><span class="kw"><a href="https://rdrr.io/pkg/gganimate/man/animate.html">animate</a></span>(animated.plot, <span class="dt">nframes=</span>test.nosoiA<span class="op">$</span>total.time<span class="op">*</span><span class="dv">2</span><span class="op">+</span><span class="dv">10</span>,<span class="dt">duration=</span><span class="dv">40</span>,<span class="dt">end_pause=</span><span class="dv">10</span>)</a></code></pre></div>
+<p>Our first step will be to visualize this simulated epidemic on the map. We can use the following code to produce an animation (in time) of the epidemic:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">test.data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getTableState.html">getTableState</a></span>(test.nosoiA)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggspatial)</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(gganimate)</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#The following script gives the position of every host at every time point:</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">results &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>()</a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(test.data<span class="op">$</span>time.from)) {</a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">    temp =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(test.data, (time.from <span class="op">&lt;=</span><span class="st"> </span>i)<span class="op">&amp;</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>((time.to <span class="op">&gt;</span><span class="st"> </span>i)<span class="op">|</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(time.to)))[,<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hosts.ID"</span>,<span class="st">"state.x"</span>,<span class="st">"state.y"</span>,<span class="st">"current.env.value"</span>)]</a>
+<a class="sourceLine" id="cb16-12" data-line-number="12">    temp<span class="op">$</span>time =<span class="st"> </span>i</a>
+<a class="sourceLine" id="cb16-13" data-line-number="13">    results=data.table<span class="op">::</span><span class="kw">rbindlist</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(temp),<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(results)))</a>
+<a class="sourceLine" id="cb16-14" data-line-number="14">}</a>
+<a class="sourceLine" id="cb16-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16"><span class="co">#This is for the animated plot:</span></a>
+<a class="sourceLine" id="cb16-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb16-18" data-line-number="18">animated.plot &lt;-<span class="st"> </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-19" data-line-number="19"><span class="st">     </span><span class="kw"><a href="https://rdrr.io/pkg/ggspatial/man/layer_spatial.html">layer_spatial</a></span>(population) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-20" data-line-number="20"><span class="st">    </span><span class="kw">scale_fill_viridis</span>(<span class="dt">trans =</span> <span class="st">"log1p"</span>,<span class="dt">option=</span><span class="st">"A"</span>,<span class="dt">limits=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"NA"</span>, <span class="dt">name=</span><span class="st">"Environmental</span><span class="ch">\n</span><span class="st">value (number of</span><span class="ch">\n</span><span class="st">inhabitants)"</span>,</a>
+<a class="sourceLine" id="cb16-21" data-line-number="21">                     <span class="dt">position=</span><span class="st">"bottom"</span>,<span class="dt">breaks=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>),<span class="dt">labels=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-22" data-line-number="22"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">""</span>, <span class="dt">y=</span><span class="st">""</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-23" data-line-number="23"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">data=</span>results, <span class="kw">aes</span>(state.x,state.y) ,<span class="dt">show.legend=</span>F, <span class="dt">color=</span><span class="st">"firebrick3"</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gganimate/man/transition_states.html">transition_states</a></span>(time) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-24" data-line-number="24"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb16-25" data-line-number="25">        <span class="dt">panel.ontop =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb16-26" data-line-number="26">        <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">linetype=</span><span class="st">"dashed"</span>, <span class="dt">colour=</span><span class="st">"grey70"</span>),</a>
+<a class="sourceLine" id="cb16-27" data-line-number="27">        <span class="dt">axis.ticks=</span><span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb16-28" data-line-number="28">        <span class="dt">plot.caption=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-29" data-line-number="29"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Time: {closest_state}"</span>)</a>
+<a class="sourceLine" id="cb16-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb16-31" data-line-number="31"><span class="kw"><a href="https://rdrr.io/pkg/gganimate/man/animate.html">animate</a></span>(animated.plot, <span class="dt">nframes=</span>test.nosoiA<span class="op">$</span>total.time<span class="op">*</span><span class="dv">2</span><span class="op">+</span><span class="dv">10</span>,<span class="dt">duration=</span><span class="dv">40</span>,<span class="dt">end_pause=</span><span class="dv">10</span>)</a></code></pre></div>
 <p><img src="ebola-like.gif"></p>
-<p>In this animation, green dots represent the infected hosts, each dot being an individual host (beware, dots can overlap). The transparency for each dot allows to visualize superposition of dots, in a certain measure. Time is in days.</p>
+<p>In this animation, green dots represent the infected hosts, each dot being an individual host (beware, dots can overlap). The transparency for each dot allows to visualize superposition of dots, in a certain measure, and explains why some dots appear darker (no overlap) than others (overlap). Time is in days.</p>
 <blockquote>
-<p>Beware, the gif file displayed here as been produced with a lower resolution raster to avoid big file size. If you try to prepare this gif without reducing the raster resolution, it might take several hours (or days!) to finish.</p>
+<p>Beware, the gif file displayed here has been produced with a lower resolution raster to avoid a big file size. If you try to prepare this gif without reducing the raster resolution, it might take several hours (or days!) to finish.</p>
 </blockquote>
 </div>
 <div id="epidemiological-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#epidemiological-analysis" class="anchor"></a>Epidemiological analysis</h2>
-<p>As interesting as the visualization might be, we can also explore a bit the epidemic parameters, for example the “real” <span class="math inline">\(R_0\)</span>, defined as the average number of cases one case generates, often estimated in epidemiological studies. For this we can use the following code:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">R0.sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getR0.html">getR0</a></span>(test.nosoiA)</a></code></pre></div>
-<p>Mean value for <span class="math inline">\(R_0\)</span> is 1.12, which is coherent with epidemiological estimates for Ebola virus. This distribution is also coherent, with most hosts not transmitting:</p>
+<p>As interesting as the visualization might be, we can also explore the epidemic parameters, for example the “real” <span class="math inline">\(R_0\)</span>, defined as the average number of cases one case generates, often estimated in epidemiological studies. To this end, we can use the following code:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">R0.sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getR0.html">getR0</a></span>(test.nosoiA)</a></code></pre></div>
+<p>The mean value for <span class="math inline">\(R_0\)</span> is 1.12, which is coherent with epidemiological estimates for Ebola virus. Its distribution is also coherent with most hosts not transmitting:</p>
 <p><img src="ebola_files/figure-html/generalEpi3-1.png" width="700"></p>
 <p>The two following figures also give the epidemiological dynamics of the simulation:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">dynamic.sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getDynamic.html">getDynamic</a></span>(test.nosoiA)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">cumulative.sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getCumulative.html">getCumulative</a></span>(test.nosoiA)</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw">ggplot</span>(<span class="dt">data=</span>dynamic.sim, <span class="kw">aes</span>(<span class="dt">x=</span>t, <span class="dt">y=</span>Count)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_minimal</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">"Time (t)"</span>,<span class="dt">y=</span><span class="st">"Number of active infected hosts"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">dynamic.sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getDynamic.html">getDynamic</a></span>(test.nosoiA)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">cumulative.sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getCumulative.html">getCumulative</a></span>(test.nosoiA)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="kw">ggplot</span>(<span class="dt">data=</span>dynamic.sim, <span class="kw">aes</span>(<span class="dt">x=</span>t, <span class="dt">y=</span>Count)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_minimal</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">"Time (t)"</span>,<span class="dt">y=</span><span class="st">"Number of active infected hosts"</span>)</a></code></pre></div>
 <p><img src="ebola_files/figure-html/cumulativeDynamics-1.png" width="700"></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">ggplot</span>(<span class="dt">data=</span>cumulative.sim, <span class="kw">aes</span>(<span class="dt">x=</span>t, <span class="dt">y=</span>Count)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_minimal</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">"Time (t)"</span>,<span class="dt">y=</span><span class="st">"Cumulative count of infected hosts"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">ggplot</span>(<span class="dt">data=</span>cumulative.sim, <span class="kw">aes</span>(<span class="dt">x=</span>t, <span class="dt">y=</span>Count)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_minimal</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">"Time (t)"</span>,<span class="dt">y=</span><span class="st">"Cumulative count of infected hosts"</span>)</a></code></pre></div>
 <p><img src="ebola_files/figure-html/cumulativeDynamics-2.png" width="700"></p>
 </div>
 <div id="transmission-chain" class="section level2">
 <h2 class="hasAnchor">
 <a href="#transmission-chain" class="anchor"></a>Transmission chain</h2>
-<p>Since <code>nosoi</code> relies on the simulation of a transmission chain, we can also visualize the transmission in space. For that, we will first generate the transmission tree as a phylogenetic tree-like object by using the <code>getTransmissionTree</code> function implemented in <code>nosoi</code>:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">test.nosoiA.tree &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getTransmissionTree.html">getTransmissionTree</a></span>(test.nosoiA)</a></code></pre></div>
-<p>This function gives you a <code>treedata</code> object that can be visualized as a phylogenetic-tree with the package :</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggtree)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span>(test.nosoiA.tree, <span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span>(<span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span>(<span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="co"># geom_tiplab(aes(label=host)) + </span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">        <span class="dt">legend.key =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
+<p>Since <code>nosoi</code> relies on the simulation of a transmission chain, we can also visualize the transmission in geographic space. To do this, we will first generate the transmission tree as a phylogenetic tree-like object by using the <code>getTransmissionTree</code> function implemented in <code>nosoi</code>:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">test.nosoiA.tree &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getTransmissionTree.html">getTransmissionTree</a></span>(test.nosoiA)</a></code></pre></div>
+<p>This function gives you a <code>treedata</code> object that can be visualized as a phylogenetic tree with the package :</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggtree)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span>(test.nosoiA.tree, <span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span>(<span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span>(<span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="co"># geom_tiplab(aes(label=host)) + </span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">        <span class="dt">legend.key =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
 <p><img src="ebola_files/figure-html/treeC-1.png" width="700"></p>
 <p>Of course this does not give us much information about the spatial distribution of this transmission tree. We can use data contained into this <code>treedata</code> object to plot our transmission tree on our environmental raster:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># Extracting node data from the tree (including long/lat coordinates):</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">tree.node &lt;-<span class="st"> </span>tidytree<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tidytree/man/reexports.html">as_tibble</a></span>(test.nosoiA.tree)</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co"># Joining table to get coordinates of starting and ending nodes:</span></a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">tree.links &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(tree.node, tree.node, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"parent"</span> =<span class="st"> "node"</span>), <span class="dt">suffix =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">".to"</span>, <span class="st">".from"</span>))</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#Plotting everything:</span></a>
-<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">ggplot</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggspatial/man/layer_spatial.html">layer_spatial</a></span>(population) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">""</span>, <span class="dt">y=</span><span class="st">""</span>) <span class="op">+</span><span class="st">  </span></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="st">  </span><span class="kw">scale_fill_viridis</span>(<span class="dt">trans =</span> <span class="st">"log1p"</span>,<span class="dt">option=</span><span class="st">"A"</span>,<span class="dt">limits=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"NA"</span>, </a>
-<a class="sourceLine" id="cb15-12" data-line-number="12">                     <span class="dt">name=</span><span class="st">"Environmental</span><span class="ch">\n</span><span class="st">value (number of</span><span class="ch">\n</span><span class="st">inhabitants)"</span>, <span class="dt">position=</span><span class="st">"bottom"</span>, </a>
-<a class="sourceLine" id="cb15-13" data-line-number="13">                     <span class="dt">breaks=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>),<span class="dt">labels=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="st">  </span><span class="kw">scale_color_viridis</span>(<span class="dt">option=</span><span class="st">"D"</span>,<span class="dt">limits=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"white"</span>, <span class="dt">name=</span><span class="st">"time"</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">theme</a></span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>(), <span class="dt">panel.ontop =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb15-16" data-line-number="16">        <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">linetype=</span><span class="st">"dashed"</span>, <span class="dt">colour =</span><span class="st">"grey70"</span>),</a>
-<a class="sourceLine" id="cb15-17" data-line-number="17">        <span class="dt">axis.ticks=</span><span class="kw">element_blank</span>(), <span class="dt">plot.caption=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-18" data-line-number="18"><span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">data=</span>tree.links, <span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">aes</a></span>(<span class="dt">x =</span> state.x.from, <span class="dt">y =</span> state.y.from, <span class="dt">xend =</span> state.x.to, <span class="dt">yend =</span> state.y.to),</a>
-<a class="sourceLine" id="cb15-19" data-line-number="19">               <span class="dt">color=</span><span class="st">"gray50"</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">geom_point</a></span>(<span class="dt">data=</span>tree.node, <span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">aes</a></span>(<span class="dt">x=</span>state.x, <span class="dt">y=</span>state.y,<span class="dt">color=</span>time))</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co"># Extracting node data from the tree (including long/lat coordinates):</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">tree.node &lt;-<span class="st"> </span>tidytree<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tidytree/man/reexports.html">as_tibble</a></span>(test.nosoiA.tree)</a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co"># Joining table to get coordinates of starting and ending nodes:</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb22-6" data-line-number="6">tree.links &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(tree.node, tree.node, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"parent"</span> =<span class="st"> "node"</span>), <span class="dt">suffix =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">".to"</span>, <span class="st">".from"</span>))</a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb22-8" data-line-number="8"><span class="co">#Plotting everything:</span></a>
+<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">ggplot</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggspatial/man/layer_spatial.html">layer_spatial</a></span>(population) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">""</span>, <span class="dt">y=</span><span class="st">""</span>) <span class="op">+</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb22-11" data-line-number="11"><span class="st">  </span><span class="kw">scale_fill_viridis</span>(<span class="dt">trans =</span> <span class="st">"log1p"</span>,<span class="dt">option=</span><span class="st">"A"</span>,<span class="dt">limits=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"NA"</span>, </a>
+<a class="sourceLine" id="cb22-12" data-line-number="12">                     <span class="dt">name=</span><span class="st">"Environmental</span><span class="ch">\n</span><span class="st">value (number of</span><span class="ch">\n</span><span class="st">inhabitants)"</span>, <span class="dt">position=</span><span class="st">"bottom"</span>, </a>
+<a class="sourceLine" id="cb22-13" data-line-number="13">                     <span class="dt">breaks=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>),<span class="dt">labels=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-14" data-line-number="14"><span class="st">  </span><span class="kw">scale_color_viridis</span>(<span class="dt">option=</span><span class="st">"D"</span>,<span class="dt">limits=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"white"</span>, <span class="dt">name=</span><span class="st">"time"</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">theme</a></span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>(), <span class="dt">panel.ontop =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb22-16" data-line-number="16">        <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">linetype=</span><span class="st">"dashed"</span>, <span class="dt">colour =</span><span class="st">"grey70"</span>),</a>
+<a class="sourceLine" id="cb22-17" data-line-number="17">        <span class="dt">axis.ticks=</span><span class="kw">element_blank</span>(), <span class="dt">plot.caption=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-18" data-line-number="18"><span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">data=</span>tree.links, <span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">aes</a></span>(<span class="dt">x =</span> state.x.from, <span class="dt">y =</span> state.y.from, <span class="dt">xend =</span> state.x.to, <span class="dt">yend =</span> state.y.to),</a>
+<a class="sourceLine" id="cb22-19" data-line-number="19">               <span class="dt">color=</span><span class="st">"gray50"</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">geom_point</a></span>(<span class="dt">data=</span>tree.node, <span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">aes</a></span>(<span class="dt">x=</span>state.x, <span class="dt">y=</span>state.y,<span class="dt">color=</span>time))</a></code></pre></div>
 <p><img src="ebola_files/figure-html/transmissionTree-Full2-1.png" width="700"></p>
-<p>The full transmission chain is a bit messy, because of the number of infected individuals. We can also sub-sample it randomly. We will select here 250 individuals sampled at the time of their exit (either death or recovery):</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co">#Extracts data from the nosoiSim object:</span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">test.table.hosts &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getTableHosts.html">getTableHosts</a></span>(test.nosoiA)</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">test.nosoiA.tree &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getTransmissionTree.html">getTransmissionTree</a></span>(test.nosoiA)</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#Sampling the names of individuals to be sampled:</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">5905950</span>)</a>
-<a class="sourceLine" id="cb16-7" data-line-number="7">sampled.hosts &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(test.table.hosts, active <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)<span class="op">$</span>hosts.ID, <span class="dv">250</span>)</a>
-<a class="sourceLine" id="cb16-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#Subsampling:</span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10">test.nosoiA.tree.sampled.exiting &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting</a></span>(test.nosoiA.tree, sampled.hosts)</a></code></pre></div>
-<p>This new tree can be also plotted as before:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggtree)</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span>(test.nosoiA.tree.sampled.exiting, <span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span>(<span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span>(<span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="co"># geom_tiplab(aes(label=host)) + </span></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb17-5" data-line-number="5">        <span class="dt">legend.key =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
+<p>The full transmission chain is a bit messy, because of the number of infected individuals. We can also subsample it randomly. We will here select 250 individuals sampled at the time of their exit (either death or recovery):</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co">#Extracts data from the nosoiSim object:</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">test.table.hosts &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getTableHosts.html">getTableHosts</a></span>(test.nosoiA)</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">test.nosoiA.tree &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/getTransmissionTree.html">getTransmissionTree</a></span>(test.nosoiA)</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="co">#Sampling the names of individuals to be sampled:</span></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">5905950</span>)</a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">sampled.hosts &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(test.table.hosts, active <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)<span class="op">$</span>hosts.ID, <span class="dv">250</span>)</a>
+<a class="sourceLine" id="cb23-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb23-9" data-line-number="9"><span class="co">#Subsampling:</span></a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">test.nosoiA.tree.sampled.exiting &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting</a></span>(test.nosoiA.tree, sampled.hosts)</a></code></pre></div>
+<p>This new tree can be plotted as before:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggtree)</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span>(test.nosoiA.tree.sampled.exiting, <span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span>(<span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span>(<span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="co"># geom_tiplab(aes(label=host)) + </span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
+<a class="sourceLine" id="cb24-4" data-line-number="4">        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb24-5" data-line-number="5">        <span class="dt">legend.key =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
 <p><img src="ebola_files/figure-html/treeC2-1.png" width="700"></p>
-<p>We can also represent it in space:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># Extracting node data from the tree (including long/lat coordinates):</span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">tree.node &lt;-<span class="st"> </span>tidytree<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tidytree/man/reexports.html">as_tibble</a></span>(test.nosoiA.tree.sampled.exiting)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co"># Joining table to get coordinates of starting and ending nodes:</span></a>
-<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb18-6" data-line-number="6">tree.links &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(tree.node, tree.node, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"parent"</span> =<span class="st"> "node"</span>), <span class="dt">suffix =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">".to"</span>, <span class="st">".from"</span>))</a>
-<a class="sourceLine" id="cb18-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb18-8" data-line-number="8"><span class="co">#plotting everything</span></a>
-<a class="sourceLine" id="cb18-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">ggplot</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb18-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggspatial/man/layer_spatial.html">layer_spatial</a></span>(population) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">""</span>, <span class="dt">y=</span><span class="st">""</span>) <span class="op">+</span><span class="st">  </span></a>
-<a class="sourceLine" id="cb18-11" data-line-number="11"><span class="st">  </span><span class="kw">scale_fill_viridis</span>(<span class="dt">trans =</span> <span class="st">"log1p"</span>,<span class="dt">option=</span><span class="st">"A"</span>,<span class="dt">limits=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"NA"</span>, </a>
-<a class="sourceLine" id="cb18-12" data-line-number="12">                     <span class="dt">name=</span><span class="st">"Environmental</span><span class="ch">\n</span><span class="st">value (number of</span><span class="ch">\n</span><span class="st">inhabitants)"</span>, <span class="dt">position=</span><span class="st">"bottom"</span>, </a>
-<a class="sourceLine" id="cb18-13" data-line-number="13">                     <span class="dt">breaks=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>),<span class="dt">labels=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb18-14" data-line-number="14"><span class="st">  </span><span class="kw">scale_color_viridis</span>(<span class="dt">option=</span><span class="st">"D"</span>,<span class="dt">limits=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"white"</span>, <span class="dt">name=</span><span class="st">"time"</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb18-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">theme</a></span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>(), <span class="dt">panel.ontop =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb18-16" data-line-number="16">        <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">linetype=</span><span class="st">"dashed"</span>, <span class="dt">colour =</span><span class="st">"grey70"</span>),</a>
-<a class="sourceLine" id="cb18-17" data-line-number="17">        <span class="dt">axis.ticks=</span><span class="kw">element_blank</span>(), <span class="dt">plot.caption=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb18-18" data-line-number="18"><span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">data=</span>tree.links, <span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">aes</a></span>(<span class="dt">x =</span> state.x.from, <span class="dt">y =</span> state.y.from, <span class="dt">xend =</span> state.x.to, <span class="dt">yend =</span> state.y.to),</a>
-<a class="sourceLine" id="cb18-19" data-line-number="19">               <span class="dt">color=</span><span class="st">"gray50"</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb18-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">geom_point</a></span>(<span class="dt">data=</span>tree.node, <span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">aes</a></span>(<span class="dt">x=</span>state.x, <span class="dt">y=</span>state.y,<span class="dt">color=</span>time))</a></code></pre></div>
+<p>We can also draw it in geographic space:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># Extracting node data from the tree (including long/lat coordinates):</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">tree.node &lt;-<span class="st"> </span>tidytree<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tidytree/man/reexports.html">as_tibble</a></span>(test.nosoiA.tree.sampled.exiting)</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="co"># Joining table to get coordinates of starting and ending nodes:</span></a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb25-6" data-line-number="6">tree.links &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(tree.node, tree.node, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"parent"</span> =<span class="st"> "node"</span>), <span class="dt">suffix =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">".to"</span>, <span class="st">".from"</span>))</a>
+<a class="sourceLine" id="cb25-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="co">#plotting everything</span></a>
+<a class="sourceLine" id="cb25-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">ggplot</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggspatial/man/layer_spatial.html">layer_spatial</a></span>(population) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">""</span>, <span class="dt">y=</span><span class="st">""</span>) <span class="op">+</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb25-11" data-line-number="11"><span class="st">  </span><span class="kw">scale_fill_viridis</span>(<span class="dt">trans =</span> <span class="st">"log1p"</span>,<span class="dt">option=</span><span class="st">"A"</span>,<span class="dt">limits=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"NA"</span>, </a>
+<a class="sourceLine" id="cb25-12" data-line-number="12">                     <span class="dt">name=</span><span class="st">"Environmental</span><span class="ch">\n</span><span class="st">value (number of</span><span class="ch">\n</span><span class="st">inhabitants)"</span>, <span class="dt">position=</span><span class="st">"bottom"</span>, </a>
+<a class="sourceLine" id="cb25-13" data-line-number="13">                     <span class="dt">breaks=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>),<span class="dt">labels=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dv">600</span>,<span class="dv">6000</span>,<span class="dv">60000</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-14" data-line-number="14"><span class="st">  </span><span class="kw">scale_color_viridis</span>(<span class="dt">option=</span><span class="st">"D"</span>,<span class="dt">limits=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="ot">NA</span>),<span class="dt">na.value=</span><span class="st">"white"</span>, <span class="dt">name=</span><span class="st">"time"</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">theme</a></span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>(), <span class="dt">panel.ontop =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb25-16" data-line-number="16">        <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">linetype=</span><span class="st">"dashed"</span>, <span class="dt">colour =</span><span class="st">"grey70"</span>),</a>
+<a class="sourceLine" id="cb25-17" data-line-number="17">        <span class="dt">axis.ticks=</span><span class="kw">element_blank</span>(), <span class="dt">plot.caption=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-18" data-line-number="18"><span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">data=</span>tree.links, <span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">aes</a></span>(<span class="dt">x =</span> state.x.from, <span class="dt">y =</span> state.y.from, <span class="dt">xend =</span> state.x.to, <span class="dt">yend =</span> state.y.to),</a>
+<a class="sourceLine" id="cb25-19" data-line-number="19">               <span class="dt">color=</span><span class="st">"gray50"</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">geom_point</a></span>(<span class="dt">data=</span>tree.node, <span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">aes</a></span>(<span class="dt">x=</span>state.x, <span class="dt">y=</span>state.y,<span class="dt">color=</span>time))</a></code></pre></div>
 <p><img src="ebola_files/figure-html/transmissionTree-Full3-1.png" width="700"></p>
 </div>
 <div id="other-use" class="section level2">
 <h2 class="hasAnchor">
 <a href="#other-use" class="anchor"></a>Other use</h2>
-<p>External software could be used to explore more into details the dynamic of this epidemic and transmission chain. The <code>write.beast</code> function of the <code>treeio</code> package allows for an easy export of the transmission chain as a phylogenetic-like tree, in a similar format as <a href="https://beast.community/">BEAST</a> trees.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">treeio<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treeio/man/write.beast.html">write.beast</a></span>(test.nosoiA.tree, <span class="dt">file =</span> <span class="st">"test.tre"</span>, <span class="dt">translate =</span> <span class="ot">TRUE</span>, <span class="dt">tree.name =</span> <span class="st">"UNTITLED"</span>)</a></code></pre></div>
+<p>External software can be used to perform a more detailed exploration of the dynamics of this epidemic and transmission chain. The <code>write.beast</code> function of the <code>treeio</code> package allows for an easy export of the transmission chain as a phylogenetic-like tree, in a similar format as <a href="https://beast.community/">BEAST</a> trees.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">treeio<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treeio/man/write.beast.html">write.beast</a></span>(test.nosoiA.tree, <span class="dt">file =</span> <span class="st">"test.tre"</span>, <span class="dt">translate =</span> <span class="ot">TRUE</span>, <span class="dt">tree.name =</span> <span class="st">"UNTITLED"</span>)</a></code></pre></div>
 </div>
 </div>
   </div>
