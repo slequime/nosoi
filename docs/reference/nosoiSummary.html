@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Summarizes the epidemiological features of a <code>nosoi</code> simulation — nosoiSummary" />
-<meta property="og:description" content="This function provides summary informations about the simulation (number of infected hosts, R0, etc.) in form of a list." />
+<meta property="og:description" content="This function provides summary information about the simulation (number of infected hosts, R0, etc.) as a list." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -220,23 +220,30 @@
     </div>
 
     <div class="ref-description">
-    <p>This function provides summary informations about the simulation (number of infected hosts, R0, etc.) in form of a list.</p>
+    <p>This function provides summary information about the simulation (number of infected hosts, R0, etc.) as a list.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>nosoiSummary</span>(<span class='no'>nosoi.output</span>)</pre>
+    <pre class="usage"><span class='fu'>nosoiSummary</span>(<span class='no'>object</span>)
+
+<span class='co'># S3 method for nosoiSim</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>nosoi.output</th>
+      <th>object</th>
       <td><p>Output of a nosoi simulation (object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further arguments passed to or from other methods.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>All computed data are provided in a list:</p><dl class='dl-horizontal'>
+    <p>All computed data is provided in a list:</p><dl class='dl-horizontal'>
    <dt>R0</dt><dd><p>Provides a sublist with number of inactive hosts at the end of the simulation <code>N.inactive</code>, mean R0 <code>R0.mean</code>, and R0 distribution <code>R0.dist</code>. For more details, see <code><a href='getR0.html'>getR0</a></code>.</p></dd>
    <dt>dynamics</dt><dd><p><code><a href='https://rdrr.io/pkg/data.table/man/data.table.html'>data.table</a></code> with the count of currently infected (i.e. active) hosts at each time step of the simulation (by state if the simulation was in a discrete structured host population). For more details, see <code><a href='getDynamic.html'>getDynamic</a></code>.</p></dd>
    <dt>cumulative</dt><dd><p><code><a href='https://rdrr.io/pkg/data.table/man/data.table.html'>data.table</a></code> with the cumulative count of infected hosts at each time step of the simulation. For more details, see <code><a href='getCumulative.html'>getCumulative</a></code>.</p></dd>
@@ -261,20 +268,20 @@
 
 <span class='no'>time_contact</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)}
 
-<span class='no'>test.nosoiA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"none"</span>,
-                        <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>40</span>,
-                        <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
-                        <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
-                        <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
-                        <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                        <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
-                        <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
-                                            <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
-                        <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
-                        <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
+<span class='no'>test.nosoi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"none"</span>,
+                      <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>40</span>,
+                      <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
+                      <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
+                      <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
+                      <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                      <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
+                      <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
+                                          <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
+                      <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
+                      <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
 
 
-<span class='fu'>nosoiSummary</span>(<span class='no'>test.nosoiA</span>)
+<span class='fu'>nosoiSummary</span>(<span class='no'>test.nosoi</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

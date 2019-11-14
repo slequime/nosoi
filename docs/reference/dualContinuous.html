@@ -321,7 +321,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>timeDep.pMove.A</th>
-      <td><p>is pMove dependent on the absolute time of the simulation (TRUE/FALSE) for host-type A.</p></td>
+      <td><p>is pMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE)?</p></td>
     </tr>
     <tr>
       <th>diff.pMove.A</th>
@@ -345,7 +345,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>timeDep.sdMove.A</th>
-      <td><p>is sdMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE) .</p></td>
+      <td><p>is sdMove of host-type A dependent on the absolute time of the simulation (TRUE/FALSE) ?</p></td>
     </tr>
     <tr>
       <th>hostCount.sdMove.A</th>
@@ -357,7 +357,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>nContact.A</th>
-      <td><p>function that gives the number of potential transmission events per unit of time  for host-type A.</p></td>
+      <td><p>function that gives the number of potential transmission events per unit of time for host-type A.</p></td>
     </tr>
     <tr>
       <th>param.nContact.A</th>
@@ -429,7 +429,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>timeDep.pMove.B</th>
-      <td><p>is pMove dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.</p></td>
+      <td><p>is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.</p></td>
     </tr>
     <tr>
       <th>diff.pMove.B</th>
@@ -453,7 +453,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     </tr>
     <tr>
       <th>timeDep.sdMove.B</th>
-      <td><p>is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) for host-type B.</p></td>
+      <td><p>is sdMove of host-type B dependent on the absolute time of the simulation (TRUE/FALSE) ?</p></td>
     </tr>
     <tr>
       <th>hostCount.sdMove.B</th>
@@ -522,15 +522,34 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
     <p>An object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>, containing all results of the simulation.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The suffix <code>.A</code> or <code>.B</code> specifies if the considered function or parameter concerns host-type A or B.</p>
-<p>The structure raster(s) provided provided should of class <code>raster</code>. High values of the environmental variable can attract hosts if <code>attracted.by.raster</code> is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).</p>
-<p>The <code>pExit</code>, <code>pMove</code> and <code>pTrans</code> function should return a single probability (a number between 0 and 1), <code>sdMove</code> a real number (keep in mind this number is related to your coordinate space), and <code>nContact</code> a positive natural number (positive integer) or 0.</p>
+    <p>The <code>pExit</code> and <code>pTrans</code> functions should return a single probability (a number between 0 and 1), and <code>nContact</code> a positive natural number (positive integer) or 0.</p>
 <p>The <code>param</code> arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.</p>
 <p>The use of <code>timeDep</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>prestime</code> (for "present time").</p>
-<p>The use of <code>diff</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>current.env.value</code> (for "current environmental value").</p>
-<p>The use of <code>hostCount</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>host.count.A</code> or <code>host.count.B</code>.</p>
+    <h2 class="hasAnchor" id="raster"><a class="anchor" href="#raster"></a>Raster</h2>
+
+    
+
+<p>The structure raster(s) provided provided should of class <code>raster</code>. High values of the environmental variable can attract hosts if <code>attracted.by.raster</code> is TRUE. Raster have to share the same space (i.e. also the same cell size and ID).</p>
+    <h2 class="hasAnchor" id="order-of-arguments"><a class="anchor" href="#order-of-arguments"></a>Order of Arguments</h2>
+
+    
+
 <p>The user specified function's arguments should follow this order: <code>t</code> (mandatory), <code>prestime</code> (optional, only if timeDep is TRUE),
 <code>current.env.value</code> (optional, only if diff is TRUE), <code>host.count.A</code> or <code>host.count.B</code> (optional, only if hostCount is TRUE) and <code>parameters</code> specified in the list.</p>
+    <h2 class="hasAnchor" id="structure-parameters"><a class="anchor" href="#structure-parameters"></a>Structure Parameters</h2>
+
+    
+
+<p>The <code>pMove</code> function should return a single probability (a number between 0 and 1), and <code>sdMove</code> a real number (keep in mind this number is related to your coordinate space).</p>
+
+<p>The use of <code>diff</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>current.env.value</code> (for "current environmental value").</p>
+
+<p>The use of <code>hostCount</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>host.count</code>.</p>
+    <h2 class="hasAnchor" id="suffixes"><a class="anchor" href="#suffixes"></a>Suffixes</h2>
+
+    
+
+<p>The suffix <code>.A</code> or <code>.B</code> specifies if the considered function or parameter concerns host type A or B.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>For simulations with a discrete structure, see <code><a href='dualDiscrete.html'>dualDiscrete</a></code>. For simulations without any structures, see <code><a href='dualNone.html'>dualNone</a></code>.</p></div>
@@ -566,7 +585,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 <span class='no'>start.pos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>0</span>)
 
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>805</span>)
-<span class='no'>test.nosoiA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"dual"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"continuous"</span>,
+<span class='no'>test.nosoi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"dual"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"continuous"</span>,
                        <span class='kw'>length.sim</span><span class='kw'>=</span><span class='fl'>200</span>,
                        <span class='kw'>max.infected.A</span><span class='kw'>=</span><span class='fl'>500</span>,
                        <span class='kw'>max.infected.B</span><span class='kw'>=</span><span class='fl'>500</span>,
@@ -620,6 +639,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
                        <span class='kw'>timeDep.pTrans.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
                        <span class='kw'>diff.pTrans.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
                        <span class='kw'>prefix.host.B</span><span class='kw'>=</span><span class='st'>"V"</span>)
+<span class='no'>test.nosoi</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -628,6 +648,10 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#raster">Raster</a></li>
+      <li><a href="#order-of-arguments">Order of Arguments</a></li>
+      <li><a href="#structure-parameters">Structure Parameters</a></li>
+      <li><a href="#suffixes">Suffixes</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

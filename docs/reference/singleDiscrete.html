@@ -357,17 +357,32 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     <p>An object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>, containing all results of the simulation.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The structure matrix provided provided should of class <code>matrix</code>, with the same number of rows and columns, rows representing departure state and column the arrival state. All rows should add to 1.</p>
-<p>The <code>pExit</code>, <code>pMove</code> and <code>pTrans</code> function should return a single probability (a number between 0 and 1), and <code>nContact</code> a positive natural number (positive integer) or 0.</p>
+    <p>The <code>pExit</code> and <code>pTrans</code> functions should return a single probability (a number between 0 and 1), and <code>nContact</code> a positive natural number (positive integer) or 0.</p>
 <p>The <code>param</code> arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.</p>
 <p>The use of <code>timeDep</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>prestime</code> (for "present time").</p>
+    <h2 class="hasAnchor" id="structure-matrix"><a class="anchor" href="#structure-matrix"></a>Structure Matrix</h2>
+
+    
+
+<p>The structure matrix provided provided should of class <code>matrix</code>, with the same number of rows and columns, rows representing departure state and column the arrival state. All rows should add to 1.</p>
+    <h2 class="hasAnchor" id="structure-parameters"><a class="anchor" href="#structure-parameters"></a>Structure Parameters</h2>
+
+    
+
+<p>The <code>pMove</code> function should return a single probability (a number between 0 and 1).</p>
+
 <p>The use of <code>diff</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>current.in</code> (for "currently in"). Your function should in that case give a result for every possible discrete state.</p>
+
 <p>The use of <code>hostCount</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>host.count</code>.</p>
+    <h2 class="hasAnchor" id="order-of-arguments"><a class="anchor" href="#order-of-arguments"></a>Order of Arguments</h2>
+
+    
+
 <p>The user specified function's arguments should follow this order: <code>t</code> (mandatory), <code>prestime</code> (optional, only if timeDep is TRUE),
 <code>current.in</code> (optional, only if diff is TRUE), <code>host.count</code> (optional, only if hostCount is TRUE) and <code>parameters</code> specified in the list.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>For simulations with a structure in continuous space, see <code><a href='singleContinuous.html'>singleContinuous</a></code>. For simulations without any structures, see <code><a href='singleNone.html'>singleNone</a></code>.</p></div>
+    <div class='dont-index'><p>For simulations with a structure in continuous space, see <code><a href='singleContinuous.html'>singleContinuous</a></code>. For simulations without any structures, see <code><a href='SingleNone.html'>singleNone</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
@@ -412,6 +427,9 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#structure-matrix">Structure Matrix</a></li>
+      <li><a href="#structure-parameters">Structure Parameters</a></li>
+      <li><a href="#order-of-arguments">Order of Arguments</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

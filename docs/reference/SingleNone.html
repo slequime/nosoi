@@ -217,7 +217,7 @@ the end of given time (specified by length.sim) or when the number of hosts infe
     <div class="page-header">
     <h1>Single-host pathogen in a homogeneous host population</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/single-none.R'><code>R/single-none.R</code></a></small>
-    <div class="hidden name"><code>singleNone.Rd</code></div>
+    <div class="hidden name"><code>SingleNone.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -301,9 +301,13 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
     <p>An object of class <code><a href='nosoiSim.html'>nosoiSim</a></code>, containing all results of the simulation.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>pExit</code> and <code>pTrans</code> function should return a single probability (a number between 0 and 1), and <code>nContact</code> a positive natural number (positive integer) or 0.</p>
+    <p>The <code>pExit</code> and <code>pTrans</code> functions should return a single probability (a number between 0 and 1), and <code>nContact</code> a positive natural number (positive integer) or 0.</p>
 <p>The <code>param</code> arguments should be a list of functions or NA. Each item name in the parameter list should have the same name as the argument in the corresponding function.</p>
 <p>The use of <code>timeDep</code> (switch to <code>TRUE</code>) makes the corresponding function use the argument <code>prestime</code> (for "present time").</p>
+    <h2 class="hasAnchor" id="order-of-arguments"><a class="anchor" href="#order-of-arguments"></a>Order of Arguments</h2>
+
+    
+
 <p>The user specified function's arguments should follow this order: <code>t</code> (mandatory), <code>prestime</code> (optional, only if timeDep is TRUE), <code>parameters</code> specified in the list.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -323,17 +327,19 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
 
 <span class='no'>time_contact</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)}
 
-<span class='no'>test.nosoiA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"none"</span>,
-                        <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>40</span>,
-                        <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
-                        <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
-                        <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
-                        <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                        <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
-                        <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
-                                            <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
-                        <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
-                        <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
+<span class='no'>test.nosoi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"none"</span>,
+                      <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>40</span>,
+                      <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
+                      <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
+                      <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
+                      <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                      <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
+                      <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
+                                          <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
+                      <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
+                      <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
+
+<span class='no'>test.nosoi</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -342,6 +348,7 @@ the end of given time (specified by <code>length.sim</code>) or when the number 
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#order-of-arguments">Order of Arguments</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

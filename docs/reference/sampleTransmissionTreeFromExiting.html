@@ -256,8 +256,63 @@ phylogenetic tree based on the transmission chain and the mapped data at all the
 
     <div class='dont-index'><p>For exporting the annotated tree to other software packages, see functions
 in <span class="pkg">treeio</span> (e.g. <code><a href='https://rdrr.io/pkg/treeio/man/write.beast.html'>write.beast</a></code>).</p>
-<p>For sampling non-dead individuals, see <code><a href='sampleTransmissionTree.html'>sampleTransmissionTree</a></code>.</p></div>
+<p>To get the full transmission matrix, see <code><a href='getTransmissionTree.html'>getTransmissionTree</a></code>.</p>
+<p>For sampling among non-dead individuals, see <code><a href='sampleTransmissionTree.html'>sampleTransmissionTree</a></code>.</p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>t_incub_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='no'>x</span>,<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>1</span>)}
+<span class='no'>p_max_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://rdrr.io/r/stats/Beta.html'>rbeta</a></span>(<span class='no'>x</span>,<span class='kw'>shape1</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>shape2</span><span class='kw'>=</span><span class='fl'>2</span>)}
+<span class='no'>p_Exit_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>0.08</span>)}
+<span class='no'>p_Move_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>0.1</span>)}
+
+<span class='no'>proba</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>,<span class='no'>p_max</span>,<span class='no'>t_incub</span>){
+  <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&lt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='fl'>0</span>}
+  <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&gt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='no'>p_max</span>}
+  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>p</span>)
+}
+
+<span class='no'>time_contact</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)}
+
+<span class='no'>transition.matrix</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.2</span>, <span class='fl'>0.4</span>, <span class='fl'>0.5</span>, <span class='fl'>0</span>, <span class='fl'>0.6</span>, <span class='fl'>0.5</span>, <span class='fl'>0.8</span>, <span class='fl'>0</span>),
+                           <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                           <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>)))
+
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>805</span>)
+<span class='no'>test.nosoiA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"discrete"</span>,
+                        <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>,
+                        <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
+                        <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
+                        <span class='kw'>init.structure</span><span class='kw'>=</span><span class='st'>"A"</span>,
+                        <span class='kw'>structure.matrix</span><span class='kw'>=</span><span class='no'>transition.matrix</span>,
+                        <span class='kw'>pMove</span><span class='kw'>=</span><span class='no'>p_Move_fct</span>,
+                        <span class='kw'>param.pMove</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                        <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
+                        <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                        <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
+                        <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
+                                            <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
+                        <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
+                        <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>
+)
+
+<span class='co'>## Full transmission tree</span>
+<span class='no'>ttreedata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getTransmissionTree.html'>getTransmissionTree</a></span>(<span class='no'>test.nosoiA</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>ttreedata</span>@<span class='kw'>phylo</span>)
+
+<span class='co'>## Sampling "non dead" individuals</span>
+<span class='no'>hID</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"H-1"</span>, <span class='st'>"H-7"</span>, <span class='st'>"H-15"</span>, <span class='st'>"H-100"</span>)
+<span class='no'>samples</span> <span class='kw'>&lt;-</span> <span class='fu'>data.table</span>(<span class='kw'>hosts</span> <span class='kw'>=</span> <span class='no'>hID</span>,
+                      <span class='kw'>times</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5.2</span>, <span class='fl'>9.3</span>, <span class='fl'>10.2</span>, <span class='fl'>16</span>),
+                      <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>hID</span>, <span class='st'>"-s"</span>))
+
+<span class='no'>sampledTree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sampleTransmissionTree.html'>sampleTransmissionTree</a></span>(<span class='no'>test.nosoiA</span>, <span class='no'>ttreedata</span>, <span class='no'>samples</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sampledTree</span>@<span class='kw'>phylo</span>)
+
+<span class='co'>## Sampling "dead" individuals</span>
+<span class='no'>sampledDeadTree</span> <span class='kw'>&lt;-</span> <span class='fu'>sampleTransmissionTreeFromExiting</span>(<span class='no'>ttreedata</span>, <span class='no'>hID</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sampledDeadTree</span>@<span class='kw'>phylo</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -266,6 +321,7 @@ in <span class="pkg">treeio</span> (e.g. <code><a href='https://rdrr.io/pkg/tree
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

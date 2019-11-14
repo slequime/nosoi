@@ -220,7 +220,7 @@
     </div>
 
     <div class="ref-description">
-    <p>This function determines which general settings the user wants to use for his simulation. All other arguments are passed down to the chosen simulator itself, such as <code><a href='singleNone.html'>singleNone</a></code>, <code><a href='singleDiscrete.html'>singleDiscrete</a></code>, <code><a href='singleContinuous.html'>singleContinuous</a></code>, <code><a href='dualNone.html'>dualNone</a></code>, <code><a href='dualDiscrete.html'>dualDiscrete</a></code> or <code><a href='dualContinuous.html'>dualContinuous</a></code>.</p>
+    <p>This function determines which general settings the user wants to use for his simulation. All other arguments are passed down to the chosen simulator itself, such as <code><a href='SingleNone.html'>singleNone</a></code>, <code><a href='singleDiscrete.html'>singleDiscrete</a></code>, <code><a href='singleContinuous.html'>singleContinuous</a></code>, <code><a href='dualNone.html'>dualNone</a></code>, <code><a href='dualDiscrete.html'>dualDiscrete</a></code> or <code><a href='dualContinuous.html'>dualContinuous</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>nosoiSim</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"single"</span>, <span class='kw'>popStructure</span> <span class='kw'>=</span> <span class='st'>"none"</span>, <span class='no'>...</span>)</pre>
@@ -238,7 +238,7 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>arguments to be passed on to the chosen simulator itself, such as <code><a href='singleNone.html'>singleNone</a></code>, <code><a href='singleDiscrete.html'>singleDiscrete</a></code>, <code><a href='singleContinuous.html'>singleContinuous</a></code>, <code><a href='dualNone.html'>dualNone</a></code>, <code><a href='dualDiscrete.html'>dualDiscrete</a></code> or <code><a href='dualContinuous.html'>dualContinuous</a></code>.</p></td>
+      <td><p>arguments to be passed on to the chosen simulator itself, such as <code><a href='SingleNone.html'>singleNone</a></code>, <code><a href='singleDiscrete.html'>singleDiscrete</a></code>, <code><a href='singleContinuous.html'>singleContinuous</a></code>, <code><a href='dualNone.html'>dualNone</a></code>, <code><a href='dualDiscrete.html'>dualDiscrete</a></code> or <code><a href='dualContinuous.html'>dualContinuous</a></code>.</p></td>
     </tr>
     </table>
 
@@ -247,24 +247,32 @@
     <p>An object of class <code>nosoiSim</code>, containing all results of the simulation. Class <code>nosoiSim</code> object have the following slots:</p><dl class='dl-horizontal'>
    <dt>total.time</dt><dd><p>Number of time steps the simulation ran (integer).</p></dd>
 
-   <dt>type</dt><dd><p>String about the simulation type (<code>single</code> or <code>dual</code> host).</p></dd>
+   <dt>type</dt><dd><p>String giving the simulation type ("single" or "dual" host).</p></dd>
 
-   <dt>host.info.A (object of class <code>nosoiSimOne</code>)</dt><dd><p><dl class='dl-horizontal'>
+   <dt>host.info.A: object of class <code>nosoiSimOne</code></dt><dd><p><dl class='dl-horizontal'>
           <dt>N.infected</dt><dd><p>Number of infected hosts (integer).</p></dd>
           <dt>table.hosts</dt><dd><p>Table containing the results of the simulation  (see <code><a href='getTableHosts.html'>getTableHosts</a></code> for more details on the table).</p></dd>
           <dt>table.state</dt><dd><p>Table containing the results of the simulation, focusing on the movement history of each host (see <code><a href='getTableState.html'>getTableState</a></code> for more details on the table).</p></dd>
           <dt>prefix.host</dt><dd><p>String containing the prefix used to name hosts (character string).</p></dd>
-          <dt>popStructure</dt><dd><p>String about the population structure (either <code>none</code>, <code>discrete</code> or <code>continuous</code>).</p></dd></dl></p></dd>
+          <dt>popStructure</dt><dd><p>String giving the population structure (one of "none", "discrete" or "continuous").</p></dd></dl></p></dd>
 
-   <dt>host.info.B (object of class <code>nosoiSimOne</code>)</dt><dd><p><dl class='dl-horizontal'>
-          <dt>N.infected</dt><dd><p>Number of infected hosts (integer)</p></dd>
-          <dt>table.hosts</dt><dd><p>Table containing the results of the simulation, (see <code><a href='getTableHosts.html'>getTableHosts</a></code> for more details on the table).</p></dd>
-          <dt>table.state</dt><dd><p>Table containing the results of the simulation, focusing on the movement history of each host (see <code><a href='getTableState.html'>getTableState</a></code> for more details on the table).</p></dd>
-          <dt>prefix.host</dt><dd><p>String containing the prefix used to name hosts (character string).</p></dd>
-          <dt>popStructure</dt><dd><p>String about the population structure (either <code>none</code>, <code>discrete</code> or <code>continuous</code>).</p></dd></dl></p></dd>
+   <dt>host.info.B: object of class <code>nosoiSimOne</code></dt><dd><p>Same structure as <code>host.info.A</code>, but for host B (if it exists).</p></dd>
    
 </dl>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'>
+<dl class='dl-horizontal'>
+  <dt>Individual simulation functions:</dt><dd><p><code><a href='SingleNone.html'>singleNone</a></code>, <code><a href='singleDiscrete.html'>singleDiscrete</a></code>,
+    <code><a href='singleContinuous.html'>singleContinuous</a></code>, <code><a href='dualNone.html'>dualNone</a></code>,
+    <code><a href='dualDiscrete.html'>dualDiscrete</a></code> and <code><a href='dualContinuous.html'>dualContinuous</a></code>.</p></dd>
+    <dt>Functions to extract the results:</dt><dd><p><code><a href='getTableHosts.html'>getTableHosts</a></code>, <code><a href='getTableState.html'>getTableState</a></code></p></dd>
+    <dt>Summary statistics functions:</dt><dd><p><code><a href='nosoiSummary.html'>nosoiSummary</a></code>,
+    <code><a href='getCumulative.html'>getCumulative</a></code>, <code><a href='getDynamic.html'>getDynamic</a></code>, <code><a href='getR0.html'>getR0</a></code></p></dd>
+
+</dl>
+</div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
@@ -280,17 +288,18 @@
 
 <span class='no'>time_contact</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)}
 
-<span class='no'>test.nosoiA</span> <span class='kw'>&lt;-</span> <span class='fu'>nosoiSim</span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"none"</span>,
-                        <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>40</span>,
-                        <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
-                        <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
-                        <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
-                        <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                        <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
-                        <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
-                                            <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
-                        <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
-                        <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
+<span class='no'>test.nosoi</span> <span class='kw'>&lt;-</span> <span class='fu'>nosoiSim</span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"none"</span>,
+                      <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>40</span>,
+                      <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
+                      <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
+                      <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
+                      <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                      <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
+                      <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
+                                          <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
+                      <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
+                      <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
+<span class='no'>test.nosoi</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -298,6 +307,7 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
