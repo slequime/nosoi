@@ -16,7 +16,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-`nosoi` can accommodate a wide range of epidemiological transmission scenarios. and doing so requires providing the proper parameter values.
+`nosoi` can accommodate a wide range of epidemiological transmission scenarios. 
+<!-- Doing so requires providing the proper parameter values. -->
+It hence relies on many parameters, that need to be set properly for the right scenario to be simulated.
 This tutorial aims to illustrate how to set up a `nosoi` simulation for a "simple" case: a pathogen being transmitted within a population without structure. We will present two cases, first for a single-host, and then a dual-host pathogen.
 
 # Setting up the simulation
@@ -25,7 +27,7 @@ The wrapper function `nosoiSim` takes all the arguments that will be passed down
 We thus start by providing the options `type="single"` and `popStructure="none"` to set up the analysis:
 
 ```{r setupA, eval = FALSE}
-SimulationA <- nosoiSim(type="single", popStructure="none", ...)
+SimulationSingle <- nosoiSim(type="single", popStructure="none", ...)
 ```
 
 This simulation type requires several arguments or options in order to run, namely:
@@ -44,49 +46,53 @@ All the `param.*` elements provide individual-level parameters to be taken into 
 
 ## General parameters
 
-`length.sim`, `max.infected` and `init.individuals` are general parameters that define the simulation.
-`length.sim` is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run, whereas `max.infected` is the maximum number of individuals that can be infected during the simulation.
-`init.individuals` defines the number of individuals (starting at 1, but the provided number has to be an integer) that will start a transmission chain (you will have as many transmission chains as initial individuals that "seed" the epidemic process).
+`length.sim`, `max.infected` and `init.individuals` are general parameters that define the simulation:
+
+- `length.sim` is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run.
+- `max.infected` is the maximum number of individuals that can be infected during the simulation.
+- `init.individuals` defines the number of individuals (an integer above 1) that will start a transmission chain (there will be as many transmission chains as initial individuals that "seed" the epidemic process).
 
 Here, we will run a simulation starting with 1 individual, for a maximum of 1,000 infected individuals and a maximum time of 300 days.
 
 ```{r setupB, eval = FALSE}
-SimulationA <- nosoiSim(type="single", popStructure="none",
-                        length.sim=300, max.infected=1000, init.individuals=1, ...)
+SimulationSingle <- nosoiSim(type="single", popStructure="none",
+                             length.sim=300, max.infected=1000, init.individuals=1, ...)
 ```
 
 ## Core functions
 
 The core functions `pExit`, `nContact` and `pTrans` each follow the [same principles to be set up](nosoi.html#setting-up-the-core-functions). 
-To accommodate different scenarios, they can be constant, time-dependent (using the relative time since infection for each individual or the "absolute" time of the simulation) or even individually parameterized, to include some stochasticity at the individual-host level.
-In every case, the function provided, like all other core functions in `nosoi`, has to be expressed as a function of time `t`, even if time is not used to compute the probability.
-In case the function uses individual-based parameters, you have to specify a list of functions (called `param.pExit`, `param.nContact` or `param.pTrans`) ( [see Get started](nosoi.html#parameters) ). If no individual-based parameters are used, then they are set to `NA`.
 
-> Keep in mind that `pExit` and `pTrans` have to return a probability (i.e. a number between 0 and 1) while `nContact` should return a positive natural number (positive integer).
+To accommodate for different scenarios, they can be constant, time-dependent (using the relative time since infection `t` for each individual or the "absolute" time `pres.time` of the simulation) or even individually parameterized, to include some stochasticity at the individual-host level.
 
-<!-- To Seb: in English, "positive" means "strictly supperior to 0" (while in French in means "supperior or equal to zero"). Just checking, is that what you had in mind here ? -->
+In any case, the provided function, like all other core functions in `nosoi`, has to be expressed as a function of time `t`, even if time is not used to compute the probability.
 
-You can combine the influence of several parameters, such as the time since infection, the "absolute" time of the simulation and individual-based parameters within the same function.
+In case the function uses individual-based parameters, they must be specified in a list of functions (called `param.pExit`, `param.nContact` or `param.pTrans`) (see [Get started](nosoi.html#parameters)). If no individual-based parameters are used, then these lists are set to `NA`.
+
+> Keep in mind that `pExit` and `pTrans` have to return a probability (i.e. a number between 0 and 1) while `nContact` should return a natural number (positive integer or zero).
+
+Several parameters, such as the time since infection, the "absolute" time of the simulation and individual-based parameters can be combined within the same function.
 
 > In any case, time since infection and "absolute" time should ALWAYS be designated by `t` and `prestime` respectively. They also have to be used in the order: (1) `t`; (2) `prestime` and (3) individual-based parameters. This is necessary for the function to be properly parsed by `nosoi`.
 
 ### `pExit`, `param.pExit` and `timeDep.pExit`
 
-`pExit` is the first required fundamental parameter and provides a daily probability for a host to leave the simulation (either cured, died, etc.).
-`param.pExit` is the list of functions needed to individually parameterize `pExit` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `pExit`. `timeDep.pExit` allows for `pExit` to be dependent on the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.pExit` is set to `FALSE`.
+- `pExit` is the first required fundamental parameter and provides a daily probability for a host to leave the simulation (either cured, died, etc.).
+- `param.pExit` is the list of functions needed to individually parameterize `pExit` (see [Get started](nosoi.html#parameters)). The name of each function in the list has to match the name of the  parameter it is sampling for `pExit`.
+- `timeDep.pExit` allows for `pExit` to be dependent on the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.pExit` is set to `FALSE`.
 
 ### `nContact`, `param.nContact` and `timeDep.nContact`
 
-`nContact` represents the number (expressed as a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation.
+- `nContact` represents the number (expressed as a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation.
 The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero.
-`param.nContact` is the list of functions needed to individually parameterize `nContact` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `nContact`.
-`timeDep.nContact` allows for `nContact` to be dependent on the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.nContact` is set to `FALSE`.
+- `param.nContact` is the list of functions needed to individually parameterize `nContact` (see [Get started](nosoi.html#parameters)). The name of each function in the list has to match the name of the  parameter it is sampling for `nContact`.
+- `timeDep.nContact` allows for `nContact` to be dependent on the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.nContact` is set to `FALSE`.
 
 ### `pTrans`, `param.pTrans` and `timeDep.pTrans`
 
-`pTrans` is the heart of the transmission process and represents the probability of transmission over time (when a contact occurs).
-`param.pTrans` is the list of functions needed to individually parameterize `pTrans` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `pTrans`.
-`timeDep.pTrans` allows for `pTrans` to be dependent on the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.pTrans` is set to `FALSE`.
+- `pTrans` is the heart of the transmission process and represents the probability of transmission over time (when a contact occurs).
+- `param.pTrans` is the list of functions needed to individually parameterize `pTrans` (see [Get started](nosoi.html#parameters)). The name of each function in the list has to match the name of the  parameter it is sampling for `pTrans`.
+- `timeDep.pTrans` allows for `pTrans` to be dependent on the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.pTrans` is set to `FALSE`.
 
 ## Miscellaneous
 
@@ -94,7 +100,7 @@ The number of contacts (i.e. the output of your function) has to be an integer a
 It will be followed by a hyphen and a unique number.
 By default, `prefix.host` is "H" for "Host".
 
-`print.progress` allows you to have some information printed on the screen about the simulation as it is running. It will print something every `print.step`. By default, `print.progress` is activated with a `print.step = 10` (you can change this frequency), but you may want to desactivate it by providing `print.progress = FALSE`.
+`print.progress` allows you to have some information printed on the screen about the simulation as it is running. It will print something every `print.step`. By default, `print.progress` is activated with a `print.step = 10` (you can change this frequency), but you may want to desactivate it by setting `print.progress = FALSE`.
 
 ## Dual host
 
@@ -102,7 +108,7 @@ In the case of a dual host simulation, several parameters of the `nosoiSim` will
 We thus start by providing the options `type="dual"` and `popStructure="none"` to set up the analysis:
 
 ```{r setupA-dual, eval = FALSE}
-SimulationA <- nosoiSim(type="dual", popStructure="none", ...)
+SimulationDual <- nosoiSim(type="dual", popStructure="none", ...)
 ```
 
 As with `singleNone`, this function takes several arguments or options to be able to run, namely:
@@ -125,17 +131,17 @@ As with `singleNone`, this function takes several arguments or options to be abl
 
 As you can see, host-type dependent parameters are now designated by the suffix `.A` or `.B`.
 
-Both `max.infected.A` and `max.infected.B` have to be provided to set an upper limit on the simulation size. To initiate the simulation, you have to provide at least one starting host, either `A` or `B` in `init.individuals.A` or `init.individuals.B` respectively. If you want to start the simulation with one host only, then `init.individuals` of the other can be set to 0.
+Both `max.infected.A` and `max.infected.B` have to be provided to set an upper limit on the simulation size. To initiate the simulation, you have to provide at least one starting host, either `A` or `B` in `init.individuals.A` or `init.individuals.B` respectively. If you want to start the simulation with one host only, then the `init.individuals` of the other can be set to 0.
 
 # Running `nosoi`
 
 ## Single host
 
-We will present here a very simple simulation for a single host pathogen.
+We present here a very simple simulation for a single host pathogen.
 
 ### pExit
 
-For `pExit`, we will choose a constant value, namely 0.08, i.e. an infected host has 8% chance to leave the simulation at each unit of time:
+For `pExit`, we choose a constant value, namely 0.08, i.e. an infected host has 8% chance to leave the simulation at each unit of time:
 
 ```{r pExit1, eval = FALSE}
 p_Exit_fct  <- function(t){return(0.08)}
@@ -145,7 +151,7 @@ Remember that `pExit`, like the other core functions has to be function of `t`, 
 
 ### nContact
 
-For `nContact`, we will choose a constant function that will draw a value from a normal distribution with *mean* = 0.5 and *sd* = 1, round it, and take its absolute value:
+For `nContact`, we choose a constant function that will draw a value from a normal distribution with *mean* = 0.5 and *sd* = 1, round it, and take its absolute value:
 
 ```{r nContact1, eval = FALSE}
 n_contact_fct = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
@@ -165,11 +171,11 @@ ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + the
 
 ```
 
-At each time and for each infected host, `nContact` will be drawn anew. Remember that `nContact`, like the other core functions has to be function of `t`, even if `t` is not used. Since `nContact` is constant here, there is no use for the "absolute" time of the simulation nor for the individual-based parameters. So `param.nContact = NA`, and `timeDep.nContact = FALSE`.
+At each time step and for each infected host, `nContact` will be drawn anew. Remember that `nContact`, like the other core functions has to be function of `t`, even if `t` is not used. Since `nContact` is constant here, there is no use for the "absolute" time of the simulation nor for the individual-based parameters. So `param.nContact = NA`, and `timeDep.nContact = FALSE`.
 
 ### pTrans
 
-`pTrans` will be in the form of a threshold function: before a certain amount of time since initial infection, the host does not transmit (incubation time, which we will call `t_incub`), and after that time it will transmit with a certain (constant) probability (which we will call `p_max`). This function will be dependent on the time since the host's infection `t`:
+We choose `pTrans` in the form of a threshold function: before a certain amount of time since initial infection, the host does not transmit (incubation time, which we will call `t_incub`), and after that time it will transmit with a certain (constant) probability (which we call `p_max`). This function is dependent on the time since the host's infection `t`:
 
 ```{r pTrans1, eval = FALSE}
 p_Trans_fct <- function(t, p_max, t_incub){
@@ -223,7 +229,7 @@ ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60") + t
 t_incub_fct <- function(x){rnorm(x,mean = 7,sd=1)}
 p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 
-param_pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct)
+param_pTrans = list(p_max=p_max_fct, t_incub=t_incub_fct)
 ```
 
 ### Running
@@ -255,29 +261,29 @@ param_pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct)
 
 set.seed(805)
 SimulationSingle <- nosoiSim(type="single", popStructure="none",
-                        length.sim=100, max.infected=100, init.individuals=1, 
-                        nContact=n_contact_fct,
-                        param.nContact=NA,
-                        timeDep.nContact=FALSE,
-                        pExit = p_Exit_fct,
-                        param.pExit = NA,
-                        timeDep.pExit=FALSE,
-                        pTrans = p_Trans_fct,
-                        param.pTrans = param_pTrans,
-                        timeDep.pTrans=FALSE,
-                        prefix.host="H",
-                        print.progress=FALSE)
+                             length.sim=100, max.infected=100, init.individuals=1, 
+                             nContact=n_contact_fct,
+                             param.nContact=NA,
+                             timeDep.nContact=FALSE,
+                             pExit = p_Exit_fct,
+                             param.pExit = NA,
+                             timeDep.pExit=FALSE,
+                             pTrans = p_Trans_fct,
+                             param.pTrans = param_pTrans,
+                             timeDep.pTrans=FALSE,
+                             prefix.host="H",
+                             print.progress=FALSE)
 ```
-Once the simulation has finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (111).
+Once the simulation has finished, it reports the number of time units for which the simulation has run (`r SimulationSingle$total.time`), and the maximum number of infected hosts (`r SimulationSingle$host.info.A$N.infected`).
 Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected` threshold set at 100.
 
 ## Dual host
 
-Setting up a dual host simulation is similar to the single host version described above, but each parameter has to be provided for both hosts. Host A will use the same parameters as the single / only host above did. Host B will have sightly different parameters:
+Setting up a dual host simulation is similar to the single host version described above, but each parameter has to be provided for both hosts. Here, we choose for Host A the same parameters as the single / only host above. Host B will have sightly different parameters:
 
 ### pExit.B
 
-For `pExit.B`, we will choose a value that depends on the "absolute" time of the simulation, for example cyclic climatic conditions (temperature). In that case, the function's arguments should be `t` and `prestime` (the "absolute" time of the simulation), in that order:
+For `pExit.B`, we choose a value that depends on the "absolute" time of the simulation, for example cyclic climatic conditions (temperature). In that case, the function's arguments should be `t` and `prestime` (the "absolute" time of the simulation), in that order:
 ```{r pExit1-dual, eval = FALSE}
 p_Exit_fctB  <- function(t,prestime){(sin(prestime/(2*pi*10))+1)/16} #for a periodic function
 ```
@@ -293,7 +299,7 @@ Since `pExit.B` is dependent on the simulation's absolute time, do not forget to
 
 ### nContact.B
 
-For `nContact.B`, we will choose a constant function that will sample a value out of a provided range of possible values, each with a certain probability:
+For `nContact.B`, we choose a constant function that will sample a value out of a provided range of possible values, each with a certain probability:
 
 ```{r nContact1.B, eval = FALSE}
 n_contact_fct.B = function(t){sample(c(0,1,2),1,prob=c(0.6,0.3,0.1))}
@@ -316,7 +322,7 @@ At each time and for each infected host, `nContact.B` will be drawn anew. Rememb
 
 ### pTrans.B
 
-`pTrans.B` will be provided in the form of a Gaussian function. It will reach its maximum value at a certain time point (mean) after initial infection and will subsequently decrease until it reaches 0:
+We choose `pTrans.B` in the form of a Gaussian function. It will reach its maximum value at a certain time point (mean) after initial infection and will subsequently decrease until it reaches 0:
 
 ```{r pTrans1.B, eval = FALSE}
 p_Trans_fct.B <- function(t, max.time){
@@ -324,7 +330,7 @@ p_Trans_fct.B <- function(t, max.time){
 }
 ```
 
-Because each host is here also different (slightly different biotic and abiotic factors), you can expect each host to exhibit differences in the dynamics of infection, and hence the probability of transmission over time. Thus, `max.time` will be sampled for each host individually according to a certain distribution. `max.time` will be sampled from a normal distribution of parameters $mean$ = 5 and $sd$ = 1:
+Because each host is different (slightly different biotic and abiotic factors), you can expect each host to exhibit differences in the dynamics of infection, and hence the probability of transmission over time. Thus, `max.time` will be sampled for each host individually according to a certain distribution. `max.time` will be sampled from a normal distribution of parameters $mean$ = 5 and $sd$ = 1:
 
 ```{r pTrans2.B, eval = FALSE}
 max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
@@ -414,39 +420,39 @@ param_pTrans.B = list(max.time=max.time_fct)
 
 set.seed(606)
 SimulationDual <- nosoiSim(type="dual", popStructure="none",
-                        length.sim=100, 
-                        max.infected.A=100, 
-                        max.infected.B=100, 
-                        
-                        init.individuals.A=1, 
-                        init.individuals.B=0, 
-                        
-                        nContact.A=n_contact_fct.A,
-                        param.nContact.A=NA,
-                        timeDep.nContact.A=FALSE,
-                        pExit.A=p_Exit_fct.A,
-                        param.pExit.A=NA,
-                        timeDep.pExit.A=FALSE,
-                        pTrans.A=p_Trans_fct.A,
-                        param.pTrans.A=param_pTrans.A,
-                        timeDep.pTrans.A=FALSE,
-                        prefix.host.A="H",
-                        
-                        nContact.B=n_contact_fct.B,
-                        param.nContact.B=NA,
-                        timeDep.nContact.B=FALSE,
-                        pExit.B=p_Exit_fct.B,
-                        param.pExit.B=NA,
-                        timeDep.pExit.B=TRUE,
-                        pTrans.B=p_Trans_fct.B,
-                        param.pTrans.B=param_pTrans.B,
-                        timeDep.pTrans.B=FALSE,
-                        prefix.host.B="V",
-                        
-                        print.progress=FALSE)
+                           length.sim=100, 
+                           max.infected.A=100, 
+                           max.infected.B=100, 
+                           
+                           init.individuals.A=1, 
+                           init.individuals.B=0, 
+                           
+                           nContact.A=n_contact_fct.A,
+                           param.nContact.A=NA,
+                           timeDep.nContact.A=FALSE,
+                           pExit.A=p_Exit_fct.A,
+                           param.pExit.A=NA,
+                           timeDep.pExit.A=FALSE,
+                           pTrans.A=p_Trans_fct.A,
+                           param.pTrans.A=param_pTrans.A,
+                           timeDep.pTrans.A=FALSE,
+                           prefix.host.A="H",
+                           
+                           nContact.B=n_contact_fct.B,
+                           param.nContact.B=NA,
+                           timeDep.nContact.B=FALSE,
+                           pExit.B=p_Exit_fct.B,
+                           param.pExit.B=NA,
+                           timeDep.pExit.B=TRUE,
+                           pTrans.B=p_Trans_fct.B,
+                           param.pTrans.B=param_pTrans.B,
+                           timeDep.pTrans.B=FALSE,
+                           prefix.host.B="V",
+                           
+                           print.progress=FALSE)
 ```
 
-Once the simulation has finished, it reports the number of time units for which the simulation has run (43), and the maximum number of infected hosts A (101) and hosts B (92).
+Once the simulation has finished, it reports the number of time units for which the simulation has run (`r SimulationDual$total.time`), and the maximum number of infected hosts A (`r SimulationDual$host.info.A$N.infected`) and hosts B (`r SimulationDual$host.info.B$N.infected`).
 Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected.A` threshold set at 100.
 
 # Going further

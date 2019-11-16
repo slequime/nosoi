@@ -14,7 +14,7 @@ A tree of class \code{\link[tidytree:treedata-class]{treedata}}, containing a
 phylogenetic tree based on the transmission chain and the mapped data at all the nodes.
 }
 \description{
-From a \code{nosoi} simulated epidemics, this function extract the full transmission tree in a form mimicking a phylogenetic tree.
+From a \code{nosoi} simulated epidemics, this function extracts the full transmission tree in a form mimicking a phylogenetic tree.
 }
 \details{
 This function uses packages \pkg{tidytree} and \pkg{treeio},
@@ -40,7 +40,7 @@ transition.matrix = matrix(c(0, 0.2, 0.4, 0.5, 0, 0.6, 0.5, 0.8, 0),
                            dimnames = list(c("A", "B", "C"), c("A", "B", "C")))
 
 set.seed(805)
-test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
+test.nosoi <- nosoiSim(type="single", popStructure="discrete",
                         length=20,
                         max.infected=100,
                         init.individuals=1,
@@ -58,7 +58,7 @@ test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
 )
 
 ## Full transmission tree
-ttreedata <- getTransmissionTree(test.nosoiA)
+ttreedata <- getTransmissionTree(test.nosoi)
 plot(ttreedata@phylo)
 
 ## Sampling "non dead" individuals
@@ -67,7 +67,7 @@ samples <- data.table(hosts = hID,
                       times = c(5.2, 9.3, 10.2, 16),
                       labels = paste0(hID, "-s"))
 
-sampledTree <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
+sampledTree <- sampleTransmissionTree(test.nosoi, ttreedata, samples)
 plot(sampledTree@phylo)
 
 ## Sampling "dead" individuals
