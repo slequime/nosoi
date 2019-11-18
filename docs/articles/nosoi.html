@@ -178,7 +178,7 @@
       <h1>Getting started</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-11-05</h4>
+            <h4 class="date">2019-11-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/nosoi.Rmd"><code>vignettes/nosoi.Rmd</code></a></small>
       <div class="hidden name"><code>nosoi.Rmd</code></div>
@@ -190,69 +190,103 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p><code>nosoi</code> aims to provide a modular framework to conduct epidemiological simulations under a wide range of scenarios, varying from relatively simple to highly complex and parametric. This flexibility allows <code>nosoi</code> to take into account the effect of numerous covariates, taken individually or in the form of interactions, on the epidemic process, without having to use advanced mathematics to formalize the model into differential equations. At its core, <code>nosoi</code> generates a transmission chain (a link between hosts), the foundation of every epidemic process, allowing to reconstruct in great detail the history of the epidemic.</p>
-<p><code>nosoi</code> is an agent-based model, which means it is centered on individuals, here called “hosts”, that enter the simulation when they get infected. <code>nosoi</code> is also stochastic, and thus relies heavily on probabilities, mainly 4 core probabilities, and its time is discretized.</p>
+<p><code>nosoi</code> aims to provide a modular framework to conduct epidemiological simulations under a wide range of scenarios, varying from relatively simple to highly complex and parametric. This flexibility allows <code>nosoi</code> to take into account the effect of numerous covariates, taken individually or in the form of interactions, on the epidemic process, without having to use advanced mathematics to formalize the model into differential equations. At its core, <code>nosoi</code> generates a transmission chain (a link between hosts), the foundation of every epidemic process, allowing to reconstruct in great details the history of the epidemic.</p>
+<p><code>nosoi</code> is an agent-based model, which means it is centered on individuals, here called “hosts”, that enter the simulation when they get infected. <code>nosoi</code> is also stochastic, and thus relies heavily on probabilities, mainly 4 core probabilities. It operates on a discretized time.</p>
 <div id="critical-assumption-of-nosoi" class="section level2">
 <h2 class="hasAnchor">
 <a href="#critical-assumption-of-nosoi" class="anchor"></a>Critical assumption of <code>nosoi</code>
 </h2>
-<p><code>nosoi</code> assumes that the maximum number of hosts infected during your simulation is orders of magnitude smaller than the total exposed population. This means that, currently, it does not take into account building herd immunity using the simulated epidemic results (although a proxy can be used; discussed in several of the provided tutorials).</p>
+<p><code>nosoi</code> assumes that the maximum number of hosts infected during a simulation is orders of magnitude smaller than the total exposed population. This means that, currently, it does not take into account building herd immunity using the simulated epidemic results <!-- PB: I'm not sure I understand the sentence above. --> (although a proxy can be used, as it will be discussed in several of the companion tutorials).</p>
 </div>
 <div id="essential-building-blocks-3-probabilities-and-2-numbers" class="section level2">
 <h2 class="hasAnchor">
 <a href="#essential-building-blocks-3-probabilities-and-2-numbers" class="anchor"></a>Essential building blocks: 3 probabilities and 2 numbers</h2>
 <p>At its core, <code>nosoi</code> can be summarized by 3 probabilities and 2 numbers at a specific time point:</p>
 <ul>
-<li>the probability to exit the simulation (here named <code>pExit</code>). For hosts, that means - for example - dying, being cured, leaving the study area, etc.</li>
-<li>the probability to move (here named <code>pMove</code>), only relevant when your simulation has some kind of structure, either in a discrete or continuous space. For hosts, that could be - for example - traveling, changing status (gaining access to treatment), etc.</li>
-<li>the standard deviation of the random walk (links to the distance traveled in coordinate space ; here named <code>sdMove</code>), only relevant when a structure is imposed or assumed in a continuous space.</li>
-<li>the number of contacts (here named <code>nContact</code>). How many potentially infectious contacts does an infected host have?</li>
-<li>the probability to transmit (here named <code>pTrans</code>). When a contact occurs between two hosts, with one of them being infected, the probability that the infection gets transmitted to the uninfected one.</li>
+<li>
+<code>pExit</code> the probability to exit the simulation. For hosts, that means - for example - dying, being cured, leaving the study area, etc.</li>
+<li>
+<code>pMove</code> the probability to move, only relevant when your simulation has some kind of structure, either in a discrete or continuous space. For hosts, that could be - for example - traveling, changing status (gaining access to treatment), etc.</li>
+<li>
+<code>sdMove</code> the standard deviation of the random walk (links to the distance traveled in coordinate space), only relevant when a structure is imposed or assumed in a continuous space.</li>
+<li>
+<code>nContact</code> the number of contacts. How many potentially infectious contacts does an infected host have?</li>
+<li>
+<code>pTrans</code> the probability to transmit. When a contact occurs between two hosts, with one of them being infected, the probability that the infection gets transmitted to the uninfected one.</li>
 </ul>
-<p>Each of these probabilities and numbers are computed during the simulation. In a very simple scenario, each one is a constant. In more complex models supported by <code>nosoi</code>, these probabilities could depend on a host’s parameters (e.g. genetics), dynamic parameters (since when the host is infected), environmental parameters (related to the host’s location), or the moment of the simulation (e.g. seasons, mitigation campaign,…), taken individually into account or together.</p>
+<p>Each of these probabilities and numbers are computed during the simulation. In a very simple scenario, each one is a constant. In more complex models supported by <code>nosoi</code>, these probabilities could depend on a host’s parameters (e.g. genetics), dynamic parameters (for how long the host has been infected), environmental parameters (related to the host’s location), or the particular period of the simulation (e.g. seasons, mitigation campaign,…). All those parameters can be taken into account either individually, or for the population as a whole.</p>
 </div>
 <div id="what-happens-at-each-time-step" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-happens-at-each-time-step" class="anchor"></a>What happens at each time step?</h2>
-<p>Time is discretized in <code>nosoi</code>; each time step follows the same flow for each host:</p>
+<p>Time is discretized in <code>nosoi</code>. Each time step follows the same pattern for each host:</p>
 <p><img src="nosoi_files/figure-html/setupMatrix-1.png" width="700"></p>
 <ul>
-<li>Does the host exit the simulation? This step samples YES or NO based on the probability <code>pExit</code>.</li>
-<li>Does the host move (if there is structure)? This step samples YES or NO based on the probability <code>pMove</code>.</li>
-<li>How far does the host move (if the structure is a continuous space)? This step returns a number used as a distance in the continuous space.</li>
-<li>How many infectious contacts does the host have? This step yields an integer number.</li>
-<li>If there is an infectious contact, does the host transmit the infection to a new host? This step samples YES or NO based on the probability <code>pTrans</code>.</li>
+<li>
+<code>pExit</code>: does the host exit the simulation ? This step samples YES or NO based on the probability <code>pExit</code>.</li>
+<li>
+<code>pMove</code>: does the host move (if there is structure) ? This step samples YES or NO based on the probability <code>pMove</code>.</li>
+<li>
+<code>sdMove</code>: how far does the host move (if the structure is a continuous space)? This step returns a number used as a distance in the continuous space, drawn with standard deviation <code>sdMove</code>.</li>
+<li>
+<code>nContact</code>: how many infectious contacts does the host have? This step yields an integer number <code>nContact</code>.</li>
+<li>
+<code>pTrans</code>: if there is an infectious contact, does the host transmit the infection to a new host? This step samples YES or NO based on the probability <code>pTrans</code>.</li>
 </ul>
-<p>Once all steps have been gone through, the simulation moves to the next time step.</p>
+<p>After these five propagation steps, the simulation moves to the next time step.</p>
 </div>
 </div>
 <div id="setting-up-the-core-functions" class="section level1">
 <h1 class="hasAnchor">
 <a href="#setting-up-the-core-functions" class="anchor"></a>Setting up the core functions</h1>
-<p><code>nosoi</code> runs under a series of user-defined probabilities and numbers ( <a href="nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers">see General principles</a> ). Each follows the same principles to be set up. We will provide a detailed explanation here how to set up a correct function to be used in the simulator; this will apply for the functions <code>pExit</code>, <code>pMove</code>, <code>sdMove</code>, <code>nContact</code> and <code>pTrans</code>.</p>
+<p><code>nosoi</code> runs under a series of user-defined probabilities and numbers (see <a href="nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers">General principles</a> ). Each follows the same principles to be set up. We provide here a detailed explanation on how to set up a function correctly so that it can be used in the simulator. This will apply to the five core functions already mentioned: <code>pExit</code>, <code>pMove</code>, <code>sdMove</code>, <code>nContact</code> and <code>pTrans</code>.</p>
 <div id="expected-output" class="section level2">
 <h2 class="hasAnchor">
 <a href="#expected-output" class="anchor"></a>Expected output</h2>
 <p>Every function which name starts with a <code>p</code> (i.e. <code>pExit</code>, <code>pMove</code> and <code>pTrans</code>) should return a single probability (a number between 0 and 1).</p>
-<p><code>nContact</code> should return a positive natural number (positive integer), while <code>sdMove</code> can return a real number (keep in mind this number is related to your coordinate space).</p>
+<p><code>nContact</code> should return a positive natural number (positive integer).</p>
+<p><code>sdMove</code> should return a real number (keep in mind this number is related to your coordinate space).</p>
 </div>
-<div id="function-arguments" class="section level2">
+<div id="functions-arguments" class="section level2">
 <h2 class="hasAnchor">
-<a href="#function-arguments" class="anchor"></a>Function arguments</h2>
-<p>A core function used by <code>nosoi</code> should at the bare minimum be expressed as a function of <code>t</code> (e.g. <code>pExit(t)</code>), even if <code>t</code> is not used within the body of the function. Thus, in order to return a constant value, the function should be expressed as:</p>
+<a href="#functions-arguments" class="anchor"></a>Functions’ arguments</h2>
+<div id="t" class="section level3">
+<h3 class="hasAnchor">
+<a href="#t" class="anchor"></a><code>t</code>
+</h3>
+<p>A core function in <code>nosoi</code> should always explicitly depend on the time <code>t</code> (e.g. <code>pExit(t)</code>), even if <code>t</code> is not used within the body of the function. For instance, to return a single constant value of 0.08, the function should be expressed as:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="fl">0.08</span>}</a></code></pre></div>
-<p>This will return a single value (0.08). If this probability/number should depend on the time since the host’s initial infection, then you only have to add <code>t</code> in the body of the function, such as in the following example:</p>
+<!-- This will return a single value (0.08). -->
+<p>The argument <code>t</code> represents the time since the host’s initial infection, and can be included in the ody of the function, to model a time-varying proability or number. For instance, a quantity depending on the following function will evolve in time as a logistic distribution with parameters <span class="math inline">\(\mu\)</span> 10 and <span class="math inline">\(s\)</span> 2:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span>(t,<span class="dv">10</span>,<span class="dv">2</span>)}</a></code></pre></div>
-<p>Here the probability/number will follow a logistic distribution with parameters <span class="math inline">\(\mu\)</span> 10 and <span class="math inline">\(s\)</span> 2. If you want your probability/number to be dependent on the “absolute” time of the simulation (not to be confused with the time since infection <code>t</code>, which is individual-dependent), then you have to add the argument <code>prestime</code> (for “present time”), as follows:</p>
+<!-- Here the probability/number will follow a logistic distribution with parameters $\mu$ 10 and $s$ 2. -->
+</div>
+<div id="prestime" class="section level3">
+<h3 class="hasAnchor">
+<a href="#prestime" class="anchor"></a><code>prestime</code>
+</h3>
+<p>The argument <code>prestime</code> can be used to represent the <em>absolute</em> time of the simulation, shared by all the hosts (as opposed to the relative time since infection <code>t</code>, which is individual-dependent). For instance, the following function can be used to produce a periodic pattern:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,prestime){(<span class="kw"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span>(prestime<span class="op">/</span><span class="dv">12</span>)<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span>}</a></code></pre></div>
-<p>In that specific case, the function will return values following a periodic pattern. If you want your probability/number to be dependent on the location where the host is present (only if you use a structured population), then you have to add the argument <code>current.in</code> (discrete structure) or <code>current.env.value</code> (continuous structure).</p>
+<!-- In that specific case, the function will return values following a periodic pattern. -->
+</div>
+<div id="current-in-and-current-env-value" class="section level3">
+<h3 class="hasAnchor">
+<a href="#current-in-and-current-env-value" class="anchor"></a><code>current.in</code> and <code>current.env.value</code>
+</h3>
+<p>The arguments <code>current.in</code> (discrete structure) or <code>current.env.value</code> (continuous structure) can be used to represent the location of the host (only if a structured population is used), as shown below:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.in){</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"A"</span>){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">0</span>)}</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"B"</span>){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.5</span>)}</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"C"</span>){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">1</span>)}} <span class="co">#discrete (between states "A","B" and "C")</span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.env.value){current.env.value<span class="op">/</span><span class="dv">100</span>} <span class="co">#continuous</span></a></code></pre></div>
-<p>For more details on how to set up the influence of the structure, we refer to the tutorials on <a href="discrete.html">discrete</a> and <a href="continuous.html">continuous</a> structure. If you want your probability/number to be dependent on the number of hosts present at a location (only if you use a structured population), then you can add the argument <code>host.count</code> to your function.</p>
+<p>For more details on how to set up the influence of the structure, we refer to the tutorials on <a href="discrete.html">discrete</a> and <a href="continuous.html">continuous</a> structure.</p>
+</div>
+<div id="host-count" class="section level3">
+<h3 class="hasAnchor">
+<a href="#host-count" class="anchor"></a><code>host.count</code>
+</h3>
+<p>The argument <code>host.count</code> can be used to represent the number of hosts present at a given location (only for a structured population), as in the following:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.in, host.count){</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"A"</span>){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">0</span>)}</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"B"</span> <span class="op">&amp;</span><span class="st"> </span>host.count <span class="op">&lt;</span><span class="st"> </span><span class="dv">300</span> ){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.5</span>)}</a>
@@ -261,14 +295,17 @@
 <a class="sourceLine" id="cb5-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.env.value,host.count){(current.env.value<span class="op">-</span>host.count)<span class="op">/</span><span class="dv">100</span>} <span class="co">#continuous</span></a></code></pre></div>
 </div>
-<div id="parameters" class="section level2">
+</div>
+<div id="extra-parameters" class="section level2">
 <h2 class="hasAnchor">
-<a href="#parameters" class="anchor"></a>Parameters</h2>
-<p>If you want one of the parameters of the logistic distribution (or any other function) to be dependent on the individual host (including some heterogeneity between hosts), then you can add a parameter:</p>
+<a href="#extra-parameters" class="anchor"></a>Extra Parameters</h2>
+<p>Any of the parameters used in these functions can be themselves dependent on the individual host (in order to include some heterogeneity between host). For instance, the <span class="math inline">\(\mu\)</span> parameter of a logistic distribution can be determined for each individual host by another function to be specified:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,pFunction.param1){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span>(t,pFunction.param1,<span class="dv">2</span>)}</a></code></pre></div>
-<p>In this case, the <span class="math inline">\(\mu\)</span> parameter will be determined for each individual host by another function that you have to specify. Here we will use:</p>
+<!-- In this case, the $\mu$ parameter will be determined for each individual host by another function that you have to specify. Here we will use: -->
+<p>Where for instance <span class="math inline">\(\mu\)</span> can be sampled from a normal distribution (mean = 10 and sd = 2):</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">p_Function_param1 &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean=</span><span class="dv">10</span>,<span class="dt">sd=</span><span class="dv">2</span>)} <span class="co">#sampling one parameter for each infected individual</span></a></code></pre></div>
-<p><span class="math inline">\(\mu\)</span> will hence be sampled from a normal distribution (mean = 10 and sd = 2). Notice here that the function is expressed as a function of <code>x</code> instead of <code>t</code>. <code>x</code> is present in the body of the function as the number of draws to make from the distribution. Every parameter function you specify should be compiled into a list, where the function determining the parameter for each individual (right) can be named (left), using the name provided in <code>p_Function</code> for this parameter.</p>
+<p>Notice here that the function is expressed as a function of <code>x</code> instead of <code>t</code>. <code>x</code> is present in the body of the function as the number of draws to make from the distribution.</p>
+<p>Every parameter function you specify should be gathered into a list, where the function determining the parameter for each individual (here, <code>p_Function_param1</code>) has to be named according to the name used in <code>p_Function</code> for this parameter (here, <code>pFunction.param1</code>).</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">p_Function_parameters  &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">pFunction.param1 =</span> p_Function_param1)</a></code></pre></div>
 </div>
 <div id="combining-arguments" class="section level2">
@@ -300,6 +337,7 @@
 <li>
 <a href="examples/vector-competence.html">Epidemiological impact of mosquito vector competence</a>.</li>
 </ul>
+<!-- PB: If the examples are not on the CRAN, could these dead link be a problem ? -->
 </div>
   </div>
 
@@ -319,8 +357,8 @@
       <li>
 <a href="#setting-up-the-core-functions">Setting up the core functions</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#expected-output">Expected output</a></li>
-      <li><a href="#function-arguments">Function arguments</a></li>
-      <li><a href="#parameters">Parameters</a></li>
+      <li><a href="#functions-arguments">Functions’ arguments</a></li>
+      <li><a href="#extra-parameters">Extra Parameters</a></li>
       <li><a href="#combining-arguments">Combining arguments</a></li>
       </ul>
 </li>

@@ -257,27 +257,27 @@
 <span class='no'>p_Exit_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>0.08</span>)}
 
 <span class='no'>proba</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>,<span class='no'>p_max</span>,<span class='no'>t_incub</span>){
- <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&lt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='fl'>0</span>}
- <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&gt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='no'>p_max</span>}
- <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>p</span>)
+  <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&lt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='fl'>0</span>}
+  <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&gt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='no'>p_max</span>}
+  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>p</span>)
 }
 
 <span class='no'>time_contact</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)}
 
-<span class='no'>test.nosoiA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"none"</span>,
-                        <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>40</span>,
-                        <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
-                        <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
-                        <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
-                        <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                        <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
-                        <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
-                                            <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
-                        <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
-                        <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
+<span class='no'>test.nosoi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"none"</span>,
+                       <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>40</span>,
+                       <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
+                       <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
+                       <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
+                       <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
+                       <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
+                       <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
+                                           <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
+                       <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
+                       <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)
 
 
-<span class='no'>data.extracted</span> <span class='kw'>&lt;-</span> <span class='fu'>getHostData</span>(<span class='no'>test.nosoiA</span>, <span class='st'>"table.hosts"</span>, <span class='st'>"A"</span>)
+<span class='no'>data.extracted</span> <span class='kw'>&lt;-</span> <span class='fu'>getHostData</span>(<span class='no'>test.nosoi</span>, <span class='st'>"table.hosts"</span>, <span class='st'>"A"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

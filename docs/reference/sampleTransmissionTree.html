@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Samples the transmission tree (phylogenetic tree-like) — sampleTransmissionTree • nosoi</title>
+<title>Sample the transmission tree (phylogenetic tree-like) — sampleTransmissionTree • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Samples the transmission tree (phylogenetic tree-like) — sampleTransmissionTree" />
+<meta property="og:title" content="Sample the transmission tree (phylogenetic tree-like) — sampleTransmissionTree" />
 <meta property="og:description" content="Sample a full transmission tree. This function allows for sampling multiple
  times on the same lineage. When this happens, the sampled ancestor is
  a tip with length zero." />
@@ -216,7 +216,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Samples the transmission tree (phylogenetic tree-like)</h1>
+    <h1>Sample the transmission tree (phylogenetic tree-like)</h1>
     <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_treeGenerator.r'><code>R/output_treeGenerator.r</code></a></small>
     <div class="hidden name"><code>sampleTransmissionTree.Rd</code></div>
     </div>
@@ -286,7 +286,7 @@ in <span class="pkg">treeio</span> (e.g. <code><a href='https://rdrr.io/pkg/tree
                            <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>)))
 
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>805</span>)
-<span class='no'>test.nosoiA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"discrete"</span>,
+<span class='no'>test.nosoi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"discrete"</span>,
                         <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>,
                         <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
                         <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
@@ -304,7 +304,7 @@ in <span class="pkg">treeio</span> (e.g. <code><a href='https://rdrr.io/pkg/tree
 )
 
 <span class='co'>## Full transmission tree</span>
-<span class='no'>ttreedata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getTransmissionTree.html'>getTransmissionTree</a></span>(<span class='no'>test.nosoiA</span>)
+<span class='no'>ttreedata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getTransmissionTree.html'>getTransmissionTree</a></span>(<span class='no'>test.nosoi</span>)
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>ttreedata</span>@<span class='kw'>phylo</span>)
 
 <span class='co'>## Sampling "non dead" individuals</span>
@@ -313,7 +313,7 @@ in <span class="pkg">treeio</span> (e.g. <code><a href='https://rdrr.io/pkg/tree
                       <span class='kw'>times</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5.2</span>, <span class='fl'>9.3</span>, <span class='fl'>10.2</span>, <span class='fl'>16</span>),
                       <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>hID</span>, <span class='st'>"-s"</span>))
 
-<span class='no'>sampledTree</span> <span class='kw'>&lt;-</span> <span class='fu'>sampleTransmissionTree</span>(<span class='no'>test.nosoiA</span>, <span class='no'>ttreedata</span>, <span class='no'>samples</span>)
+<span class='no'>sampledTree</span> <span class='kw'>&lt;-</span> <span class='fu'>sampleTransmissionTree</span>(<span class='no'>test.nosoi</span>, <span class='no'>ttreedata</span>, <span class='no'>samples</span>)
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sampledTree</span>@<span class='kw'>phylo</span>)
 
 <span class='co'>## Sampling "dead" individuals</span>
