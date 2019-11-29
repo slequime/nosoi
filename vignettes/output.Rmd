@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 # `nosoiSim` object
 
-The output of a `nosoi` simulation is a `nosoiSim` class object that contains all the data generated during the simulation into the following slots:
+The output of a `nosoi` simulation is an object of class `nosoiSim` that contains all the data generated during the simulation into the following slots:
 
 - `total.time` is the number of time steps (an integer) during which the simulation has run.
 - `type` is the simulation type that was ran (either "single" or "dual" host).
@@ -83,9 +83,9 @@ By simulating transmission chains, `nosoi` also simulates an epidemic process. `
 
 ## Epidemiological summary
 
-The `nosoiSummary` is a turnkey solution that computes both the dynamics of the epidemic and $R_0$. Its only argument is your nosoi output object (of class `nosoiSim`):
+`summary` is a turnkey solution that computes both the dynamics of the epidemic and $R_0$. Its only argument is your nosoi output object (of class `nosoiSim`):
 ```{r nosoiSummary, eval = FALSE}
-nosoiSummary(nosoi.output)
+summary(nosoi.output)
 ``` 
 
 It returns a list containing the slots:
@@ -344,7 +344,7 @@ library(nosoi)
 The simulation runs for `r test.nosoiA$total.time` time steps
 and infected `r getHostData(test.nosoiA, "N.infected")` hosts. 
 The following transmission tree can thus be extracted 
-(as a `tidytere::treedata` object) and plotted using
+(as a `tidytree::treedata` object) and plotted using
 [`ggtree`](10.18129/B9.bioc.ggtree):
 
 ```{r treeA, message=FALSE}
@@ -441,7 +441,7 @@ ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(
 
 ## Exporting the Transmission Tree
 
-All the functions mentioned above produce a `tidytere::treedata` object.
+All the functions mentioned above produce a `tidytree::treedata` object.
 It is a phylogenetic tree, with nodes and tips annotated with all the characteristics
 of the epidemics, including the geographical location when applicable.
 This format is described in details by his developer in 
