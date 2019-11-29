@@ -16,17 +16,20 @@ knitr::opts_chunk$set(
 )
 ```
 
-Aside from the simple simulation set up, explored in [another tutorial](none.html), where hosts are "not structured", `nosoi` can take into account a population structured either in discrete states or in a continuous space. We will here focus on a continuous space structure (for the discrete structure, see [this tutorial](discrete.html)).
+Aside from the simple simulation set up, explored in [another tutorial](none.html), where hosts are "not structured", `nosoi` can take into account a population structured either in discrete states or in a continuous space.
+We focus here on a continuous space structure (for the discrete structure, see [this tutorial](discrete.html)).
 
-The continuous space is intended to allow the simulation to take place in a geographical context where hosts can move on a map, and may be influenced by heterogeneously distributed variables (environmental for example) on said map. This tutorial will focus on setting up a `nosoi` simulation for a pathogen whose spread occurs in continuous space.
+The continuous space is intended to allow the simulation to take place in a geographical context where hosts can move on a map, and may be influenced by heterogeneously distributed variables (environmental for example) on said map.
+
+This tutorial focuses on setting up a `nosoi` simulation for a pathogen which spread occurs in a continuous space.
 
 # Structure of the population
 
 ## Continuous space
 
-In the continuous space, the simulation will take place on a map defined by its coordinates. This map is actually a raster, called `structure.raster`, that also holds an environmental value of interest that may influence the epidemic process. Areas were hosts cannot move (water, inaccessible areas, etc) must be defined by the value `NA`.
+In the continuous space, the simulation takes place on a map defined by its coordinates. This map is actually a raster, here denoted by `structure.raster`, that also holds an environmental value of interest that may influence the epidemic process. Areas were hosts cannot move (water, inaccessible areas, etc) must be defined by the value `NA`.
 
-Here, we will generate a random raster for the purpose of this tutorial, but you can use a "real" world raster and simulate your epidemic on it ( [see this example](examples/ebola.html) ).
+Here, we generate a random raster for the purpose of this tutorial, but you can use a "real" world raster and simulate your epidemic on it (see [this example](examples/ebola.html)).
 
 <details>
 <summary>Code used to create the random raster used in this tutorial</summary>
@@ -60,7 +63,7 @@ ggplot() +
 
 Movements in `nosoi` are basically described by a random walk (Brownian motion), that can be attracted by the underlying environmental variable (`attracted.by.raster`). In any case, the movement cannot land into areas out of the raster nor into areas of the raster with no value (`NA`).
 
-The user provides a core function `sdMove` that give the standard deviation of this Brownian motion. This function, [like the other core functions](nosoi.html#setting-up-the-core-functions), can be dependent of time since infection, absolute time of the simulation, location (value of the environmental variable) or individual-based parameters. This standard deviation is in your coordinate space, so the actual distance traveled by the host may actually vary according to your space.
+The user provides a core function `sdMove` that gives the standard deviation of this Brownian motion. This function, [like the other core functions](nosoi.html#setting-up-the-core-functions), can be dependent on the time since infection `t`, the absolute time of the simulation `prestime`, the location (value of the environmental variable) or individual-based parameters. This standard deviation is in your coordinate space, so the actual distance traveled by the host may actually vary according to your space.
 
 In the case where hosts are attracted by the raster, hosts will tend to go to positions with high environmental values. Internally, once a new position is proposed, its environmental value is extracted and normalized (against the highest environmental value). This normalized number represents its probability of acceptance. Up to 30 draws can be made until one is accepted (by default the 30$^{th}$ move is always accepted; this value was empirically set to allow enough exploration without being stuck in a time consuming search).
 
@@ -191,14 +194,14 @@ scale_color_viridis(option="magma",limits=c(0,NA),na.value="white", name="Time")
 
 # Setting up the simulation
 
-The wrapper function `nosoiSim` requires all the arguments that will be passed down to the simulator, in the case of this tutorial `singleContinuous` (for "single host, continuous space").
+The wrapper function `nosoiSim` takes all the arguments that will be passed down to the simulator, in the case of this tutorial `singleContinuous`  (for "single host, continuous space").
 We thus start by providing the options `type="single"` and `popStructure="continuous"` to set up the analysis:
 
 ```{r setupA, eval = FALSE}
-SimulationA <- nosoiSim(type="single", popStructure="continuous", ...)
+SimulationSingle <- nosoiSim(type="single", popStructure="continuous", ...)
 ```
 
-This simulation type takes several arguments or options to be able to run, namely:
+This simulation type requires several arguments or options in order to run, namely:
 
 - `length.sim` 
 - `max.infected`
@@ -215,95 +218,110 @@ This simulation type takes several arguments or options to be able to run, namel
 - `print.progress`
 - `print.step`
 
-All the `param` elements provide individual-level parameters to be taken into account, while the `timeDep` elements inform the simulator if the "absolute" simulation time should be taken into account. The `diff` elements inform the simulator if there is a differential probability according to the state the host is currently in, and the `hostCount` elements inform the simulator if the number of host in each raster cell (based on the environmental raster provided) has to be taken into account.
-All parameters must be provided, although `timeDep`, `diff` and `hostCount` have default values set to `FALSE`; if you do not want to use these options, then you do not have to explicitly provide a value.
+All the `param.*` elements provide individual-level parameters to be taken into account, while the `timeDep.*` elements inform the simulator if the "absolute" simulation time should be taken into account. 
+The `diff.*` elements inform the simulator if there is a differential probability according to the state the host is currently in and the `hostCount.*` elements inform the simulator if the number of host in each state has to be taken into account.
+All parameters must be provided, although `timeDep.*`, `diff.*` and `hostCount.*` have default values set to `FALSE`; if you do not want to use these options, then you do not have to explicitly provide a value.
 
 ## General parameters
 
-`length.sim`, `max.infected` and `init.individuals` are general parameters that define the simulation.
-`length.sim` is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run, whereas `max.infected` is the maximum number of individuals that can be infected during the simulation.
-`init.individuals` and `init.structure` are the “seeding parameters” with which to start the simulation. `init.individuals` defines the number of individuals (starting at 1, should be an integer) that will start a transmission chain and `init.structure` their starting location (as a vector of two coordinates, x and y) in the continuous space (has to be the same starting location for all starting individuals). Keep in mind that you will have as many transmission chains as initial individuals, which is equivalent as launching two independent nosoi simulations. The location provided in `init.structure` should of course be present in the `structure.raster`.
+`length.sim` and `max.infected` are general parameters that define the simulation:
 
-Here, we will run a simulation starting with 1 individual, for a maximum of 1.000 infected individuals and a maximum time of 300 days.
+- `length.sim` is the maximum number of time units (e.g. days, months, years, or another time unit of choice) during which the simulation will be run.
+- `max.infected` is the maximum number of individuals that can be infected during the simulation.
+
+`init.individuals` and `init.structure` are the “seeding parameters”:
+
+- `init.individuals` defines the number of individuals (an integer above 1) that will start a transmission chain. Keep in mind that you will have as many transmission chains as initial individuals, which is equivalent as launching a number of independent nosoi simulations.
+- `init.structure` specifies the original location (as a vector of two coordinates, x and y) in the continuous space (has to be the same starting location for all starting individuals). The location provided in `init.structure` should of course be present in the `structure.raster`.
+
+Here, we will run a simulation starting with 1 individual, for a maximum of 1,000 infected individuals and a maximum time of 300 days.
 
 ```{r setupB, eval = FALSE}
-SimulationA <- nosoiSim(type="single", popStructure="continuous",
-                        length.sim=300, max.infected=1000, init.individuals=1, ...)
+SimulationSingle <- nosoiSim(type="single", popStructure="continuous",
+                             length.sim=300, max.infected=1000, init.individuals=1, ...)
 ```
 
 ## Core functions
 
-The core functions `pExit`, `pMove`, `sdMove`, `nContact` and `pTrans` each follow the [same principles to be set up](nosoi.html#setting-up-the-core-functions). 
-To accommodate several scenarios, they can be constant, time-dependent (relative time since infection for each individual or "absolute"" time of the simulation), location dependent in the continuous space (value of the environmental variable), or even individually parameterized, to include some stochasticity at the individual-host level.
-In every case, the function provided, like all other core functions in `nosoi`, has to be expressed as function of time `t`, even if time is not used to compute the probability.
-In case the function uses individual-based parameters, you have to specify a list of functions (called `param.pExit`, `param.pMove`, `param.sdMove`,`param.nContact` or `param.pTrans`) ( [see Get started](nosoi.html#parameters) ). If no individual-based parameter is used, then they are set to `NA`.
+The core functions `pExit`, `nContact`, `pMove`, `sdMove` and `pTrans` each follow the [same principles to be set up](nosoi.html#setting-up-the-core-functions). 
 
-> Keep in mind that `pExit`, `pMove`, and `pTrans` have to give back a probability (i.e. a number between 0 and 1) while `nContact` should give back a positive natural number (positive integer) and `sdMove` a positive number.
+To accommodate for different scenarios, they can be constant, time-dependent (using the relative time since infection `t` for each individual or the "absolute" time `pres.time` of the simulation) or even individually parameterized, to include some stochasticity at the individual-host level.
 
-You can combine the influence of several parameters, such as time since infection, "absolute" time of the simulation, location (in the continuous space), and individual-based parameters within the same function.
+In any case, the provided function, like all other core functions in `nosoi`, has to be expressed as a function of time `t`, even if time is not used to compute the probability.
 
-> `nosoi` can be flexible in what it allows as parameters in your function, but a common general structure should be observed. The argument of the function should be (in that order):
-(1) time since infection `t` (obligatory);
-(2) "absolute" time `prestime` (optional);
-(3) current environmental value `current.env.value` (optional);
-(4) host count in state `host.count` (optional);
-(5) other individual-based parameter(s), provided in `param.function`.
-If one of the argument is not used (except `t`), then you do not have to provide it and can continue with the next argument.
+In case the function uses individual-based parameters, they must be specified in a list of functions (called `param.pExit`, `param.nContact`, `param.pMove`, `param.sdMove` or `param.pTrans`) (see [Get started](nosoi.html#parameters)). If no individual-based parameters are used, then these lists are set to `NA`.
+
+> Keep in mind that `pExit`, `pMove`, and `pTrans` have to return a probability (i.e. a value between 0 and 1) while `nContact` should return a natural number (positive integer or zero) and `sdMove` a positive number.
+
+Several parameters, such as the time since infection, the "absolute" time of the simulation, the location (in the discrete states) and individual-based parameters can be combined within the same function.
+
+> `nosoi` can be flexible in what it allows as parameters in your function, but a common general structure should be observed.
+> The argument of the function should be (in that order):
+>
+> 1. time since infection `t` (compulsory);
+> 2. "absolute" time `prestime` (optional);
+> 3. current environmental value `current.env.value` (optional);
+> 4. host count in state `host.count` (optional);
+> 5. other individual-based parameter(s), provided in `param.function`.
+>
+> If one of the argument is not used (except `t`), then you do not have to provide it and can continue with the next argument.
 
 ### `pExit`, `param.pExit`, `timeDep.pExit`, `diff.pExit` and `hostCount.pExit`
 
-`pExit` is the first required fundamental parameter and provides a daily probability for a host to leave the simulation (either cured, died, etc.).
-`param.pExit` is the list of function need to individually parameterize `pExit` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `pExit`. `timeDep.pExit` allows for `pExit` to be dependent of the "absolute" time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, `timeDep.pExit` is set to `FALSE`.
-`diff.pExit` allows `pExit` to be different according to the current environmental value of the location where the host is located. By default, `diff.pExit` is set to `FALSE`.
-`hostCount.pExit` allows `pExit` to differ according to the number of hosts currently in a raster cell. By default, `hostCount.pExit` is set to `FALSE`. To use `hostCount.pExit`, `diff.pExit` has to be set to `TRUE` too. 
+- `pExit` is the first required fundamental parameter and provides a daily probability for a host to leave the simulation (either cured, died, etc.).
+- `param.pExit` is the list of functions needed to individually parameterize `pExit` (see [Get started](nosoi.html#parameters)). The name of each function in the list has to match the name of the  parameter it is sampling for `pExit`.
+- `timeDep.pExit` allows for `pExit` to be dependent on the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.pExit` is set to `FALSE`.
+- `diff.pExit` allows `pExit` to differ according to the current discrete state of the host. This can be useful, for example, if one state has a higher mortality rate (or better cures!) for the infection, in that case the probability to exit the simulation is higher. By default, `diff.pExit` is set to `FALSE`. Be careful, every state should give back a result for `pExit`.
+- `hostCount.pExit` allows `pExit` to differ according to the number of hosts currently in a state. By default, `hostCount.pExit` is set to `FALSE`. To use `hostCount.pExit`, `diff.pExit` has to be set to `TRUE` too. 
 
 ### `pMove`, `param.pMove`, `timeDep.pMove`, `diff.pMove` and `hostCount.pMove`
 
-`pMove` is the probability (per unit of time) for a host to move on the map. It should not be confused with the distance the host will travel linked to `sdMove` (see below).
-`param.pMove` is the list of function need to individually parameterize `pMove` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `pMove`. `timeDep.pMove` allows for `pMove` to be dependent of the "absolute" time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, `timeDep.pMove` is set to `FALSE`.
-`diff.pMove` allows `pMove` to be different according to the current environmental value of the location where the host is located. By default, `diff.pMove` is set to `FALSE`.
-`hostCount.pMove` allows `pMove` to differ according to the number of hosts currently in a raster cell. By default, `hostCount.pMove` is set to `FALSE`. To use `hostCount.pMove`, `diff.pMove` has to be set to `TRUE` too. 
+- `pMove` is the probability (per unit of time) for a host to move on the map. It should not be confused with the distance the host will travel linked to `sdMove` (see below).
+- `param.pMove` is the list of functions needed to individually parameterize `pMove` (see [Get started](nosoi.html#parameters)). The name of each function in the list has to match the name of the  parameter it is sampling for `pMove`.
+- `timeDep.pMove` allows for `pMove` to be dependent of the "absolute" time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, `timeDep.pMove` is set to `FALSE`.
+- `diff.pMove` allows `pMove` to be different according to the current environmental value of the location where the host is located. By default, `diff.pMove` is set to `FALSE`.
+- `hostCount.pMove` allows `pMove` to differ according to the number of hosts currently in a raster cell. By default, `hostCount.pMove` is set to `FALSE`. To use `hostCount.pMove`, `diff.pMove` has to be set to `TRUE` too. 
 
 ### `sdMove`, `param.sdMove`, `timeDep.sdMove`, `diff.sdMove` and `hostCount.sdMove`
 
-`sdMove` represents the standard deviation of the Brownian motion movement when a host undergo a move (set by `pMove`). 
-`param.sdMove` is the list of function need to individually parameterize `sdMove` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `sdMove`.
-`timeDep.sdMove` allows for `sdMove` to be dependent of the "absolute" time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, `timeDep.sdMove` is set to `FALSE`.
-`diff.sdMove` allows `sdMove` to be different according to the current environmental value of the location where the host is located. By default, `diff.sdMove` is set to `FALSE`.
-`hostCount.sdMove` allows `sdMove` to differ according to the number of hosts currently in a raster cell. By default, `hostCount.sdMove` is set to `FALSE`. To use `hostCount.sdMove`, `diff.sdMove` has to be set to `TRUE` too.
+- `sdMove` represents the standard deviation of the Brownian motion movement when a host undergo a move (set by `pMove`). 
+- `param.sdMove` is the list of function need to individually parameterize `sdMove` (see [Get started](nosoi.html#parameters)). The name of each function in the list has to have the same name as the parameter it is sampling for `sdMove`.
+- `timeDep.sdMove` allows for `sdMove` to be dependent of the "absolute" time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, `timeDep.sdMove` is set to `FALSE`.
+- `diff.sdMove` allows `sdMove` to be different according to the current environmental value of the location where the host is located. By default, `diff.sdMove` is set to `FALSE`.
+- `hostCount.sdMove` allows `sdMove` to differ according to the number of hosts currently in a raster cell. By default, `hostCount.sdMove` is set to `FALSE`. To use `hostCount.sdMove`, `diff.sdMove` has to be set to `TRUE` too.
 
 ### `nContact`, `param.nContact`, `timeDep.nContact`, `diff.nContact` and `hostCount.nContact`
 
-`nContact` represents the number (a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation.
+- `nContact` represents the number (expressed as a positive integer) of potentially infectious contacts an infected hosts can encounter per unit of time. At each time point, a number of contacts will be determined for each active host in the simulation.
 The number of contacts (i.e. the output of your function) has to be an integer and can be set to zero.
-`param.nContact` is the list of function need to individually parameterize `nContact` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `nContact`.
-`timeDep.nContact` allows for `nContact` to be dependent of the "absolute" time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, `timeDep.nContact` is set to `FALSE`.
-`diff.nContact` allows `nContact` to be different according to the current environmental value of the location where the host is located. By default, `diff.nContact` is set to `FALSE`.
-`hostCount.nContact` allows `nContact` to differ according to the number of hosts currently in a raster cell. This can be useful to adjust the number of contact to the number of potentially susceptible hosts if the infected population is close to the maximum size of the population in a raster cell. By default, `hostCount.nContact` is set to `FALSE`. To use `hostCount.nContact`, `diff.nContact` has to be set to `TRUE` too. 
+- `param.nContact` is the list of functions needed to individually parameterize `nContact` (see [Get started](nosoi.html#parameters)). The name of each function in the list has to match the name of the  parameter it is sampling for `nContact`.
+- `timeDep.nContact` allows for `nContact` to be dependent on the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.nContact` is set to `FALSE`.
+- `diff.nContact` allows for `nContact` to differ according to the current discrete state of the host. By default, `diff.nContact` is set to `FALSE`.
+- `hostCount.nContact` allows `nContact` to differ according to the number of hosts currently in a raster cell. This can be useful to adjust the number of contact to the number of potentially susceptible hosts if the infected population is close to the maximum size of the population in a raster cell. By default, `hostCount.nContact` is set to `FALSE`. To use `hostCount.nContact`, `diff.nContact` has to be set to `TRUE` too.
 
 ### `pTrans`, `param.pTrans`, `timeDep.pTrans`,`diff.pTrans`  and `hostCount.pTrans`
 
-`pTrans` is the heart of the transmission process and represents the probability of transmission over time (when a contact occurs).
-`param.pTrans` is the list of function need to individually parameterize `pTrans` ( [see Get started](nosoi.html#parameters) ). The name of each function in the list has to have the same name as the parameter it is sampling for `pTrans`. 
-`timeDep.pTrans` allows for `pTrans` to be dependent of the "absolute" time of the simulation, to account, for example, for seasonality or other external time related covariates. By default, `timeDep.pTrans` is set to `FALSE`.
-`diff.pTrans` allows `pTrans` to be different according to the current environmental value of the location where the host is located. By default, `diff.pTrans` is set to `FALSE`.
-`hostCount.pTrans` allows `pTrans` to differ according to the number of hosts currently in a raster cell. By default, `hostCount.pTrans` is set to `FALSE`. To use `hostCount.pTrans`, `diff.pTrans` has to be set to `TRUE` too. 
+- `pTrans` is the heart of the transmission process and represents the probability of transmission over time (when a contact occurs).
+- `param.pTrans` is the list of functions needed to individually parameterize `pTrans` (see [Get started](nosoi.html#parameters)). The name of each function in the list has to match the name of the  parameter it is sampling for `pTrans`.
+- `timeDep.pTrans` allows for `pTrans` to be dependent on the "absolute" time of the simulation, to account - for example - for seasonality or other external time-related covariates. By default, `timeDep.pTrans` is set to `FALSE`.
+- `diff.pTrans` allows for `pTrans` to be different according to the current discrete state of the host. This can be used to account of different dynamics linked to external factors common within a state, such as temperature for example. By default, `diff.pTrans` is set to `FALSE`.
+- `hostCount.pTrans` allows `pTrans` to differ according to the number of hosts currently in a raster cell. By default, `hostCount.pTrans` is set to `FALSE`. To use `hostCount.pTrans`, `diff.pTrans` has to be set to `TRUE` too. 
 
 ## Miscellaneous
 
-`prefix.host` allows you to define the first character(s) for the host's unique ID.
+`prefix.host` allows you to define the first character(s) for the hosts' unique ID.
 It will be followed by a hyphen and a unique number.
 By default, `prefix.host` is "H" for "Host".
 
-`print.progress` allows you to get some information printed on the screen about the simulation while running. It will print something every `print.step`. By default, `print.progress` is activated, with a `print.step = 10` (that you can change), but you may want to deactivate it by providing `print.progress == FALSE`.
+`print.progress` allows you to have some information printed on the screen about the simulation as it is running. It will print something every `print.step`. By default, `print.progress` is activated with a `print.step = 10` (you can change this frequency), but you may want to deactivate it by setting `print.progress=FALSE`.
 
 ## Dual host
 
-In the case of a dual host simulation, several parameter of the `nosoiSim` will have to be specified for each host type, called `A` and `B`. The wrapper function `nosoiSim` will then take all the arguments that will be passed down to the simulator, in the case of this tutorial `dualDiscrete` (for "dual host, discrete structure").
+In the case of a dual host simulation, several parameters of the `nosoiSim` will have to be specified for each host type, designated by `A` and `B`. The wrapper function `nosoiSim` will then take all the arguments that will be passed down to the simulator, in the case of this tutorial `dualContinuous` (for "dual host, continuous structure").
 We thus start by providing the options `type="dual"` and `popStructure="continuous"` to set up the analysis:
 
 ```{r setupA-dual, eval = FALSE}
-SimulationA <- nosoiSim(type="dual", popStructure="continuous", ...)
+SimulationDual <- nosoiSim(type="dual", popStructure="continuous", ...)
 ```
 
 This function takes several arguments or options to be able to run, namely:
@@ -336,7 +354,7 @@ This function takes several arguments or options to be able to run, namely:
 
 As you can see, host-type dependent parameters are now designated by the suffix `.A` or `.B`.
 
-Both `max.infected.A` and `max.infected.B` have to be provided to set an upper limit on the simulation size. To initiate the simulation, you have to provide at least on starting host, either `A` or `B` in `init.individuals.A` or `init.individuals.B` respectively, as well as starting position (vector of coordinates `c(x,y)` in the continuous space) in `init.individuals.A` or `init.individuals.B`, respectively. If you want to start the simulation with one host only, then `init.individuals` of the other host can be set to 0 and `init.structure` to `NA`.
+Both `max.infected.A` and `max.infected.B` have to be provided in order to set an upper limit on the simulation size. To initiate the simulation, you have to provide at least one starting host, either `A` or `B` in `init.individuals.A` or `init.individuals.B` respectively, as well as a starting position in `init.individuals.A` or `init.individuals.B`, respectively. If you want to start the simulation with one host only, then `init.individuals` of the other can be set to 0 and `init.structure` to `NA`.
 
 A major difference here is that hosts may, or not, share the same `structure.raster`. However, since they exist in the same "world", they should be in the same coordinate system. It is also possible to have a host that does not move. In such case, `pMove` can be set to `NA`, as well as `sdMove`. In such "non-moving" case, a raster should still be provided, as it anchors the hosts into the simulation's world.
 
@@ -345,10 +363,10 @@ Here again, all parameters must be provided for both hosts, although `timeDep`, 
 # Running `nosoi`
 
 ## Single host
-We will present here a very simple simulation for a single host pathogen.
+We present here a very simple simulation for a single host pathogen.
 
 ### pExit
-For `pExit`, we will choose a probability that only depends on the environmental value of the location where the host currently is. The maximum value of our environmental raster is close to 70, and the higher the environmental value, the less likely the host will be dying:
+For `pExit`, we choose a probability that only depends on the environmental value of the location where the host currently is. The maximum value of our environmental raster is close to 70, and the higher the environmental value is, the less likely the host is to die:
 
 ```{r pExit1, eval = FALSE}
 p_Exit_fct  <- function(t, current.env.value){
@@ -379,36 +397,36 @@ data3 = data3 %>% group_by(v2) %>% mutate(p=p_Exit_fctx(v2))
 ggplot(data=data3,aes(x=v2,y=p)) + geom_line() +  theme_minimal() + labs(x="Environmental value",y="pExit") + ylim(0,0.1)
 ```
 
-Remember that `pExit`, like the other core functions has to be function of `t`, even if `t` is not used. Since `pExit` is dependent on the location, `diff.pMove=TRUE`. However, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.pExit = NA`, and `timeDep.pExit=FALSE`.
+Remember that `pExit`, like the other core functions has to be function of `t`, even if `t` is not used. Since `pExit` is dependent on the location, `diff.pMove=TRUE`. However, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.pExit=NA`, and `timeDep.pExit=FALSE`.
 
 ### pMove
 
-We will choose a constant value for `pMove`, namely 0.1, i.e. an infected host has 10% chance to change its location for each unit of time.
+We choose a constant value for `pMove`, namely 0.1, i.e. an infected host has 10% chance to change its location for each unit of time.
 
 ```{r pMove1, eval = FALSE}
 p_Move_fct  <- function(t){return(0.1)}
 ```
 
-Remember that `pMove`, like the other core functions has to be function of `t`, even if `t` is not used. Since `pMove` is not dependent on the location, `diff.pMove=FALSE`. Similarly, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.pMove = NA`, and `timeDep.pMove=FALSE`.
+Remember that `pMove`, like the other core functions has to be function of `t`, even if `t` is not used. Since `pMove` is not dependent on the location, `diff.pMove=FALSE`. Similarly, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.pMove=NA`, and `timeDep.pMove=FALSE`.
 
 ### sdMove
 
-We will choose a constant value for `sdMove`, namely 0.25. `sdMove` is the standard deviation of the Brownian motion underlying the movement in `nosoi`.
+We choose a constant value for `sdMove`, namely 0.25. `sdMove` is the standard deviation of the Brownian motion underlying the movement in `nosoi`.
 
-```{r sdMove1, eval = FALSE}
+```{r sdMove1, eval=FALSE}
 sd_Move_fct  <- function(t){return(0.25)}
 ```
 
-Remember that `sdMove`, like the other core functions has to be function of `t`, even if `t` is not used. Since `sdMove` is not dependent on the location, `diff.pMove=FALSE`. Similarly, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.sdMove = NA`, and `timeDep.sdMove=FALSE`.
+Remember that `sdMove`, like the other core functions has to be function of `t`, even if `t` is not used. Since `sdMove` is not dependent on the location, `diff.pMove=FALSE`. Similarly, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.sdMove=NA`, and `timeDep.sdMove=FALSE`.
 
 ### nContact
-For `nContact`, we will choose a constant function that will draw a value in a normal distribution of *mean* = 0.5 and *sd* = 1, round it, and take its absolute value.
+For `nContact`, we choose a constant function that will draw a value in a normal distribution of *mean* = 0.5 and *sd* = 1, round it, and take its absolute value.
 
 ```{r nContact1, eval = FALSE}
-n_contact_fct = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
+n_contact_fct <- function(t){abs(round(rnorm(1, 0.5, 1), 0))}
 ```
 
-The distribution of `nContact` looks like this:
+The distribution of `nContact` looks as follows:
 
 ```{r nContact2, echo=FALSE}
 library(ggplot2)
@@ -422,10 +440,10 @@ ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + the
 
 ```
 
-At each time and for each infected host, `nContact` will be drawn anew. Remember that `nContact`, like the other core functions has to be function of `t`, even if `t` is not used. Since `nContact` is constant here, there is no use of the "absolute" time of the simulation, the location of the host, nor individual-based parameters. So `param.nContact = NA`, `timeDep.nContact=FALSE` and `diff.nContact=FALSE`.
+At each time and for each infected host, `nContact` will be drawn anew. Remember that `nContact`, like the other core functions has to be function of `t`, even if `t` is not used. Since `nContact` is constant here, there is no use of the "absolute" time of the simulation, the location of the host, nor individual-based parameters. So `param.nContact=NA`, `timeDep.nContact=FALSE` and `diff.nContact=FALSE`.
 
 ### pTrans
-`pTrans` will be provided in the form of a threshold function: before a certain amount of time since initial infection, the host does not transmit (incubation time, we will call `t_incub`), and after that time, it will transmit with a certain (constant) probability (we will call `p_max`). This function will be dependent of the time since the host's infection `t`.
+We choose `pTrans` in the form of a threshold function: before a certain amount of time since initial infection, the host does not transmit (incubation time, which we call `t_incub`), and after that time, it will transmit with a certain (constant) probability (which we call `p_max`). This function is dependent of the time since the host's infection `t`.
 
 ```{r pTrans1, eval = FALSE}
 p_Trans_fct <- function(t, p_max, t_incub){
@@ -435,7 +453,7 @@ p_Trans_fct <- function(t, p_max, t_incub){
 }
 ```
 
-Because each host is different (slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, and hence probability of transmission over time. Thus, `t_incub` and `p_max` will be sampled for each host individually according to a certain distribution. `t_incub` will be sampled from a normal distribution of $mean$ = 7 and $sd$ = 1, while `p_max` will be sampled from a beta distribution of parameters $\alpha$ = 5 and $\beta$ = 2.
+Because each host is different (slightly different biotic and abiotic factors), you can expect each host to exhibit differences in the dynamics of infection, and hence the probability of transmission over time. Thus, `t_incub` and `p_max` will be sampled for each host individually according to a certain distribution. `t_incub` will be sampled from a normal distribution of $mean$ = 7 and $sd$ = 1, while `p_max` will be sampled from a beta distribution with shape parameters $\alpha$ = 5 and $\beta$ = 2:
 
 ```{r pTrans2, eval = FALSE}
 t_incub_fct <- function(x){rnorm(x,mean = 7,sd=1)}
@@ -444,7 +462,7 @@ p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 
 Note that here `t_incub` and `p_max` are functions of `x` and not `t` (they are not core functions but individual-based parameters), and `x` enters the function as the number of draws to make.
 
-Taken together, the profile for pTrans for a subset of 200 individuals in the population will look like this:
+Taken together, the profile for `pTrans` for a subset of 200 individuals in the population will look as follows:
 
 ```{r pTrans3, echo=FALSE}
 library(ggplot2)
@@ -474,7 +492,7 @@ for(t in 0:15){
 ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60") + theme_minimal() + labs(x="Time since infection (t)",y="pTrans")
 ```
 
-Since `pTrans` is not dependent of the "absolute" time of the simulation nor is it dependent of the hosts location. So `timeDep.pTrans=FALSE` and `diff.pTrans=FALSE`. However, since we have employed individual-based parameters, we have to provide a `param.pTrans` as a list of functions. The name of each element of the list should have the same name that the core function (pTrans here) uses as argument, as shown here:
+`pTrans` is not dependent on the "absolute" time of the simulation, nor on the hosts location, so `timeDep.pTrans=FALSE` and `diff.pTrans=FALSE`. However, since we make use of individual-based parameters, we have to provide a `param.pTrans` as a list of functions. The name of each element within this list should have the same name that the core function (here `pTrans`) uses as argument, e.g.:
 
 ```{r pTrans4, eval = FALSE}
 t_incub_fct <- function(x){rnorm(x,mean = 7,sd=1)}
@@ -485,7 +503,7 @@ param_pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct)
 
 ### Running
 
-Once nosoiSim is set up, you can run the simulation (here the "seed" ensures that you will get the same results as in this tutorial).
+Once `nosoiSim` is set up, you can run the simulation (here the "seed" ensures that you will get the same results as in this tutorial).
 
 ```{r setupF}
 library(nosoi)
@@ -527,54 +545,55 @@ param_pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct)
 # Starting the simulation ------------------------------------
 
 set.seed(846)
-SimulationA <- nosoiSim(type="single", popStructure="continuous",
-                        length.sim=300, max.infected=300, init.individuals=1, 
-                        
-                        init.structure=start.pos, 
-                        
-                        structure.raster=test.raster,
-                        
-                        pExit = p_Exit_fct,
-                        param.pExit = NA,
-                        timeDep.pExit=FALSE,
-                        diff.pExit=TRUE,
-                        
-                        pMove = p_Move_fct,
-                        param.pMove = NA,
-                        timeDep.pMove=FALSE,
-                        diff.pMove=FALSE,
-                        
-                        sdMove = sd_Move_fct,
-                        param.sdMove = NA,
-                        timeDep.sdMove=FALSE,
-                        diff.sdMove=FALSE,
-                        
-                        attracted.by.raster=FALSE,
-                        
-                        nContact=n_contact_fct,
-                        param.nContact=NA,
-                        timeDep.nContact=FALSE,
-                        diff.nContact=FALSE,
-
-                        pTrans = proba,
-                        param.pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct),
-                        timeDep.pTrans=FALSE,
-                        diff.pTrans=FALSE,
-                      
-                        prefix.host="H",
-                        print.progress=FALSE,
-                        print.step=10)
+SimulationSingle <- nosoiSim(type="single", popStructure="continuous",
+                             length.sim=300, max.infected=300, init.individuals=1, 
+                             
+                             init.structure=start.pos, 
+                             
+                             structure.raster=test.raster,
+                             
+                             pExit = p_Exit_fct,
+                             param.pExit = NA,
+                             timeDep.pExit=FALSE,
+                             diff.pExit=TRUE,
+                             
+                             pMove = p_Move_fct,
+                             param.pMove = NA,
+                             timeDep.pMove=FALSE,
+                             diff.pMove=FALSE,
+                             
+                             sdMove = sd_Move_fct,
+                             param.sdMove = NA,
+                             timeDep.sdMove=FALSE,
+                             diff.sdMove=FALSE,
+                             
+                             attracted.by.raster=FALSE,
+                             
+                             nContact=n_contact_fct,
+                             param.nContact=NA,
+                             timeDep.nContact=FALSE,
+                             diff.nContact=FALSE,
+                             
+                             pTrans = proba,
+                             param.pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct),
+                             timeDep.pTrans=FALSE,
+                             diff.pTrans=FALSE,
+                             
+                             prefix.host="H",
+                             print.progress=FALSE,
+                             print.step=10)
 ```
-Once the simulation is finished, it reports the number of time units for which the simulation has run (40), and the maximum number of infected hosts (350).
+Once the simulation has finished, it reports the number of time units for which the simulation has run (`r SimulationSingle$total.time`), and the maximum number of infected hosts (`r SimulationSingle$host.info.A$N.infected`).
 Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected` threshold set at 300.
 
 ## Dual host
 
-Setting up a dual host simulation is similar to the single host version, but each parameter has to be provided for both hosts. Host A will use the same parameters as the single host above did. Host B will have sightly different parameters:
+Setting up a dual host simulation is similar to the single host version described above, but each parameter has to be provided for both hosts. Here, we choose for Host A the same parameters as the single / only host above. Host B will have sightly different parameters:
 
 ### pExit.B
 
-For `pExit.B`, we will choose a value that depends on the "absolute" time of the simulation, for example cyclic climatic conditions (temperature). In that case, the function's arguments should be `t` and `prestime` (the "absolute" time of the simulation), in that order:
+For `pExit.B`, we choose a value that depends on the "absolute" time of the simulation, for example cyclic climatic conditions (temperature). In that case, the function's arguments should be `t` and `prestime` (the "absolute" time of the simulation), in that order:
+
 ```{r pExit1-dual, eval = FALSE}
 p_Exit_fctB  <- function(t,prestime){(sin(prestime/(2*pi*10))+1)/16} #for a periodic function
 ```
@@ -586,17 +605,17 @@ p_Exit_fctx <- function(x){(sin(x/(2*pi*10))+1)/16} #for a periodic function
 ggplot(data=data.frame(x=0), aes(x=x)) + stat_function(fun=p_Exit_fctx) + theme_minimal() + labs(x="Absolute time (prestime)",y="pExit") + xlim(0,360)
 ```
 
-Since `pExit.B` is dependent on the simulation's time, do not forget to set `timeDep.pExit.B` to `TRUE`. Since there are no individual-based parameters nor is there any influence of the host's location, `param.pExit.B = NA` and `diff.pExit.B = NA`.
+Since `pExit.B` is dependent on the simulation's time, do not forget to set `timeDep.pExit.B` to `TRUE`. Since there are no individual-based parameters nor is there any influence of the host's location, `param.pExit.B=NA` and `diff.pExit.B=NA`.
 
 ### pMove.B
 
-We will assume here that hosts B do not move. `pMove.B` will hence be set to `NA`.
+We assume here that the hosts B do not move. `pMove.B` will hence be set to `NA`.
 
 ```{r pMove.B, eval = FALSE}
 p_Move_fct.B  <- NA
 ```
 
-Since `pMove.B` is not dependent on the location, `diff.pMove.B=FALSE`. Similarly, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.pMove.B = NA`, and `timeDep.pMove.B=FALSE`.
+Since `pMove.B` is not dependent on the location, `diff.pMove.B=FALSE`. Similarly, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.pMove.B=NA`, and `timeDep.pMove.B=FALSE`.
 
 ### sdMove.B
 
@@ -606,17 +625,17 @@ Since hosts B do not move, `sdMove.B` is irrelevant and will be set to `NA`.
 sd_Move_fct.B  <- NA
 ```
 
-Since `sdMove.B` is not dependent on the location, `diff.sdMove.B=FALSE`. Similarly, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.sdMove.B = NA`, and `timeDep.sdMove.B=FALSE`.
+Since `sdMove.B` is not dependent on the location, `diff.sdMove.B=FALSE`. Similarly, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.sdMove.B=NA`, and `timeDep.sdMove.B=FALSE`.
 
 ### nContact.B
 
-For `nContact.B`, we will choose a constant function that will sample a value from a provided list of values, with a certain probability:
+For `nContact.B`, we choose a constant function that will sample a value from a provided list of values, with a certain probability:
 
 ```{r nContact1.B, eval = FALSE}
 n_contact_fct.B = function(t){sample(c(0,1,2),1,prob=c(0.6,0.3,0.1))}
 ```
 
-The distribution of `nContact.B` looks like this:
+The distribution of `nContact.B` looks as follows:
 
 ```{r nContact2.B, echo=FALSE}
 library(ggplot2)
@@ -629,11 +648,13 @@ data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
 ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact.B",y="Frequency")
 ```
 
-At each time and for each infected host, `nContact.B` will be drawn anew. Remember that `nContact.B`, like the other core functions has to be function of `t`, even if `t` is not used. Since `nContact.B` is constant here, there is no use of the "absolute" time of the simulation, the host's location, nor individual-based parameters. So `param.nContact.B = NA`, `timeDep.nContact.B=FALSE` and `diff.nContact.B=FALSE`.
+At each time and for each infected host, `nContact.B` will be drawn anew. Remember that `nContact.B`, like the other core functions has to be function of `t`, even if `t` is not used. Since `nContact.B` is constant here, there is no use of the "absolute" time of the simulation, the host's location, nor individual-based parameters. So `param.nContact.B=NA`, `timeDep.nContact.B=FALSE` and `diff.nContact.B=FALSE`.
 
 ### pTrans.B
 
-`pTrans.B` will be in the form of a Gaussian function: it will its maximum value at a certain time point (mean) after initial infection and then will decrease until it reaches 0. The function `dnorm` used here will achieve this objective: for each time `t` after infection, its return value will reach its maximum value (< 1) at its mean (here `max.time`, a parameter that will be set for each individual, see below) and then decline back to 0. Its increase and decline is parameterized by the standard deviation `sd` of the `dnorm` function.
+We choose `pTrans.B` in the form of a Gaussian function. It will reach its maximum value at a certain time point (mean) after initial infection and will subsequently decrease until it reaches 0.
+
+The function `dnorm` used here will achieve this objective: for each time `t` after infection, its return value will reach its maximum value (< 1) at its mean (here `max.time`, a parameter that will be set for each individual, see below) and then decline back to 0. Its increase and decline is parameterized by the standard deviation `sd` of the `dnorm` function.
 
 ```{r pTrans1.B, eval = FALSE}
 p_Trans_fct.B <- function(t, max.time){
@@ -641,7 +662,7 @@ p_Trans_fct.B <- function(t, max.time){
 }
 ```
 
-Because each host is here also different (slightly different biotic and abiotic factors), you can expect each host to show differences in the dynamics of infection, and hence probability of transmission over time. Thus, `max.time` will be sampled for each host individually according to a certain distribution. ``max.time` will be sampled from a normal distribution of parameters $mean$ = 5 and $sd$ = 1.
+Because each host is different (slightly different biotic and abiotic factors), you can expect each host to exhibit differences in the dynamics of infection, and hence the probability of transmission over time. Thus, `max.time` will be sampled for each host individually according to a certain distribution. `max.time` will be sampled from a normal distribution of parameters $mean$ = 5 and $sd$ = 1:
 
 ```{r pTrans2.B, eval = FALSE}
 max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
@@ -649,7 +670,7 @@ max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 
 Note again that here `max.time` is a function of `x` and not `t` (i.e. not a core function but individual-based parameters), and `x` enters the function as the number of draws to make.
 
-Taken together, the profile for `pTrans` for a subset of 200 individuals in the population will look like this:
+Taken together, the profile for `pTrans` for a subset of 200 individuals in the population will look as follow:
 
 ```{r pTrans3.B, echo=FALSE}
 library(ggplot2)
@@ -752,7 +773,7 @@ param_pTrans.B = list(max.time=max.time_fct)
 # Starting the simulation ------------------------------------
 
 set.seed(60)
-SimulationA <- nosoiSim(type="dual", popStructure="continuous",
+SimulationDual <- nosoiSim(type="dual", popStructure="continuous",
                         length.sim=300, 
                         max.infected.A=100,
                         max.infected.B=200,
@@ -820,7 +841,7 @@ SimulationA <- nosoiSim(type="dual", popStructure="continuous",
                         print.progress=FALSE)
 ```
 
-Once the simulation is finished, it reports the number of time units for which the simulation has run (33), and the maximum number of infected hosts A (102) and hosts B (137).
+Once the simulation has finished, it reports the number of time units for which the simulation has run (`r SimulationDual$total.time`), and the maximum number of infected hosts A (`r SimulationDual$host.info.A$N.infected`) and hosts B (`r SimulationDual$host.info.B$N.infected`).
 Note that the simulation has stopped here before reaching `length.sim` as it has crossed the `max.infected.A` threshold set at 100.
 
 # Going further
