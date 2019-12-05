@@ -178,7 +178,7 @@
       <h1>Output and summarization</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-11-07</h4>
+            <h4 class="date">2019-12-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/output.Rmd"><code>vignettes/output.Rmd</code></a></small>
       <div class="hidden name"><code>output.Rmd</code></div>
@@ -190,7 +190,7 @@
 <div id="nosoisim-object" class="section level1">
 <h1 class="hasAnchor">
 <a href="#nosoisim-object" class="anchor"></a><code>nosoiSim</code> object</h1>
-<p>The output of a <code>nosoi</code> simulation is a <code>nosoiSim</code> class object that contains all the data generated during the simulation into the following slots:</p>
+<p>The output of a <code>nosoi</code> simulation is an object of class <code>nosoiSim</code> that contains all the data generated during the simulation into the following slots:</p>
 <ul>
 <li>
 <code>total.time</code> is the number of time steps (an integer) during which the simulation has run.</li>
@@ -280,8 +280,8 @@
 <div id="epidemiological-summary" class="section level2">
 <h2 class="hasAnchor">
 <a href="#epidemiological-summary" class="anchor"></a>Epidemiological summary</h2>
-<p>The <code>nosoiSummary</code> is a turnkey solution that computes both the dynamics of the epidemic and <span class="math inline">\(R_0\)</span>. Its only argument is your nosoi output object (of class <code>nosoiSim</code>):</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/nosoiSummary.html">nosoiSummary</a></span>(nosoi.output)</a></code></pre></div>
+<p><code>summary</code> is a turnkey solution that computes both the dynamics of the epidemic and <span class="math inline">\(R_0\)</span>. Its only argument is your nosoi output object (of class <code>nosoiSim</code>):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(nosoi.output)</a></code></pre></div>
 <p>It returns a list containing the slots:</p>
 <ul>
 <li>
@@ -531,7 +531,7 @@
 <a class="sourceLine" id="cb11-48" data-line-number="48">                          <span class="dt">pExit=</span>p_Exit_fct,</a>
 <a class="sourceLine" id="cb11-49" data-line-number="49">                          <span class="dt">param.pExit=</span><span class="ot">NA</span></a>
 <a class="sourceLine" id="cb11-50" data-line-number="50">  )</a></code></pre></div>
-<p>The simulation runs for 46 time steps and infected 204 hosts. The following transmission tree can thus be extracted (as a <code>tidytere::treedata</code> object) and plotted using <a href="10.18129/B9.bioc.ggtree"><code>ggtree</code></a>:</p>
+<p>The simulation runs for 46 time steps and infected 204 hosts. The following transmission tree can thus be extracted (as a <code><a href="https://rdrr.io/pkg/tidytree/man/treedata.html">tidytree::treedata</a></code> object) and plotted using <a href="10.18129/B9.bioc.ggtree"><code>ggtree</code></a>:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggtree)</a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"></a>
@@ -621,7 +621,7 @@
 <div id="exporting-the-transmission-tree" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exporting-the-transmission-tree" class="anchor"></a>Exporting the Transmission Tree</h2>
-<p>All the functions mentioned above produce a <code>tidytere::treedata</code> object. It is a phylogenetic tree, with nodes and tips annotated with all the characteristics of the epidemics, including the geographical location when applicable. This format is described in details by his developer in this <a href="https://yulab-smu.github.io/treedata-book/">ebook</a>.</p>
+<p>All the functions mentioned above produce a <code><a href="https://rdrr.io/pkg/tidytree/man/treedata.html">tidytree::treedata</a></code> object. It is a phylogenetic tree, with nodes and tips annotated with all the characteristics of the epidemics, including the geographical location when applicable. This format is described in details by his developer in this <a href="https://yulab-smu.github.io/treedata-book/">ebook</a>.</p>
 <p>This makes it easy to export the generated data to other software for downstream analyzes, thanks to the package <a href="https://guangchuangyu.github.io/software/treeio/">treeio</a>. For instance, the tree can be written in a <a href="http://beast.community/">BEAST</a> compatible format thanks to function <code><a href="https://rdrr.io/pkg/treeio/man/write.beast.html">treeio::write.beast()</a></code>:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">treeio<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treeio/man/write.beast.html">write.beast</a></span>(test.nosoiA.tree.sampled.exiting)</a></code></pre></div>
 </div>
