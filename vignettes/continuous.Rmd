@@ -846,8 +846,8 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 
 # Going further
 
-To analyze and visualize your `nosoi` simulation output, you can have a look on [this page](example/viz.html).
+To analyze and visualize your `nosoi` simulation output, you can have a look on [this page](examples/viz.html).
 
 A practical example using a dual host type of simulation with population structure in a continuous space is also available: 
 
-- [Spread of Ebola virus in a continuous space](example/ebola.html).
+- [Spread of Ebola virus in a continuous space](examples/ebola.html).

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@
       <h1>Spread of an Ebola-like virus in continuous space</h1>
                         <h4 class="author">Sebastian Lequime &amp; Simon Dellicour</h4>
             
-            <h4 class="date">2019-11-14</h4>
+            <h4 class="date">2019-12-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/ebola.Rmd"><code>vignettes/examples/ebola.Rmd</code></a></small>
       <div class="hidden name"><code>ebola.Rmd</code></div>
@@ -476,7 +476,7 @@
 <a class="sourceLine" id="cb22-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co"># Joining table to get coordinates of starting and ending nodes:</span></a>
 <a class="sourceLine" id="cb22-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb22-6" data-line-number="6">tree.links &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(tree.node, tree.node, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"parent"</span> =<span class="st"> "node"</span>), <span class="dt">suffix =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">".to"</span>, <span class="st">".from"</span>))</a>
+<a class="sourceLine" id="cb22-6" data-line-number="6">tree.links &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/join.html">left_join</a></span>(tree.node, tree.node, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"parent"</span> =<span class="st"> "node"</span>), <span class="dt">suffix =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">".to"</span>, <span class="st">".from"</span>))</a>
 <a class="sourceLine" id="cb22-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb22-8" data-line-number="8"><span class="co">#Plotting everything:</span></a>
 <a class="sourceLine" id="cb22-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">ggplot</a></span>() <span class="op">+</span></a>
@@ -499,7 +499,7 @@
 <a class="sourceLine" id="cb23-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb23-5" data-line-number="5"><span class="co">#Sampling the names of individuals to be sampled:</span></a>
 <a class="sourceLine" id="cb23-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">5905950</span>)</a>
-<a class="sourceLine" id="cb23-7" data-line-number="7">sampled.hosts &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(test.table.hosts, active <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)<span class="op">$</span>hosts.ID, <span class="dv">250</span>)</a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">sampled.hosts &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(test.table.hosts, active <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)<span class="op">$</span>hosts.ID, <span class="dv">250</span>)</a>
 <a class="sourceLine" id="cb23-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb23-9" data-line-number="9"><span class="co">#Subsampling:</span></a>
 <a class="sourceLine" id="cb23-10" data-line-number="10">test.nosoiA.tree.sampled.exiting &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting</a></span>(test.nosoiA.tree, sampled.hosts)</a></code></pre></div>
@@ -516,7 +516,7 @@
 <a class="sourceLine" id="cb25-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb25-4" data-line-number="4"><span class="co"># Joining table to get coordinates of starting and ending nodes:</span></a>
 <a class="sourceLine" id="cb25-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb25-6" data-line-number="6">tree.links &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(tree.node, tree.node, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"parent"</span> =<span class="st"> "node"</span>), <span class="dt">suffix =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">".to"</span>, <span class="st">".from"</span>))</a>
+<a class="sourceLine" id="cb25-6" data-line-number="6">tree.links &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/join.html">left_join</a></span>(tree.node, tree.node, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"parent"</span> =<span class="st"> "node"</span>), <span class="dt">suffix =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">".to"</span>, <span class="st">".from"</span>))</a>
 <a class="sourceLine" id="cb25-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb25-8" data-line-number="8"><span class="co">#plotting everything</span></a>
 <a class="sourceLine" id="cb25-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/reexports.html">ggplot</a></span>() <span class="op">+</span></a>

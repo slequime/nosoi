@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@
       <h1>Getting started</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-11-18</h4>
+            <h4 class="date">2019-12-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/nosoi.Rmd"><code>vignettes/nosoi.Rmd</code></a></small>
       <div class="hidden name"><code>nosoi.Rmd</code></div>
@@ -257,7 +257,7 @@
 <p>A core function in <code>nosoi</code> should always explicitly depend on the time <code>t</code> (e.g. <code>pExit(t)</code>), even if <code>t</code> is not used within the body of the function. For instance, to return a single constant value of 0.08, the function should be expressed as:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="fl">0.08</span>}</a></code></pre></div>
 <!-- This will return a single value (0.08). -->
-<p>The argument <code>t</code> represents the time since the host’s initial infection, and can be included in the ody of the function, to model a time-varying proability or number. For instance, a quantity depending on the following function will evolve in time as a logistic distribution with parameters <span class="math inline">\(\mu\)</span> 10 and <span class="math inline">\(s\)</span> 2:</p>
+<p>The argument <code>t</code> represents the time since the host’s initial infection, and can be included in the body of the function, to model a time-varying probability or number. For instance, a quantity depending on the following function will evolve in time as a logistic distribution with parameters <span class="math inline">\(\mu\)</span> 10 and <span class="math inline">\(s\)</span> 2:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span>(t,<span class="dv">10</span>,<span class="dv">2</span>)}</a></code></pre></div>
 <!-- Here the probability/number will follow a logistic distribution with parameters $\mu$ 10 and $s$ 2. -->
 </div>

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@
       <h1>Spread of a pathogen in a discrete structured population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-11-25</h4>
+            <h4 class="date">2019-12-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/discrete.Rmd"><code>vignettes/discrete.Rmd</code></a></small>
       <div class="hidden name"><code>discrete.Rmd</code></div>
@@ -189,7 +189,7 @@
     
 <p>Aside from the simple simulation set up, explored in <a href="none.html">another tutorial</a>, where hosts are “not structured”, <code>nosoi</code> can take into account a population structured either in discrete states or in a continuous space. We focus here on a discrete state structure (for the continuous structure, see <a href="continuous.html">this tutorial</a>).</p>
 <p>The discrete structure is intended to allow the simulation to take place in a geographical context with discrete states such as countries, regions, islands, cities. Note that other kind of structures could be taken into account (e.g. high risk/low risk, etc). In this setting, parameter values are allowed to change according to the host’s current location among the available states.</p>
-<p>This tutorial focuses on setting up a <code>nosoi</code> simulation for a pathogen whose host population is structured between different locations.</p>
+<p>This tutorial focuses on setting up a <code>nosoi</code> simulation for a pathogen which host population is structured between different locations.</p>
 <div id="structure-of-the-population" class="section level1">
 <h1 class="hasAnchor">
 <a href="#structure-of-the-population" class="anchor"></a>Structure of the population</h1>
@@ -256,16 +256,17 @@
 <li>
 <code>init.structure</code> specifies the original location of these individuals in the structured population (has to be the same original location for all starting individuals). The location provided in <code>init.structure</code> should of course be present in the <code>structure.matrix</code>.</li>
 </ul>
+<p>Here, we will run a simulation starting with 1 individual, for a maximum of 1,000 infected individuals and a maximum time of 300 days.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">SimulationSingle &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"none"</span>,</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">                             <span class="dt">length.sim=</span><span class="dv">300</span>, <span class="dt">max.infected=</span><span class="dv">1000</span>, <span class="dt">init.individuals=</span><span class="dv">1</span>, ...)</a></code></pre></div>
 </div>
 <div id="core-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#core-functions" class="anchor"></a>Core functions</h2>
-<p>The core functions <code>pExit</code>, <code>nContact</code> and <code>pTrans</code> each follow the <a href="nosoi.html#setting-up-the-core-functions">same principles to be set up</a>.</p>
+<p>The core functions <code>pExit</code>, <code>nContact</code>, <code>pMove</code> and <code>pTrans</code> each follow the <a href="nosoi.html#setting-up-the-core-functions">same principles to be set up</a>.</p>
 <p>To accommodate for different scenarios, they can be constant, time-dependent (using the relative time since infection <code>t</code> for each individual or the “absolute” time <code>pres.time</code> of the simulation) or even individually parameterized, to include some stochasticity at the individual-host level.</p>
 <p>In any case, the provided function, like all other core functions in <code>nosoi</code>, has to be expressed as a function of time <code>t</code>, even if time is not used to compute the probability.</p>
-<p>In case the function uses individual-based parameters, they must be specified in a list of functions (called <code>param.pExit</code>, <code>param.nContact</code> or <code>param.pTrans</code>) (see <a href="nosoi.html#parameters">Get started</a>). If no individual-based parameters are used, then these lists are set to <code>NA</code>.</p>
+<p>In case the function uses individual-based parameters, they must be specified in a list of functions (called <code>param.pExit</code>, <code>param.nContact</code>, <code>param.pMove</code> or <code>param.pTrans</code>) (see <a href="nosoi.html#parameters">Get started</a>). If no individual-based parameters are used, then these lists are set to <code>NA</code>.</p>
 <blockquote>
 <p>Keep in mind that <code>pExit</code>, <code>pMove</code>, and <code>pTrans</code> have to return a probability (i.e. a value between 0 and 1) while <code>nContact</code> should return a natural number (positive integer or zero).</p>
 </blockquote>
@@ -457,7 +458,6 @@
 <p>Note that here <code>t_incub</code> and <code>p_max</code> are functions of <code>x</code> and not <code>t</code> (they are not core functions but individual-based parameters), and <code>x</code> enters the function as the number of draws to make.</p>
 <p>Taken together, the profile for <code>pTrans</code> for a subset of 200 individuals in the population will look as follows:</p>
 <p><img src="discrete_files/figure-html/pTrans3-1.png" width="700"></p>
-<p><code>pTrans</code> is not dependent on the “absolute” time of the simulation, so <code>timeDep.pTrans=FALSE</code>. However, since we make use of individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The name of each element within this list should have the same name that the core function (here <code>pTrans</code>) uses as argument, e.g.:</p>
 <p><code>pTrans</code> is not dependent of the “absolute” time of the simulation nor it is dependent of the hosts location, hence <code>timeDep.pTrans=FALSE</code> and <code>diff.pTrans=FALSE</code>. However, since we make use of individual-based parameters, we have to provide a <code>param.pTrans</code> as a list of functions. The name of each element within this list should have the same name that the core function (here <code>pTrans</code>) uses as argument, e.g.:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">7</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@
       <h1>Spread of a dengue-like virus in a discrete space</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2019-11-12</h4>
+            <h4 class="date">2019-12-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/dengue.Rmd"><code>vignettes/examples/dengue.Rmd</code></a></small>
       <div class="hidden name"><code>dengue.Rmd</code></div>
@@ -365,7 +365,7 @@
 <a class="sourceLine" id="cb6-21" data-line-number="21">country_code &lt;-<span class="st"> </span><span class="kw">read_delim</span>(<span class="st">"country_code.csv"</span>, <span class="st">";"</span>, <span class="dt">escape_double =</span> <span class="ot">FALSE</span>, <span class="dt">trim_ws =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb6-22" data-line-number="22"></a>
 <a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#Merging airports and country_code dataframe</span></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24">airports2 =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(airports, country_code)</a>
+<a class="sourceLine" id="cb6-24" data-line-number="24">airports2 =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/join.html">left_join</a></span>(airports, country_code)</a>
 <a class="sourceLine" id="cb6-25" data-line-number="25"></a>
 <a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#subsetting airports from the study site</span></a>
 <a class="sourceLine" id="cb6-27" data-line-number="27">airports2.sub  =<span class="kw"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(airports2, Code3 <span class="op">%in%</span><span class="st"> </span>SE.Asia <span class="op">&amp;</span><span class="st"> </span>(Latitude <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span> <span class="op">&amp;</span><span class="st"> </span>Latitude <span class="op">&lt;=</span><span class="st"> </span><span class="dv">30</span>) <span class="op">&amp;</span><span class="st"> </span>(Longitude <span class="op">&gt;=</span><span class="st"> </span><span class="dv">90</span> <span class="op">&amp;</span><span class="st"> </span>Longitude <span class="op">&lt;=</span><span class="st"> </span><span class="dv">125</span>))</a>
@@ -397,8 +397,8 @@
 <a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co"># Equipment     3-letter IATA codes for plane type(s) generally used on this flight, separated by spaces</span></a>
 <a class="sourceLine" id="cb7-18" data-line-number="18"></a>
 <a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#get airport information from:</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20">routes =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(routes, airports2, <span class="dt">by=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SourceAirportID"</span>=<span class="st">"AirportID"</span>)) <span class="co">#origin</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21">routes =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(routes, airports2, <span class="dt">by=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"DestinationAirportID"</span>=<span class="st">"AirportID"</span>), <span class="dt">suffix=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">".FR"</span>,<span class="st">".TO"</span>)) <span class="co">#destination</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20">routes =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/join.html">left_join</a></span>(routes, airports2, <span class="dt">by=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SourceAirportID"</span>=<span class="st">"AirportID"</span>)) <span class="co">#origin</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21">routes =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/join.html">left_join</a></span>(routes, airports2, <span class="dt">by=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"DestinationAirportID"</span>=<span class="st">"AirportID"</span>), <span class="dt">suffix=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">".FR"</span>,<span class="st">".TO"</span>)) <span class="co">#destination</span></a>
 <a class="sourceLine" id="cb7-22" data-line-number="22"></a>
 <a class="sourceLine" id="cb7-23" data-line-number="23">routes.sub =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(routes, ICAO.TO <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/unique.html">unique</a></span>(airports2.sub<span class="op">$</span>ICAO) <span class="op">&amp;</span><span class="st"> </span>ICAO.FR <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/unique.html">unique</a></span>(airports2.sub<span class="op">$</span>ICAO))</a>
 <a class="sourceLine" id="cb7-24" data-line-number="24"></a>
@@ -757,7 +757,7 @@
 <a class="sourceLine" id="cb29-17" data-line-number="17">  results &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">rbindlist</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(temp),<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(results)))</a>
 <a class="sourceLine" id="cb29-18" data-line-number="18">}</a>
 <a class="sourceLine" id="cb29-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb29-20" data-line-number="20">test2 &lt;-<span class="st"> </span>results <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(time,state) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">N=</span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(hosts.ID))</a>
+<a class="sourceLine" id="cb29-20" data-line-number="20">test2 &lt;-<span class="st"> </span>results <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/group_by.html">group_by</a></span>(time,state) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">N=</span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(hosts.ID))</a>
 <a class="sourceLine" id="cb29-21" data-line-number="21"></a>
 <a class="sourceLine" id="cb29-22" data-line-number="22"><span class="co">#Loop to get the transitions between states and their time</span></a>
 <a class="sourceLine" id="cb29-23" data-line-number="23">results2=<span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>()</a>

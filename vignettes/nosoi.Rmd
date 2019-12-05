@@ -99,7 +99,7 @@ p_Function  <- function(t){0.08}
 ```
 
 <!-- This will return a single value (0.08). -->
-The argument `t` represents the time since the host's initial infection, and can be included in the ody of the function, to model a time-varying proability or number.
+The argument `t` represents the time since the host's initial infection, and can be included in the body of the function, to model a time-varying probability or number.
 For instance, a quantity depending on the following function will evolve in time as a logistic distribution with parameters $\mu$ 10 and $s$ 2:
 
 ```{r pFunction2, eval = FALSE}
