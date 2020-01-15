@@ -179,14 +179,15 @@
 <a href="#nosoi" class="anchor"></a>nosoi <img src="reference/figures/logo.png" align="right" alt="" width="120">
 </h1></div>
 
-<p><code>nosoi</code> (pronounced no.si) is a flexible agent-based stochastic transmission chain/epidemic simulator in R, named after the <em>daimones</em> of plague, sickness and disease that escaped Pandora’s jar in Greek mythology. <code>nosoi</code> is able to take into account the impact of multiple variables on the transmission process (e.g. dual-host systems such as arboviruses, within-host viral dynamics, transportation, population structure, …), alone or taken together, to create complex but relatively intuitive epidemiological simulations.</p>
+<p>The aim of <code>nosoi</code> (pronounced no.si) is to provide a flexible agent-based stochastic transmission chain/epidemic simulator (Lequime et al. in prep). It is named after the <em>daimones</em> of plague, sickness and disease that escaped Pandora’s jar in the Greek mythology. <code>nosoi</code> is able to take into account the influence of multiple variable on the transmission process (e.g. dual-host systems (such as arboviruses), within-host viral dynamics, transportation, population structure), alone or taken together, to create complex but relatively intuitive epidemiological simulations.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Stable version will be deposited on CRAN.</p>
+<p>Stable version (1.0.0) is available on CRAN.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"nosoi"</span>)</a></code></pre></div>
 <p>To get the latest (and possibly unstable) version, you can use the <a href="https://github.com/hadley/devtools"><code>devtools</code></a> package:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"slequime/nosoi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"slequime/nosoi"</span>)</a></code></pre></div>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
@@ -200,6 +201,8 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=nosoi">https://​cloud.r-project.org/​package=nosoi</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/slequime/nosoi">https://​github.com/​slequime/​nosoi</a>
 </li>
 </ul>
@@ -228,6 +231,7 @@
 <li><a href="https://codecov.io/gh/slequime/nosoi"><img src="https://codecov.io/gh/slequime/nosoi/branch/master/graph/badge.svg" alt="codecov"></a></li>
 <li><a href="http://slequime.github.io/nosoi/"><img src="https://img.shields.io/badge/docs-vignettes-blue.svg"></a></li>
 <li><a href="http://slequime.github.io/nosoi/"><img src="https://img.shields.io/github/license/slequime/nosoi"></a></li>
+<li><a href="https://cran.r-project.org/package=nosoi"><img src="https://www.r-pkg.org/badges/version/nosoi" alt="CRAN_Status_Badge"></a></li>
 </ul>
 </div>
 </div>

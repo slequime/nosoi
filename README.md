@@ -4,11 +4,15 @@ nosoi <img src="man/figures/logo.png" align="right" alt="" width="120" />
 [![codecov](https://codecov.io/gh/slequime/nosoi/branch/master/graph/badge.svg)](https://codecov.io/gh/slequime/nosoi)
 [![](https://img.shields.io/badge/docs-vignettes-blue.svg)](http://slequime.github.io/nosoi/)
 [![](https://img.shields.io/github/license/slequime/nosoi)](http://slequime.github.io/nosoi/)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/nosoi)](https://cran.r-project.org/package=nosoi)
 
-`nosoi` (pronounced no.si) is a flexible agent-based stochastic transmission chain/epidemic simulator in R, named after the *daimones* of plague, sickness and disease that escaped Pandora's jar in Greek mythology. `nosoi` is able to take into account the impact of multiple variables on the transmission process (e.g. dual-host systems such as arboviruses, within-host viral dynamics, transportation, population structure, ...), alone or taken together, to create complex but relatively intuitive epidemiological simulations.
+The aim of `nosoi` (pronounced no.si) is to provide a flexible agent-based stochastic transmission chain/epidemic simulator (Lequime et al. in prep). It is named after the *daimones* of plague, sickness and disease that escaped Pandora's jar in the Greek mythology. `nosoi` is able to take into account the influence of multiple variable on the transmission process (e.g. dual-host systems (such as arboviruses), within-host viral dynamics, transportation, population structure), alone or taken together, to create complex but relatively intuitive epidemiological simulations.
 
 ## Installation
-Stable version will be deposited on CRAN.
+Stable version (1.0.0) is available on CRAN.
+```R
+install.packages("nosoi")
+```
 
 To get the latest (and possibly unstable) version, you can use the [`devtools`](https://github.com/hadley/devtools) package:
 ```R
