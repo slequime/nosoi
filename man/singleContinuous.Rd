@@ -123,7 +123,7 @@ The user specified function's arguments should follow this order: \code{t} (mand
 }
 
 \examples{
-\dontrun{
+\donttest{
 library(raster)
 #Generating a raster the for movement
 set.seed(860)

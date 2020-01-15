@@ -33,7 +33,7 @@
 #' @seealso For simulations with a discrete structured host population, see \code{\link{singleDiscrete}}. For simulations with a structured population in continuous space, \code{\link{singleContinuous}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 #'p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 #'p_Exit_fct  <- function(t){return(0.08)}

@@ -38,7 +38,7 @@ An object of class \code{nosoiSim}, containing all results of the simulation. Cl
 This function determines which general settings the user wants to use for his simulation. All other arguments are passed down to the chosen simulator itself, such as \code{\link{singleNone}}, \code{\link{singleDiscrete}}, \code{\link{singleContinuous}}, \code{\link{dualNone}}, \code{\link{dualDiscrete}} or \code{\link{dualContinuous}}.
 }
 \examples{
-\dontrun{
+\donttest{
 t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 p_Exit_fct  <- function(t){return(0.08)}

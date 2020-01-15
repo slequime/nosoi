@@ -345,7 +345,7 @@ The simulation runs for `r test.nosoiA$total.time` time steps
 and infected `r getHostData(test.nosoiA, "N.infected")` hosts. 
 The following transmission tree can thus be extracted 
 (as a `tidytree::treedata` object) and plotted using
-[`ggtree`](10.18129/B9.bioc.ggtree):
+[`ggtree`](https://bioconductor.org/packages/release/bioc/html/ggtree.html):
 
 ```{r treeA, message=FALSE}
 library(ggplot2)

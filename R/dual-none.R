@@ -38,7 +38,7 @@
 #' @seealso For simulations with a discrete structured host population, see \code{\link{dualDiscrete}}. For simulations with a structured population in continuous space, \code{\link{dualContinuous}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'  #Host A
 #' t_infectA_fct <- function(x){rnorm(x,mean = 12,sd=3)}
 #' pTrans_hostA <- function(t,t_infectA){

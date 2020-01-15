@@ -41,7 +41,7 @@
 #' @seealso For simulations with a discrete structure, see \code{\link{singleDiscrete}}. For simulations without any structures, see \code{\link{singleNone}}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(raster)
 #' #Generating a raster the for movement
 #' set.seed(860)

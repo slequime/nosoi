@@ -53,7 +53,7 @@
 #'
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(raster)
 #'
 #'#Generating a raster the for movement

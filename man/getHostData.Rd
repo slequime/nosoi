@@ -21,7 +21,7 @@ Returns a \code{\link[data.table:data.table-package]{data.table}} with the reque
 This function extracts data user-defined data (i.e. \code{table.hosts}, \code{N.infected}, \code{table.state} or \code{popStructure}) from a \code{\link{nosoiSim}} object.
 }
 \examples{
-\dontrun{
+\donttest{
 t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 p_Exit_fct  <- function(t){return(0.08)}

@@ -203,7 +203,7 @@ The suffix \code{.A} or \code{.B} specifies if the considered function or parame
 }
 
 \examples{
-\dontrun{
+\donttest{
 library(raster)
 
 #Generating a raster the for movement

@@ -17,7 +17,7 @@
 #' @seealso You can directly compute each elements of the list without using the summarise function. See \code{\link{getR0}}, \code{\link{getDynamic}} and \code{\link{getCumulative}}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 #'p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 #'p_Exit_fct  <- function(t){return(0.08)}

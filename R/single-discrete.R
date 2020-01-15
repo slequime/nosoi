@@ -35,7 +35,7 @@
 #' @seealso For simulations with a structure in continuous space, see \code{\link{singleContinuous}}. For simulations without any structures, see \code{\link{singleNone}}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 #' p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 #' p_Exit_fct  <- function(t){return(0.08)}

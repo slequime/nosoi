@@ -85,7 +85,7 @@ set.seed(95895)
 move.test = data.table(t=0,current.in.x=0.25,current.in.y=0.75)
 sdMove.values = 0.01
 
-moveRotateContinuous = function(pt1, dX, dY, angle)
+moveRotateContinuous.example = function(pt1, dX, dY, angle)
 {
   s = sin(angle); c = cos(angle)
   x = dX; y = dY
@@ -113,7 +113,7 @@ for (t in 2:1001){
     while (positionFound2 == FALSE)
     {
       angle = (2*base::pi)*runif(1)
-      newP = moveRotateContinuous(c(as.numeric(current.move.pos.x),as.numeric(current.move.pos.y)), dX, dY,angle)
+      newP = moveRotateContinuous.example(c(as.numeric(current.move.pos.x),as.numeric(current.move.pos.y)), dX, dY,angle)
       
       temp.env.value = raster::extract(r12,cbind(newP[1],newP[2]))
       
@@ -161,7 +161,7 @@ for (t in 2:1001){
     while (positionFound2 == FALSE)
     {
       angle = (2*base::pi)*runif(1)
-      newP = moveRotateContinuous(c(as.numeric(current.move.pos.x),as.numeric(current.move.pos.y)), dX, dY,angle)
+      newP = moveRotateContinuous.example(c(as.numeric(current.move.pos.x),as.numeric(current.move.pos.y)), dX, dY,angle)
       
       temp.env.value = raster::extract(r12,cbind(newP[1],newP[2]))
       

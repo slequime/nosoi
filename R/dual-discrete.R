@@ -44,7 +44,7 @@
 #' @seealso For simulations with a structure in continuous space, see \code{\link{dualContinuous}}. For simulations without any structures, see \code{\link{dualNone}}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'#Host A
 #'t_infectA_fct <- function(x){rnorm(x,mean = 12,sd=3)}
 #'pTrans_hostA <- function(t,t_infectA){

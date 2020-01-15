@@ -174,7 +174,7 @@ The suffix \code{.A} or \code{.B} specifies if the considered function or parame
 }
 
 \examples{
-\dontrun{
+\donttest{
 #Host A
 t_infectA_fct <- function(x){rnorm(x,mean = 12,sd=3)}
 pTrans_hostA <- function(t,t_infectA){

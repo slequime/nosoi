@@ -93,7 +93,7 @@ The user specified function's arguments should follow this order: \code{t} (mand
 }
 
 \examples{
-\dontrun{
+\donttest{
  #Host A
 t_infectA_fct <- function(x){rnorm(x,mean = 12,sd=3)}
 pTrans_hostA <- function(t,t_infectA){
