@@ -4,7 +4,10 @@ language: R
 sudo: false
 cache: packages
 env:
-  - NOT_CRAN=true
+  global:
+    - NOT_CRAN=true
+  matrix:
+    - _R_CHECK_FORCE_SUGGESTS_: false
 r_github_packages:
   - r-lib/covr
 addons:
@@ -12,4 +15,3 @@ addons:
     packages: cargo
 after_success:
   - Rscript -e 'covr::codecov()'
-  
