@@ -5,9 +5,11 @@ sudo: false
 cache: packages
 env:
   - NOT_CRAN=true
-  - _R_CHECK_FORCE_SUGGESTS_: TRUE
-r_github_packages:
-  - r-lib/covr
+  - _R_CHECK_FORCE_SUGGESTS_: FALSE
+install:
+  - Rscript -e 'install.packages(c("remotes"));if (!all(c("remotes") %in% installed.packages())) { q(status = 1, save = "no")}'
+  - Rscript -e 'remotes::install_github(c("r-lib/covr"))'
+  - Rscript -e 'deps <- remotes::dev_package_deps(dependencies = NA);remotes::install_deps(dependencies = c("Depends", "Imports", "LinkingTo"));if (!all(deps$package %in% installed.packages())) { message("missing: ", paste(setdiff(deps$package, installed.packages()), collapse=", ")); q(status = 1, save = "no")}'
 addons:
   apt:
     packages: cargo
