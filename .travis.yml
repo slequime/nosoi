@@ -5,7 +5,7 @@ sudo: false
 cache: packages
 env:
   - NOT_CRAN=true
-  - _R_CHECK_FORCE_SUGGESTS_: false
+  - _R_CHECK_FORCE_SUGGESTS_: TRUE
 r_github_packages:
   - r-lib/covr
 addons:
