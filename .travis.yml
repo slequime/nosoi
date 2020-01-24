@@ -4,10 +4,8 @@ language: R
 sudo: false
 cache: packages
 env:
-  global:
-    - NOT_CRAN=true
-  matrix:
-    - _R_CHECK_FORCE_SUGGESTS_: false
+  - NOT_CRAN=true
+  - _R_CHECK_FORCE_SUGGESTS_: false
 r_github_packages:
   - r-lib/covr
 addons:
