@@ -1,0 +1,15 @@
+# ignore .git and .cache folders
+*.git
+*.cache
+
+# Rbuildingore
+
+*/docs*
+.*\.Rproj
+\.Rproj\.user
+*/tests/manual*
+_pkgdown\.yml
+.travis\.yml
+*pkgdown*
+*vignettes/examples*
+LICENSE

@@ -187,7 +187,10 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) {
 }
 ```
 
-```{r figureDynamics2, message=FALSE}
+```{r figureDynamics2, eval=FALSE, message=FALSE}
+ggplot(data=dynamics.table, aes(x=t, y=Count, color=state)) + geom_line() + theme_minimal() + labs(x="Time (t)",y="Number of active infected hosts")
+```
+```{r figureDynamics2_actual, echo=FALSE, message=FALSE}
 if (!requireNamespace("ggplot2", quietly = TRUE)) {
   message("Package 'ggplot2' is needed for plotting this figure.")
 } else {
@@ -375,6 +378,16 @@ The following transmission tree can thus be extracted
 (as a `tidytree::treedata` object) and plotted using
 [`ggtree`](https://bioconductor.org/packages/release/bioc/html/ggtree.html):
 
+```{r treeA, eval=FALSE, message=FALSE}
+test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
+
+library(ggplot2)
+library(ggtree)
+ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + 
+  theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
+                                           legend.title = element_blank(),
+                                           legend.key = element_blank()) 
+```
 ```{r treeA_actual, echo=FALSE, message=FALSE}
 if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
   message("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.")
@@ -392,16 +405,6 @@ if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("ggtree", 
                                              legend.title = element_blank(),
                                              legend.key = element_blank()) 
 }
-```
-```{r treeA, eval=FALSE, message=FALSE}
-test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
-
-library(ggplot2)
-library(ggtree)
-ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + 
-  theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
-                                           legend.title = element_blank(),
-                                           legend.key = element_blank()) 
 ```
 
 Each color point represents the location/state, either at transmission (a node)
