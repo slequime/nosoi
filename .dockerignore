@@ -2,6 +2,9 @@
 *.git
 *.cache
 
+# ignore archive if exists
+*.tar.gz
+
 # Rbuildingore
 
 */docs*
