@@ -7,6 +7,7 @@ vignette: >
   %\VignetteIndexEntry{single-host-none}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{ggplot2}
 ---
 
 ```{r setup, include=FALSE}
@@ -160,15 +161,18 @@ n_contact_fct = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
 The distribution of `nContact` looks as follows:
 
 ```{r nContact2, echo=FALSE}
-library(ggplot2)
-library(dplyr)
-set.seed(4099)
-data = data.frame(N=abs(round(rnorm(200, 0.5, 1), 0)))
-
-data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
-
-ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact",y="Frequency")
-
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(dplyr)
+  set.seed(4099)
+  data = data.frame(N=abs(round(rnorm(200, 0.5, 1), 0)))
+  
+  data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
+  
+  ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact",y="Frequency")
+}
 ```
 
 At each time step and for each infected host, `nContact` will be drawn anew. Remember that `nContact`, like the other core functions has to be function of `t`, even if `t` is not used. Since `nContact` is constant here, there is no use for the "absolute" time of the simulation nor for the individual-based parameters. So `param.nContact=NA`, and `timeDep.nContact=FALSE`.
@@ -197,30 +201,34 @@ Note that here `t_incub` and `p_max` are functions of `x` and not `t` (they are 
 Taken together, the profile for `pTrans` for a subset of 200 individuals in the population will look as follows:
 
 ```{r pTrans3, echo=FALSE}
-library(ggplot2)
-library(dplyr)
-set.seed(99)
-
-p_Trans_fct <- function(t, p_max, t_incub){
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(dplyr)
+  set.seed(99)
+  
+  p_Trans_fct <- function(t, p_max, t_incub){
     if(t < t_incub){p=0}
     if(t >= t_incub){p=p_max}
     return(p)
+  }
+  
+  t_incub_fct <- function(x){rnorm(x,mean = 7,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  
+  data = data.frame(t_incub=t_incub_fct(200),p_max=p_max_fct(200),host=paste0("H-",1:200))
+  
+  t=c(0:12)
+  data3=NULL
+  for(t in 0:15){
+    data2 = data %>% group_by(host) %>% mutate(proba=p_Trans_fct(t=t,p_max=p_max, t_incub=t_incub))
+    data2$t = t
+    data3 = rbind(data3, data2)
+  }
+  
+  ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60") + theme_minimal() + labs(x="Time since infection (t)",y="pTrans")
 }
-
-t_incub_fct <- function(x){rnorm(x,mean = 7,sd=1)}
-p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-
-data = data.frame(t_incub=t_incub_fct(200),p_max=p_max_fct(200),host=paste0("H-",1:200))
-
-t=c(0:12)
-data3=NULL
-for(t in 0:15){
-  data2 = data %>% group_by(host) %>% mutate(proba=p_Trans_fct(t=t,p_max=p_max, t_incub=t_incub))
-  data2$t = t
-  data3 = rbind(data3, data2)
-}
-
-ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60") + theme_minimal() + labs(x="Time since infection (t)",y="pTrans")
 ```
 
 `pTrans` is not dependent on the "absolute" time of the simulation, so `timeDep.pTrans=FALSE`. However, since we make use of individual-based parameters, we have to provide a `param.pTrans` as a list of functions. The name of each element within this list should have the same name that the core function (here `pTrans`) uses as argument, e.g.:
@@ -292,7 +300,11 @@ The values of `pExit.B` across the "absolute time" of the simulation will be the
 
 ```{r pExit2-dual, echo=FALSE}
 p_Exit_fctx <- function(x){(sin(x/(2*pi*10))+1)/16} #for a periodic function
-ggplot(data=data.frame(x=0), aes(x=x)) + stat_function(fun=p_Exit_fctx) + theme_minimal() + labs(x="Absolute time (prestime)",y="pExit") + xlim(0,360)
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  ggplot(data=data.frame(x=0), aes(x=x)) + stat_function(fun=p_Exit_fctx) + theme_minimal() + labs(x="Absolute time (prestime)",y="pExit") + xlim(0,360)
+}
 ```
 
 Since `pExit.B` is dependent on the simulation's absolute time, do not forget to set `timeDep.pExit.B` to `TRUE`. Since there are no individual-based parameters, `param.pExit.B=NA`.
@@ -308,14 +320,18 @@ n_contact_fct.B = function(t){sample(c(0,1,2),1,prob=c(0.6,0.3,0.1))}
 The distribution of `nContact.B` looks as follows:
 
 ```{r nContact2.B, echo=FALSE}
-library(ggplot2)
-library(dplyr)
-set.seed(9898)
-data = data.frame(N=sample(c(0,1,2),200,replace=TRUE,prob=c(0.6,0.3,0.1)))
-
-data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
-
-ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact.B",y="Frequency")
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(dplyr)
+  set.seed(9898)
+  data = data.frame(N=sample(c(0,1,2),200,replace=TRUE,prob=c(0.6,0.3,0.1)))
+  
+  data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
+  
+  ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact.B",y="Frequency")
+}
 ```
 
 At each time and for each infected host, `nContact.B` will be drawn anew. Remember that `nContact.B`, like the other core functions has to be function of `t`, even if `t` is not used. Since `nContact.B` is constant here, there is no use for the "absolute" time of the simulation nor for the individual-based parameters. So `param.nContact.B=NA`, and `timeDep.nContact.B=FALSE`.
@@ -341,27 +357,31 @@ Note again that here `max.time` is a function of `x` and not `t` (not a core fun
 Taken together, the profile for pTrans for a subset of 200 individuals in the population will look as follows:
 
 ```{r pTrans3.B, echo=FALSE}
-library(ggplot2)
-library(dplyr)
-set.seed(7979)
-
-p_Trans_fct <- function(t, max.time){
-  dnorm(t, mean=max.time, sd=2)*5
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(dplyr)
+  set.seed(7979)
+  
+  p_Trans_fct <- function(t, max.time){
+    dnorm(t, mean=max.time, sd=2)*5
+  }
+  
+  max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  
+  data = data.frame(max.time=max.time_fct(200),host=paste0("H-",1:200))
+  
+  t=c(0:12)
+  data3=NULL
+  for(t in 0:15){
+    data2 = data %>% group_by(host) %>% mutate(proba=p_Trans_fct(t=t,max.time=max.time))
+    data2$t = t
+    data3 = rbind(data3, data2)
+  }
+  
+  ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60",alpha=0.3) + theme_minimal() + labs(x="Time since infection (t)",y="pTrans")
 }
-
-max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
-
-data = data.frame(max.time=max.time_fct(200),host=paste0("H-",1:200))
-
-t=c(0:12)
-data3=NULL
-for(t in 0:15){
-  data2 = data %>% group_by(host) %>% mutate(proba=p_Trans_fct(t=t,max.time=max.time))
-  data2$t = t
-  data3 = rbind(data3, data2)
-}
-
-ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60",alpha=0.3) + theme_minimal() + labs(x="Time since infection (t)",y="pTrans")
 ```
 
 Since `pTrans.B` is not dependent on the "absolute" time of the simulation, `timeDep.pTrans.B=FALSE`. However, since we make use of individual-based parameters, we have to provide a `param.pTrans` as a list of functions. The name of each element of the list should have the same name as the core function (here `pTrans.B`) uses as argument, as shown here:

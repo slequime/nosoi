@@ -4,11 +4,23 @@
 \alias{singleNone}
 \title{Single-host pathogen in a homogeneous host population}
 \usage{
-singleNone(length.sim, max.infected, init.individuals, pExit, param.pExit,
-  timeDep.pExit = FALSE, nContact, param.nContact,
-  timeDep.nContact = FALSE, pTrans, param.pTrans,
-  timeDep.pTrans = FALSE, prefix.host = "H", print.progress = TRUE,
-  print.step = 10)
+singleNone(
+  length.sim,
+  max.infected,
+  init.individuals,
+  pExit,
+  param.pExit,
+  timeDep.pExit = FALSE,
+  nContact,
+  param.nContact,
+  timeDep.nContact = FALSE,
+  pTrans,
+  param.pTrans,
+  timeDep.pTrans = FALSE,
+  prefix.host = "H",
+  print.progress = TRUE,
+  print.step = 10
+)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}

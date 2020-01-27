@@ -1,7 +1,9 @@
 context("Testing dual-host with discrete structure")
 
 test_that("Movement is coherent with single introduction, constant pMove, diff pExit", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}
@@ -134,6 +136,7 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   #Host A
@@ -258,6 +261,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, A does not move", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   #Host A
@@ -425,6 +429,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
 })
 
 test_that("Epidemics dying out", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   #Host A
@@ -535,6 +540,7 @@ test_that("Epidemics dying out", {
 })
 
 test_that("start with host B", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   #Host B
@@ -645,6 +651,7 @@ test_that("start with host B", {
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, A does not move", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   #Host A

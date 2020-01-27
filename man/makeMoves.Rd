@@ -4,9 +4,16 @@
 \alias{makeMoves}
 \title{Make Move function}
 \usage{
-makeMoves(res, pres.time, moving.full, structure.matrix = NA,
-  sdMoveParsed = NA, structure.raster = NA, attracted.by.raster = NA,
-  max.raster = NA)
+makeMoves(
+  res,
+  pres.time,
+  moving.full,
+  structure.matrix = NA,
+  sdMoveParsed = NA,
+  structure.raster = NA,
+  attracted.by.raster = NA,
+  max.raster = NA
+)
 }
 \arguments{
 \item{res}{an object of class \code{nosoiSimOne}.}

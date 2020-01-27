@@ -10,7 +10,9 @@ test_that("Both hosts move", {
   test.raster[] <- runif(10000, -80, 180)
   test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
 
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}
@@ -127,7 +129,9 @@ test_that("One host (A) moves", {
   test.raster[] <- runif(10000, -80, 180)
   test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
 
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}
@@ -249,7 +253,9 @@ test_that("One host (B) moves", {
   test.raster[] <- runif(10000, -80, 180)
   test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
 
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}
@@ -370,7 +376,9 @@ test_that("Epidemic dies out", {
   test.raster[] <- runif(10000, -80, 180)
   test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
 
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}
@@ -478,7 +486,9 @@ test_that("Error if no host move", {
   test.raster[] <- runif(10000, -80, 180)
   test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
 
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}
@@ -569,7 +579,9 @@ test_that("One host (B) moves, host count", {
   test.raster[] <- runif(10000, -80, 180)
   test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
 
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}

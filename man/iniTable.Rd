@@ -4,10 +4,16 @@
 \alias{iniTable}
 \title{Generates initial table to start the simulation (internal function)}
 \usage{
-iniTable(init.individuals, init.structure, prefix.host, ParamHost,
+iniTable(
+  init.individuals,
+  init.structure,
+  prefix.host,
+  ParamHost,
   current.environmental.value = NULL,
-  current.cell.number.raster = NULL, current.count.A = integer(0),
-  current.count.B = integer(0))
+  current.cell.number.raster = NULL,
+  current.count.A = integer(0),
+  current.count.B = integer(0)
+)
 }
 \arguments{
 \item{init.individuals}{number of initially infected individuals (i.e. number of lines at time 0).}

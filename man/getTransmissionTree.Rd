@@ -57,22 +57,31 @@ test.nosoi <- nosoiSim(type="single", popStructure="discrete",
                         param.pExit=NA
 )
 
-## Full transmission tree
-ttreedata <- getTransmissionTree(test.nosoi)
-plot(ttreedata@phylo)
+## Make sure all needed packages are here
+if (requireNamespace("ape", quietly = TRUE)
+    || requireNamespace("tidytree", quietly = TRUE)
+    || requireNamespace("treeio", quietly = TRUE)) {
+  library(ape)
+  library(tidytree)
+  library(treeio)
 
-## Sampling "non dead" individuals
-hID <- c("H-1", "H-7", "H-15", "H-100")
-samples <- data.table(hosts = hID,
-                      times = c(5.2, 9.3, 10.2, 16),
-                      labels = paste0(hID, "-s"))
+  #' ## Full transmission tree
+  ttreedata <- getTransmissionTree(test.nosoi)
+  plot(ttreedata@phylo)
 
-sampledTree <- sampleTransmissionTree(test.nosoi, ttreedata, samples)
-plot(sampledTree@phylo)
+  ## Sampling "non dead" individuals
+  hID <- c("H-1", "H-7", "H-15", "H-100")
+  samples <- data.table(hosts = hID,
+                        times = c(5.2, 9.3, 10.2, 16),
+                        labels = paste0(hID, "-s"))
 
-## Sampling "dead" individuals
-sampledDeadTree <- sampleTransmissionTreeFromExiting(ttreedata, hID)
-plot(sampledDeadTree@phylo)
+  sampledTree <- sampleTransmissionTree(test.nosoi, ttreedata, samples)
+  plot(sampledTree@phylo)
+
+  ## Sampling "dead" individuals
+  sampledDeadTree <- sampleTransmissionTreeFromExiting(ttreedata, hID)
+  plot(sampledDeadTree@phylo)
+  }
 }
 
 }

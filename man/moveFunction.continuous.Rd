@@ -4,8 +4,16 @@
 \alias{moveFunction.continuous}
 \title{Make Continuous Move function}
 \usage{
-moveFunction.continuous(res, pres.time, moving.full, sdMoveParsed,
-  structure.raster, attracted.by.raster, max.raster, ...)
+moveFunction.continuous(
+  res,
+  pres.time,
+  moving.full,
+  sdMoveParsed,
+  structure.raster,
+  attracted.by.raster,
+  max.raster,
+  ...
+)
 }
 \arguments{
 \item{res}{an object of class \code{nosoiSimOne}.}

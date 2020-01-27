@@ -4,17 +4,42 @@
 \alias{singleContinuous}
 \title{Single-host pathogen in a structured (continuous) host population}
 \usage{
-singleContinuous(length.sim, max.infected, init.individuals,
-  init.structure, structure.raster, diff.pExit = FALSE,
-  timeDep.pExit = FALSE, hostCount.pExit = FALSE, pExit, param.pExit,
-  diff.pMove = FALSE, timeDep.pMove = FALSE, hostCount.pMove = FALSE,
-  pMove, param.pMove, diff.sdMove = FALSE, timeDep.sdMove = FALSE,
-  hostCount.sdMove = FALSE, sdMove, param.sdMove,
-  attracted.by.raster = FALSE, diff.nContact = FALSE,
-  timeDep.nContact = FALSE, hostCount.nContact = FALSE, nContact,
-  param.nContact, diff.pTrans = FALSE, timeDep.pTrans = FALSE,
-  hostCount.pTrans = FALSE, pTrans, param.pTrans, prefix.host = "H",
-  print.progress = TRUE, print.step = 10)
+singleContinuous(
+  length.sim,
+  max.infected,
+  init.individuals,
+  init.structure,
+  structure.raster,
+  diff.pExit = FALSE,
+  timeDep.pExit = FALSE,
+  hostCount.pExit = FALSE,
+  pExit,
+  param.pExit,
+  diff.pMove = FALSE,
+  timeDep.pMove = FALSE,
+  hostCount.pMove = FALSE,
+  pMove,
+  param.pMove,
+  diff.sdMove = FALSE,
+  timeDep.sdMove = FALSE,
+  hostCount.sdMove = FALSE,
+  sdMove,
+  param.sdMove,
+  attracted.by.raster = FALSE,
+  diff.nContact = FALSE,
+  timeDep.nContact = FALSE,
+  hostCount.nContact = FALSE,
+  nContact,
+  param.nContact,
+  diff.pTrans = FALSE,
+  timeDep.pTrans = FALSE,
+  hostCount.pTrans = FALSE,
+  pTrans,
+  param.pTrans,
+  prefix.host = "H",
+  print.progress = TRUE,
+  print.step = 10
+)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}
@@ -131,6 +156,7 @@ set.seed(860)
 test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
 test.raster[] <- runif(10000, -80, 180)
 test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
+plot(test.raster)
 
 t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}

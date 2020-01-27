@@ -4,14 +4,35 @@
 \alias{dualNone}
 \title{Dual-host pathogen in homogeneous hosts populations}
 \usage{
-dualNone(length.sim, max.infected.A, max.infected.B, init.individuals.A,
-  init.individuals.B, pExit.A, param.pExit.A, timeDep.pExit.A = FALSE,
-  nContact.A, param.nContact.A, timeDep.nContact.A = FALSE, pTrans.A,
-  param.pTrans.A, timeDep.pTrans.A = FALSE, prefix.host.A = "H",
-  pExit.B, param.pExit.B, timeDep.pExit.B = FALSE, nContact.B,
-  param.nContact.B, timeDep.nContact.B = FALSE, pTrans.B, param.pTrans.B,
-  timeDep.pTrans.B = FALSE, prefix.host.B = "V",
-  print.progress = TRUE, print.step = 10)
+dualNone(
+  length.sim,
+  max.infected.A,
+  max.infected.B,
+  init.individuals.A,
+  init.individuals.B,
+  pExit.A,
+  param.pExit.A,
+  timeDep.pExit.A = FALSE,
+  nContact.A,
+  param.nContact.A,
+  timeDep.nContact.A = FALSE,
+  pTrans.A,
+  param.pTrans.A,
+  timeDep.pTrans.A = FALSE,
+  prefix.host.A = "H",
+  pExit.B,
+  param.pExit.B,
+  timeDep.pExit.B = FALSE,
+  nContact.B,
+  param.nContact.B,
+  timeDep.nContact.B = FALSE,
+  pTrans.B,
+  param.pTrans.B,
+  timeDep.pTrans.B = FALSE,
+  prefix.host.B = "V",
+  print.progress = TRUE,
+  print.step = 10
+)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}

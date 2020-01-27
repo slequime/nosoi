@@ -4,8 +4,13 @@
 \alias{nosoiSimOneConstructor}
 \title{nosoiSimOne Constructor}
 \usage{
-nosoiSimOneConstructor(N.infected, table.hosts, table.state, prefix.host,
-  popStructure = c("none", "discrete", "continuous"))
+nosoiSimOneConstructor(
+  N.infected,
+  table.hosts,
+  table.state,
+  prefix.host,
+  popStructure = c("none", "discrete", "continuous")
+)
 }
 \arguments{
 \item{N.infected}{number of infected hosts}

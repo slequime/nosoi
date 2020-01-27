@@ -4,8 +4,16 @@
 \alias{progressMessage}
 \title{Progress bar}
 \usage{
-progressMessage(Host.count.A, Host.count.B = NULL, pres.time, print.step,
-  length.sim, max.infected.A, max.infected.B = NULL, type = "single")
+progressMessage(
+  Host.count.A,
+  Host.count.B = NULL,
+  pres.time,
+  print.step,
+  length.sim,
+  max.infected.A,
+  max.infected.B = NULL,
+  type = "single"
+)
 }
 \arguments{
 \item{Host.count.A}{number of infected hosts of host A.}

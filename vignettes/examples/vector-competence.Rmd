@@ -3,6 +3,8 @@ title: "Epidemiological impact of mosquito vector competence variation"
 author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteDepends{ggplot2}
 ---
 
 # Introduction

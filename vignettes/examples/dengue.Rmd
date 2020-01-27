@@ -7,6 +7,17 @@ vignette: >
   %\VignetteIndexEntry{dengue}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{ape}
+  %\VignetteDepends{treeio}
+  %\VignetteDepends{tidytree}
+  %\VignetteDepends{ggtree}
+  %\VignetteDepends{ggplot2}
+  %\VignetteDepends{tidyverse}
+  %\VignetteDepends{rgdal}
+  %\VignetteDepends{rgeos}
+  %\VignetteDepends{readr}
+  %\VignetteDepends{viridis}
+  %\VignetteDepends{gganimate}
 ---
 
 # Introduction

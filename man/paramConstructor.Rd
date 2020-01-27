@@ -4,8 +4,13 @@
 \alias{paramConstructor}
 \title{Param concatenator}
 \usage{
-paramConstructor(param.pExit, param.pMove, param.nContact, param.pTrans,
-  param.sdMove)
+paramConstructor(
+  param.pExit,
+  param.pMove,
+  param.nContact,
+  param.pTrans,
+  param.sdMove
+)
 }
 \arguments{
 \item{param.pExit}{parameter names (list of functions) for the pExit.}

@@ -4,8 +4,13 @@
 \alias{newLineState}
 \title{Creates a new line to be added to the movement table when hosts moves (internal function)}
 \usage{
-newLineState(hosts.ID, state.pres, time.is,
-  current.environmental.value = NA, current.cell.number.raster = NA)
+newLineState(
+  hosts.ID,
+  state.pres,
+  time.is,
+  current.environmental.value = NA,
+  current.cell.number.raster = NA
+)
 }
 \arguments{
 \item{hosts.ID}{unique ID for the new host}

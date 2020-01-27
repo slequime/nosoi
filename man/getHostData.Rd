@@ -4,8 +4,11 @@
 \alias{getHostData}
 \title{Extracts specific data from a \code{nosoiSim} object}
 \usage{
-getHostData(nosoi.output, what = c("table.hosts", "N.infected",
-  "table.state", "popStructure"), pop = "A")
+getHostData(
+  nosoi.output,
+  what = c("table.hosts", "N.infected", "table.state", "popStructure"),
+  pop = "A"
+)
 }
 \arguments{
 \item{nosoi.output}{an object of class \code{nosoiSim}}
