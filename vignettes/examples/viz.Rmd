@@ -102,7 +102,7 @@ data.sim <- getTableHosts(test.nosoiA, "A")
 # because it shows "NA" as infecting host). We then provide *Nosoi* output as elements for the vertices (nodes).
 graph.simA <- graph.data.frame(data.sim[-1,c("inf.by","hosts.ID")],directed=T,vertices = data.sim)
 
-graph.simA.network <- ggnetwork(graph.simA, layout = "kamadakawai", cell.jitter = 0.75) #using ggnetwork to provide the layout
+graph.simA.network <- ggnetwork(graph.simA, layout = with_kk()) #using ggnetwork to provide the layout
 
 #plotting the network (color is time of infection)
 plot1 <- ggplot(graph.simA.network, aes(x = x, y = y, xend = xend, yend = yend)) +
@@ -218,7 +218,7 @@ melted.transition.matrix = subset(melted.transition.matrix, prob!=0)
 
 graph.Matrix <- graph.data.frame(melted.transition.matrix,directed=T)
 
-layout <- ggnetwork(graph.Matrix, layout = "circle",arrow.gap=0.18)[c(1:3),c(1,2,4)] #using ggnetwork to provide the layout
+layout <- ggnetwork(graph.Matrix, layout = in_circle(), arrow.gap=0.18)[c(1:3),c(1,2,3)] #using ggnetwork to provide the layout
 
 #Loading data from the simulation
 
@@ -232,7 +232,7 @@ for (i in 1:max(test.nosoiA.data$time.from)) {
   results <- data.table::rbindlist(c(list(temp),list(results)))
 }
 
-test2 <- results %>% group_by(time,state) %>% summarise(N=length(hosts.ID)) %>% left_join(layout,by=c("state"="vertex.names"))
+test2 <- results %>% group_by(time,state) %>% summarise(N=length(hosts.ID)) %>% left_join(layout,by=c("state"="name"))
 
 #Loop to get the transitions between states and their time
 results2=data.frame()
@@ -244,13 +244,13 @@ for (i in unique(test.nosoiA.data$hosts.ID)) {
    results2 <- data.table::rbindlist(c(list(temp),list(results2)))
     }}}
 
-test3 <- results2 %>% group_by(time,from,to) %>% summarise(N=length(hosts.ID)) %>% left_join(layout,by=c("from"="vertex.names")) %>% left_join(layout,by=c("to"="vertex.names"),suffix=c("from","to"))
+test3 <- results2 %>% group_by(time,from,to) %>% summarise(N=length(hosts.ID)) %>% left_join(layout,by=c("from"="name")) %>% left_join(layout,by=c("to"="name"),suffix=c("from","to"))
 
 #Animated plot (using gganimate):
 animated.plot <- ggplot() +
   geom_point(data=test2,aes(x,y, color=state,size=N)) +
   geom_curve(data=test3, aes(x=xfrom,y=yfrom,xend=xto,yend=yto),arrow = arrow(length = unit(0.03, "npc"),type = "closed"),curvature = 0.2,color="gray50") +
-  scale_color_viridis(guide=FALSE,discrete=TRUE) + theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2) + geom_text(data=layout,aes(x=x,y=y-0.2,label = vertex.names), size = 6,color="black") +
+  scale_color_viridis(guide=FALSE,discrete=TRUE) + theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2) + geom_text(data=layout,aes(x=x,y=y-0.2,label = name), size = 6,color="black") +
   geom_text(data=test2,aes(x=x,y=y+0.2,label = N), size = 6,color="black") +
 transition_states(time) + scale_size_continuous(guide=FALSE,range = c(5, 30)) +
   labs(title = "Time: {closest_state}")
