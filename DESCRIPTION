@@ -24,7 +24,6 @@ Depends:
     data.table (>= 1.12.0),
     R (>= 3.5.0)
 Imports:
-    utils (>= 3.5.2),
     stats (>= 3.5.2),
     methods (>= 3.5.2),
     dplyr (>= 0.8.0),
