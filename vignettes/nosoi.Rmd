@@ -61,11 +61,11 @@ if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis",
   
   melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
   
-  melted.transition.matrix = subset(melted.transition.matrix, prob!=0)
+  melted.transition.matrix <- subset(melted.transition.matrix, prob!=0)
   
-  graph.Matrix <- graph.data.frame(melted.transition.matrix,directed=T)
+  graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
   
-  graph.simA.network = ggnetwork(graph.Matrix, layout = "circle",arrow.gap=0.18) #using ggnetwork to provide the layout
+  graph.simA.network <- ggnetwork::ggnetwork(graph.Matrix, layout = "circle",arrow.gap=0.18) #using ggnetwork to provide the layout
   
   #plotting the network
   ggplot(graph.simA.network, aes(x = x, y = y, xend = xend, yend = yend)) +
