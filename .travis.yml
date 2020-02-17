@@ -15,6 +15,6 @@ addons:
   apt:
     packages: cargo
 after_success:
-  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; docker build -t test_no_suggest . ; fi
-  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; docker run test_no_suggest ; fi
-  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; Rscript -e 'covr::codecov()' ; fi
+  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; then docker build -t test_no_suggest . ; fi
+  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; then docker run test_no_suggest ; fi
+  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; then Rscript -e 'covr::codecov()' ; fi
