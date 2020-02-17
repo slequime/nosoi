@@ -4,8 +4,12 @@
 \alias{nosoiSimConstructor}
 \title{nosoiSim Constructor}
 \usage{
-nosoiSimConstructor(total.time, type = c("single", "dual"), pop.A,
-  pop.B = NULL)
+nosoiSimConstructor(
+  total.time,
+  type = c("single", "dual"),
+  pop.A,
+  pop.B = NULL
+)
 }
 \arguments{
 \item{type}{population structure (one of "single or "dual)}

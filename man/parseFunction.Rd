@@ -4,8 +4,16 @@
 \alias{parseFunction}
 \title{Parse function for later use}
 \usage{
-parseFunction(pFunc, param.pFunc, name, diff = FALSE, timeDep = FALSE,
-  hostCount = FALSE, continuous = FALSE, stateNames = NA)
+parseFunction(
+  pFunc,
+  param.pFunc,
+  name,
+  diff = FALSE,
+  timeDep = FALSE,
+  hostCount = FALSE,
+  continuous = FALSE,
+  stateNames = NA
+)
 }
 \arguments{
 \item{pFunc}{a function}

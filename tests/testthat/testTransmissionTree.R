@@ -1,7 +1,11 @@
 context("Testing the transmission tree functions")
 
 test_that("Single, discrete", {
-  library(igraph)
+
+  skip_if_not_installed("ape")
+  skip_if_not_installed("treeio")
+  skip_if_not_installed("tidytree")
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}
@@ -122,6 +126,10 @@ test_that("Single, discrete", {
 })
 
 test_that("Single, continuous", {
+
+  skip_if_not_installed("ape")
+  skip_if_not_installed("treeio")
+  skip_if_not_installed("tidytree")
   library(raster)
 
   #Generating a raster the for movement
@@ -237,7 +245,11 @@ test_that("Single, continuous", {
 })
 
 test_that("Dual, discrete", {
-  library(igraph)
+
+  skip_if_not_installed("ape")
+  skip_if_not_installed("treeio")
+  skip_if_not_installed("tidytree")
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}
@@ -384,6 +396,10 @@ test_that("Dual, discrete", {
 })
 
 test_that("Dual, continuous", {
+
+  skip_if_not_installed("ape")
+  skip_if_not_installed("treeio")
+  skip_if_not_installed("tidytree")
   library(raster)
 
   #Generating a raster the for movement
@@ -393,7 +409,6 @@ test_that("Dual, continuous", {
   test.raster[] <- runif(10000, -80, 180)
   test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
 
-  library(igraph)
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Move_fct  <- function(t){return(0.1)}

@@ -7,6 +7,17 @@ vignette: >
   %\VignetteIndexEntry{output-visualization}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{ape}
+  %\VignetteDepends{treeio}
+  %\VignetteDepends{tidytree}
+  %\VignetteDepends{ggtree}
+  %\VignetteDepends{ggplot2}
+  %\VignetteDepends{igraph}
+  %\VignetteDepends{viridis}
+  %\VignetteDepends{ggnetwork}
+  %\VignetteDepends{tidyverse}
+  %\VignetteDepends{gganimate}
+  %\VignetteDepends{ggpubr}
 ---
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(

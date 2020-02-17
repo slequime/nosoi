@@ -1,4 +1,8 @@
-library(testthat)
-library(nosoi)
+if (requireNamespace("testthat", quietly = TRUE)) {
 
-test_check("nosoi")
+  library(testthat)
+  library(nosoi)
+
+  test_check("nosoi")
+
+}

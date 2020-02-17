@@ -7,6 +7,13 @@ vignette: >
   %\VignetteIndexEntry{ebola}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{ape}
+  %\VignetteDepends{treeio}
+  %\VignetteDepends{tidytree}
+  %\VignetteDepends{ggtree}
+  %\VignetteDepends{viridis}
+  %\VignetteDepends{ggspatial}
+  %\VignetteDepends{gganimate}
 ---
 
 # Introduction

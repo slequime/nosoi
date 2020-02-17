@@ -4,8 +4,7 @@
 \alias{endMessage}
 \title{End message}
 \usage{
-endMessage(Host.count.A, Host.count.B = NULL, pres.time,
-  type = "single")
+endMessage(Host.count.A, Host.count.B = NULL, pres.time, type = "single")
 }
 \arguments{
 \item{Host.count.A}{number of infected hosts (host A)}

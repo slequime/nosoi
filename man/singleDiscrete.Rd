@@ -4,15 +4,36 @@
 \alias{singleDiscrete}
 \title{Single-host pathogen in a structured (discrete) host population}
 \usage{
-singleDiscrete(length.sim, max.infected, init.individuals, init.structure,
-  structure.matrix, diff.pExit = FALSE, timeDep.pExit = FALSE,
-  hostCount.pExit = FALSE, pExit, param.pExit, diff.pMove = FALSE,
-  timeDep.pMove = FALSE, hostCount.pMove = FALSE, pMove, param.pMove,
-  diff.nContact = FALSE, timeDep.nContact = FALSE,
-  hostCount.nContact = FALSE, nContact, param.nContact,
-  diff.pTrans = FALSE, timeDep.pTrans = FALSE,
-  hostCount.pTrans = FALSE, pTrans, param.pTrans, prefix.host = "H",
-  print.progress = TRUE, print.step = 10)
+singleDiscrete(
+  length.sim,
+  max.infected,
+  init.individuals,
+  init.structure,
+  structure.matrix,
+  diff.pExit = FALSE,
+  timeDep.pExit = FALSE,
+  hostCount.pExit = FALSE,
+  pExit,
+  param.pExit,
+  diff.pMove = FALSE,
+  timeDep.pMove = FALSE,
+  hostCount.pMove = FALSE,
+  pMove,
+  param.pMove,
+  diff.nContact = FALSE,
+  timeDep.nContact = FALSE,
+  hostCount.nContact = FALSE,
+  nContact,
+  param.nContact,
+  diff.pTrans = FALSE,
+  timeDep.pTrans = FALSE,
+  hostCount.pTrans = FALSE,
+  pTrans,
+  param.pTrans,
+  prefix.host = "H",
+  print.progress = TRUE,
+  print.step = 10
+)
 }
 \arguments{
 \item{length.sim}{specifies the length (in unit of time) over which the simulation should be run.}

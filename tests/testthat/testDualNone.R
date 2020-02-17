@@ -1,7 +1,10 @@
 context("Testing dual-host without structure")
 
 test_that("Transmission is coherent with single introduction (host A) same for both hosts", {
+
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}
@@ -92,6 +95,7 @@ test_that("Transmission is coherent with single introduction (host A) same for b
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   #Host A
@@ -179,6 +183,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, time dependancy for host B pExit", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   #Host A
@@ -265,7 +270,9 @@ test_that("Transmission is coherent with single introduction (host A) differenti
 })
 
 test_that("Epidemic dying out", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}

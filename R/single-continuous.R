@@ -49,7 +49,7 @@
 #' test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
 #' test.raster[] <- runif(10000, -80, 180)
 #' test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5, 5), mean)
-# plot(test.raster)
+#' plot(test.raster)
 #'
 #' t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 #' p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}

@@ -1,6 +1,7 @@
 context("Testing single-host without structure")
 
 test_that("Transmission is coherent with single introduction, constant pExit and pTrans", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   p_Exit_fct  <- function(t){return(0.08)}
@@ -31,7 +32,9 @@ test_that("Transmission is coherent with single introduction, constant pExit and
 
 
 test_that("Transmission is coherent with single introduction, constant pExit and pTrans", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}
@@ -89,7 +92,9 @@ test_that("Transmission is coherent with single introduction, constant pExit and
 })
 
 test_that("Transmission is coherent with single introduction, simple pExit and pTrans", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){plogis(t,20,2)}
@@ -123,7 +128,9 @@ test_that("Transmission is coherent with single introduction, simple pExit and p
 })
 
 test_that("Transmission is coherent with single introduction, complex pExit and pTrans", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 
@@ -161,7 +168,9 @@ test_that("Transmission is coherent with single introduction, complex pExit and 
 })
 
 test_that("Transmission is coherent with multiple introductions, constant pExit and pTrans", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   # p_Exit_fct  <- function(x){rep(0.08,length(x))}
@@ -199,7 +208,9 @@ test_that("Transmission is coherent with multiple introductions, constant pExit 
 })
 
 test_that("Transmission is coherent with multiple introductions, simple pExit and pTrans", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){plogis(t,20,2)}
@@ -233,7 +244,9 @@ test_that("Transmission is coherent with multiple introductions, simple pExit an
 })
 
 test_that("Transmission is coherent with multiple introductions, complex pExit and pTrans", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
 
@@ -270,7 +283,9 @@ test_that("Transmission is coherent with multiple introductions, complex pExit a
 })
 
 test_that("Dying out epidemic", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}

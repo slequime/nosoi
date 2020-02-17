@@ -4,8 +4,16 @@
 \alias{FunctionSanityChecks}
 \title{Checks if a function is properly formatted}
 \usage{
-FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, hostCount,
-  continuous, stateNames)
+FunctionSanityChecks(
+  pFunc,
+  name,
+  param.pFunc,
+  timeDep,
+  diff,
+  hostCount,
+  continuous,
+  stateNames
+)
 }
 \arguments{
 \item{pFunc}{a function}

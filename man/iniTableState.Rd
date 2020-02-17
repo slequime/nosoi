@@ -4,8 +4,13 @@
 \alias{iniTableState}
 \title{Generates initial movement table to start the simulation (internal function)}
 \usage{
-iniTableState(init.individuals, init.structure, prefix.host,
-  current.environmental.value = NULL, current.cell.number.raster = NA)
+iniTableState(
+  init.individuals,
+  init.structure,
+  prefix.host,
+  current.environmental.value = NULL,
+  current.cell.number.raster = NA
+)
 }
 \arguments{
 \item{init.individuals}{number of initially infected individuals (i.e. number of lines at time 0).}

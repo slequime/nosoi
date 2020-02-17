@@ -7,6 +7,8 @@ vignette: >
   %\VignetteIndexEntry{single-host-continuous}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{ggplot2}
+  %\VignetteDepends{viridis}
 ---
 
 ```{r setup, include = FALSE}
@@ -44,8 +46,6 @@ test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5,
 
 ```{r RasterCode2, echo = FALSE, message=FALSE}
 library(raster)
-library(ggplot2)
-library(viridis)
 set.seed(860)
 test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
 test.raster[] <- runif(10000, -80, 150)
@@ -53,10 +53,17 @@ test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5,
 
 test.raster_df <- as.data.frame(test.raster, xy = TRUE) 
 
-ggplot() +
-   geom_raster(data=test.raster_df, aes(x=x,y=y,fill=layer)) +
-   scale_fill_viridis(limits=c(0,NA),na.value="white", name="Environmental\nvalue") +
-   labs(caption = "Environmental raster") + theme_minimal() + coord_quickmap()
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis", quietly = TRUE)) {
+  message("Packages 'ggplot2' and 'viridis' are needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(viridis)
+  
+  ggplot() +
+    geom_raster(data=test.raster_df, aes(x=x,y=y,fill=layer)) +
+    scale_fill_viridis(limits=c(0,NA),na.value="white", name="Environmental\nvalue") +
+    labs(caption = "Environmental raster") + theme_minimal() + coord_quickmap()
+}
 ```
 
 ## Movement kernel
@@ -140,7 +147,7 @@ for (t in 2:1001){
   move.temp= data.table(t=real.t,current.in.x=newP[1],current.in.y=newP[2])
   move.test = rbindlist(list(move.test,move.temp))
 }
-  move.test$type = "Attracted by raster"
+move.test$type = "Attracted by raster"
 
 move.test2 = data.table(t=0,current.in.x=0.25,current.in.y=0.75)
 for (t in 2:1001){
@@ -167,29 +174,32 @@ for (t in 2:1001){
       
       if (!is.na(temp.env.value)){
         move.temp= data.table(t=real.t,current.in.x=newP[1],current.in.y=newP[2])
-positionFound1 = TRUE
-positionFound2 = TRUE
+        positionFound1 = TRUE
+        positionFound2 = TRUE
       }
     }
   }
   
   
   move.test2 = rbindlist(list(move.test2,move.temp))
-
+  
 }
-   move.test2$type = "Not attracted by raster"
-   
-    move.test.all = rbindlist(list(move.test,move.test2))
-   
+move.test2$type = "Not attracted by raster"
 
-ggplot() +
-   geom_raster(data=test.raster_df, aes(x=x,y=y,fill=layer)) +
-  # geom_line(data = move.test, mapping = aes(x = current.in.x, y = current.in.y), color = "grey90") +
-  geom_point(data = move.test.all, aes(x = current.in.x, y = current.in.y,color=t)) +
-  geom_point(data=data.table(t=0,current.in.x=0.25,current.in.y=0.75), aes(x = current.in.x, y = current.in.y), color = "firebrick1",size=3) +
- theme_minimal() + facet_wrap(~type) + 
-  scale_fill_viridis(limits=c(0,NA),na.value="white", name="Environmental\nvalue") + 
-scale_color_viridis(option="magma",limits=c(0,NA),na.value="white", name="Time")
+move.test.all = rbindlist(list(move.test,move.test2))
+
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis", quietly = TRUE)) {
+  message("Packages 'ggplot2' and 'viridis' are needed for plotting this figure.")
+} else {
+  ggplot() +
+    geom_raster(data=test.raster_df, aes(x=x,y=y,fill=layer)) +
+    # geom_line(data = move.test, mapping = aes(x = current.in.x, y = current.in.y), color = "grey90") +
+    geom_point(data = move.test.all, aes(x = current.in.x, y = current.in.y,color=t)) +
+    geom_point(data=data.table(t=0,current.in.x=0.25,current.in.y=0.75), aes(x = current.in.x, y = current.in.y), color = "firebrick1",size=3) +
+    theme_minimal() + facet_wrap(~type) + 
+    scale_fill_viridis(limits=c(0,NA),na.value="white", name="Environmental\nvalue") + 
+    scale_color_viridis(option="magma",limits=c(0,NA),na.value="white", name="Time")
+}
 ```
 
 # Setting up the simulation
@@ -380,21 +390,25 @@ p_Exit_fct  <- function(t, current.env.value){
 Taken together, the value for `pExit` according to the environmental value will be the following:
 
 ```{r pExit2, echo=FALSE, message=FALSE}
-library(ggplot2)
-library(dplyr)
-
-p_Exit_fctx  <- function(x){
-  if(x >= 60){p=0.02}
-  if(x < 60 && x > 30){p=0.04}
-  if(x <= 30){p=0.08}
-  return(p)
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(dplyr)
+  
+  p_Exit_fctx  <- function(x){
+    if(x >= 60){p=0.02}
+    if(x < 60 && x > 30){p=0.04}
+    if(x <= 30){p=0.08}
+    return(p)
+  }
+  
+  data3=data.frame(v2=seq(from = 0, to = 70, by = 0.2))
+  
+  data3 = data3 %>% group_by(v2) %>% mutate(p=p_Exit_fctx(v2))
+  
+  ggplot(data=data3,aes(x=v2,y=p)) + geom_line() +  theme_minimal() + labs(x="Environmental value",y="pExit") + ylim(0,0.1)
 }
-
-data3=data.frame(v2=seq(from = 0, to = 70, by = 0.2))
-
-data3 = data3 %>% group_by(v2) %>% mutate(p=p_Exit_fctx(v2))
-
-ggplot(data=data3,aes(x=v2,y=p)) + geom_line() +  theme_minimal() + labs(x="Environmental value",y="pExit") + ylim(0,0.1)
 ```
 
 Remember that `pExit`, like the other core functions has to be function of `t`, even if `t` is not used. Since `pExit` is dependent on the location, `diff.pMove=TRUE`. However, there is no use of the "absolute" time of the simulation nor individual-based parameters, so `param.pExit=NA`, and `timeDep.pExit=FALSE`.
@@ -429,15 +443,18 @@ n_contact_fct <- function(t){abs(round(rnorm(1, 0.5, 1), 0))}
 The distribution of `nContact` looks as follows:
 
 ```{r nContact2, echo=FALSE}
-library(ggplot2)
-library(dplyr)
-set.seed(900)
-data = data.frame(N=abs(round(rnorm(200, 0.5, 1), 0)))
-
-data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
-
-ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact",y="Frequency")
-
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(dplyr)
+  set.seed(900)
+  data = data.frame(N=abs(round(rnorm(200, 0.5, 1), 0)))
+  
+  data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
+  
+  ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact",y="Frequency")
+}
 ```
 
 At each time and for each infected host, `nContact` will be drawn anew. Remember that `nContact`, like the other core functions has to be function of `t`, even if `t` is not used. Since `nContact` is constant here, there is no use of the "absolute" time of the simulation, the location of the host, nor individual-based parameters. So `param.nContact=NA`, `timeDep.nContact=FALSE` and `diff.nContact=FALSE`.
@@ -465,31 +482,35 @@ Note that here `t_incub` and `p_max` are functions of `x` and not `t` (they are 
 Taken together, the profile for `pTrans` for a subset of 200 individuals in the population will look as follows:
 
 ```{r pTrans3, echo=FALSE}
-library(ggplot2)
-library(dplyr)
-
-set.seed(506)
-
-p_Trans_fct <- function(t, p_max, t_incub){
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(dplyr)
+  
+  set.seed(506)
+  
+  p_Trans_fct <- function(t, p_max, t_incub){
     if(t < t_incub){p=0}
     if(t >= t_incub){p=p_max}
     return(p)
+  }
+  
+  t_incub_fct <- function(x){rnorm(x,mean = 7,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  
+  data = data.frame(t_incub=t_incub_fct(200),p_max=p_max_fct(200),host=paste0("H-",1:200))
+  
+  t=c(0:12)
+  data3=NULL
+  for(t in 0:15){
+    data2 = data %>% group_by(host) %>% mutate(proba=p_Trans_fct(t=t,p_max=p_max, t_incub=t_incub))
+    data2$t = t
+    data3 = rbind(data3, data2)
+  }
+  
+  ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60") + theme_minimal() + labs(x="Time since infection (t)",y="pTrans")
 }
-
-t_incub_fct <- function(x){rnorm(x,mean = 7,sd=1)}
-p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-
-data = data.frame(t_incub=t_incub_fct(200),p_max=p_max_fct(200),host=paste0("H-",1:200))
-
-t=c(0:12)
-data3=NULL
-for(t in 0:15){
-  data2 = data %>% group_by(host) %>% mutate(proba=p_Trans_fct(t=t,p_max=p_max, t_incub=t_incub))
-  data2$t = t
-  data3 = rbind(data3, data2)
-}
-
-ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60") + theme_minimal() + labs(x="Time since infection (t)",y="pTrans")
 ```
 
 `pTrans` is not dependent on the "absolute" time of the simulation, nor on the hosts location, so `timeDep.pTrans=FALSE` and `diff.pTrans=FALSE`. However, since we make use of individual-based parameters, we have to provide a `param.pTrans` as a list of functions. The name of each element within this list should have the same name that the core function (here `pTrans`) uses as argument, e.g.:
@@ -602,7 +623,11 @@ The values of `pExit.B` across the "absolute time" of the simulation will be the
 
 ```{r pExit2-dual, echo = FALSE}
 p_Exit_fctx <- function(x){(sin(x/(2*pi*10))+1)/16} #for a periodic function
-ggplot(data=data.frame(x=0), aes(x=x)) + stat_function(fun=p_Exit_fctx) + theme_minimal() + labs(x="Absolute time (prestime)",y="pExit") + xlim(0,360)
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  ggplot(data=data.frame(x=0), aes(x=x)) + stat_function(fun=p_Exit_fctx) + theme_minimal() + labs(x="Absolute time (prestime)",y="pExit") + xlim(0,360)
+}
 ```
 
 Since `pExit.B` is dependent on the simulation's time, do not forget to set `timeDep.pExit.B` to `TRUE`. Since there are no individual-based parameters nor is there any influence of the host's location, `param.pExit.B=NA` and `diff.pExit.B=NA`.
@@ -638,14 +663,18 @@ n_contact_fct.B = function(t){sample(c(0,1,2),1,prob=c(0.6,0.3,0.1))}
 The distribution of `nContact.B` looks as follows:
 
 ```{r nContact2.B, echo=FALSE}
-library(ggplot2)
-library(dplyr)
-set.seed(6059)
-data = data.frame(N=sample(c(0,1,2),200,replace=TRUE,prob=c(0.6,0.3,0.1)))
-
-data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
-
-ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact.B",y="Frequency")
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(dplyr)
+  set.seed(6059)
+  data = data.frame(N=sample(c(0,1,2),200,replace=TRUE,prob=c(0.6,0.3,0.1)))
+  
+  data = data %>% group_by(N) %>% summarise(freq=length(N)/200)
+  
+  ggplot(data=data, aes(x=as.factor(N), y=freq)) + geom_bar(stat="identity") + theme_minimal() + labs(x="nContact.B",y="Frequency")
+}
 ```
 
 At each time and for each infected host, `nContact.B` will be drawn anew. Remember that `nContact.B`, like the other core functions has to be function of `t`, even if `t` is not used. Since `nContact.B` is constant here, there is no use of the "absolute" time of the simulation, the host's location, nor individual-based parameters. So `param.nContact.B=NA`, `timeDep.nContact.B=FALSE` and `diff.nContact.B=FALSE`.
@@ -673,27 +702,31 @@ Note again that here `max.time` is a function of `x` and not `t` (i.e. not a cor
 Taken together, the profile for `pTrans` for a subset of 200 individuals in the population will look as follow:
 
 ```{r pTrans3.B, echo=FALSE}
-library(ggplot2)
-library(dplyr)
-set.seed(6609)
-
-p_Trans_fct <- function(t, max.time){
-  dnorm(t, mean=max.time, sd=2)*5
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  message("Package 'ggplot2' is needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(dplyr)
+  set.seed(6609)
+  
+  p_Trans_fct <- function(t, max.time){
+    dnorm(t, mean=max.time, sd=2)*5
+  }
+  
+  max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  
+  data = data.frame(max.time=max.time_fct(200),host=paste0("H-",1:200))
+  
+  t=c(0:12)
+  data3=NULL
+  for(t in 0:15){
+    data2 = data %>% group_by(host) %>% mutate(proba=p_Trans_fct(t=t,max.time=max.time))
+    data2$t = t
+    data3 = rbind(data3, data2)
+  }
+  
+  ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60",alpha=0.3) + theme_minimal() + labs(x="Time since infection (t)",y="pTrans")
 }
-
-max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
-
-data = data.frame(max.time=max.time_fct(200),host=paste0("H-",1:200))
-
-t=c(0:12)
-data3=NULL
-for(t in 0:15){
-  data2 = data %>% group_by(host) %>% mutate(proba=p_Trans_fct(t=t,max.time=max.time))
-  data2$t = t
-  data3 = rbind(data3, data2)
-}
-
-ggplot(data=data3, aes(x=t, y=proba,group=host)) + geom_line(color="grey60",alpha=0.3) + theme_minimal() + labs(x="Time since infection (t)",y="pTrans")
 ```
 
 Since `pTrans.B` is not dependent of the "absolute" time of the simulation nor the host's location, `timeDep.pTrans.B=FALSE` and `diff.pTrans.B=FALSE`. However, since we have made use of individual-based parameters, we have to provide a `param.pTrans` as a list of functions. The names of each element of the list should have the same name that the core function (`pTrans.B` here) uses as its argument, as shown here:

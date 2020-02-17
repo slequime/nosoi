@@ -4,10 +4,17 @@
 \alias{newLine}
 \title{Creates a new line to be added to the table when new host is infected (internal function)}
 \usage{
-newLine(hosts.ID, infected.by, infected.in, time.is, ParamHost,
+newLine(
+  hosts.ID,
+  infected.by,
+  infected.in,
+  time.is,
+  ParamHost,
   current.environmental.value = NULL,
-  current.cell.number.raster = NULL, current.count.A = integer(0),
-  current.count.B = integer(0))
+  current.cell.number.raster = NULL,
+  current.count.A = integer(0),
+  current.count.B = integer(0)
+)
 }
 \arguments{
 \item{hosts.ID}{unique ID for the new host}

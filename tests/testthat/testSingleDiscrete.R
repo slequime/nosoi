@@ -128,7 +128,9 @@ test_that("Error message pops up when structure.matrix or init.structure is badl
 })
 
 test_that("Movement is coherent with single introduction, constant pMove", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}
@@ -199,6 +201,7 @@ test_that("Movement is coherent with single introduction, constant pMove", {
 #--------------------------------------------------------------------------------------------------------------------------------------------
 
 test_that("Movement is coherent with single introduction, complex pMove", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
@@ -254,8 +257,9 @@ test_that("Movement is coherent with single introduction, complex pMove", {
 })
 
 test_that("Movement is coherent with single introduction, constant but different pMove, 1 loc (C) is sink. Ce tombeau sera votre tombeau !", {
-
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}
@@ -363,8 +367,9 @@ test_that("Error message pops up if different pMove poorly formatted", {
 })
 
 test_that("Movement is coherent with single introduction, complex and different pMove, 1 loc (C) is sink.", {
-
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}
@@ -440,24 +445,24 @@ test_that("Error message pops out when missing state in diff functions", {
   transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
   expect_error(
-  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
-                          length=20,
-                          max.infected=1000,
-                          init.individuals=1,
-                          init.structure="A",
-                          structure.matrix=transition.matrix,
-                          pMove=p_Move_fct,
-                          param.pMove=NA,
-                          nContact=time_contact,
-                          param.nContact=NA,
-                          pTrans = proba,
-                          param.pTrans = list(p_max=p_max_fct,
-                                              t_incub=t_incub_fct),
-                          diff.pExit=TRUE,
-                          pExit=p_Exit_fct,
-                          param.pExit=NA
-  ),
-  "pExit should have a realisation for each possible state. diff.pExit is TRUE."
+    test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
+                            length=20,
+                            max.infected=1000,
+                            init.individuals=1,
+                            init.structure="A",
+                            structure.matrix=transition.matrix,
+                            pMove=p_Move_fct,
+                            param.pMove=NA,
+                            nContact=time_contact,
+                            param.nContact=NA,
+                            pTrans = proba,
+                            param.pTrans = list(p_max=p_max_fct,
+                                                t_incub=t_incub_fct),
+                            diff.pExit=TRUE,
+                            pExit=p_Exit_fct,
+                            param.pExit=NA
+    ),
+    "pExit should have a realisation for each possible state. diff.pExit is TRUE."
   )
 
   p_Exit_fct  <- function(x){return(0.08)}
@@ -529,63 +534,66 @@ test_that("Error message pops out when missing state in diff functions", {
 
 
 test_that("Movement is coherent with single introduction, constant pMove, diff pExit", {
-library(igraph)
-t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
-p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
-p_Move_fct  <- function(t){return(0.1)}
+  skip_if_not_installed("igraph")
+  library(igraph)
 
-p_Exit_fct  <- function(t,current.in){
-  if(current.in=="A"){return(0)}
-  if(current.in=="B"){return(0.5)}
-  if(current.in=="C"){return(1)}}
+  t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+  p_Move_fct  <- function(t){return(0.1)}
 
-proba <- function(t,p_max,t_incub){
-  if(t <= t_incub){p=0}
-  if(t >= t_incub){p=p_max}
-  return(p)
-}
+  p_Exit_fct  <- function(t,current.in){
+    if(current.in=="A"){return(0)}
+    if(current.in=="B"){return(0.5)}
+    if(current.in=="C"){return(1)}}
 
-time_contact = function(t){round(rnorm(1, 3, 1), 0)}
+  proba <- function(t,p_max,t_incub){
+    if(t <= t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
 
-transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
+  time_contact = function(t){round(rnorm(1, 3, 1), 0)}
 
-set.seed(805)
-test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
-                        length=20,
-                        max.infected=1000,
-                        init.individuals=1,
-                        init.structure="A",
-                        structure.matrix=transition.matrix,
-                        pMove=p_Move_fct,
-                        param.pMove=NA,
-                        nContact=time_contact,
-                        param.nContact=NA,
-                        pTrans = proba,
-                        param.pTrans = list(p_max=p_max_fct,
-                                            t_incub=t_incub_fct),
-                        diff.pExit=TRUE,
-                        pExit=p_Exit_fct,
-                        param.pExit=NA
-)
+  transition.matrix = matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0),nrow = 3, ncol = 3,dimnames=list(c("A","B","C"),c("A","B","C")))
 
-#Structure
-g <- graph.data.frame(getHostData(test.nosoiA, "table.hosts")[,c(1,2)], directed = F)
-expect_equal(transitivity(g, type="global"), 0)
-expect_equal(clusters(g, "weak")$no, 1)
-expect_equal(diameter(g, directed=F, weights=NA), 7)
+  set.seed(805)
+  test.nosoiA <- nosoiSim(type="single", popStructure="discrete",
+                          length=20,
+                          max.infected=1000,
+                          init.individuals=1,
+                          init.structure="A",
+                          structure.matrix=transition.matrix,
+                          pMove=p_Move_fct,
+                          param.pMove=NA,
+                          nContact=time_contact,
+                          param.nContact=NA,
+                          pTrans = proba,
+                          param.pTrans = list(p_max=p_max_fct,
+                                              t_incub=t_incub_fct),
+                          diff.pExit=TRUE,
+                          pExit=p_Exit_fct,
+                          param.pExit=NA
+  )
 
-#Movement
-expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")),2)
-expect_equal(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")$state,c("A","C"))
+  #Structure
+  g <- graph.data.frame(getHostData(test.nosoiA, "table.hosts")[,c(1,2)], directed = F)
+  expect_equal(transitivity(g, type="global"), 0)
+  expect_equal(clusters(g, "weak")$no, 1)
+  expect_equal(diameter(g, directed=F, weights=NA), 7)
 
-Where.when.exit = subset(getHostData(test.nosoiA, "table.hosts"),active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+  #Movement
+  expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")),2)
+  expect_equal(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")$state,c("A","C"))
 
-expect_equal(subset(Where.when.exit, current.in == "A")$N,integer(0))
-expect_equal(subset(Where.when.exit, current.in == "B")$N,44)
-expect_equal(subset(Where.when.exit, current.in == "C")$N,34)
+  Where.when.exit = subset(getHostData(test.nosoiA, "table.hosts"),active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
+
+  expect_equal(subset(Where.when.exit, current.in == "A")$N,integer(0))
+  expect_equal(subset(Where.when.exit, current.in == "B")$N,44)
+  expect_equal(subset(Where.when.exit, current.in == "C")$N,34)
 })
 
 test_that("Movement is coherent with single introduction, constant pMove, diff pTrans ", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
@@ -650,6 +658,7 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
 })
 
 test_that("Movement is coherent with single introduction, constant pMove, diff nContact ", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
@@ -713,6 +722,7 @@ test_that("Movement is coherent with single introduction, constant pMove, diff n
 })
 
 test_that("Movement is coherent with single introduction, all parameters are diff", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   p_Move_fct  <- function(t,current.in){
@@ -720,14 +730,14 @@ test_that("Movement is coherent with single introduction, all parameters are dif
     if(current.in=="B"){return(0)}
     if(current.in=="C"){return(0.2)}
     if(current.in=="D"){return(0.3)}
-    }
+  }
 
   p_Exit_fct  <- function(t,current.in){
     if(current.in=="A"){return(0.1)}
     if(current.in=="B"){return(0.1)}
     if(current.in=="C"){return(0)}
     if(current.in=="D"){return(1)}
-    }
+  }
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
@@ -806,7 +816,9 @@ test_that("Movement is coherent with single introduction, all parameters are dif
 })
 
 test_that("Epidemic dying out", {
+  skip_if_not_installed("igraph")
   library(igraph)
+
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
   p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
   p_Exit_fct  <- function(t){return(0.08)}
@@ -851,6 +863,7 @@ test_that("Epidemic dying out", {
 
 
 test_that("Movement is coherent with single introduction, no pMove, no die, diff nContact with hostCount needed", {
+  skip_if_not_installed("igraph")
   library(igraph)
 
   t_incub_fct <- function(x){rnorm(x,mean = 5,sd=1)}
