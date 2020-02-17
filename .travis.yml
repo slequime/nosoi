@@ -1,6 +1,9 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-language: R
+language: r
+r:
+  - release
+  - devel
 sudo: false
 cache: packages
 services: docker
@@ -12,6 +15,6 @@ addons:
   apt:
     packages: cargo
 after_success:
-  - docker build -t test_no_suggest .
-  - docker run test_no_suggest
-  - Rscript -e 'covr::codecov()'
+  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; docker build -t test_no_suggest . ; fi
+  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; docker run test_no_suggest ; fi
+  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; Rscript -e 'covr::codecov()' ; fi
