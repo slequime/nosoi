@@ -61,7 +61,10 @@ if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis",
   
   graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
   
-  graph.matrix.network <- ggnetwork(graph.Matrix, layout = in_circle(), arrow.gap=0.18) #using ggnetwork to provide the layout
+graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
+  graph.Matrix2 = igraph::layout_in_circle(graph.Matrix)
+  
+  graph.matrix.network <- ggnetwork::ggnetwork(graph.Matrix, layout = graph.Matrix2, arrow.gap=0.18) #using ggnetwork to provide the layout
   
   #plotting the network
   ggplot(graph.matrix.network, aes(x = x, y = y, xend = xend, yend = yend)) +

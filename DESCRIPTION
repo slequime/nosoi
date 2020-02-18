@@ -1,8 +1,8 @@
 Package: nosoi
 Type: Package
 Title: A Forward Agent-Based Transmission Chain Simulator
-Version: 1.0.0
-Authors@R: c(person("Sebastian", "Lequime", email = "sebastian.lequime@kuleuven.be",
+Version: 1.0.1
+Authors@R: c(person("Sebastian", "Lequime", email = "sebastian.lequime@gmail.com",
                   role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3140-0651")),
                   person("Paul", "Bastide", email = "paul.bastide@kuleuven.be",
                   role = "aut", comment = c(ORCID = "0000-0002-8084-9893")),
@@ -39,7 +39,10 @@ Suggests:
     tidyverse,
     ggplot2,
     ggnetwork,
+    intergraph,
     viridis,
+    gifski,
+    png,
     gganimate,
     ape (>= 5.3),
     tidytree (>= 0.2.4),
