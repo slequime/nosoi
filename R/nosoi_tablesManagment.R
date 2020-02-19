@@ -25,7 +25,8 @@ newLine <- function(hosts.ID,
                     infected.by, infected.in,
                     time.is,
                     ParamHost, current.environmental.value = NULL, current.cell.number.raster = NULL,
-                    current.count.A = integer(0), current.count.B = integer(0)) {
+                    current.count.A = integer(0), current.count.B = integer(0),
+                    infect.prob = integer(0)) {
 
   if (length(infected.in) == 1) {
     if (is.na(infected.in)) infected.in <- NULL
@@ -38,6 +39,7 @@ newLine <- function(hosts.ID,
              inf.time = time.is,
              out.time = NA_integer_,
              active = TRUE,
+             infect.prob = as.numeric(infect.prob),
              as.list(sapply(ParamHost, function(x) x(1)))
     )
     )
@@ -58,6 +60,7 @@ newLine <- function(hosts.ID,
              inf.time = time.is,
              out.time = NA_integer_,
              active = TRUE,
+             infect.prob = as.numeric(infect.prob),
              as.list(sapply(ParamHost, function(x) x(1)))
     )
     )
@@ -81,7 +84,8 @@ newLine <- function(hosts.ID,
 
 iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost,
                      current.environmental.value = NULL, current.cell.number.raster = NULL,
-                     current.count.A = integer(0), current.count.B = integer(0)){
+                     current.count.A = integer(0), current.count.B = integer(0),
+                     infect.prob = integer(0)){
 
   if (init.individuals >= 1){
     list.init <- vector("list", init.individuals)
@@ -95,7 +99,8 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost,
                                     current.environmental.value = current.environmental.value,
                                     current.cell.number.raster = current.cell.number.raster,
                                     current.count.A = current.count.A,
-                                    current.count.B = current.count.B)
+                                    current.count.B = current.count.B,
+                                    infect.prob = as.numeric(infect.prob))
     }
     table.hosts <- data.table::rbindlist(list.init)
   }
@@ -113,7 +118,8 @@ iniTable <- function(init.individuals, init.structure, prefix.host, ParamHost,
                                     current.environmental.value = current.environmental.value,
                                     current.cell.number.raster = current.cell.number.raster,
                                     current.count.A = current.count.A,
-                                    current.count.B = current.count.B)
+                                    current.count.B = current.count.B,
+                                    infect.prob = as.numeric(infect.prob))
     }
     table.hosts <- data.table::rbindlist(list.init)
     table.hosts <- table.hosts[-1]

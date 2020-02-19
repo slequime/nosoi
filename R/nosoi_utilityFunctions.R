@@ -24,7 +24,8 @@
 
 parseFunction <- function(pFunc, param.pFunc, name, diff=FALSE, timeDep=FALSE, hostCount=FALSE, continuous=FALSE, stateNames=NA) {
 
-  FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, hostCount, continuous, stateNames)
+  # FunctionSanityChecks(pFunc, name, param.pFunc, timeDep, diff, hostCount, continuous, stateNames)
+  message("Warning: function sanity checks have been shut down, use with caution.", appendLF = FALSE)
 
   pFunc <- match.fun(pFunc)
 

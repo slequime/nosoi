@@ -164,13 +164,13 @@ dualNone <- function(length.sim,
                              type = "dual",
                              pop.A = nosoiSimOneConstructor(
                                N.infected = init.individuals.A,
-                               table.hosts = iniTable(init.individuals.A, NA, prefix.host.A, ParamHost.A),
+                               table.hosts = iniTable(init.individuals.A, NA, prefix.host.A, ParamHost.A, infect.prob = NA),
                                table.state = NA,
                                prefix.host = prefix.host.A,
                                popStructure = "none"),
                              pop.B = nosoiSimOneConstructor(
                                N.infected = init.individuals.B,
-                               table.hosts = iniTable(init.individuals.B, NA, prefix.host.B, ParamHost.B),
+                               table.hosts = iniTable(init.individuals.B, NA, prefix.host.B, ParamHost.B, infect.prob = NA),
                                table.state = NA,
                                prefix.host = prefix.host.B,
                                popStructure = "none"))
