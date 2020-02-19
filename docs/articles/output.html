@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -157,6 +157,9 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
+  <a href="../news/index.html">Changelog</a>
+</li>
+<li>
   <a href="https://github.com/slequime/nosoi">
     <span class="fa fa-github fa-lg"></span>
      
@@ -178,7 +181,7 @@
       <h1>Output and summarization</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2020-01-15</h4>
+            <h4 class="date">2020-02-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/output.Rmd"><code>vignettes/output.Rmd</code></a></small>
       <div class="hidden name"><code>output.Rmd</code></div>
@@ -371,9 +374,9 @@
 <a class="sourceLine" id="cb6-3" data-line-number="3">dynamics.table &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getDynamic.html">getDynamic</a></span>(test.nosoiA)</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data=</span>cumulative.table, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>t, <span class="dt">y=</span>Count)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x=</span><span class="st">"Time (t)"</span>,<span class="dt">y=</span><span class="st">"Cumulative count of infected hosts"</span>)</a></code></pre></div>
-<p><img src="output_files/figure-html/figureDynamics1-1.png" width="700"></p>
+<p><img src="output_files/figure-html/figureDynamics1_actual-1.png" width="700"></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data=</span>dynamics.table, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>t, <span class="dt">y=</span>Count, <span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x=</span><span class="st">"Time (t)"</span>,<span class="dt">y=</span><span class="st">"Number of active infected hosts"</span>)</a></code></pre></div>
-<p><img src="output_files/figure-html/figureDynamics2-1.png" width="700"></p>
+<p><img src="output_files/figure-html/figureDynamics2_actual-1.png" width="700"></p>
 </div>
 <div id="r_0" class="section level2">
 <h2 class="hasAnchor">
@@ -447,17 +450,15 @@
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; [1] 1.041667</span></a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; $R0.dist</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;   [1] 66  1  4  1  4 12  1  2  1  2  5  2  6 18  0  0  0  0  0  0  0  0  0</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  [24]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  [47]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  [70]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  [93]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; [116]  0  0  0  0  0</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;   [1] 66  1  4  1  4 12  1  2  1  2  5  2  6 18  0  0  0  0  0  0  0  0  0  0  0</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  [26]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  [51]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  [76]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; [101]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</span></a></code></pre></div>
 <p>As you can see, out of the 117 inactive hosts, the mean <span class="math inline">\(R_0\)</span> is 1.041667. This does not of course reflect the distribution of <span class="math inline">\(R_0\)</span> where most hosts actually never transmitted the infection:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">data =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">R0=</span><span class="kw"><a href="../reference/getR0.html">getR0</a></span>(test.nosoiA)<span class="op">$</span>R0.dist)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data=</span>data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>R0)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>()</a></code></pre></div>
-<p><img src="output_files/figure-html/figureR0-1.png" width="700"></p>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data=</span>data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>R0)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>()</a></code></pre></div>
+<p><img src="output_files/figure-html/figureR0_actual-1.png" width="700"></p>
 </div>
 </div>
 <div id="transmission-chains" class="section level1">
@@ -482,66 +483,65 @@
 </blockquote>
 <p>As an example, we simulate a single introduction of a single-host pathogen between 3 different states (named “A”, “B”, and “C”), with a constant exit and move probability as well as a number of contacts dependent of the location and host count in each location:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nosoi)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">  t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">  p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  p_Move_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.1</span>)}</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">t_incub_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(x,<span class="dt">mean =</span> <span class="dv">5</span>,<span class="dt">sd=</span><span class="dv">1</span>)}</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">p_max_fct &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span>(x,<span class="dt">shape1 =</span> <span class="dv">5</span>,<span class="dt">shape2=</span><span class="dv">2</span>)}</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">p_Move_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.1</span>)}</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">  p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.05</span>)}</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.05</span>)}</a>
 <a class="sourceLine" id="cb11-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8">  proba &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){</a>
-<a class="sourceLine" id="cb11-9" data-line-number="9">    <span class="cf">if</span>(t <span class="op">&lt;=</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}</a>
-<a class="sourceLine" id="cb11-10" data-line-number="10">    <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}</a>
-<a class="sourceLine" id="cb11-11" data-line-number="11">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
-<a class="sourceLine" id="cb11-12" data-line-number="12">  }</a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">proba &lt;-<span class="st"> </span><span class="cf">function</span>(t,p_max,t_incub){</a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">  <span class="cf">if</span>(t <span class="op">&lt;=</span><span class="st"> </span>t_incub){p=<span class="dv">0</span>}</a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">  <span class="cf">if</span>(t <span class="op">&gt;=</span><span class="st"> </span>t_incub){p=p_max}</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(p)</a>
+<a class="sourceLine" id="cb11-12" data-line-number="12">}</a>
 <a class="sourceLine" id="cb11-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14">  time_contact &lt;-<span class="st"> </span><span class="cf">function</span>(t, current.in, host.count){</a>
-<a class="sourceLine" id="cb11-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb11-16" data-line-number="16">    temp.val =<span class="st"> </span><span class="dv">30</span> <span class="op">-</span><span class="st"> </span>host.count</a>
-<a class="sourceLine" id="cb11-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb11-18" data-line-number="18">    <span class="cf">if</span>(temp.val <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb11-19" data-line-number="19">      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb11-20" data-line-number="20">    }</a>
-<a class="sourceLine" id="cb11-21" data-line-number="21">    <span class="cf">if</span>(temp.val <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb11-22" data-line-number="22">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"A"</span>){</a>
-<a class="sourceLine" id="cb11-23" data-line-number="23">        <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>((temp.val<span class="op">/</span><span class="dv">30</span>)<span class="op">*</span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
-<a class="sourceLine" id="cb11-24" data-line-number="24">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"B"</span>){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">0</span>)}</a>
-<a class="sourceLine" id="cb11-25" data-line-number="25">      <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"C"</span>){</a>
-<a class="sourceLine" id="cb11-26" data-line-number="26">        <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>((temp.val<span class="op">/</span><span class="dv">30</span>)<span class="op">*</span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
-<a class="sourceLine" id="cb11-27" data-line-number="27">    }</a>
-<a class="sourceLine" id="cb11-28" data-line-number="28">  }</a>
+<a class="sourceLine" id="cb11-14" data-line-number="14">time_contact &lt;-<span class="st"> </span><span class="cf">function</span>(t, current.in, host.count){</a>
+<a class="sourceLine" id="cb11-15" data-line-number="15">  </a>
+<a class="sourceLine" id="cb11-16" data-line-number="16">  temp.val =<span class="st"> </span><span class="dv">30</span> <span class="op">-</span><span class="st"> </span>host.count</a>
+<a class="sourceLine" id="cb11-17" data-line-number="17">  </a>
+<a class="sourceLine" id="cb11-18" data-line-number="18">  <span class="cf">if</span>(temp.val <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb11-19" data-line-number="19">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb11-20" data-line-number="20">  }</a>
+<a class="sourceLine" id="cb11-21" data-line-number="21">  <span class="cf">if</span>(temp.val <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb11-22" data-line-number="22">    <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"A"</span>){</a>
+<a class="sourceLine" id="cb11-23" data-line-number="23">      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>((temp.val<span class="op">/</span><span class="dv">30</span>)<span class="op">*</span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb11-24" data-line-number="24">    <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"B"</span>){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="dv">0</span>)}</a>
+<a class="sourceLine" id="cb11-25" data-line-number="25">    <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"C"</span>){</a>
+<a class="sourceLine" id="cb11-26" data-line-number="26">      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>((temp.val<span class="op">/</span><span class="dv">30</span>)<span class="op">*</span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>), <span class="dv">0</span>))}</a>
+<a class="sourceLine" id="cb11-27" data-line-number="27">  }</a>
+<a class="sourceLine" id="cb11-28" data-line-number="28">}</a>
 <a class="sourceLine" id="cb11-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb11-30" data-line-number="30">  transition.matrix &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="dv">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="dv">0</span>),<span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>,<span class="dt">dimnames=</span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>),<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>)))</a>
+<a class="sourceLine" id="cb11-30" data-line-number="30">transition.matrix &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="dv">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="dv">0</span>),<span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>,<span class="dt">dimnames=</span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>),<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>)))</a>
 <a class="sourceLine" id="cb11-31" data-line-number="31"></a>
-<a class="sourceLine" id="cb11-32" data-line-number="32">  <span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">1050</span>)</a>
-<a class="sourceLine" id="cb11-33" data-line-number="33">  test.nosoiA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"discrete"</span>,</a>
-<a class="sourceLine" id="cb11-34" data-line-number="34">                          <span class="dt">length=</span><span class="dv">100</span>,</a>
-<a class="sourceLine" id="cb11-35" data-line-number="35">                          <span class="dt">max.infected=</span><span class="dv">200</span>,</a>
-<a class="sourceLine" id="cb11-36" data-line-number="36">                          <span class="dt">init.individuals=</span><span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb11-37" data-line-number="37">                          <span class="dt">init.structure=</span><span class="st">"A"</span>,</a>
-<a class="sourceLine" id="cb11-38" data-line-number="38">                          <span class="dt">structure.matrix=</span>transition.matrix,</a>
-<a class="sourceLine" id="cb11-39" data-line-number="39">                          <span class="dt">pMove=</span>p_Move_fct,</a>
-<a class="sourceLine" id="cb11-40" data-line-number="40">                          <span class="dt">param.pMove=</span><span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb11-41" data-line-number="41">                          <span class="dt">diff.nContact=</span><span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb11-42" data-line-number="42">                          <span class="dt">hostCount.nContact=</span><span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb11-43" data-line-number="43">                          <span class="dt">nContact=</span>time_contact,</a>
-<a class="sourceLine" id="cb11-44" data-line-number="44">                          <span class="dt">param.nContact=</span><span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb11-45" data-line-number="45">                          <span class="dt">pTrans =</span> proba,</a>
-<a class="sourceLine" id="cb11-46" data-line-number="46">                          <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct,</a>
-<a class="sourceLine" id="cb11-47" data-line-number="47">                                              <span class="dt">t_incub=</span>t_incub_fct),</a>
-<a class="sourceLine" id="cb11-48" data-line-number="48">                          <span class="dt">pExit=</span>p_Exit_fct,</a>
-<a class="sourceLine" id="cb11-49" data-line-number="49">                          <span class="dt">param.pExit=</span><span class="ot">NA</span></a>
-<a class="sourceLine" id="cb11-50" data-line-number="50">  )</a></code></pre></div>
+<a class="sourceLine" id="cb11-32" data-line-number="32"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">1050</span>)</a>
+<a class="sourceLine" id="cb11-33" data-line-number="33">test.nosoiA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nosoiSim.html">nosoiSim</a></span>(<span class="dt">type=</span><span class="st">"single"</span>, <span class="dt">popStructure=</span><span class="st">"discrete"</span>,</a>
+<a class="sourceLine" id="cb11-34" data-line-number="34">                        <span class="dt">length=</span><span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb11-35" data-line-number="35">                        <span class="dt">max.infected=</span><span class="dv">200</span>,</a>
+<a class="sourceLine" id="cb11-36" data-line-number="36">                        <span class="dt">init.individuals=</span><span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb11-37" data-line-number="37">                        <span class="dt">init.structure=</span><span class="st">"A"</span>,</a>
+<a class="sourceLine" id="cb11-38" data-line-number="38">                        <span class="dt">structure.matrix=</span>transition.matrix,</a>
+<a class="sourceLine" id="cb11-39" data-line-number="39">                        <span class="dt">pMove=</span>p_Move_fct,</a>
+<a class="sourceLine" id="cb11-40" data-line-number="40">                        <span class="dt">param.pMove=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb11-41" data-line-number="41">                        <span class="dt">diff.nContact=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb11-42" data-line-number="42">                        <span class="dt">hostCount.nContact=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb11-43" data-line-number="43">                        <span class="dt">nContact=</span>time_contact,</a>
+<a class="sourceLine" id="cb11-44" data-line-number="44">                        <span class="dt">param.nContact=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb11-45" data-line-number="45">                        <span class="dt">pTrans =</span> proba,</a>
+<a class="sourceLine" id="cb11-46" data-line-number="46">                        <span class="dt">param.pTrans =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">p_max=</span>p_max_fct,</a>
+<a class="sourceLine" id="cb11-47" data-line-number="47">                                            <span class="dt">t_incub=</span>t_incub_fct),</a>
+<a class="sourceLine" id="cb11-48" data-line-number="48">                        <span class="dt">pExit=</span>p_Exit_fct,</a>
+<a class="sourceLine" id="cb11-49" data-line-number="49">                        <span class="dt">param.pExit=</span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb11-50" data-line-number="50">)</a></code></pre></div>
 <p>The simulation runs for 46 time steps and infected 204 hosts. The following transmission tree can thus be extracted (as a <code><a href="https://rdrr.io/pkg/tidytree/man/treedata.html">tidytree::treedata</a></code> object) and plotted using <a href="https://bioconductor.org/packages/release/bioc/html/ggtree.html"><code>ggtree</code></a>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggtree)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">test.nosoiA.tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getTransmissionTree.html">getTransmissionTree</a></span>(test.nosoiA)</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span>(test.nosoiA.tree, <span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
-<a class="sourceLine" id="cb12-9" data-line-number="9">        <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
-<p><img src="output_files/figure-html/treeA-1.png" width="700"></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">test.nosoiA.tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getTransmissionTree.html">getTransmissionTree</a></span>(test.nosoiA)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggtree)</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span>(test.nosoiA.tree, <span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">                                           <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">                                           <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
+<p><img src="output_files/figure-html/treeA_actual-1.png" width="700"></p>
 <p>Each color point represents the location/state, either at transmission (a node) or a host when it exits the simulation (or the end point of the simulation; a tip). This transmission tree is timed (time steps of the simulation). As you can see, no transmission ever occurs at location “B” (green); this is coherent with the chosen <code>nContact</code> function, where no infectious contact occurs when the host is in “B”.</p>
 </div>
 <div id="sampling-the-transmission-chain" class="section level2">
@@ -594,10 +594,10 @@
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">test.nosoiA.tree.sampled &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree</a></span>(test.nosoiA, test.nosoiA.tree, samples.data.table)</a></code></pre></div>
 <p>As before, the tree obtained is a <code>treedata</code> object, and can be plotted:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span>(test.nosoiA.tree.sampled, <span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html">geom_tiplab</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">label=</span>host)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">        <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
-<p><img src="output_files/figure-html/treeB-1.png" width="700"></p>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">                                           <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">                                           <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
+<p><img src="output_files/figure-html/treeB_actual-1.png" width="700"></p>
 <p>Alternatively, you can sample among exited hosts (i.e. no longer active at the end of the simulation) using the function <code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code>, mimicking a sampling procedure that is destructive or cuts the hosts from the population. Be careful however, as it does not influence the epidemiological process: the hosts are only sampled when exiting the simulation.</p>
 <p><code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code> needs the following arguments:</p>
 <ul>
@@ -607,16 +607,16 @@
 <code>hosts</code>, a vector with the hosts.ID of the exited hosts to sample.</li>
 </ul>
 <p>In our example, we want to sample these samples:</p>
-<pre><code>#&gt;  [1] "H-151" "H-123" "H-50"  "H-64"  "H-73"  "H-118" "H-29"  "H-85" 
-#&gt;  [9] "H-100" "H-95"  "H-82"  "H-93"  "H-111" "H-45"  "H-124" "H-165"
-#&gt; [17] "H-38"  "H-16"  "H-107" "H-155"</code></pre>
+<pre><code>#&gt;  [1] "H-151" "H-123" "H-50"  "H-64"  "H-73"  "H-118" "H-29"  "H-85"  "H-100"
+#&gt; [10] "H-95"  "H-82"  "H-93"  "H-111" "H-45"  "H-124" "H-165" "H-38"  "H-16" 
+#&gt; [19] "H-107" "H-155"</code></pre>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">test.nosoiA.tree.sampled.exiting &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting</a></span>(test.nosoiA.tree, sampled.hosts)</a></code></pre></div>
 <p>As before, the tree obtained is a <code>treedata</code> object, and can be plotted:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span>(test.nosoiA.tree.sampled.exiting, <span class="dt">color =</span> <span class="st">"gray30"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>state)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html">geom_tiplab</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">label=</span>host)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
-<a class="sourceLine" id="cb18-4" data-line-number="4">        <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
-<p><img src="output_files/figure-html/treeC-1.png" width="700"></p>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Time (t)"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="fl">0.8</span>), </a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">                                           <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">                                           <span class="dt">legend.key =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) </a></code></pre></div>
+<p><img src="output_files/figure-html/treeC_actual-1.png" width="700"></p>
 </div>
 <div id="exporting-the-transmission-tree" class="section level2">
 <h2 class="hasAnchor">
@@ -667,7 +667,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -286,21 +286,46 @@ in <span class="pkg">treeio</span> (e.g. <code><a href='https://rdrr.io/pkg/tree
 )</div><div class='output co'>#&gt; <span class='message'>Starting the simulation</span>
 #&gt; <span class='message'>Initializing ...</span></div><div class='output co'>#&gt; <span class='message'> running ...</span></div><div class='output co'>#&gt; <span class='message'>Time: 10 (50% of maximum length). Hosts count: 22 (22% of maximum infected hosts).</span></div><div class='output co'>#&gt; <span class='message'>done. </span>
 #&gt; <span class='message'>The simulation has run for 16 units of time and a total of 122 hosts have been infected.</span></div><div class='input'>
-<span class='co'>## Full transmission tree</span>
-<span class='no'>ttreedata</span> <span class='kw'>&lt;-</span> <span class='fu'>getTransmissionTree</span>(<span class='no'>test.nosoi</span>)</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'treeio':</span>
-#&gt; <span class='message'>  method     from</span>
-#&gt; <span class='message'>  root.phylo ape </span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>ttreedata</span>@<span class='kw'>phylo</span>)</div><div class='img'><img src='getTransmissionTree-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## Sampling "non dead" individuals</span>
-<span class='no'>hID</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"H-1"</span>, <span class='st'>"H-7"</span>, <span class='st'>"H-15"</span>, <span class='st'>"H-100"</span>)
-<span class='no'>samples</span> <span class='kw'>&lt;-</span> <span class='fu'>data.table</span>(<span class='kw'>hosts</span> <span class='kw'>=</span> <span class='no'>hID</span>,
-                      <span class='kw'>times</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5.2</span>, <span class='fl'>9.3</span>, <span class='fl'>10.2</span>, <span class='fl'>16</span>),
-                      <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>hID</span>, <span class='st'>"-s"</span>))
+<span class='co'>## Make sure all needed packages are here</span>
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"ape"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <span class='kw'>||</span> <span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tidytree"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <span class='kw'>||</span> <span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"treeio"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ape</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidytree</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>treeio</span>)
 
-<span class='no'>sampledTree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sampleTransmissionTree.html'>sampleTransmissionTree</a></span>(<span class='no'>test.nosoi</span>, <span class='no'>ttreedata</span>, <span class='no'>samples</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sampledTree</span>@<span class='kw'>phylo</span>)</div><div class='img'><img src='getTransmissionTree-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## Sampling "dead" individuals</span>
-<span class='no'>sampledDeadTree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sampleTransmissionTreeFromExiting.html'>sampleTransmissionTreeFromExiting</a></span>(<span class='no'>ttreedata</span>, <span class='no'>hID</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sampledDeadTree</span>@<span class='kw'>phylo</span>)</div><div class='img'><img src='getTransmissionTree-3.png' alt='' width='700' height='433' /></div><div class='input'># }
+  <span class='co'>#' ## Full transmission tree</span>
+  <span class='no'>ttreedata</span> <span class='kw'>&lt;-</span> <span class='fu'>getTransmissionTree</span>(<span class='no'>test.nosoi</span>)
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>ttreedata</span>@<span class='kw'>phylo</span>)
+
+  <span class='co'>## Sampling "non dead" individuals</span>
+  <span class='no'>hID</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"H-1"</span>, <span class='st'>"H-7"</span>, <span class='st'>"H-15"</span>, <span class='st'>"H-100"</span>)
+  <span class='no'>samples</span> <span class='kw'>&lt;-</span> <span class='fu'>data.table</span>(<span class='kw'>hosts</span> <span class='kw'>=</span> <span class='no'>hID</span>,
+                        <span class='kw'>times</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5.2</span>, <span class='fl'>9.3</span>, <span class='fl'>10.2</span>, <span class='fl'>16</span>),
+                        <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>hID</span>, <span class='st'>"-s"</span>))
+
+  <span class='no'>sampledTree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sampleTransmissionTree.html'>sampleTransmissionTree</a></span>(<span class='no'>test.nosoi</span>, <span class='no'>ttreedata</span>, <span class='no'>samples</span>)
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sampledTree</span>@<span class='kw'>phylo</span>)
+
+  <span class='co'>## Sampling "dead" individuals</span>
+  <span class='no'>sampledDeadTree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sampleTransmissionTreeFromExiting.html'>sampleTransmissionTreeFromExiting</a></span>(<span class='no'>ttreedata</span>, <span class='no'>hID</span>)
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sampledDeadTree</span>@<span class='kw'>phylo</span>)
+  }</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘ape’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:raster’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    rotate, zoom</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘tidytree’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:raster’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    select</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:stats’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    filter</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'treeio':</span>
+#&gt; <span class='message'>  method     from</span>
+#&gt; <span class='message'>  root.phylo ape </span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘treeio’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:ape’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    drop.tip</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:raster’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    mask</span></div><div class='img'><img src='getTransmissionTree-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='getTransmissionTree-2.png' alt='' width='700' height='433' /></div><div class='img'><img src='getTransmissionTree-3.png' alt='' width='700' height='433' /></div><div class='input'># }
 
 </div></pre>
   </div>
@@ -324,7 +349,7 @@ in <span class="pkg">treeio</span> (e.g. <code><a href='https://rdrr.io/pkg/tree
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

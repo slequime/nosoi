@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@
       <h1>Spread of a dengue-like virus in a discrete space</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2020-01-15</h4>
+            <h4 class="date">2020-02-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/examples/dengue.Rmd"><code>vignettes/examples/dengue.Rmd</code></a></small>
       <div class="hidden name"><code>dengue.Rmd</code></div>
@@ -784,10 +784,10 @@
 <a class="sourceLine" id="cb29-44" data-line-number="44"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span>() <span class="op">+</span><span class="st"> </span>worldmap <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span>(<span class="dt">xlim=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">90</span>, <span class="dv">125</span>),<span class="dt">ylim=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">5</span>, <span class="dv">30</span>)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb29-45" data-line-number="45"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">data=</span>test2.bis,<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(long,lat, <span class="dt">color=</span>state,<span class="dt">size=</span>N)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb29-46" data-line-number="46"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_curve</a></span>(<span class="dt">data=</span>test3.bis, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>longfrom,<span class="dt">y=</span>latfrom,<span class="dt">xend=</span>longto,<span class="dt">yend=</span>latto),<span class="dt">arrow =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/reexports.html">arrow</a></span>(<span class="dt">length =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/reexports.html">unit</a></span>(<span class="fl">0.03</span>, <span class="st">"npc"</span>),<span class="dt">type =</span> <span class="st">"closed"</span>),<span class="dt">curvature =</span> <span class="fl">0.2</span>,<span class="dt">color=</span><span class="st">"gray50"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_hue.html">scale_color_discrete</a></span>(<span class="dt">guide=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb29-47" data-line-number="47"><span class="kw"><a href="https://rdrr.io/pkg/gganimate/man/transition_states.html">transition_states</a></span>(time) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html">scale_size_continuous</a></span>(<span class="dt">name=</span><span class="st">"Number of </span><span class="ch">\n</span><span class="st"> infected humans"</span>, <span class="dt">trans=</span><span class="st">"log10"</span>, <span class="dt">range =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>, <span class="dv">15</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb29-47" data-line-number="47"><span class="kw"><a href="https://gganimate.com/reference/transition_states.html">transition_states</a></span>(time) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html">scale_size_continuous</a></span>(<span class="dt">name=</span><span class="st">"Number of </span><span class="ch">\n</span><span class="st"> infected humans"</span>, <span class="dt">trans=</span><span class="st">"log10"</span>, <span class="dt">range =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>, <span class="dv">15</span>)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb29-48" data-line-number="48"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"Time: {closest_state}"</span>)</a>
 <a class="sourceLine" id="cb29-49" data-line-number="49"></a>
-<a class="sourceLine" id="cb29-50" data-line-number="50"><span class="kw"><a href="https://rdrr.io/pkg/gganimate/man/animate.html">animate</a></span>(animated.plot, <span class="dt">nframes=</span>test.nosoiA<span class="op">$</span>total.time<span class="op">*</span><span class="dv">2</span><span class="op">+</span><span class="dv">10</span>,<span class="dt">duration=</span><span class="dv">40</span>,<span class="dt">end_pause=</span><span class="dv">10</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb29-50" data-line-number="50"><span class="kw"><a href="https://gganimate.com/reference/animate.html">animate</a></span>(animated.plot, <span class="dt">nframes=</span>test.nosoiA<span class="op">$</span>total.time<span class="op">*</span><span class="dv">2</span><span class="op">+</span><span class="dv">10</span>,<span class="dt">duration=</span><span class="dv">40</span>,<span class="dt">end_pause=</span><span class="dv">10</span>)</a></code></pre></div>
 <p><img src="dengue_files/figure-html/visualisationMatrix-1.gif"><!-- --></p>
 </div>
 <div id="epidemiological-analysis" class="section level2">
@@ -889,7 +889,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

@@ -9,3 +9,6 @@
 ^LICENSE
 ^.dockerignore$
 ^Dockerfile$
+^cran-comments.md$
+^NEWS.md$
+^README.md$
