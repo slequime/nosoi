@@ -4,7 +4,7 @@ author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{single-host-none}
+  %\VignetteIndexEntry{Spread of a pathogen in a homogeneous population}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{ggplot2}
@@ -477,7 +477,7 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 
 # Going further
 
-To analyze and visualize your `nosoi` simulation output, you can have a look on [this page](examples/viz.html).
+To analyze and visualize your `nosoi` simulation output, you can have a look on [this page](https://slequime.github.io/nosoi/articles/examples/viz.html).
 
 You may also want to compose a more complex model by adding some structure (e.g. geography) to your simulation. Two tutorials can guide you on how to set up such structured scenarios:
 
@@ -486,4 +486,4 @@ You may also want to compose a more complex model by adding some structure (e.g.
 
 A practical example using a dual host type of simulation without population structure is also available: 
 
-- [Epidemiological impact of mosquito vector competence](examples/vector-competence.html).
+- [Epidemiological impact of mosquito vector competence](https://slequime.github.io/nosoi/articles/examples/vector-competence.html).

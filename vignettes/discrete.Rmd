@@ -4,7 +4,7 @@ author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{single-host-discrete}
+  %\VignetteIndexEntry{Spread of a pathogen in a discrete structured population}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{ggplot2}
@@ -679,8 +679,8 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 
 # Going further
 
-To analyze and visualize your `nosoi` simulation output, you can have a look on [this page](examples/viz.html).
+To analyze and visualize your `nosoi` simulation output, you can have a look on [this page](https://slequime.github.io/nosoi/articles/examples/viz.html).
 
 A practical example using a dual host type of simulation with a discrete population structure is also available: 
 
-- [Spread of dengue virus in a discrete space](examples/dengue.html).
+- [Spread of dengue virus in a discrete space](https://slequime.github.io/nosoi/articles/examples/dengue.html).

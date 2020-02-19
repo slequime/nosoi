@@ -4,7 +4,7 @@ author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{general-principles}
+  %\VignetteIndexEntry{Getting-started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{ggplot2}
@@ -198,12 +198,12 @@ Once your core functions are ready, you can provide everything `nosoi` needs to 
 3. [Spread of a pathogen in a structure (continuous) population of hosts](continuous.html).
 
 To get basic statistics or approximated phylogenetic trees out of your simulations output, you can have a look at [this page](output.html).
-To visualize your simulations, you can have a look at [these few examples](examples/viz.html).
+To visualize your simulations, you can have a look at [these few examples](https://slequime.github.io/nosoi/articles/examples/viz.html).
 
 A series of practical examples are also available: 
 
-- [Spread of dengue virus in a discrete space](examples/dengue.html).
-- [Spread of Ebola virus in a continuous space](examples/ebola.html).
-- [Epidemiological impact of mosquito vector competence](examples/vector-competence.html).
+- [Spread of dengue virus in a discrete space](https://slequime.github.io/nosoi/articles/examples/dengue.html).
+- [Spread of Ebola virus in a continuous space](https://slequime.github.io/nosoi/articles/examples/ebola.html).
+- [Epidemiological impact of mosquito vector competence](https://slequime.github.io/nosoi/articles/examples/vector-competence.html).
 
 <!-- PB: If the examples are not on the CRAN, could these dead link be a problem ? -->

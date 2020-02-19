@@ -4,7 +4,7 @@ author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{single-host-continuous}
+  %\VignetteIndexEntry{Spread of a pathogen in a continuous space}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{ggplot2}
@@ -31,7 +31,7 @@ This tutorial focuses on setting up a `nosoi` simulation for a pathogen which sp
 
 In the continuous space, the simulation takes place on a map defined by its coordinates. This map is actually a raster, here denoted by `structure.raster`, that also holds an environmental value of interest that may influence the epidemic process. Areas were hosts cannot move (water, inaccessible areas, etc) must be defined by the value `NA`.
 
-Here, we generate a random raster for the purpose of this tutorial, but you can use a "real" world raster and simulate your epidemic on it (see [this example](examples/ebola.html)).
+Here, we generate a random raster for the purpose of this tutorial, but you can use a "real" world raster and simulate your epidemic on it (see [this example](https://slequime.github.io/nosoi/articles/examples/ebola.html)).
 
 <details>
 <summary>Code used to create the random raster used in this tutorial</summary>
@@ -879,8 +879,8 @@ Note that the simulation has stopped here before reaching `length.sim` as it has
 
 # Going further
 
-To analyze and visualize your `nosoi` simulation output, you can have a look on [this page](examples/viz.html).
+To analyze and visualize your `nosoi` simulation output, you can have a look on [this page](https://slequime.github.io/nosoi/articles/examples/viz.html).
 
 A practical example using a dual host type of simulation with population structure in a continuous space is also available: 
 
-- [Spread of Ebola virus in a continuous space](examples/ebola.html).
+- [Spread of Ebola virus in a continuous space](https://slequime.github.io/nosoi/articles/examples/ebola.html).
