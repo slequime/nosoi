@@ -23,3 +23,7 @@ devtools::install_github(repo = "slequime/nosoi")
 ## Documentation
 
 You can find package documentation, with reference, tutorials and examples here: http://slequime.github.io/nosoi/ (built with [`pkgdown`](https://github.com/hadley/pkgdown)).
+
+## Help
+
+A Slack has been set up to help you get started or get some insight from other users. [Here is the link to join](https://join.slack.com/t/nosoi/shared_invite/enQtOTUxMTc2MjA3NjY1LWQwOWM5Yzc1MTM1OTRkMmU5NDY2ZGQyYmRlMTE0YmVhMTNmYTg3MTljNWJkODFhMmI5NTZkOTI2YTI0YWE0YjQ).
