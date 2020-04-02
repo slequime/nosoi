@@ -46,6 +46,6 @@ Suggests:
     gganimate,
     ape (>= 5.3),
     tidytree (>= 0.3.3),
-    treeio (>= 1.11.2),
-    ggtree (>= 2.1.3)
+    treeio (>= 1.10.0),
+    ggtree (>= 2.0.2)
 VignetteBuilder: knitr
