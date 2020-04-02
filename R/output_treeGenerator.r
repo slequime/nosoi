@@ -110,10 +110,10 @@ getTransmissionTree <- function(nosoiInf) {
   nEdges <- nNode + nTips - 1
 
   # Initialize the tree
-  treeTable <- tidytree::tibble(parent = NA_integer_, node = NA_integer_, branch.length = NA,
-                                label = NA_character_, host = NA,
-                                state = NA, state.x = NA, state.y = NA,
-                                time.parent = NA, time = NA,
+  treeTable <- tidytree::tibble(parent = NA_integer_, node = NA_integer_, branch.length = NA_real_,
+                                label = NA_character_, host = NA_character_,
+                                state = NA_character_, state.x = NA_real_, state.y = NA_real_,
+                                time.parent = NA_real_, time = NA_real_,
                                 .rows = nEdges)
 
   # utility function
