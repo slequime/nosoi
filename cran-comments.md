@@ -1,5 +1,5 @@
-## This version 1.0.1
-In this version I fix the warnings triggered by failing to rebuild two vignettes on certain OS.
+## This version 1.0.2
+In this version I fix the errors triggered by the update of tibble to version 3.0.0.
 
 ## Test environments
 * local OS X install, R 3.6.2

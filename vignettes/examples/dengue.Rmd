@@ -96,7 +96,7 @@ month.day.df <- data.frame(Month=c(1:12),Month.name=Month.name,
 final.results <- dplyr::left_join(avgTemp_data, month.day.df)
 
 #This is to plot the figure:
- GADM.admin0 <- readOGR(dsn = "~/Dropbox/C-Leuven Projects/Ressources/gadm36_levels_shp/.", layer = "gadm36_0", verbose=FALSE) #to be changed to your own path
+   GADM.admin0 <- readOGR(dsn = "~/pCloud Sync/C-Leuven Projects/Ressources/gadm36_levels_shp/.", layer = "gadm36_0", verbose=FALSE) #to be changed to your own path
  GADM.admin0.subset <- subset(GADM.admin0, GID_0 %in% SE.Asia) #Only countries of interest
  GADM.admin0.subset.simp <- gSimplify(GADM.admin0.subset, 0.1) #Simplifies the raster to use as a mask to cut
  GADM.admin0.subset.simp.ggplot <- fortify(GADM.admin0.subset.simp) #transforms the polygone to be plotted by ggplot
