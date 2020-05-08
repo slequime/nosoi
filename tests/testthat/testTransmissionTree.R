@@ -604,7 +604,6 @@ test_that("Single, discrete, Sink", {
     Q[[column]][upper.tri(Q[[column]])] <- 1/(nrow(Q[[column]])-1)
     colnames(Q[[column]]) <- rownames(Q[[column]]) <- unique(traits[,column])
   }
-  Q <- plyr::compact(Q)
   names(Q) <- colnames(traits[-1])
 
   # #pExit daily probability for a host to leave the simulation (either cured, died, etc.).
