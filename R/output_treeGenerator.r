@@ -144,9 +144,9 @@ getTransmissionTree <- function(nosoiInf) {
                                   branch.length = t_child - t_parent,
                                   label = paste0(sst[["inf.by"]], "_", counter),
                                   host = sst[["inf.by"]],
-                                  state = safeGet(table.hosts, child, "inf.in"),
-                                  state.x = safeGet(table.hosts, child, "inf.in.x"),
-                                  state.y = safeGet(table.hosts, child, "inf.in.y"),
+                                  state = safeGet(sst, 1, "inf.in"),
+                                  state.x = safeGet(sst, 1, "inf.in.x"),
+                                  state.y = safeGet(sst, 1, "inf.in.y"),
                                   time.parent = t_parent,
                                   time = t_child)
       } else {
@@ -155,9 +155,9 @@ getTransmissionTree <- function(nosoiInf) {
                                   branch.length = t_child - t_parent,
                                   label = paste0(sst[["inf.by"]], "_", counter),
                                   host = sst[["inf.by"]],
-                                  state = safeGet(table.hosts, child, "inf.in"),
-                                  state.x = safeGet(table.hosts, child, "inf.in.x"),
-                                  state.y = safeGet(table.hosts, child, "inf.in.y"),
+                                  state = safeGet(sst, 1, "inf.in"),
+                                  state.x = safeGet(sst, 1, "inf.in.x"),
+                                  state.y = safeGet(sst, 1, "inf.in.y"),
                                   time.parent = t_parent,
                                   time = t_child)
       }
