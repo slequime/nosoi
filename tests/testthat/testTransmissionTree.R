@@ -99,6 +99,16 @@ test_that("Single, discrete", {
                       tdata$state[i])
   }
 
+  ## Node states
+  for (i in 1:nrow(thostTable)) {
+    for (t in thostTable$inf.time[i]:thostTable$out.time[i]) {
+      nn <- get_node(tdata, thostTable$hosts.ID[i], t)
+      tt <- tdata$time[tdata$node == nn]
+      expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], tt, tot_time),
+                        tdata$state[tdata$node == nn])
+    }
+  }
+
   ## Full extraction
   hID <- c("H-1", "H-7", "H-15", "H-100")
   samples <- data.table(hosts = hID,
@@ -225,6 +235,17 @@ test_that("Single, continuous", {
                  c(state.x = tdata$state.x[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])],
                    state.y = tdata$state.y[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])]),
                  tolerance = 1.0e-6)
+  }
+  ## Node states
+  for (i in 1:nrow(thostTable)) {
+    for (t in thostTable$inf.time[i]:thostTable$out.time[i]) {
+      nn <- get_node(tdata, thostTable$hosts.ID[i], t)
+      tt <- tdata$time[tdata$node == nn]
+      expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], tt, tot_time),
+                        c(state.x = tdata$state.x[tdata$node == nn],
+                          state.y = tdata$state.y[tdata$node == nn]),
+                        tolerance = 1.0e-6)
+    }
   }
 
 
@@ -389,6 +410,15 @@ test_that("Dual, discrete", {
     expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], thostTable$out.time[i], tot_time),
                       tdata$state[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])])
   }
+  ## Node states
+  for (i in 1:nrow(thostTable)) {
+    for (t in thostTable$inf.time[i]:thostTable$out.time[i]) {
+      nn <- get_node(tdata, thostTable$hosts.ID[i], t)
+      tt <- tdata$time[tdata$node == nn]
+      expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], tt, tot_time),
+                        tdata$state[tdata$node == nn])
+    }
+  }
 
   ## Full extraction
   hID <- c("H-1", "H-11", "V-7", "V-66")
@@ -547,6 +577,17 @@ test_that("Dual, continuous", {
                  c(state.x = tdata$state.x[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])],
                    state.y = tdata$state.y[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])]),
                  tolerance = 1.0e-6)
+  }
+  ## Node states
+  for (i in 1:nrow(thostTable)) {
+    for (t in thostTable$inf.time[i]:thostTable$out.time[i]) {
+      nn <- get_node(tdata, thostTable$hosts.ID[i], t)
+      tt <- tdata$time[tdata$node == nn]
+      expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], tt, tot_time),
+                        c(state.x = tdata$state.x[tdata$node == nn],
+                          state.y = tdata$state.y[tdata$node == nn]),
+                        tolerance = 1.0e-6)
+    }
   }
 
   ## Full extraction
@@ -720,11 +761,13 @@ test_that("Single, discrete, Sink", {
   }
 
   ## Node states
-  # for (i in 2:nrow(thostTable)) {
-  #   for (t in thostTable$inf.time[i]:thostTable$out.time[i]) {
-  #     expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], t, tot_time),
-  #                       tdata$state[tdata$node == get_node(tdata, thostTable$hosts.ID[i], t)])
-  #   }
-  # }
+  for (i in 1:nrow(thostTable)) {
+    for (t in thostTable$inf.time[i]:thostTable$out.time[i]) {
+      nn <- get_node(tdata, thostTable$hosts.ID[i], t)
+      tt <- tdata$time[tdata$node == nn]
+      expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], tt, tot_time),
+                        tdata$state[tdata$node == nn])
+    }
+  }
 
 })
