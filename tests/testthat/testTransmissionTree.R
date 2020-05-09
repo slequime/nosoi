@@ -48,17 +48,17 @@ test_that("Single, discrete", {
   ttree <- ttreedata@phylo
   tdata <- ttreedata@data
   # total time
-  expect_equal(max(diag(ape::vcv(ttree))) + ttree$root.edge, test.nosoiA$total.time)
+  expect_equivalent(max(diag(ape::vcv(ttree))) + ttree$root.edge, test.nosoiA$total.time)
   # hosts
   nHosts <- nrow(thostTable)
   for (i in 2:nrow(thostTable)) {
-    expect_equal(subset(tdata, node == nHosts + thostTable$indNodes[i] - 1)$host,
-                 thostTable$inf.by[i])
+    expect_equivalent(subset(tdata, node == nHosts + thostTable$indNodes[i] - 1)$host,
+                      thostTable$inf.by[i])
   }
   # number of descendants
   for (i in 2:nrow(thostTable)) {
-    expect_equal(length(tidytree::child(ttree, nHosts + thostTable$indNodes[i] - 1)),
-                 sum(thostTable$indNodes == thostTable$indNodes[i]) + 1)
+    expect_equivalent(length(tidytree::child(ttree, nHosts + thostTable$indNodes[i] - 1)),
+                      sum(thostTable$indNodes == thostTable$indNodes[i]) + 1)
   }
 
   ## Extracting functions
@@ -72,24 +72,24 @@ test_that("Single, discrete", {
   expect_error(get_state(tstateTable, "H-7", 11.3, tot_time), "Host H-7 is not alive at time 11.3.")
   expect_error(get_state(tstateTable, "H-7", 16.1, tot_time), "Time 16.1 is larger than total time 16 for the epidemic.")
   # Tip
-  expect_equal(get_node(tdata, "H-7", 7), 7)
-  expect_equal(get_node(tdata, "H-7", 10), 7)
-  expect_equal(get_node(tdata, "H-4", tot_time), 4)
+  expect_equivalent(get_node(tdata, "H-7", 7), 7)
+  expect_equivalent(get_node(tdata, "H-7", 10), 7)
+  expect_equivalent(get_node(tdata, "H-4", tot_time), 4)
   #
-  expect_equal(get_position(tdata, 7, 7), 3)
-  expect_equal(get_position(tdata, 7, 8.5), 1.5)
-  expect_equal(get_position(tdata, 4, 15.1), 0.9)
+  expect_equivalent(get_position(tdata, 7, 7), 3)
+  expect_equivalent(get_position(tdata, 7, 8.5), 1.5)
+  expect_equivalent(get_position(tdata, 4, 15.1), 0.9)
   #
   expect_equivalent(get_state(tstateTable, "H-7", 7, tot_time), "A")
   expect_equivalent(get_state(tstateTable, "H-7", 9, tot_time), "C")
   expect_equivalent(get_state(tstateTable, "H-7", 10, tot_time), "C")
   expect_equivalent(get_state(tstateTable, "H-4", tot_time, tot_time), "C")
   # Node
-  expect_equal(get_node(tdata, "H-1", 6.9), 126)
-  expect_equal(get_node(tdata, "H-1", 7), 127)
+  expect_equivalent(get_node(tdata, "H-1", 6.9), 126)
+  expect_equivalent(get_node(tdata, "H-1", 7), 127)
   #
-  expect_equal(get_position(tdata, 126, 6.5), 0.5)
-  expect_equal(get_position(tdata, 127, 7.5), 0.5)
+  expect_equivalent(get_position(tdata, 126, 6.5), 0.5)
+  expect_equivalent(get_position(tdata, 127, 7.5), 0.5)
 
   ## Tip states
   for (i in 1:nrow(thostTable)) {
@@ -121,7 +121,7 @@ test_that("Single, discrete", {
   sttree <- sampledTree@phylo
   stdata <- sampledTree@data
   # total time
-  expect_equal(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
+  expect_equivalent(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
   # DO MORE TESTS
 
   ## Sampling from the deads
@@ -137,10 +137,10 @@ test_that("Single, discrete", {
   sampledTreeDeadBis <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
   sampledTreeDeadBisData <- tidytree::as_tibble(sampledTreeDeadBis)
 
-  expect_equal(sampledDeadTreeData$state, sampledTreeDeadBisData$state)
-  expect_equal(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
-  expect_equal(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
-  expect_equal(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
+  expect_equivalent(sampledDeadTreeData$state, sampledTreeDeadBisData$state)
+  expect_equivalent(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
+  expect_equivalent(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
+  expect_equivalent(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
 })
 
 test_that("Single, continuous", {
@@ -205,36 +205,36 @@ test_that("Single, continuous", {
   ttree <- ttreedata@phylo
   tdata <- ttreedata@data
   # total time
-  expect_equal(max(diag(ape::vcv(ttree))) + ttree$root.edge, test.nosoiA$total.time)
+  expect_equivalent(max(diag(ape::vcv(ttree))) + ttree$root.edge, test.nosoiA$total.time)
   # hosts
   nHosts <- nrow(thostTable)
   for (i in 2:nrow(thostTable)) {
-    expect_equal(subset(tdata, node == nHosts + thostTable$indNodes[i] - 1)$host,
-                 thostTable$inf.by[i])
+    expect_equivalent(subset(tdata, node == nHosts + thostTable$indNodes[i] - 1)$host,
+                      thostTable$inf.by[i])
   }
   # number of descendants
   for (i in 2:nrow(thostTable)) {
-    expect_equal(length(tidytree::child(ttree, nHosts + thostTable$indNodes[i] - 1)),
-                 sum(thostTable$indNodes == thostTable$indNodes[i]) + 1)
+    expect_equivalent(length(tidytree::child(ttree, nHosts + thostTable$indNodes[i] - 1)),
+                      sum(thostTable$indNodes == thostTable$indNodes[i]) + 1)
   }
 
   ## Extracting functions
-  expect_equal(get_state(tstateTable, "H-5", 7, tot_time),
-               c(state.x = -1.236314, state.y = -1.544381),
-               tolerance = 1.0e-6)
-  expect_equal(get_state(tstateTable, "H-5", 15, tot_time),
-               c(state.x = -1.615572, state.y = -1.428086),
-               tolerance = 1.0e-6)
+  expect_equivalent(get_state(tstateTable, "H-5", 7, tot_time),
+                    c(state.x = -1.236314, state.y = -1.544381),
+                    tolerance = 1.0e-6)
+  expect_equivalent(get_state(tstateTable, "H-5", 15, tot_time),
+                    c(state.x = -1.615572, state.y = -1.428086),
+                    tolerance = 1.0e-6)
 
   ## Tip states
   for (i in 1:nrow(thostTable)) {
-    expect_equal(get_state(tstateTable, thostTable$hosts.ID[i], thostTable$out.time[i], tot_time),
-                 c(state.x = thostTable$current.in.x[i], state.y = thostTable$current.in.y[i]),
-                 tolerance = 1.0e-6)
-    expect_equal(get_state(tstateTable, thostTable$hosts.ID[i], thostTable$out.time[i], tot_time),
-                 c(state.x = tdata$state.x[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])],
-                   state.y = tdata$state.y[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])]),
-                 tolerance = 1.0e-6)
+    expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], thostTable$out.time[i], tot_time),
+                      c(state.x = thostTable$current.in.x[i], state.y = thostTable$current.in.y[i]),
+                      tolerance = 1.0e-6)
+    expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], thostTable$out.time[i], tot_time),
+                      c(state.x = tdata$state.x[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])],
+                        state.y = tdata$state.y[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])]),
+                      tolerance = 1.0e-6)
   }
   ## Node states
   for (i in 1:nrow(thostTable)) {
@@ -261,7 +261,7 @@ test_that("Single, continuous", {
   sttree <- sampledTree@phylo
   stdata <- sampledTree@data
   # total time
-  expect_equal(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
+  expect_equivalent(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
   # DO MORE TESTS
 
   ## Sampling from the deads
@@ -277,11 +277,11 @@ test_that("Single, continuous", {
   sampledTreeDeadBis <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
   sampledTreeDeadBisData <- tidytree::as_tibble(sampledTreeDeadBis)
 
-  expect_equal(sampledDeadTreeData$state.x, sampledTreeDeadBisData$state.x)
-  expect_equal(sampledDeadTreeData$state.y, sampledTreeDeadBisData$state.y)
-  expect_equal(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
-  expect_equal(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
-  expect_equal(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
+  expect_equivalent(sampledDeadTreeData$state.x, sampledTreeDeadBisData$state.x)
+  expect_equivalent(sampledDeadTreeData$state.y, sampledTreeDeadBisData$state.y)
+  expect_equivalent(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
+  expect_equivalent(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
+  expect_equivalent(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
 
 })
 
@@ -371,7 +371,7 @@ test_that("Dual, discrete", {
   ttree <- ttreedata@phylo
   tdata <- ttreedata@data
   # total time
-  expect_equal(max(diag(ape::vcv(ttree))) + ttree$root.edge, test.nosoiA$total.time)
+  expect_equivalent(max(diag(ape::vcv(ttree))) + ttree$root.edge, test.nosoiA$total.time)
 
   ## Extracting functions
   # Errors
@@ -384,24 +384,24 @@ test_that("Dual, discrete", {
   expect_error(get_state(tstateTable, "H-11", 14.2, tot_time), "Host H-11 is not alive at time 14.2.")
   expect_error(get_state(tstateTable, "H-7", 20.1, tot_time), "Time 20.1 is larger than total time 20 for the epidemic.")
   # Tip
-  expect_equal(get_node(tdata, "H-11", 11), 18)
-  expect_equal(get_node(tdata, "H-11", 12), 18)
-  expect_equal(get_node(tdata, "V-66", tot_time), 141)
+  expect_equivalent(get_node(tdata, "H-11", 11), 18)
+  expect_equivalent(get_node(tdata, "H-11", 12), 18)
+  expect_equivalent(get_node(tdata, "V-66", tot_time), 141)
   #
-  expect_equal(get_position(tdata, 18, 11), 3)
-  expect_equal(get_position(tdata, 18, 12.5), 1.5)
-  expect_equal(get_position(tdata, 141, 15.1), 4.9)
+  expect_equivalent(get_position(tdata, 18, 11), 3)
+  expect_equivalent(get_position(tdata, 18, 12.5), 1.5)
+  expect_equivalent(get_position(tdata, 141, 15.1), 4.9)
   #
   expect_equivalent(get_state(tstateTable, "H-11", 11, tot_time), "A")
   expect_equivalent(get_state(tstateTable, "H-11", 13, tot_time), "B")
   expect_equivalent(get_state(tstateTable, "H-11", 14, tot_time), "B")
   expect_equivalent(get_state(tstateTable, "V-66", tot_time, tot_time), "A")
   # Node
-  expect_equal(get_node(tdata, "V-1", 10.9), 150)
-  expect_equal(get_node(tdata, "V-1", 11), 152)
+  expect_equivalent(get_node(tdata, "V-1", 10.9), 150)
+  expect_equivalent(get_node(tdata, "V-1", 11), 152)
   #
-  expect_equal(get_position(tdata, 150, 10.5), 0.5)
-  expect_equal(get_position(tdata, 152, 11.5), 0.5)
+  expect_equivalent(get_position(tdata, 150, 10.5), 0.5)
+  expect_equivalent(get_position(tdata, 152, 11.5), 0.5)
 
   ## Tip states
   for (i in 1:nrow(thostTable)) {
@@ -432,7 +432,7 @@ test_that("Dual, discrete", {
   sttree <- sampledTree@phylo
   stdata <- sampledTree@data
   # total time
-  expect_equal(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
+  expect_equivalent(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
   # DO MORE TESTS
 
   ## Sampling from the deads
@@ -449,10 +449,10 @@ test_that("Dual, discrete", {
   sampledTreeDeadBis <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
   sampledTreeDeadBisData <- tidytree::as_tibble(sampledTreeDeadBis)
 
-  expect_equal(sampledDeadTreeData$state, sampledTreeDeadBisData$state)
-  expect_equal(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
-  expect_equal(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
-  expect_equal(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
+  expect_equivalent(sampledDeadTreeData$state, sampledTreeDeadBisData$state)
+  expect_equivalent(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
+  expect_equivalent(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
+  expect_equivalent(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
 })
 
 test_that("Dual, continuous", {
@@ -558,25 +558,25 @@ test_that("Dual, continuous", {
   ttree <- ttreedata@phylo
   tdata <- ttreedata@data
   # total time
-  expect_equal(max(diag(ape::vcv(ttree))) + ttree$root.edge, test.nosoiA$total.time)
+  expect_equivalent(max(diag(ape::vcv(ttree))) + ttree$root.edge, test.nosoiA$total.time)
 
   ## Extracting functions
-  expect_equal(get_state(tstateTable, "V-98", 19, tot_time),
-               c(state.x = -1.485684, state.y = -2.014937),
-               tolerance = 1.0e-6)
-  expect_equal(get_state(tstateTable, "V-98", 21, tot_time),
-               c(state.x = -4.174858, state.y = -1.527998),
-               tolerance = 1.0e-6)
+  expect_equivalent(get_state(tstateTable, "V-98", 19, tot_time),
+                    c(state.x = -1.485684, state.y = -2.014937),
+                    tolerance = 1.0e-6)
+  expect_equivalent(get_state(tstateTable, "V-98", 21, tot_time),
+                    c(state.x = -4.174858, state.y = -1.527998),
+                    tolerance = 1.0e-6)
 
   ## Tip states
   for (i in 1:nrow(thostTable)) {
-    expect_equal(get_state(tstateTable, thostTable$hosts.ID[i], thostTable$out.time[i], tot_time),
-                 c(state.x = thostTable$current.in.x[i], state.y = thostTable$current.in.y[i]),
-                 tolerance = 1.0e-6)
-    expect_equal(get_state(tstateTable, thostTable$hosts.ID[i], thostTable$out.time[i], tot_time),
-                 c(state.x = tdata$state.x[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])],
-                   state.y = tdata$state.y[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])]),
-                 tolerance = 1.0e-6)
+    expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], thostTable$out.time[i], tot_time),
+                      c(state.x = thostTable$current.in.x[i], state.y = thostTable$current.in.y[i]),
+                      tolerance = 1.0e-6)
+    expect_equivalent(get_state(tstateTable, thostTable$hosts.ID[i], thostTable$out.time[i], tot_time),
+                      c(state.x = tdata$state.x[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])],
+                        state.y = tdata$state.y[which(tdata$host[1:length(ttree$tip.label)] == thostTable$hosts.ID[i])]),
+                      tolerance = 1.0e-6)
   }
   ## Node states
   for (i in 1:nrow(thostTable)) {
@@ -602,7 +602,7 @@ test_that("Dual, continuous", {
   sttree <- sampledTree@phylo
   stdata <- sampledTree@data
   # total time
-  expect_equal(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
+  expect_equivalent(max(diag(ape::vcv(sttree))) + sttree$root.edge, test.nosoiA$total.time)
   # DO MORE TESTS
 
   ## Sampling from the deads
@@ -619,11 +619,11 @@ test_that("Dual, continuous", {
   sampledTreeDeadBis <- sampleTransmissionTree(test.nosoiA, ttreedata, samples)
   sampledTreeDeadBisData <- tidytree::as_tibble(sampledTreeDeadBis)
 
-  expect_equal(sampledDeadTreeData$state.x, sampledTreeDeadBisData$state.x)
-  expect_equal(sampledDeadTreeData$state.y, sampledTreeDeadBisData$state.y)
-  expect_equal(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
-  expect_equal(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
-  expect_equal(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
+  expect_equivalent(sampledDeadTreeData$state.x, sampledTreeDeadBisData$state.x)
+  expect_equivalent(sampledDeadTreeData$state.y, sampledTreeDeadBisData$state.y)
+  expect_equivalent(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
+  expect_equivalent(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
+  expect_equivalent(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
 
 })
 
@@ -739,17 +739,17 @@ test_that("Single, discrete, Sink", {
   ttree <- ttreedata@phylo
   tdata <- ttreedata@data
   # total time
-  expect_equal(max(diag(ape::vcv(ttree))) + ttree$root.edge, SimulationSingle$total.time)
+  expect_equivalent(max(diag(ape::vcv(ttree))) + ttree$root.edge, SimulationSingle$total.time)
   # hosts
   nHosts <- nrow(thostTable)
   for (i in 2:nrow(thostTable)) {
-    expect_equal(subset(tdata, node == nHosts + thostTable$indNodes[i] - 1)$host,
-                 thostTable$inf.by[i])
+    expect_equivalent(subset(tdata, node == nHosts + thostTable$indNodes[i] - 1)$host,
+                      thostTable$inf.by[i])
   }
   # number of descendants
   for (i in 2:nrow(thostTable)) {
-    expect_equal(length(tidytree::child(ttree, nHosts + thostTable$indNodes[i] - 1)),
-                 sum(thostTable$indNodes == thostTable$indNodes[i]) + 1)
+    expect_equivalent(length(tidytree::child(ttree, nHosts + thostTable$indNodes[i] - 1)),
+                      sum(thostTable$indNodes == thostTable$indNodes[i]) + 1)
   }
 
   ## Tip states
