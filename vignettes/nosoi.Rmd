@@ -59,7 +59,11 @@ if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis",
                              dimnames=list(c("pExit","pMove","sdMove","nContact","pTrans"),
                                            c("pExit","pMove","sdMove","nContact","pTrans")))
   
-  melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
+  # melting the matrix go get from -> to in one line with probability
+  # melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE)
+  melted.transition.matrix <- as.data.frame.table(transition.matrix,
+                                                  stringsAsFactors = FALSE)
+  colnames(melted.transition.matrix) <- c("from", "to", "prob")
   
   melted.transition.matrix <- subset(melted.transition.matrix, prob!=0)
   

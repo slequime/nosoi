@@ -46,11 +46,14 @@ moveFunction.discrete <- function(res, pres.time, moving.full, structure.matrix,
 
   Move.ID <- res$table.hosts[moving.full,][["hosts.ID"]]
 
-  #melting the matrix go get from -> to in one line with probability
-  melted.structure.matrix <- reshape2::melt(structure.matrix,
-                                            varnames = c("from", "to"),
-                                            value.name = "prob",
-                                            as.is = TRUE)
+  # melting the matrix go get from -> to in one line with probability
+  # melted.structure.matrix <- reshape2::melt(structure.matrix,
+  #                                           varnames = c("from", "to"),
+  #                                           value.name = "prob",
+  #                                           as.is = TRUE)
+  melted.structure.matrix <- as.data.frame.table(structure.matrix,
+                                                 stringsAsFactors = FALSE)
+  colnames(melted.structure.matrix) <- c("from", "to", "prob")
 
   if (length(Move.ID) > 0){
     #Updating state archive for moving individuals:

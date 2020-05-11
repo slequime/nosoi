@@ -352,7 +352,10 @@ countries.point=data.frame(country=SE.Asia,
                lat=c(27.676106, 12.659667, 19.624881,15.622895,14.887263))
 
 #Merging with dataframe:
-melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("From","To"),value.name="prob", as.is = TRUE)
+# melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("From","To"),value.name="prob", as.is = TRUE)
+melted.transition.matrix <- as.data.frame.table(transition.matrix,
+                                                stringsAsFactors = FALSE)
+colnames(melted.transition.matrix) <- c("From", "To", "prob")
 
 df.plot = dplyr::left_join(melted.transition.matrix, countries.point, by=c("From"="country")) 
 df.plot = dplyr::left_join(df.plot, countries.point, by=c("To"="country"), suffix = c(".from", ".to")) 
@@ -693,7 +696,10 @@ library(ggplot2); library(gganimate)
 library(tidyverse)
 
 #melting the matrix go get from -> to in one line with probability
-melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) 
+# melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) 
+melted.transition.matrix <- as.data.frame.table(transition.matrix,
+                                                stringsAsFactors = FALSE)
+colnames(melted.transition.matrix) <- c("from", "to", "prob")
 melted.transition.matrix = subset(melted.transition.matrix, prob!=0)
 
 #Loading data from the simulation

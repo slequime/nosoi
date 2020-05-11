@@ -18,7 +18,7 @@ Language: en-US
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 biocViews:
 Depends: 
     data.table (>= 1.12.0),
@@ -29,7 +29,6 @@ Imports:
     dplyr (>= 0.8.0),
     magrittr (>= 1.5),
     stringr (>= 1.4.0),
-    reshape2 (>= 1.4.0),
     raster (>= 2.8-19)
 Suggests:
     testthat (>= 2.1.0),
