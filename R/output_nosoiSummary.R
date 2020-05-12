@@ -383,7 +383,7 @@ getR0  <- function(nosoi.output) {
       # output.full.merged <- as.data.table(output.full.merged)
 
       #estimating R0 (mean number of secondary cases)
-      Sec.cases1 <- output.full.merged[!stringr::str_detect(output.full.merged[["inf.by"]],"NA") &
+      Sec.cases1 <- output.full.merged[!grepl("NA", output.full.merged[["inf.by"]]) &
                                          output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]],
                                        list(Secondary.cases = length(hosts.ID)),
                                        by = inf.by.y]
@@ -431,7 +431,7 @@ getR0  <- function(nosoi.output) {
 
 
     #estimating R0 (mean number of secondary cases), R0 to the other host
-    Sec.cases1 <- output.full.merged[!stringr::str_detect(output.full.merged[["inf.by"]],"NA") &
+    Sec.cases1 <- output.full.merged[!grepl("NA", output.full.merged[["inf.by"]]) &
                                        output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]],
                                      list(Secondary.cases = length(hosts.ID)),
                                      keyby = list(inf.by.y, host.type)]
@@ -490,7 +490,7 @@ getR0Old  <- function(nosoi.output) {
     output.full.merged <- as.data.table(output.full.merged)
 
     #estimating R0 (mean number of secondary cases)
-    Sec.cases1 <- output.full.merged[!stringr::str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
+    Sec.cases1 <- output.full.merged[!grepl("NA", output.full.merged[["inf.by"]]) & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
     Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y)
     Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
     Sec.cases1 <- data.table(Sec.cases1)
@@ -528,7 +528,7 @@ getR0Old  <- function(nosoi.output) {
     output.full.merged <- as.data.table(output.full.merged)
 
     #estimating R0 (mean number of secondary cases), R0 to the other host
-    Sec.cases1 <- output.full.merged[!stringr::str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
+    Sec.cases1 <- output.full.merged[!grepl("NA", output.full.merged[["inf.by"]]) & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
     Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y, host.type)
     Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
     Sec.cases1 <- data.table(Sec.cases1)

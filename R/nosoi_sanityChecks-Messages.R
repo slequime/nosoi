@@ -64,7 +64,8 @@ FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, hostCo
   if((diff == TRUE || timeDep == TRUE) && length(formalArgs(pFunc)) < 2) stop("Your are missing some function argument in ",name,". diff and/or timeDep.", name, " is/are TRUE.")
 
   if (diff == TRUE && continuous == FALSE){
-    if (any(stringr::str_detect(paste0(as.character(body(pFunc)),collapse=" "),paste0('current.in == "',stateNames,'"'))==FALSE)) stop(name, " should have a realisation for each possible state. diff.", name, " is TRUE.")
+    if (any(!sapply(paste0('current.in == "',stateNames,'"'),
+                   function(pat) grepl(pat, paste0(as.character(body(pFunc)), collapse = " "))))) stop(name, " should have a realisation for each possible state. diff.", name, " is TRUE.")
   }
 
   if(timeDep == TRUE && formalArgs(pFunc)[2] != "prestime") stop(name, " should have 'prestime' as the second variable. timeDep.", name, " is TRUE.")

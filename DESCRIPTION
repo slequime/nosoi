@@ -26,7 +26,6 @@ Depends:
 Imports:
     stats (>= 3.5.2),
     methods (>= 3.5.2),
-    stringr (>= 1.4.0),
     raster (>= 2.8-19)
 Suggests:
     testthat (>= 2.1.0),

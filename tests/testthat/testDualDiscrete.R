@@ -82,10 +82,10 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 7)
 
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 20)
 
@@ -244,10 +244,10 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 9)
 
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 27)
 
@@ -383,10 +383,10 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 11)
 
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 21)
 
@@ -556,10 +556,10 @@ test_that("Epidemics dying out", {
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 2)
 
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 12)
 
@@ -672,10 +672,10 @@ test_that("start with host B", {
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 9)
 
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 17)
 
@@ -810,10 +810,10 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 7)
 
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(stringr::str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 14)
 
