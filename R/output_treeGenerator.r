@@ -89,7 +89,7 @@ getTransmissionTree <- function(nosoiInf) {
          call. = FALSE)
   }
   #To avoid notes (use of dplyr)
-  node <- NULL
+  # node <- NULL
 
   table.hosts <- merge_host_tables(nosoiInf)
   setorder(table.hosts, "inf.time")
@@ -191,7 +191,8 @@ getTransmissionTree <- function(nosoiInf) {
 
   # Get correct object
   root_length <- treeTable[[1, "branch.length"]]
-  treeTable <- dplyr::arrange(treeTable, node)
+  # treeTable <- dplyr::arrange(treeTable, node)
+  treeTable <- treeTable[order(treeTable[, "node"]), ]
   class(treeTable) <- c("tbl_tree", class(treeTable))
   resTree <- tidytree::as.treedata(treeTable)
   resTree@phylo$root.edge <- root_length
@@ -523,7 +524,10 @@ keep.tip.treedata <- function(tree, tip) {
   # bind data objects
   oldData <- oldData[-c(1, 2, 3)]
   # Create new treedata
-  newTibbleTree <- dplyr::left_join(newTreeTibble, oldData, by = "label")
+  # newTibbleTree <- dplyr::left_join(newTreeTibble, oldData, by = "label")
+  newTibbleTree <- merge(newTreeTibble, oldData, by = "label", all.x = TRUE, sort = FALSE)
+  newTibbleTree <- tidytree::as_tibble(newTibbleTree)
+  class(newTibbleTree) <- c("tbl_tree", class(newTibbleTree))
   # New Object
   resTree <- tidytree::as.treedata(newTibbleTree)
   resTree@phylo$root.edge <- root_length
