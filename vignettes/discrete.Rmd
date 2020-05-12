@@ -71,12 +71,14 @@ graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
   
   graph.matrix.network <- ggnetwork::ggnetwork(graph.Matrix, layout = graph.Matrix2, arrow.gap=0.18) #using ggnetwork to provide the layout
   
+  graph.matrix.network2 <- subset(graph.matrix.network, ! is.na(prob))
+  
   #plotting the network
   ggplot(graph.matrix.network, aes(x = x, y = y, xend = xend, yend = yend)) +
     geom_edges(color = "grey70", arrow = arrow(length = unit(1, "lines"), type = "closed"), curvature = 0.2) + geom_nodes(aes(color = name) , size = 30) +
     geom_nodetext(aes(label = name), color="white", fontface = "bold",size=15) + scale_color_viridis(guide=FALSE, discrete=TRUE) +
     theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2) +
-    geom_text(data=graph.matrix.network,aes(x=(x+xend)/2,y=(y+yend)/2,label = prob,color=name), size = 6)
+    geom_text(data=graph.matrix.network2,aes(x=(x+xend)/2,y=(y+yend)/2,label = prob,color=name), size = 6)
 }
 ```
 

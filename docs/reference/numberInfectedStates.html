@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • nosoi</title>
+<title>Number of active infected hosts at time t — numberInfectedStates • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Number of active infected hosts at time t — numberInfectedStates" />
+<meta property="og:description" content="For a given time t, this function returns the number of infected active units." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -63,7 +64,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -214,165 +215,48 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Number of active infected hosts at time t</h1>
+    <small class="dont-index">Source: <a href='https://github.com/slequime/nosoi/blob/master/R/output_nosoiSummary.R'><code>R/output_nosoiSummary.R</code></a></small>
+    <div class="hidden name"><code>numberInfectedStates.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>For a given time t, this function returns the number of infected active units.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>numberInfectedStates</span>(<span class='no'>table.states</span>, <span class='no'>t</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-simulation-function" class="hasAnchor"><a href="#section-simulation-function" class="anchor"></a>Simulation function</h2>
-          <p class="section-desc"><p>These functions are called by nosoiSim and are specific to the type of simulations your run.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="nosoiSim.html">nosoiSim()</a></code> </p>
-        </td>
-        <td><p>Top-level function to use <code>nosoi</code>.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="singleContinuous.html">singleContinuous()</a></code> </p>
-        </td>
-        <td><p>Single-host pathogen in a structured (continuous) host population</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="singleDiscrete.html">singleDiscrete()</a></code> </p>
-        </td>
-        <td><p>Single-host pathogen in a structured (discrete) host population</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="singleNone.html">singleNone()</a></code> </p>
-        </td>
-        <td><p>Single-host pathogen in a homogeneous host population</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dualContinuous.html">dualContinuous()</a></code> </p>
-        </td>
-        <td><p>Dual-host pathogen in structured (continuous) hosts populations</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dualDiscrete.html">dualDiscrete()</a></code> </p>
-        </td>
-        <td><p>Dual-host pathogen in structured (discrete) hosts populations</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dualNone.html">dualNone()</a></code> </p>
-        </td>
-        <td><p>Dual-host pathogen in homogeneous hosts populations</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-output-data-extraction" class="hasAnchor"><a href="#section-output-data-extraction" class="anchor"></a>Output: data extraction</h2>
-          <p class="section-desc"><p>These functions are used to get information on your nosoi output.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="getHostData.html">getHostData()</a></code> </p>
-        </td>
-        <td><p>Extracts specific data from a <code>nosoiSim</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getTableHosts.html">getTableHosts()</a></code> </p>
-        </td>
-        <td><p>Extracts <code>table.hosts</code> from a <code>nosoiSim</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getTableState.html">getTableState()</a></code> </p>
-        </td>
-        <td><p>Extracts <code>table.state</code> from a <code>nosoiSim</code> object</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-output-epidemiology" class="hasAnchor"><a href="#section-output-epidemiology" class="anchor"></a>Output: epidemiology</h2>
-          <p class="section-desc"><p>These functions are used to get information on your nosoi output.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="nosoiSummary.html">nosoiSummary()</a></code> <code><a href="nosoiSummary.html">summary(<i>&lt;nosoiSim&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Summarizes the epidemiological features of a <code>nosoi</code> simulation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getR0.html">getR0()</a></code> </p>
-        </td>
-        <td><p>Gets R0 from a <code>nosoi</code> simulation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getDynamic.html">getDynamic()</a></code> </p>
-        </td>
-        <td><p>Gets the current number of infected hosts for the full length of the simulation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getCumulative.html">getCumulative()</a></code> </p>
-        </td>
-        <td><p>Gets the cumulative number of infected hosts for the full length of the simulation</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-output-transmission-chains" class="hasAnchor"><a href="#section-output-transmission-chains" class="anchor"></a>Output: transmission chains</h2>
-          <p class="section-desc"><p>These functions are used to get information on your nosoi output.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="getTransmissionTree.html">getTransmissionTree()</a></code> </p>
-        </td>
-        <td><p>Gets the full transmission tree (phylogenetic tree-like) from a <code>nosoi</code> simulation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sampleTransmissionTree.html">sampleTransmissionTree()</a></code> </p>
-        </td>
-        <td><p>Sample the transmission tree (phylogenetic tree-like)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code> </p>
-        </td>
-        <td><p>Sample the transmission tree (phylogenetic tree-like) among the exited hosts</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>table.states</th>
+      <td><p>state table, result of function <code><a href='nosoiSim.html'>nosoiSim</a></code></p></td>
+    </tr>
+    <tr>
+      <th>t</th>
+      <td><p>time (integer)</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Number of infected units at time t</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='nosoiSim.html'>nosoiSim</a></code></p></div>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-simulation-function">Simulation function</a></li>
-      <li><a href="#section-output-data-extraction">Output: data extraction</a></li>
-      <li><a href="#section-output-epidemiology">Output: epidemiology</a></li>
-      <li><a href="#section-output-transmission-chains">Output: transmission chains</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#see-also">See also</a></li>
     </ul>
+
   </div>
 </div>
 

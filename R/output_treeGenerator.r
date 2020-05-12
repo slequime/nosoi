@@ -192,7 +192,7 @@ getTransmissionTree <- function(nosoiInf) {
   # Get correct object
   root_length <- treeTable[[1, "branch.length"]]
   # treeTable <- dplyr::arrange(treeTable, node)
-  treeTable <- treeTable[order(treeTable[, "node"]), ]
+  treeTable <- treeTable[order(treeTable[["node"]]), ]
   class(treeTable) <- c("tbl_tree", class(treeTable))
   resTree <- tidytree::as.treedata(treeTable)
   resTree@phylo$root.edge <- root_length
