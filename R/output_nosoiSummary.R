@@ -47,9 +47,6 @@
 #'}
 #'
 #' @export nosoiSummary
-#' @importFrom dplyr group_by
-#' @importFrom dplyr summarise
-#' @importFrom dplyr mutate
 
 nosoiSummary <- function(object){
 
@@ -83,7 +80,7 @@ summary.nosoiSim <- function(object, ...){
 #' @description
 #' For a given time t, this function returns the number of infected active units.
 #'
-#' @param table.nosoi result of function \code{\link{nosoiSim}}
+#' @param table.hosts host table, result of function \code{\link{nosoiSim}}
 #' @param t time (integer)
 #'
 #' @return Number of infected units at time t
@@ -92,11 +89,33 @@ summary.nosoiSim <- function(object, ...){
 #'
 #' @keywords internal
 ##
-numberInfected <- function(table.nosoi, t) {
+numberInfected <- function(table.hosts, t) {
   # Attention: need to test that t < t_max
-  already_infected <- table.nosoi$inf.time < t  # Strict  inequality: if infected at time t, becomes active at time t + 1
-  still_infected <- table.nosoi$out.time > t    # Strict inequality: if out at time t, not active for generation t
-  still_infected[is.na(still_infected)] <- TRUE
+  already_infected <- table.hosts$inf.time < t  # Strict  inequality: if infected at time t, becomes active at time t + 1
+  still_infected <- table.hosts$out.time > t    # Strict inequality: if out at time t, not active for generation t
+  still_infected[is.na(still_infected)] <- TRUE # NA means till the end
+  return(sum(already_infected & still_infected))
+}
+
+#' @title Number of active infected hosts at time t
+#'
+#' @description
+#' For a given time t, this function returns the number of infected active units.
+#'
+#' @param table.states state table, result of function \code{\link{nosoiSim}}
+#' @param t time (integer)
+#'
+#' @return Number of infected units at time t
+#'
+#' @seealso \code{\link{nosoiSim}}
+#'
+#' @keywords internal
+##
+numberInfectedStates <- function(table.states, t) {
+  # Attention: need to test that t < t_max
+  already_infected <- table.states$time.from < t  # Strict  inequality: if infected at time t, becomes active at time t + 1
+  still_infected <- table.states$time.to >= t    # Strict inequality: if out at time t, not active for generation t
+  still_infected[is.na(still_infected)] <- TRUE # NA means infected till the end
   return(sum(already_infected & still_infected))
 }
 
@@ -198,13 +217,68 @@ getCumulative  <- function(nosoi.output) {
 #'
 #' @seealso \code{\link{summary.nosoiSim}}
 #'
-#' @import magrittr
-#' @importFrom dplyr group_by
-#' @importFrom dplyr summarise
-#' @importFrom dplyr mutate
 #' @export getDynamic
-
 getDynamic  <- function(nosoi.output) {
+  Count <- NULL
+  state <- NULL
+  type <- NULL
+
+  tt <- 0:((nosoi.output$total.time + 1))
+
+  #get type and pop structure
+  #single
+
+  if (nosoi.output$type == "single" &&
+      (nosoi.output$host.info.A$popStructure == "none" || nosoi.output$host.info.A$popStructure == "continuous")) {
+    results.dynamic <-  data.table(t = tt,
+                                   Count = sapply(tt,function(t) numberInfected(nosoi.output$host.info.A$table.hosts, t)),
+                                   type = nosoi.output$host.info.A$prefix.host)
+  }
+
+  if (nosoi.output$type == "single" &&
+      nosoi.output$host.info.A$popStructure == "discrete") {
+    results.dynamic <- nosoi.output$host.info.A$table.state[, list(Count = sapply(tt, function(t) numberInfectedStates(.SD, t)),
+                                                                   type = nosoi.output$host.info.A$prefix.host,
+                                                                   t = tt), by = "state"]
+    results.dynamic <- results.dynamic[Count > 0]
+    results.dynamic <- results.dynamic[order(t, state)]
+  }
+
+  #dual
+  if (nosoi.output$type == "dual" &&
+      (nosoi.output$host.info.A$popStructure == "none" || nosoi.output$host.info.A$popStructure == "continuous") &&
+      (nosoi.output$host.info.B$popStructure == "none" || nosoi.output$host.info.B$popStructure == "continuous")) {
+    results.dynamic <-  data.table(t = c(tt, tt),
+                                   Count = c(sapply(tt,function(t) numberInfected(nosoi.output$host.info.A$table.hosts, t)),
+                                             sapply(tt,function(t) numberInfected(nosoi.output$host.info.B$table.hosts, t))),
+                                   type = rep(c(nosoi.output$host.info.A$prefix.host,
+                                                nosoi.output$host.info.B$prefix.host), each = length(tt)))
+    results.dynamic <- results.dynamic[order(t)]
+  }
+
+  if (nosoi.output$type == "dual" &&
+      nosoi.output$host.info.A$popStructure == "discrete" &&
+      nosoi.output$host.info.B$popStructure == "discrete") {
+    results.dynamicA <- nosoi.output$host.info.A$table.state[, list(Count = sapply(tt, function(t) numberInfectedStates(.SD, t)),
+                                                                    type = nosoi.output$host.info.A$prefix.host,
+                                                                    t = tt), by = "state"]
+    results.dynamicB <- nosoi.output$host.info.B$table.state[, list(Count = sapply(tt, function(t) numberInfectedStates(.SD, t)),
+                                                                    type = nosoi.output$host.info.B$prefix.host,
+                                                                    t = tt), by = "state"]
+    results.dynamic <- rbindlist(list(results.dynamicA, results.dynamicB))
+    results.dynamic <- results.dynamic[Count > 0]
+    results.dynamic <- results.dynamic[order(t, type, state)]
+  }
+
+  return(results.dynamic)
+}
+
+# Old version, using dplyr and a loop
+getDynamicOld  <- function(nosoi.output) {
+  if (!requireNamespace("dplyr", quietly = TRUE)) {
+    stop("Package 'dplyr', is needed for 'getDynamicOld'.",
+         call. = FALSE)
+  }
   #get rid of some notes linked to the use of dplyr
   time.from <- NULL
   time.to <- NULL
@@ -216,16 +290,23 @@ getDynamic  <- function(nosoi.output) {
 
   if (nosoi.output$type == "single" & (nosoi.output$host.info.A$popStructure == "none" | nosoi.output$host.info.A$popStructure == "continuous")){
     results.dynamic=data.table()
-    for(t in 0:(nosoi.output$total.time +1)){
-      temp <- list(t=t, Count = numberInfected(nosoi.output$host.info.A$table.hosts, t),type=nosoi.output$host.info.A$prefix.host)
+    for(t in 0:(nosoi.output$total.time + 1)){
+      temp <- list(t = t,
+                   Count = numberInfected(nosoi.output$host.info.A$table.hosts, t),
+                   type = nosoi.output$host.info.A$prefix.host)
       results.dynamic <- rbindlist(list(results.dynamic,temp))
     }
   }
 
   if (nosoi.output$type == "single" & nosoi.output$host.info.A$popStructure == "discrete"){
     results.dynamic=data.table()
-    for(t in 0:(nosoi.output$total.time +1)){
-      table.state.temp <- subset(nosoi.output$host.info.A$table.state, (time.from < t & (is.na(time.to)|time.to >= t))) %>% group_by(state) %>% dplyr::summarise(Count=length(hosts.ID)) %>% dplyr::mutate(type=nosoi.output$host.info.A$prefix.host,  t=t ) %>% data.table()
+    for(t in 0:(nosoi.output$total.time + 1)){
+      table.state.temp <- subset(nosoi.output$host.info.A$table.state,
+                                 (time.from < t & (is.na(time.to)|time.to >= t)))
+      table.state.temp <- dplyr::group_by(table.state.temp, state)
+      table.state.temp <- dplyr::summarise(table.state.temp, Count=length(hosts.ID))
+      table.state.temp <- dplyr::mutate(table.state.temp, type=nosoi.output$host.info.A$prefix.host,  t=t )
+      table.state.temp <- data.table(table.state.temp)
 
       results.dynamic <- rbindlist(list(results.dynamic,table.state.temp))
     }
@@ -245,9 +326,17 @@ getDynamic  <- function(nosoi.output) {
   if (nosoi.output$type == "dual" && nosoi.output$host.info.A$popStructure == "discrete" && nosoi.output$host.info.B$popStructure == "discrete"){
     results.dynamic=data.table()
     for(t in 0:(nosoi.output$total.time +1)){
-      table.state.tempA <- subset(nosoi.output$host.info.A$table.state, (time.from < t & (is.na(time.to)|time.to >= t))) %>% dplyr::group_by(state) %>% dplyr::summarise(Count=length(hosts.ID)) %>% dplyr::mutate(type=nosoi.output$host.info.A$prefix.host,  t=t ) %>% data.table()
+      table.state.tempA <- subset(nosoi.output$host.info.A$table.state, (time.from < t & (is.na(time.to)|time.to >= t)))
+      table.state.tempA <- dplyr::group_by(table.state.tempA, state)
+      table.state.tempA <- dplyr::summarise(table.state.tempA, Count=length(hosts.ID))
+      table.state.tempA <- dplyr::mutate(table.state.tempA, type=nosoi.output$host.info.A$prefix.host,  t=t )
+      table.state.tempA <- data.table(table.state.tempA)
 
-      table.state.tempB <- subset(nosoi.output$host.info.B$table.state, (time.from < t & (is.na(time.to)|time.to >= t))) %>% dplyr::group_by(state) %>% dplyr::summarise(Count=length(hosts.ID)) %>% dplyr::mutate(type=nosoi.output$host.info.B$prefix.host,  t=t ) %>% data.table()
+      table.state.tempB <- subset(nosoi.output$host.info.B$table.state, (time.from < t & (is.na(time.to)|time.to >= t)))
+      table.state.tempB <- dplyr::group_by(table.state.tempB, state)
+      table.state.tempB <- dplyr::summarise(table.state.tempB, Count=length(hosts.ID))
+      table.state.tempB <- dplyr::mutate(table.state.tempB, type=nosoi.output$host.info.B$prefix.host,  t=t )
+      table.state.tempB <- data.table(table.state.tempB)
 
       results.dynamic <- rbindlist(list(results.dynamic,table.state.tempA,table.state.tempB))
     }
@@ -272,10 +361,6 @@ getDynamic  <- function(nosoi.output) {
 #' @seealso \code{\link{summary.nosoiSim}}
 #'
 #' @import stringr
-#' @import magrittr
-#' @importFrom dplyr group_by
-#' @importFrom dplyr left_join
-#' @importFrom dplyr summarise
 #' @export getR0
 
 getR0  <- function(nosoi.output) {
@@ -294,11 +379,18 @@ getR0  <- function(nosoi.output) {
     if(n.Inactive > 0) {
     #Secondary case, same host type
     output.small <- output.full[,c("hosts.ID", "inf.by")]
-    output.full.merged <- output.full %>% left_join(output.small, by=c("inf.by" = "hosts.ID"), suffix(".x",".y")) %>% as.data.table()
+    output.full.merged <- output.full
+    output.full.merged <- dplyr::left_join(output.full.merged, output.small, by=c("inf.by" = "hosts.ID"), suffix(".x",".y"))
+    output.full.merged <- as.data.table(output.full.merged)
 
     #estimating R0 (mean number of secondary cases)
-    Sec.cases1 <- output.full.merged[!str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]] %>% group_by(inf.by.y) %>% summarise(Secondary.cases=length(hosts.ID)) %>% data.table()
-    Sec.cases2 <- data.table(inf.by.y=as.character(Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by.y]),Secondary.cases=0) %>% left_join(output.full[,c("hosts.ID")], by=c("inf.by.y"="hosts.ID")) %>% data.table()
+    Sec.cases1 <- output.full.merged[!str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
+    Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y)
+    Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
+    Sec.cases1 <- data.table(Sec.cases1)
+    Sec.cases2 <- data.table(inf.by.y=as.character(Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by.y]),Secondary.cases=0)
+    Sec.cases2 <- dplyr::left_join(Sec.cases2, output.full[,c("hosts.ID")], by=c("inf.by.y"="hosts.ID"))
+    Sec.cases2 <- data.table(Sec.cases2)
 
     Sec.cases <- rbindlist(list(Sec.cases1,Sec.cases2),use.names=TRUE)
     Sec.cases.A <- Sec.cases$Secondary.cases
@@ -325,11 +417,18 @@ getR0  <- function(nosoi.output) {
 
     #Secondary case, same host type
     output.small <- output.full[,c("hosts.ID", "inf.by")]
-    output.full.merged <- output.full %>% left_join(output.small, by=c("inf.by" = "hosts.ID"), suffix(".x",".y")) %>% as.data.table()
+    output.full.merged <- output.full
+    output.full.merged <- dplyr::left_join(output.full.merged, output.small, by=c("inf.by" = "hosts.ID"), suffix(".x",".y"))
+    output.full.merged <- as.data.table(output.full.merged)
 
     #estimating R0 (mean number of secondary cases), R0 to the other host
-    Sec.cases1 <- output.full.merged[!str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]] %>% group_by(inf.by.y, host.type) %>% summarise(Secondary.cases=length(hosts.ID)) %>% data.table()
-    Sec.cases2 <- data.table(inf.by.y=as.character(Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by.y]),Secondary.cases=0) %>% left_join(output.full[,c("hosts.ID","host.type")], by=c("inf.by.y"="hosts.ID")) %>% data.table()
+    Sec.cases1 <- output.full.merged[!str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
+    Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y, host.type)
+    Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
+    Sec.cases1 <- data.table(Sec.cases1)
+    Sec.cases2 <- data.table(inf.by.y=as.character(Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by.y]),Secondary.cases=0)
+    Sec.cases2 <- dplyr::left_join(Sec.cases2, output.full[,c("hosts.ID","host.type")], by=c("inf.by.y"="hosts.ID"))
+    Sec.cases2 <- data.table(Sec.cases2)
 
     Sec.cases <- rbindlist(list(Sec.cases1,Sec.cases2),use.names=TRUE)
 
