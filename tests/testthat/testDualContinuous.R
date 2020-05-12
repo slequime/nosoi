@@ -121,6 +121,9 @@ test_that("Both hosts move", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 
@@ -251,6 +254,10 @@ test_that("One host (A) moves", {
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("One host (B) moves", {
@@ -379,6 +386,10 @@ test_that("One host (B) moves", {
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Epidemic dies out", {
@@ -494,6 +505,10 @@ test_that("Epidemic dies out", {
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Error if no host move", {
@@ -728,4 +743,8 @@ test_that("One host (B) moves, host count", {
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })

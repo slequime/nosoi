@@ -206,6 +206,10 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 #--------------------------------------------------------------------------------------------------------------------------------------------
@@ -274,6 +278,10 @@ test_that("Movement is coherent with single introduction, complex pMove", {
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Movement is coherent with single introduction, constant but different pMove, 1 loc (C) is sink. Ce tombeau sera votre tombeau !", {
@@ -351,6 +359,10 @@ test_that("Movement is coherent with single introduction, constant but different
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Error message pops up if different pMove poorly formatted", {
@@ -461,6 +473,10 @@ test_that("Movement is coherent with single introduction, complex and different 
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Error message pops out when missing state in diff functions", {
@@ -639,6 +655,10 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Movement is coherent with single introduction, constant pMove, diff pTrans ", {
@@ -714,6 +734,10 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Movement is coherent with single introduction, constant pMove, diff nContact ", {
@@ -788,6 +812,10 @@ test_that("Movement is coherent with single introduction, constant pMove, diff n
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Movement is coherent with single introduction, all parameters are diff", {
@@ -892,6 +920,10 @@ test_that("Movement is coherent with single introduction, all parameters are dif
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Epidemic dying out", {
@@ -948,6 +980,10 @@ test_that("Epidemic dying out", {
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 
@@ -1027,4 +1063,8 @@ test_that("Movement is coherent with single introduction, no pMove, no die, diff
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })

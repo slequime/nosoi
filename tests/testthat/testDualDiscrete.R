@@ -143,6 +143,9 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter", {
@@ -278,6 +281,10 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, A does not move", {
@@ -683,6 +690,10 @@ test_that("start with host B", {
   dynOld <- getDynamicOld(test.nosoiA)
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, A does not move", {
@@ -840,4 +851,7 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })

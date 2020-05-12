@@ -274,6 +274,7 @@ getDynamic  <- function(nosoi.output) {
 }
 
 # Old version, using dplyr and a loop
+#' @keywords internal
 getDynamicOld  <- function(nosoi.output) {
   if (!requireNamespace("dplyr", quietly = TRUE)) {
     stop("Package 'dplyr', is needed for 'getDynamicOld'.",
@@ -361,8 +362,114 @@ getDynamicOld  <- function(nosoi.output) {
 #' @seealso \code{\link{summary.nosoiSim}}
 #'
 #' @export getR0
-
 getR0  <- function(nosoi.output) {
+  #To avoids notes (use of data.table functions)
+  inf.by.y <- NULL
+  host.type <- NULL
+  hosts.ID <- NULL
+  active <- NULL
+
+  if(nosoi.output$type == "single") {
+    output.full <- nosoi.output$host.info.A$table.hosts[,c("hosts.ID", "inf.by","active")]
+    Inactive <- output.full[output.full[["active"]] == 0]  #get inactive hosts (have done their full cycle)
+    n.Inactive <- nrow(Inactive)
+    Sec.cases.A <- NA
+    if(n.Inactive > 0) {
+      #Secondary case, same host type
+      output.small <- output.full[, c("hosts.ID", "inf.by")]
+      output.full.merged <- output.small[output.full, on="hosts.ID==inf.by"]
+      colnames(output.full.merged) <- c("inf.by", "inf.by.y", "hosts.ID", "active")
+      # output.full.merged <- dplyr::left_join(output.full.merged, output.small, by=c("inf.by" = "hosts.ID"), suffix(".x",".y"))
+      # output.full.merged <- as.data.table(output.full.merged)
+
+      #estimating R0 (mean number of secondary cases)
+      Sec.cases1 <- output.full.merged[!stringr::str_detect(output.full.merged[["inf.by"]],"NA") &
+                                         output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]],
+                                       list(Secondary.cases = length(hosts.ID)),
+                                       by = inf.by.y]
+      # Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y)
+      # Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
+      # Sec.cases1 <- data.table(Sec.cases1)
+
+      Sec.cases2 <- data.table(inf.by.y = as.character(Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by.y]),
+                               Secondary.cases = 0)
+      Sec.cases2 <- output.full[Sec.cases2, on = "hosts.ID==inf.by.y"][, c("hosts.ID", "Secondary.cases")]
+      colnames(Sec.cases2) <- c("inf.by.y", "Secondary.cases")
+      # Sec.cases2 <- dplyr::left_join(Sec.cases2, output.full[,c("hosts.ID")], by=c("inf.by.y"="hosts.ID"))
+      # Sec.cases2 <- data.table(Sec.cases2)
+
+      Sec.cases <- rbindlist(list(Sec.cases1, Sec.cases2), use.names = TRUE)
+      Sec.cases.A <- Sec.cases$Secondary.cases
+    }
+
+    return(list(N.inactive = nrow(Inactive),
+                R0.mean = mean(Sec.cases.A),
+                R0.dist = Sec.cases.A))
+  }
+
+  if(nosoi.output$type == "dual"){
+    outputA <- nosoi.output$host.info.A$table.hosts[,c("hosts.ID", "inf.by","active")]
+    outputA$host.type <- nosoi.output$host.info.A$prefix.host
+    outputB <- nosoi.output$host.info.B$table.hosts[,c("hosts.ID", "inf.by","active")]
+    outputB$host.type <- nosoi.output$host.info.B$prefix.host
+
+    output.full = rbindlist(list(outputA,outputB))
+
+    #number of hosts inactive (have done their full cycle)
+    Inactive = output.full[output.full[["active"]] == 0]
+
+    N.inactive.A <- nrow(subset(nosoi.output$host.info.A$table.hosts,active==0))
+    N.inactive.B <- nrow(subset(nosoi.output$host.info.B$table.hosts,active==0))
+
+    #Secondary case, same host type
+    output.small <- output.full[,c("hosts.ID", "inf.by")]
+    output.full.merged <- output.small[output.full, on="hosts.ID==inf.by"]
+    colnames(output.full.merged) <- c("inf.by", "inf.by.y", "hosts.ID", "active", "host.type")
+    # output.full.merged <- output.full
+    # output.full.merged <- dplyr::left_join(output.full.merged, output.small, by=c("inf.by" = "hosts.ID"), suffix(".x",".y"))
+    # output.full.merged <- as.data.table(output.full.merged)
+
+
+    #estimating R0 (mean number of secondary cases), R0 to the other host
+    Sec.cases1 <- output.full.merged[!stringr::str_detect(output.full.merged[["inf.by"]],"NA") &
+                                       output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]],
+                                     list(Secondary.cases = length(hosts.ID)),
+                                     keyby = list(inf.by.y, host.type)]
+
+    # Sec.cases1 <- output.full.merged[!stringr::str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
+    # Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y, host.type)
+    # Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
+    # Sec.cases1 <- data.table(Sec.cases1)
+
+    Sec.cases2 <- data.table(inf.by.y = as.character(Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by.y]),
+                             Secondary.cases = 0)
+    Sec.cases2 <- output.full[Sec.cases2, on = "hosts.ID==inf.by.y"][, c("hosts.ID", "Secondary.cases", "host.type")]
+    colnames(Sec.cases2) <- c("inf.by.y", "Secondary.cases", "host.type")
+
+    # Sec.cases2 <- dplyr::left_join(Sec.cases2, output.full[,c("hosts.ID","host.type")], by=c("inf.by.y"="hosts.ID"))
+    # Sec.cases2 <- data.table(Sec.cases2)
+
+    Sec.cases <- rbindlist(list(Sec.cases1,Sec.cases2),use.names=TRUE)
+
+    Sec.cases.A <- subset(Sec.cases, host.type == nosoi.output$host.info.A$prefix.host)$Secondary.cases
+    Sec.cases.B <- subset(Sec.cases, host.type == nosoi.output$host.info.B$prefix.host)$Secondary.cases
+
+    return(list(N.inactive.A = N.inactive.A,
+                R0.hostA.mean = mean(Sec.cases.A),
+                R0.hostA.dist = Sec.cases.A,
+                N.inactive.B = N.inactive.B,
+                R0.hostB.mean = mean(Sec.cases.B),
+                R0.hostB.dist = Sec.cases.B))
+  }
+}
+
+# Old version, using dplyr and a loop
+#' @keywords internal
+getR0Old  <- function(nosoi.output) {
+  if (!requireNamespace("dplyr", quietly = TRUE)) {
+    stop("Package 'dplyr', is needed for 'getDynamicOld'.",
+         call. = FALSE)
+  }
   #To avoids notes (use of dplyr functions)
   suffix <- NULL
   inf.by.y <- NULL
