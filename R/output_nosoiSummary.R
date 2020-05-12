@@ -360,7 +360,6 @@ getDynamicOld  <- function(nosoi.output) {
 #'
 #' @seealso \code{\link{summary.nosoiSim}}
 #'
-#' @import stringr
 #' @export getR0
 
 getR0  <- function(nosoi.output) {
@@ -384,7 +383,7 @@ getR0  <- function(nosoi.output) {
     output.full.merged <- as.data.table(output.full.merged)
 
     #estimating R0 (mean number of secondary cases)
-    Sec.cases1 <- output.full.merged[!str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
+    Sec.cases1 <- output.full.merged[!stringr::str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
     Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y)
     Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
     Sec.cases1 <- data.table(Sec.cases1)
@@ -422,7 +421,7 @@ getR0  <- function(nosoi.output) {
     output.full.merged <- as.data.table(output.full.merged)
 
     #estimating R0 (mean number of secondary cases), R0 to the other host
-    Sec.cases1 <- output.full.merged[!str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
+    Sec.cases1 <- output.full.merged[!stringr::str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
     Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y, host.type)
     Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
     Sec.cases1 <- data.table(Sec.cases1)

@@ -187,6 +187,11 @@ test_that("Diffusion in continuous space", {
   expect_equal(nrow(getHostData(test.nosoiA, "table.hosts")),648)
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
 
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
 })
 
 test_that("Epidemic dying out", {
@@ -238,6 +243,11 @@ test_that("Epidemic dying out", {
 
   expect_equal(nrow(getHostData(test.nosoiA, "table.hosts")),3)
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
 
 })
 
@@ -308,4 +318,9 @@ test_that("Diffusion in continuous space with host count", {
 
   expect_equal(nrow(getHostData(test.nosoiA, "table.hosts")),115)
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
 })

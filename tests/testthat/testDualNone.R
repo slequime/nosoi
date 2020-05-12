@@ -58,10 +58,10 @@ test_that("Transmission is coherent with single introduction (host A) same for b
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
 
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 20)
 
@@ -91,6 +91,11 @@ test_that("Transmission is coherent with single introduction (host A) same for b
   #Check errors
   expect_error(test.stateTable.A <- getTableState(test.nosoiA, pop="B"),
                "There is no state information kept when the host population B has no structure.")
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
 
 })
 
@@ -169,10 +174,10 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 10)
 
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 17)
 
@@ -180,6 +185,11 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(getHostData(test.nosoiA, "N.infected", "B"), 226)
 
   expect_equal(colnames(getHostData(test.nosoiA, "table.host", "A"))[6],"t_infectA")
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, time dependancy for host B pExit", {
@@ -257,15 +267,20 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 12)
 
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "B")$inf.by,"V-") == FALSE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "B")[-1]$inf.by,"H-") == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 39)
 
   expect_equal(getHostData(test.nosoiA, "N.infected", "A"), 71)
   expect_equal(getHostData(test.nosoiA, "N.infected", "B"), 221)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
 
 })
 
@@ -317,8 +332,8 @@ test_that("Epidemic dying out", {
                           timeDep.pTrans.B=FALSE,
                           prefix.host.B="V")
 
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(getHostData(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "A")$inf.by,"H-") == FALSE),TRUE)
+  expect_equal(all(stringr::str_detect(getHostData(test.nosoiA, "table.host", "A")[-1]$inf.by,"V-") == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 5)
 
@@ -328,4 +343,9 @@ test_that("Epidemic dying out", {
   expect_equal(test.nosoiA$type, "dual")
   expect_equal(getHostData(test.nosoiA, "popStructure", "A"), "none")
   expect_equal(getHostData(test.nosoiA, "popStructure", "B"), "none")
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
 })
