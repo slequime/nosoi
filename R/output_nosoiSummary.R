@@ -114,7 +114,7 @@ numberInfected <- function(table.hosts, t) {
 numberInfectedStates <- function(table.states, t) {
   # Attention: need to test that t < t_max
   already_infected <- table.states$time.from < t  # Strict  inequality: if infected at time t, becomes active at time t + 1
-  still_infected <- table.states$time.to >= t    # Strict inequality: if out at time t, not active for generation t
+  still_infected <- table.states$time.to > t    # Strict inequality: if out at time t, not active for generation t
   still_infected[is.na(still_infected)] <- TRUE # NA means infected till the end
   return(sum(already_infected & still_infected))
 }
@@ -303,7 +303,7 @@ getDynamicOld  <- function(nosoi.output) {
     results.dynamic=data.table()
     for(t in 0:(nosoi.output$total.time + 1)){
       table.state.temp <- subset(nosoi.output$host.info.A$table.state,
-                                 (time.from < t & (is.na(time.to)|time.to >= t)))
+                                 (time.from < t & (is.na(time.to)|time.to > t)))
       table.state.temp <- dplyr::group_by(table.state.temp, state)
       table.state.temp <- dplyr::summarise(table.state.temp, Count=length(hosts.ID))
       table.state.temp <- dplyr::mutate(table.state.temp, type=nosoi.output$host.info.A$prefix.host,  t=t )
@@ -327,13 +327,13 @@ getDynamicOld  <- function(nosoi.output) {
   if (nosoi.output$type == "dual" && nosoi.output$host.info.A$popStructure == "discrete" && nosoi.output$host.info.B$popStructure == "discrete"){
     results.dynamic=data.table()
     for(t in 0:(nosoi.output$total.time +1)){
-      table.state.tempA <- subset(nosoi.output$host.info.A$table.state, (time.from < t & (is.na(time.to)|time.to >= t)))
+      table.state.tempA <- subset(nosoi.output$host.info.A$table.state, (time.from < t & (is.na(time.to)|time.to > t)))
       table.state.tempA <- dplyr::group_by(table.state.tempA, state)
       table.state.tempA <- dplyr::summarise(table.state.tempA, Count=length(hosts.ID))
       table.state.tempA <- dplyr::mutate(table.state.tempA, type=nosoi.output$host.info.A$prefix.host,  t=t )
       table.state.tempA <- data.table(table.state.tempA)
 
-      table.state.tempB <- subset(nosoi.output$host.info.B$table.state, (time.from < t & (is.na(time.to)|time.to >= t)))
+      table.state.tempB <- subset(nosoi.output$host.info.B$table.state, (time.from < t & (is.na(time.to)|time.to > t)))
       table.state.tempB <- dplyr::group_by(table.state.tempB, state)
       table.state.tempB <- dplyr::summarise(table.state.tempB, Count=length(hosts.ID))
       table.state.tempB <- dplyr::mutate(table.state.tempB, type=nosoi.output$host.info.B$prefix.host,  t=t )

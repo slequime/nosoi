@@ -190,9 +190,9 @@ test_that("Movement is coherent with single introduction, constant pMove", {
 
   expect_equal(test$R0$N.inactive, 31)
   expect_equal(test$dynamics[21]$t, 14)
-  expect_equal(test$dynamics[21]$Count, 4)
+  expect_equal(test$dynamics[21]$Count, 11)
   expect_equal(test$dynamics[21]$type, "H")
-  expect_equal(test$dynamics[21]$state, "B")
+  expect_equal(test$dynamics[21]$state, "C")
 
   #Get host table
   test.hostTable.A <- getTableHosts(test.nosoiA)
@@ -1055,9 +1055,9 @@ test_that("Movement is coherent with single introduction, no pMove, no die, diff
 
   #Number of host at each loc at each time
   out = getDynamic(test.nosoiA) #  ggplot(out, aes(x=t,y=Count,color=state)) + geom_line() + geom_hline(yintercept=30)
-  expect_equal(subset(out,state=="C" & t==26)$Count,30)
-  expect_equal(subset(out,state=="B" & t==26)$Count,17)
-  expect_equal(subset(out,state=="A" & t==25)$Count,32)
+  expect_equal(subset(out,state=="C" & t==26)$Count,28)
+  expect_equal(subset(out,state=="B" & t==26)$Count,15)
+  expect_equal(subset(out,state=="A" & t==25)$Count,30)
 
   skip_if_not_installed("dplyr")
   dynOld <- getDynamicOld(test.nosoiA)
