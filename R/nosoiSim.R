@@ -75,8 +75,8 @@
 #' @export nosoiSim
 #'
 #' @import data.table
-#' @import methods
-#' @import stats
+#' @importFrom methods formalArgs substituteDirect
+#' @importFrom stats rnorm runif
 
 nosoiSim <- function(type="single", popStructure="none", ...){
 
