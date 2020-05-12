@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteDepends{ggplot2}
+  %\VignetteDepends{dplyr}
 ---
 
 # Introduction

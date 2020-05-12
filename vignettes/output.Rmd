@@ -12,6 +12,7 @@ vignette: >
   %\VignetteDepends{tidytree}
   %\VignetteDepends{ggtree}
   %\VignetteDepends{ggplot2}
+  %\VignetteDepends{dplyr}
 ---
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(

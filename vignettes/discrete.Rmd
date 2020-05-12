@@ -8,6 +8,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{ggplot2}
+  %\VignetteDepends{dplyr}
   %\VignetteDepends{igraph}
   %\VignetteDepends{viridis}
   %\VignetteDepends{ggnetwork}
@@ -285,8 +286,8 @@ n_contact_fct = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
 The distribution of `nContact` looks as follows:
 
 ```{r nContact2, echo=FALSE, message=FALSE}
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  message("Package 'ggplot2' is needed for plotting this figure.")
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("dplyr", quietly = TRUE)) {
+  message("Packages 'ggplot2' and 'dplyr' are needed for plotting this figure.")
 } else {
   library(ggplot2)
   library(dplyr)
@@ -328,8 +329,8 @@ Note that here `t_incub` and `p_max` are functions of `x` and not `t` (they are 
 Taken together, the profile for `pTrans` for a subset of 200 individuals in the population will look as follows:
 
 ```{r pTrans3, echo=FALSE}
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  message("Package 'ggplot2' is needed for plotting this figure.")
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("dplyr", quietly = TRUE)) {
+  message("Packages 'ggplot2' and 'dplyr' are needed for plotting this figure.")
 } else {
   library(ggplot2)
   library(dplyr)
@@ -485,8 +486,8 @@ n_contact_fct.B = function(t){sample(c(0,1,2),1,prob=c(0.6,0.3,0.1))}
 The distribution of `nContact.B` looks as follows:
 
 ```{r nContact2.B, echo=FALSE}
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  message("Package 'ggplot2' is needed for plotting this figure.")
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("dplyr", quietly = TRUE)) {
+  message("Packages 'ggplot2' and 'dplyr' are needed for plotting this figure.")
 } else {
   library(ggplot2)
   library(dplyr)
@@ -525,8 +526,8 @@ Note again that here `max.time` is a function of `x` and not `t` (not a core fun
 Taken together, the profile for `pTrans` for a subset of 200 individuals in the population will look as follow:
 
 ```{r pTrans3.B, echo=FALSE}
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  message("Package 'ggplot2' is needed for plotting this figure.")
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("dplyr", quietly = TRUE)) {
+  message("Packages 'ggplot2' and 'dplyr' are needed for plotting this figure.")
 } else {
   library(ggplot2)
   library(dplyr)

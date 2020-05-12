@@ -26,8 +26,6 @@ Depends:
 Imports:
     stats (>= 3.5.2),
     methods (>= 3.5.2),
-    dplyr (>= 0.8.0),
-    magrittr (>= 1.5),
     stringr (>= 1.4.0),
     raster (>= 2.8-19)
 Suggests:
@@ -46,5 +44,7 @@ Suggests:
     ape (>= 5.3),
     tidytree (>= 0.3.3),
     treeio (>= 1.10.0),
-    ggtree (>= 2.0.2)
+    ggtree (>= 2.0.2),
+    magrittr (>= 1.5),
+    dplyr (>= 0.8.0)
 VignetteBuilder: knitr
