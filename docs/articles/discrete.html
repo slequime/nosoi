@@ -181,7 +181,7 @@
       <h1>Spread of a pathogen in a discrete structured population</h1>
                         <h4 class="author">Sebastian Lequime</h4>
             
-            <h4 class="date">2020-05-12</h4>
+            <h4 class="date">2020-05-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/discrete.Rmd"><code>vignettes/discrete.Rmd</code></a></small>
       <div class="hidden name"><code>discrete.Rmd</code></div>
@@ -426,8 +426,8 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">p_Exit_fct  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.in){</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"A"</span>){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.02</span>)}</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"B"</span>){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.05</span>)}</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"C"</span>){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.1</span>)}}</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="er">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">"C"</span>){<span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fl">0.1</span>)}</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">}</a></code></pre></div>
 <p>This function indicates that if the host is in state “A”, it has 2% chance to exit, 5% if in state “B” and 10% if in state “C”. Remember that <code>pExit</code>, like the other core functions, has to be function of <code>t</code>, even if <code>t</code> is not used. Since <code>pExit</code> is dependent on the location, <code>diff.pExit=TRUE</code>. However, there is no use of the “absolute” time of the simulation nor individual-based parameters, hence <code>timeDep.pExit=FALSE</code> and <code>param.pExit=NA</code>.</p>
 </div>
 <div id="pmove" class="section level3">

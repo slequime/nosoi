@@ -150,7 +150,7 @@ The user specified function's arguments should follow this order: \code{t} (mand
 \examples{
 \donttest{
 library(raster)
-#Generating a raster the for movement
+#Generating a raster for the movement
 set.seed(860)
 
 test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)

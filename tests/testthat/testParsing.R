@@ -221,7 +221,7 @@ test_that("Error message with continuous structure", {
 
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(10)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)

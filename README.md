@@ -2,7 +2,6 @@ nosoi <img src="man/figures/logo.png" align="right" alt="" width="120" />
 ===============
 [![Travis-CI Build Status](https://api.travis-ci.org/slequime/nosoi.svg?branch=master)](https://travis-ci.org/slequime/nosoi)
 [![codecov](https://codecov.io/gh/slequime/nosoi/branch/master/graph/badge.svg)](https://codecov.io/gh/slequime/nosoi)
-[![](https://img.shields.io/badge/docs-vignettes-blue.svg)](http://slequime.github.io/nosoi/)
 [![](https://img.shields.io/github/license/slequime/nosoi)](http://slequime.github.io/nosoi/)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/nosoi)](https://cran.r-project.org/package=nosoi)
 

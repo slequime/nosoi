@@ -3,7 +3,7 @@ context("Testing dual-host with continuous structure")
 test_that("Both hosts move", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -130,7 +130,7 @@ test_that("Both hosts move", {
 test_that("One host (A) moves", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -263,7 +263,7 @@ test_that("One host (A) moves", {
 test_that("One host (B) moves", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -395,7 +395,7 @@ test_that("One host (B) moves", {
 test_that("Epidemic dies out", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -514,7 +514,7 @@ test_that("Epidemic dies out", {
 test_that("Error if no host move", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -607,7 +607,7 @@ test_that("Error if no host move", {
 test_that("One host (B) moves, host count", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)

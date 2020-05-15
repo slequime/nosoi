@@ -1,5 +1,5 @@
-## This version 1.0.3
-In this version we fix the errors triggered by the update of tibble to version 1.0.0, fix two internal issues, and reduce the dependency to other packages.
+## This version 1.0.4
+In this version we fix typos in the documentation (following review of the manuscript).
 
 ## Test environments
 * local OS X install, R 3.6.2

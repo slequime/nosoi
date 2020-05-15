@@ -3,7 +3,7 @@ context("Testing single-host with continuous structure")
 test_that("Error message pops out when missing state in diff functions", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -138,7 +138,7 @@ test_that("Error message pops out when missing state in diff functions", {
 test_that("Diffusion in continuous space", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -200,7 +200,7 @@ test_that("Diffusion in continuous space", {
 test_that("Epidemic dying out", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(10)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -263,7 +263,7 @@ test_that("Diffusion in continuous space with host count", {
   # profvis({
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)

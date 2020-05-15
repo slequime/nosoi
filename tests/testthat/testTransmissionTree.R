@@ -150,7 +150,7 @@ test_that("Single, continuous", {
   skip_if_not_installed("tidytree")
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -462,7 +462,7 @@ test_that("Dual, continuous", {
   skip_if_not_installed("tidytree")
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)

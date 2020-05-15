@@ -1,3 +1,7 @@
+# nosoi 1.0.3 (dev)
+* Fixing typos in the documentation (following review of the manuscript)
+* Updating website
+
 # nosoi 1.0.3
 * Fixing error producing issue following `dplyr`'s update to 1.0.0
 * Fixing an issue (wrong attribution of discrete states for internal nodes) in the function `nosoi::getTransmissionTree`
