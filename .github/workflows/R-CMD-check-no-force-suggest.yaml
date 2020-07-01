@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - try_github_action
+      - master
   pull_request:
     branches:
       - master
