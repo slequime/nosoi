@@ -61,6 +61,7 @@ jobs:
         run: |
           remotes::install_deps(dependencies = NA)
           remotes::install_cran("rcmdcheck")
+          remotes::install_cran(c("testthat", "knitr", "rmarkdown"))
         shell: Rscript {0}
 
       - name: Check
