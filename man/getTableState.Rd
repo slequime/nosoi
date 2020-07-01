@@ -12,7 +12,7 @@ getTableState(nosoi.output, pop = "A")
 \item{pop}{the host-type to be extracted (either "A" or "B", if not dual-host, then "A")}
 }
 \value{
-Returns a \code{\link[data.table:data.table-package]{data.table}} with the requested data. The \code{table.state} (class \code{\link[data.table:data.table-package]{data.table}}) contains informations the location of each host during time (one row is one host at one location).
+Returns a \code{\link[data.table]{data.table}} with the requested data. The \code{table.state} (class \code{\link[data.table]{data.table}}) contains informations the location of each host during time (one row is one host at one location).
 The structure of the table is the following:
 \describe{
    \item{hosts.ID}{Unique identifier for the host, based on user-defined prefix and an integer.}

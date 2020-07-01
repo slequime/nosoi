@@ -423,7 +423,7 @@ draw_one_sample <- function(table.states, total.time, tree, sample) {
 #'
 #' @param nosoiInf an object of class \code{\link{nosoiSim}}
 #' @param tree a \code{\link[tidytree:treedata]{treedata}} object created by function \code{\link{getTransmissionTree}}
-#' @param samples a \code{\link[data.table:data.table-package]{data.table}} object with the following entries:
+#' @param samples a \code{\link[data.table]{data.table}} object with the following entries:
 #' \describe{
 #'   \item{hosts}{Host ID of the individuals to be sampled}
 #'   \item{times}{Times at which each host is sampled}
@@ -502,7 +502,7 @@ sampleTransmissionTreeFromExiting <- function(tree, hosts) {
 #' @title  Keep tips
 #'
 #' @description
-#'  Keep the tips in the list. See \code{\link[ape:keep.tip]{keep.tip}}
+#'  Keep the tips in the list. See \code{\link[ape:drop.tip]{keep.tip}}
 #'
 #' @keywords internal
 

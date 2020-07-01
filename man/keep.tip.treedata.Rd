@@ -7,6 +7,6 @@
 keep.tip.treedata(tree, tip)
 }
 \description{
-Keep the tips in the list. See \code{\link[ape:keep.tip]{keep.tip}}
+Keep the tips in the list. See \code{\link[ape:drop.tip]{keep.tip}}
 }
 \keyword{internal}

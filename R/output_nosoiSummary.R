@@ -10,8 +10,8 @@
 #' @return All computed data is provided in a list:
 #' \describe{
 #'    \item{R0}{Provides a sublist with number of inactive hosts at the end of the simulation \code{N.inactive}, mean R0 \code{R0.mean}, and R0 distribution \code{R0.dist}. For more details, see \code{\link{getR0}}.}
-#'    \item{dynamics}{\code{\link[data.table:data.table-package]{data.table}} with the count of currently infected (i.e. active) hosts at each time step of the simulation (by state if the simulation was in a discrete structured host population). For more details, see \code{\link{getDynamic}}.}
-#'    \item{cumulative}{\code{\link[data.table:data.table-package]{data.table}} with the cumulative count of infected hosts at each time step of the simulation. For more details, see \code{\link{getCumulative}}.}
+#'    \item{dynamics}{\code{\link[data.table]{data.table}} with the count of currently infected (i.e. active) hosts at each time step of the simulation (by state if the simulation was in a discrete structured host population). For more details, see \code{\link{getDynamic}}.}
+#'    \item{cumulative}{\code{\link[data.table]{data.table}} with the cumulative count of infected hosts at each time step of the simulation. For more details, see \code{\link{getCumulative}}.}
 #'    }
 #'
 #' @seealso You can directly compute each elements of the list without using the summarise function. See \code{\link{getR0}}, \code{\link{getDynamic}} and \code{\link{getCumulative}}.
@@ -164,11 +164,11 @@ cumulativeInfected  <- function(table.nosoi, t) {
 
 #' @title Gets the cumulative number of infected hosts for the full length of the simulation
 #'
-#' @description This function computes from the output of a \code{nosoiSim} simulation the cumulative count of infected hosts at each time step of the simulation. The output is a \code{\link[data.table:data.table-package]{data.table}}.
+#' @description This function computes from the output of a \code{nosoiSim} simulation the cumulative count of infected hosts at each time step of the simulation. The output is a \code{\link[data.table]{data.table}}.
 #'
 #' @param nosoi.output Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).
 #'
-#' @return The output is a \code{\link[data.table:data.table-package]{data.table}} with the following structure:
+#' @return The output is a \code{\link[data.table]{data.table}} with the following structure:
 #' \describe{
 #'    \item{t}{Time-step (integer).}
 #'    \item{Count}{Cumulative number of infected hosts at given time-step.}
@@ -179,7 +179,7 @@ cumulativeInfected  <- function(table.nosoi, t) {
 #'
 #' @export getCumulative
 
-getCumulative  <- function(nosoi.output) {
+getCumulative <- function(nosoi.output) {
 
   if (nosoi.output$type == "single"){
     results.cumulative <- data.table()
@@ -203,11 +203,11 @@ getCumulative  <- function(nosoi.output) {
 
 #' @title Gets the current number of infected hosts for the full length of the simulation
 #'
-#' @description This function computes from the output of a \code{nosoiSim} simulation the dynamic count of infected hosts at each time step (and each state if discrete structure) of the simulation. The output is a \code{\link[data.table:data.table-package]{data.table}}.
+#' @description This function computes from the output of a \code{nosoiSim} simulation the dynamic count of infected hosts at each time step (and each state if discrete structure) of the simulation. The output is a \code{\link[data.table]{data.table}}.
 #'
 #' @param nosoi.output Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).
 #'
-#' @return The output is a \code{\link[data.table:data.table-package]{data.table}} with the following structure:
+#' @return The output is a \code{\link[data.table]{data.table}} with the following structure:
 #' \describe{
 #'    \item{state}{(only when discrete structure) Given state}
 #'    \item{Count}{Current number of infected hosts at given time-step.}

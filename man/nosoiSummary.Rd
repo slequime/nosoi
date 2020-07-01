@@ -18,8 +18,8 @@ nosoiSummary(object)
 All computed data is provided in a list:
 \describe{
    \item{R0}{Provides a sublist with number of inactive hosts at the end of the simulation \code{N.inactive}, mean R0 \code{R0.mean}, and R0 distribution \code{R0.dist}. For more details, see \code{\link{getR0}}.}
-   \item{dynamics}{\code{\link[data.table:data.table-package]{data.table}} with the count of currently infected (i.e. active) hosts at each time step of the simulation (by state if the simulation was in a discrete structured host population). For more details, see \code{\link{getDynamic}}.}
-   \item{cumulative}{\code{\link[data.table:data.table-package]{data.table}} with the cumulative count of infected hosts at each time step of the simulation. For more details, see \code{\link{getCumulative}}.}
+   \item{dynamics}{\code{\link[data.table]{data.table}} with the count of currently infected (i.e. active) hosts at each time step of the simulation (by state if the simulation was in a discrete structured host population). For more details, see \code{\link{getDynamic}}.}
+   \item{cumulative}{\code{\link[data.table]{data.table}} with the cumulative count of infected hosts at each time step of the simulation. For more details, see \code{\link{getCumulative}}.}
    }
 }
 \description{

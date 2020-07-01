@@ -10,7 +10,7 @@ getDynamic(nosoi.output)
 \item{nosoi.output}{Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).}
 }
 \value{
-The output is a \code{\link[data.table:data.table-package]{data.table}} with the following structure:
+The output is a \code{\link[data.table]{data.table}} with the following structure:
 \describe{
    \item{state}{(only when discrete structure) Given state}
    \item{Count}{Current number of infected hosts at given time-step.}
@@ -19,7 +19,7 @@ The output is a \code{\link[data.table:data.table-package]{data.table}} with the
    }
 }
 \description{
-This function computes from the output of a \code{nosoiSim} simulation the dynamic count of infected hosts at each time step (and each state if discrete structure) of the simulation. The output is a \code{\link[data.table:data.table-package]{data.table}}.
+This function computes from the output of a \code{nosoiSim} simulation the dynamic count of infected hosts at each time step (and each state if discrete structure) of the simulation. The output is a \code{\link[data.table]{data.table}}.
 }
 \seealso{
 \code{\link{summary.nosoiSim}}
