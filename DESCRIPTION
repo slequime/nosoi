@@ -45,5 +45,6 @@ Suggests:
     treeio (>= 1.10.0),
     ggtree (>= 2.0.2),
     magrittr (>= 1.5),
-    dplyr (>= 0.8.0)
+    dplyr (>= 0.8.0),
+    covr
 VignetteBuilder: knitr
