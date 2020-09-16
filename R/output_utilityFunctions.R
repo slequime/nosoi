@@ -7,7 +7,7 @@
 #' @param what the data to get, among \code{table.hosts}, \code{N.infected}, \code{table.state} or \code{popStructure}.
 #' @param pop the population to be extracted (one of "A" or "B")
 #'
-#' @return Returns a \code{\link[data.table:data.table-package]{data.table}} with the requested data.
+#' @return Returns a \code{\link[data.table]{data.table}} with the requested data.
 #'
 #' @seealso To directly extract \code{table.hosts} or \code{table.state}, you can also use \code{\link{getTableHosts}} and \code{\link{getTableState}} respectively.
 #' @examples
@@ -66,7 +66,7 @@ getHostData <- function(nosoi.output,
 #' @param nosoi.output an object of class \code{\link{nosoiSim}}
 #' @param pop the host-type to be extracted (either "A" or "B", if not dual-host, then "A")
 #'
-#' @return Returns a \code{\link[data.table:data.table-package]{data.table}} with the requested data. The \code{table.hosts} (class \code{\link[data.table:data.table-package]{data.table}}) contains informations about each host that has been simulated (one row is one host).
+#' @return Returns a \code{\link[data.table]{data.table}} with the requested data. The \code{table.hosts} (class \code{\link[data.table]{data.table}}) contains informations about each host that has been simulated (one row is one host).
 #' The structure of the table is the following:
 #' \describe{
 #'    \item{hosts.ID}{Unique identifier for the host, based on user-defined prefix and an integer.}
@@ -95,7 +95,7 @@ getTableHosts <- function(nosoi.output, pop = "A") {
 #' @param nosoi.output an object of class \code{\link{nosoiSim}}
 #' @param pop the host-type to be extracted (either "A" or "B", if not dual-host, then "A")
 #'
-#' @return Returns a \code{\link[data.table:data.table-package]{data.table}} with the requested data. The \code{table.state} (class \code{\link[data.table:data.table-package]{data.table}}) contains informations the location of each host during time (one row is one host at one location).
+#' @return Returns a \code{\link[data.table]{data.table}} with the requested data. The \code{table.state} (class \code{\link[data.table]{data.table}}) contains informations the location of each host during time (one row is one host at one location).
 #' The structure of the table is the following:
 #' \describe{
 #'    \item{hosts.ID}{Unique identifier for the host, based on user-defined prefix and an integer.}

@@ -18,7 +18,7 @@ getHostData(
 \item{pop}{the population to be extracted (one of "A" or "B")}
 }
 \value{
-Returns a \code{\link[data.table:data.table-package]{data.table}} with the requested data.
+Returns a \code{\link[data.table]{data.table}} with the requested data.
 }
 \description{
 This function extracts data user-defined data (i.e. \code{table.hosts}, \code{N.infected}, \code{table.state} or \code{popStructure}) from a \code{\link{nosoiSim}} object.

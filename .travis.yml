@@ -14,7 +14,7 @@ r_github_packages:
 addons:
   apt:
     packages: cargo
-after_success:
-  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; then docker build -t test_no_suggest . ; fi
-  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; then docker run test_no_suggest ; fi
-  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; then Rscript -e 'covr::codecov()' ; fi
+# after_success:
+#  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; then docker build -t test_no_suggest . ; fi
+#  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; then docker run test_no_suggest ; fi
+#  - if [ "$TRAVIS_R_VERSION_STRING" == "release" ]; then Rscript -e 'covr::codecov()' ; fi

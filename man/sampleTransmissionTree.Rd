@@ -11,7 +11,7 @@ sampleTransmissionTree(nosoiInf, tree, samples)
 
 \item{tree}{a \code{\link[tidytree:treedata]{treedata}} object created by function \code{\link{getTransmissionTree}}}
 
-\item{samples}{a \code{\link[data.table:data.table-package]{data.table}} object with the following entries:
+\item{samples}{a \code{\link[data.table]{data.table}} object with the following entries:
 \describe{
   \item{hosts}{Host ID of the individuals to be sampled}
   \item{times}{Times at which each host is sampled}

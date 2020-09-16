@@ -12,7 +12,7 @@ getTableHosts(nosoi.output, pop = "A")
 \item{pop}{the host-type to be extracted (either "A" or "B", if not dual-host, then "A")}
 }
 \value{
-Returns a \code{\link[data.table:data.table-package]{data.table}} with the requested data. The \code{table.hosts} (class \code{\link[data.table:data.table-package]{data.table}}) contains informations about each host that has been simulated (one row is one host).
+Returns a \code{\link[data.table]{data.table}} with the requested data. The \code{table.hosts} (class \code{\link[data.table]{data.table}}) contains informations about each host that has been simulated (one row is one host).
 The structure of the table is the following:
 \describe{
    \item{hosts.ID}{Unique identifier for the host, based on user-defined prefix and an integer.}
