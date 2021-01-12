@@ -129,7 +129,7 @@ getTransmissionTree <- function(nosoiInf) {
 
     ## Parent of curent host
     parent <- table.hosts[table.hosts[["indTips"]] == curentHost, "indNodes"]
-    t_parent <- table.hosts[table.hosts[["indTips"]] == curentHost, "inf.time"]
+    t_parent <- table.hosts[table.hosts[["indTips"]] == curentHost, ][["inf.time"]]
 
     ## Each distinct infection events from the host
     for (child in unique(sub.table[["indNodes"]])) {
@@ -139,7 +139,7 @@ getTransmissionTree <- function(nosoiInf) {
       t_child <- sst[["inf.time"]]
 
       if (counter == 1) { ## Root
-        treeTable[counter, ] <- c(parent = getNodeIndex(child), # Root is its own parent
+        treeTable[counter, ] <- list(parent = getNodeIndex(child), # Root is its own parent
                                   node = getNodeIndex(child),
                                   branch.length = t_child - t_parent,
                                   label = paste0(sst[["inf.by"]], "_", counter),
@@ -150,7 +150,7 @@ getTransmissionTree <- function(nosoiInf) {
                                   time.parent = t_parent,
                                   time = t_child)
       } else {
-        treeTable[counter, ] <- c(parent = getNodeIndex(parent),
+        treeTable[counter, ] <- list(parent = getNodeIndex(parent),
                                   node = getNodeIndex(child),
                                   branch.length = t_child - t_parent,
                                   label = paste0(sst[["inf.by"]], "_", counter),
@@ -170,7 +170,7 @@ getTransmissionTree <- function(nosoiInf) {
 
     ## Last tip: fictive "dying" host
     t_child <- table.hosts[["out.time"]][curentHost]
-    treeTable[counter, ] <- c(parent = getNodeIndex(parent),
+    treeTable[counter, ] <- list(parent = getNodeIndex(parent),
                               node = curentHost,
                               branch.length = t_child - t_parent,
                               label = hosts[curentHost],
@@ -186,6 +186,7 @@ getTransmissionTree <- function(nosoiInf) {
   # Remove NAs
   popStructure <- getHostData(nosoiInf, "popStructure")
   switch(popStructure,
+         none = treeTable$state <- treeTable$state.x <- treeTable$state.y <- NULL,
          discrete = treeTable$state.x <- treeTable$state.y <- NULL,
          continuous = treeTable$state <- NULL)
 
@@ -227,6 +228,7 @@ merge_host_tables <- function(nosoiInf) {
 
 #' @rdname merge_host_tables
 merge_state_tables <- function(nosoiInf) {
+  if (getHostData(nosoiInf, "popStructure") == "none") return(NA)
   if (nosoiInf$type == "single") {
     return(nosoiInf$host.info.A$table.state) # Just the bare table
   } else if (nosoiInf$type == "dual") {
@@ -238,8 +240,8 @@ merge_state_tables <- function(nosoiInf) {
 ## Utility functions to get entries in the table, returning NA if does not exist.
 is.error <- function(x) inherits(x, "try-error")
 safeGet <- function(dt, i, name) {
-  res <- try(dt[i, name, with = FALSE], silent = TRUE)
-  if (is.error(res)) return(NA);
+  res <- dt[i, ][[name]]
+  if (is.null(res)) return(NA);
   return(res)
 }
 
@@ -317,6 +319,7 @@ get_position <- function(tdata, node, time) {
 ##
 get_state <- function(table.state, host, time, total.time) {
   if (time > total.time) stop(paste0("Time ", time, " is larger than total time ", total.time, " for the epidemic."))
+  if (length(table.state) == 1 && is.na(table.state)) return(NULL) # no structure
   table.state$time.to[is.na(table.state$time.to)] <- Inf
   node_bool_host <- (table.state$hosts.ID == host)
   if (sum(node_bool_host) < 1) stop(paste0("There are no host named ", host, " in the chain."))
@@ -369,7 +372,7 @@ add_node_tip <- function(tree, host, time, label, state) {
                          time = c(time, time))
   if (length(state) == 1) {
     df$state <- c(state, state)
-  } else {
+  } else if (length(state) == 2) {
     df$state.x <- c(state["state.x"], state["state.x"])
     df$state.y <- c(state["state.y"], state["state.y"])
   }
