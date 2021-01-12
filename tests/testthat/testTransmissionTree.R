@@ -771,3 +771,261 @@ test_that("Single, discrete, Sink", {
   }
 
 })
+
+test_that("Single, none", {
+
+  skip_if_not_installed("ape")
+  skip_if_not_installed("treeio")
+  skip_if_not_installed("tidytree")
+
+  #pExit
+  p_Exit_fct  <- function(t){return(0.08)}
+
+  #nContact
+  n_contact_fct = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
+
+  #pTrans
+  p_Trans_fct <- function(t,p_max,t_incub){
+    if(t < t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  t_incub_fct <- function(x){rnorm(x,mean = 7,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+
+  param_pTrans = list(p_max=p_max_fct,t_incub=t_incub_fct)
+
+  set.seed(805)
+  SimulationSingle <- nosoiSim(type="single", popStructure="none",
+                               length.sim=100, max.infected=100, init.individuals=1,
+                               nContact=n_contact_fct,
+                               param.nContact=NA,
+                               timeDep.nContact=FALSE,
+                               pExit = p_Exit_fct,
+                               param.pExit=NA,
+                               timeDep.pExit=FALSE,
+                               pTrans = p_Trans_fct,
+                               param.pTrans = param_pTrans,
+                               timeDep.pTrans=FALSE,
+                               prefix.host="H",
+                               print.progress=FALSE)
+
+  thostTable <- getTableHosts(SimulationSingle)
+  expect_error(tstateTable <- getTableState(SimulationSingle), "There is no state information")
+  tot_time <- SimulationSingle$total.time
+
+  ## Full transmission tree
+  ttreedata <- getTransmissionTree(SimulationSingle)
+  ttree <- ttreedata@phylo
+  tdata <- ttreedata@data
+  # total time
+  expect_equivalent(max(diag(ape::vcv(ttree))) + ttree$root.edge, SimulationSingle$total.time)
+  # hosts
+  nHosts <- nrow(thostTable)
+  for (i in 2:nrow(thostTable)) {
+    expect_equivalent(subset(tdata, node == nHosts + thostTable$indNodes[i] - 1)$host,
+                      thostTable$inf.by[i])
+  }
+  # number of descendants
+  for (i in 2:nrow(thostTable)) {
+    expect_equivalent(length(tidytree::child(ttree, nHosts + thostTable$indNodes[i] - 1)),
+                      sum(thostTable$indNodes == thostTable$indNodes[i]) + 1)
+  }
+
+  ## Extracting functions
+  # Errors
+  expect_error(get_node(tdata, "H-123", 2.2), "There are no node with host H-123 in the tree.")
+  expect_error(get_node(tdata, "H-7", 2.2), "Host H-7 is not alive at time 2.2.")
+  expect_error(get_node(tdata, "H-7", 11.3), "Host H-7 is not alive at time 11.3.")
+  # Tip
+  expect_equivalent(get_node(tdata, "H-7", 25), 7)
+  expect_equivalent(get_node(tdata, "H-7", 23), 7)
+  expect_equivalent(get_node(tdata, "H-56", tot_time), 56)
+  #
+  expect_equivalent(get_position(tdata, 7, 7), 20)
+  expect_equivalent(get_position(tdata, 7, 8.5), 18.5)
+  expect_equivalent(get_position(tdata, 4, 15.1), 9.9)
+  # Node
+  expect_equivalent(get_node(tdata, "H-1", 6.9), 112)
+  expect_equivalent(get_node(tdata, "H-1", 7), 113)
+  #
+  expect_equivalent(get_position(tdata, 126, 6.5), 13.5)
+  expect_equivalent(get_position(tdata, 127, 7.5), 12.5)
+
+  ## Full extraction
+  hID <- c("H-1", "H-7", "H-15", "H-100")
+  samples <- data.table(hosts = hID,
+                        times = c(5.2, 25.3, 20.2, 40),
+                        labels = paste0(hID, "-s"))
+
+  sampledTree <- sampleTransmissionTree(SimulationSingle, ttreedata, samples)
+  # plot(sampledTree@phylo)
+
+  sttree <- sampledTree@phylo
+  stdata <- sampledTree@data
+  # total time
+  expect_equivalent(max(diag(ape::vcv(sttree))) + sttree$root.edge, SimulationSingle$total.time)
+  # DO MORE TESTS
+
+  ## Sampling from the deads
+  sampledDeadTree <- sampleTransmissionTreeFromExiting(ttreedata, hID)
+  # plot(sampledDeadTree@phylo)
+  sampledDeadTreeData <- tidytree::as_tibble(sampledDeadTree)
+  sampledDeadTreeData[1:length(hID), ] <- sampledDeadTreeData[match(hID, sampledDeadTreeData$label), ]
+
+  # Check that the two methods give the same results
+  samples <- data.table(hosts = hID,
+                        times = thostTable[match(hID, thostTable$hosts.ID), "out.time"],
+                        labels = paste0(hID, "-s"))
+  sampledTreeDeadBis <- sampleTransmissionTree(SimulationSingle, ttreedata, samples)
+  sampledTreeDeadBisData <- tidytree::as_tibble(sampledTreeDeadBis)
+
+  expect_equivalent(sampledDeadTreeData[["state"]], sampledTreeDeadBisData[["state"]])
+  expect_equivalent(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
+  expect_equivalent(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
+  expect_equivalent(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
+})
+
+test_that("Dual, none", {
+
+  skip_if_not_installed("ape")
+  skip_if_not_installed("treeio")
+  skip_if_not_installed("tidytree")
+
+  #pExit
+  p_Exit_fct.A  <- function(t){return(0.08)}
+
+  #nContact
+  n_contact_fct.A = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
+
+  #pTrans
+  p_Trans_fct.A <- function(t,p_max,t_incub){
+    if(t < t_incub){p=0}
+    if(t >= t_incub){p=p_max}
+    return(p)
+  }
+
+  t_incub_fct <- function(x){rnorm(x,mean = 7,sd=1)}
+  p_max_fct <- function(x){rbeta(x,shape1 = 5,shape2=2)}
+
+  param_pTrans.A = list(p_max=p_max_fct,t_incub=t_incub_fct)
+
+  #Host B ------------------------------------
+
+  #pExit
+  p_Exit_fct.B  <- function(t,prestime){(sin(prestime/(2*pi*10))+1)/16}
+
+  #nContact
+  n_contact_fct.B = function(t){sample(c(0,1,2),1,prob=c(0.6,0.3,0.1))}
+
+  #pTrans
+  p_Trans_fct.B <- function(t, max.time){
+    dnorm(t, mean=max.time, sd=2)*5
+  }
+
+  max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
+
+  param_pTrans.B = list(max.time=max.time_fct)
+
+  # Starting the simulation ------------------------------------
+
+  set.seed(606)
+  SimulationDual <- nosoiSim(type="dual", popStructure="none",
+                             length.sim=100,
+                             max.infected.A=100,
+                             max.infected.B=100,
+
+                             init.individuals.A=1,
+                             init.individuals.B=0,
+
+                             nContact.A=n_contact_fct.A,
+                             param.nContact.A=NA,
+                             timeDep.nContact.A=FALSE,
+                             pExit.A=p_Exit_fct.A,
+                             param.pExit.A=NA,
+                             timeDep.pExit.A=FALSE,
+                             pTrans.A=p_Trans_fct.A,
+                             param.pTrans.A=param_pTrans.A,
+                             timeDep.pTrans.A=FALSE,
+                             prefix.host.A="H",
+
+                             nContact.B=n_contact_fct.B,
+                             param.nContact.B=NA,
+                             timeDep.nContact.B=FALSE,
+                             pExit.B=p_Exit_fct.B,
+                             param.pExit.B=NA,
+                             timeDep.pExit.B=TRUE,
+                             pTrans.B=p_Trans_fct.B,
+                             param.pTrans.B=param_pTrans.B,
+                             timeDep.pTrans.B=FALSE,
+                             prefix.host.B="V",
+
+                             print.progress=FALSE)
+
+  thostTable <- merge_host_tables(SimulationDual)
+  tstateTable <- merge_state_tables(SimulationDual)
+  tot_time <- SimulationDual$total.time
+
+  thostTable$out.time[is.na(thostTable$out.time)] <- tot_time
+
+  ## Full transmission tree
+  ttreedata <- getTransmissionTree(SimulationDual)
+  ttree <- ttreedata@phylo
+  tdata <- ttreedata@data
+  # total time
+  expect_equivalent(max(diag(ape::vcv(ttree))) + ttree$root.edge, SimulationDual$total.time)
+
+  ## Extracting functions
+  # Errors
+  expect_error(get_node(tdata, "H-123", 2.2), "There are no node with host H-123 in the tree.")
+  expect_error(get_node(tdata, "H-11", 2.2), "Host H-11 is not alive at time 2.2.")
+  expect_error(get_node(tdata, "H-11", 14.2), "Host H-11 is not alive at time 14.2.")
+  # Tip
+  expect_equivalent(get_node(tdata, "H-11", 21), 21)
+  expect_equivalent(get_node(tdata, "H-11", 22), 21)
+  expect_equivalent(get_node(tdata, "V-66", tot_time), 146)
+  #
+  expect_equivalent(get_position(tdata, 18, 11), 12)
+  expect_equivalent(get_position(tdata, 18, 12.5), 10.5)
+  expect_equivalent(get_position(tdata, 141, 15.1), 26.9)
+  # Node
+  expect_equivalent(get_node(tdata, "V-1", 10.9), 196)
+  expect_equivalent(get_node(tdata, "V-1", 11), 198)
+  #
+  expect_equivalent(get_position(tdata, 150, 10.5), 32.5)
+  expect_equivalent(get_position(tdata, 152, 11.5), 31.5)
+
+  ## Full extraction
+  hID <- c("H-1", "H-11", "V-7", "V-66")
+  samples <- data.table(hosts = hID,
+                        times = c(5.2, 22.6, 16.2, 43),
+                        labels = paste0(hID, "-s"))
+
+  sampledTree <- sampleTransmissionTree(SimulationDual, ttreedata, samples)
+  # plot(sampledTree@phylo)
+
+  sttree <- sampledTree@phylo
+  stdata <- sampledTree@data
+  # total time
+  expect_equivalent(max(diag(ape::vcv(sttree))) + sttree$root.edge, SimulationDual$total.time)
+  # DO MORE TESTS
+
+  ## Sampling from the deads
+  sampledDeadTree <- sampleTransmissionTreeFromExiting(ttreedata, hID)
+  # plot(sampledDeadTree@phylo)
+  sampledDeadTreeData <- tidytree::as_tibble(sampledDeadTree)
+  sampledDeadTreeData[1:length(hID), ] <- sampledDeadTreeData[match(hID, sampledDeadTreeData$label), ]
+
+  # Check that the two methods give the same results
+  samples <- data.table(hosts = hID,
+                        times = thostTable[match(hID, thostTable$hosts.ID), "out.time"],
+                        labels = paste0(hID, "-s"))
+  samples[is.na(samples$times),"times.out.time"] <- tot_time
+  sampledTreeDeadBis <- sampleTransmissionTree(SimulationDual, ttreedata, samples)
+  sampledTreeDeadBisData <- tidytree::as_tibble(sampledTreeDeadBis)
+
+  expect_equivalent(sampledDeadTreeData$host, sampledTreeDeadBisData$host)
+  expect_equivalent(sampledDeadTreeData$time, sampledTreeDeadBisData$time)
+  expect_equivalent(sampledDeadTreeData$time.parent, sampledTreeDeadBisData$time.parent)
+})
