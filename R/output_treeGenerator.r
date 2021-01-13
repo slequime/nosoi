@@ -238,7 +238,7 @@ merge_state_tables <- function(nosoiInf) {
 }
 
 ## Utility functions to get entries in the table, returning NA if does not exist.
-is.error <- function(x) inherits(x, "try-error")
+# is.error <- function(x) inherits(x, "try-error")
 safeGet <- function(dt, i, name) {
   res <- dt[i, ][[name]]
   if (is.null(res)) return(NA);
