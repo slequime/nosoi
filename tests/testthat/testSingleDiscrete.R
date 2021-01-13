@@ -164,6 +164,9 @@ test_that("Movement is coherent with single introduction, constant pMove", {
                           param.pExit=NA
   )
 
+  ## Output
+  expect_output(print(test.nosoiA), "a single host with a discrete structure")
+
   #Structure
   g <- graph.data.frame(getHostData(test.nosoiA, "table.hosts")[,c(1,2)],directed=F)
   expect_equal(transitivity(g, type="global"), 0)

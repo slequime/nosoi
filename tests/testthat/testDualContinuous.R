@@ -90,6 +90,9 @@ test_that("Both hosts move", {
                           diff.pTrans.B=FALSE,
                           prefix.host.B="V")
 
+  ## Output
+  expect_output(print(test.nosoiA), "a dual host with a continuous structure")
+
   full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
   full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
 

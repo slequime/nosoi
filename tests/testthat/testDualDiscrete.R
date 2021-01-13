@@ -73,6 +73,9 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
                           diff.pTrans.B=FALSE,
                           prefix.host.B="V")
 
+  ## Output
+  expect_output(print(test.nosoiA), "a dual host with a discrete structure")
+
   full.results.nosoi <- rbindlist(list(test.nosoiA$host.info.A$table.hosts,test.nosoiA$host.info.B$table.hosts))
   full.results.nosoi.state <- rbindlist(list(test.nosoiA$host.info.A$table.state,test.nosoiA$host.info.B$table.state))
 

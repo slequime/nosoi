@@ -49,6 +49,8 @@ test_that("Transmission is coherent with single introduction (host A) same for b
                           timeDep.pTrans.B=FALSE,
                           prefix.host.B="V")
 
+  ## Output
+  expect_output(print(test.nosoiA), "a dual host with no structure")
 
   full.results.nosoi <- rbindlist(list(getHostData(test.nosoiA, "table.host", "A"),getHostData(test.nosoiA, "table.host", "B")))
 

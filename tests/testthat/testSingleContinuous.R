@@ -184,6 +184,9 @@ test_that("Diffusion in continuous space", {
                           pExit=p_Exit_fct,
                           param.pExit=NA)
 
+  ## Output
+  expect_output(print(test.nosoiA), "a single host with a continuous structure")
+
   expect_equal(nrow(getHostData(test.nosoiA, "table.hosts")),648)
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
 

@@ -32,6 +32,9 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
+  ## Output
+  expect_output(print(test.nosoiA), "a single host with no structure")
+
 })
 
 
