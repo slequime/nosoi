@@ -124,9 +124,18 @@ test_that("Both hosts move", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive.A,
+               ifelse(length(r_0$R0.hostA.dist) == 1 && is.na(r_0$R0.hostA.dist),
+                      0, length(r_0$R0.hostA.dist)))
+  expect_equal(r_0$N.inactive.B,
+               ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
+                      0, length(r_0$R0.hostB.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
+  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
+  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 
@@ -258,9 +267,18 @@ test_that("One host (A) moves", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive.A,
+               ifelse(length(r_0$R0.hostA.dist) == 1 && is.na(r_0$R0.hostA.dist),
+                      0, length(r_0$R0.hostA.dist)))
+  expect_equal(r_0$N.inactive.B,
+               ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
+                      0, length(r_0$R0.hostB.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
+  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
+  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("One host (B) moves", {
@@ -390,9 +408,18 @@ test_that("One host (B) moves", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive.A,
+               ifelse(length(r_0$R0.hostA.dist) == 1 && is.na(r_0$R0.hostA.dist),
+                      0, length(r_0$R0.hostA.dist)))
+  expect_equal(r_0$N.inactive.B,
+               ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
+                      0, length(r_0$R0.hostB.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
+  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
+  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("Epidemic dies out", {
@@ -509,9 +536,18 @@ test_that("Epidemic dies out", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive.A,
+               ifelse(length(r_0$R0.hostA.dist) == 1 && is.na(r_0$R0.hostA.dist),
+                      0, length(r_0$R0.hostA.dist)))
+  expect_equal(r_0$N.inactive.B,
+               ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
+                      0, length(r_0$R0.hostB.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
+  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
+  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("Error if no host move", {
@@ -747,7 +783,16 @@ test_that("One host (B) moves, host count", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive.A,
+               ifelse(length(r_0$R0.hostA.dist) == 1 && is.na(r_0$R0.hostA.dist),
+                      0, length(r_0$R0.hostA.dist)))
+  expect_equal(r_0$N.inactive.B,
+               ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
+                      0, length(r_0$R0.hostB.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
+  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
+  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })

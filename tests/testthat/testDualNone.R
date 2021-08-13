@@ -80,8 +80,8 @@ test_that("Transmission is coherent with single introduction (host A) same for b
 
   expect_equal(test$R0$N.inactive.A, 20)
   expect_equal(test$R0$N.inactive.B, 7)
-  expect_equal(test$R0$R0.hostA.mean, 0.0952381)
-  expect_equal(test$R0$R0.hostB.mean, 0)
+  expect_equal(test$R0$R0.hostA.mean, 0) #0.0952381)
+  expect_equal(test$R0$R0.hostB.mean, 0.2857143) #0)
   expect_equal(test$dynamics[21]$t, 10)
   expect_equal(test$dynamics[21]$Count, 1)
   expect_equal(test$dynamics[21]$type, "H")
@@ -99,9 +99,18 @@ test_that("Transmission is coherent with single introduction (host A) same for b
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive.A,
+               ifelse(length(r_0$R0.hostA.dist) == 1 && is.na(r_0$R0.hostA.dist),
+                      0, length(r_0$R0.hostA.dist)))
+  expect_equal(r_0$N.inactive.B,
+               ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
+                      0, length(r_0$R0.hostB.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
+  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
+  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter", {
@@ -196,9 +205,18 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive.A,
+               ifelse(length(r_0$R0.hostA.dist) == 1 && is.na(r_0$R0.hostA.dist),
+                      0, length(r_0$R0.hostA.dist)))
+  expect_equal(r_0$N.inactive.B,
+               ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
+                      0, length(r_0$R0.hostB.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
+  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
+  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, time dependancy for host B pExit", {
@@ -291,9 +309,18 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive.A,
+               ifelse(length(r_0$R0.hostA.dist) == 1 && is.na(r_0$R0.hostA.dist),
+                      0, length(r_0$R0.hostA.dist)))
+  expect_equal(r_0$N.inactive.B,
+               ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
+                      0, length(r_0$R0.hostB.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
+  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
+  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("Epidemic dying out", {
@@ -361,7 +388,16 @@ test_that("Epidemic dying out", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive.A,
+               ifelse(length(r_0$R0.hostA.dist) == 1 && is.na(r_0$R0.hostA.dist),
+                      0, length(r_0$R0.hostA.dist)))
+  expect_equal(r_0$N.inactive.B,
+               ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
+                      0, length(r_0$R0.hostB.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
+  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
+  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })

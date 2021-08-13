@@ -143,9 +143,13 @@ test_that("Transmission is coherent with single introduction, simple pExit and p
   dynNew <- getDynamic(test.nosoiB)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiB)
   r_0 <- getR0(test.nosoiB)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiB)
+  r_0_old_2 <- getR0Old2(test.nosoiB)
+  expect_equal(r_0_old$R0.mean, r_0_old_2$R0.mean)
 })
 
 test_that("Transmission is coherent with single introduction, complex pExit and pTrans", {
@@ -192,8 +196,12 @@ test_that("Transmission is coherent with single introduction, complex pExit and 
   dynNew <- getDynamic(test.nosoiC)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiC)
   r_0 <- getR0(test.nosoiC)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiC)
+  r_0 <- getR0Old2(test.nosoiC)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -240,8 +248,12 @@ test_that("Transmission is coherent with multiple introductions, constant pExit 
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -285,8 +297,12 @@ test_that("Transmission is coherent with multiple introductions, simple pExit an
   dynNew <- getDynamic(test.nosoiB)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiB)
   r_0 <- getR0(test.nosoiB)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiB)
+  r_0 <- getR0Old2(test.nosoiB)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -333,8 +349,12 @@ test_that("Transmission is coherent with multiple introductions, complex pExit a
   dynNew <- getDynamic(test.nosoiC)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiC)
   r_0 <- getR0(test.nosoiC)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiC)
+  r_0 <- getR0Old2(test.nosoiC)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -376,7 +396,11 @@ test_that("Dying out epidemic", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
