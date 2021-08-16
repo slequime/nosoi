@@ -265,7 +265,7 @@ library(nosoi)
 getR0(test.nosoiA)
 ```
 
-As you can see, out of the 117 inactive hosts, the mean $R_0$ is 1.041667. This does not of course reflect the distribution of $R_0$ where most hosts actually never transmitted the infection:
+As you can see, out of the 117 inactive hosts, the mean $R_0$ is 1.068376. This does not of course reflect the distribution of $R_0$ where most hosts actually never transmitted the infection:
 ```{r figureR0, eval=FALSE, message=FALSE}
 data = data.frame(R0=getR0(test.nosoiA)$R0.dist)
 ggplot(data=data, aes(x=R0)) + geom_histogram() + theme_minimal()

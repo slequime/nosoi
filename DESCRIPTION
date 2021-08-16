@@ -1,7 +1,7 @@
 Package: nosoi
 Type: Package
 Title: A Forward Agent-Based Transmission Chain Simulator
-Version: 1.0.3
+Version: 1.0.4
 Authors@R: c(person("Sebastian", "Lequime", email = "sebastian.lequime@gmail.com",
                   role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3140-0651")),
                   person("Paul", "Bastide", email = "paul.bastide@umontpellier.fr",
@@ -12,12 +12,11 @@ Authors@R: c(person("Sebastian", "Lequime", email = "sebastian.lequime@gmail.com
                   role = "aut", comment = c(ORCID = "0000-0003-2826-5353")),
                   person("Guy", "Baele", email = "guy.baele@kuleuven.be",
                   role = "aut", comment = c(ORCID = "0000-0002-1915-7732")))
-Description: The aim of 'nosoi' (pronounced no.si) is to provide a flexible agent-based stochastic transmission chain/epidemic simulator (Lequime et al. bioRxiv 2020.03.03.973107). It is named after the daimones of plague, sickness and disease that escaped Pandora's jar in the Greek mythology. 'nosoi' is able to take into account the influence of multiple variable on the transmission process (e.g. dual-host systems (such as arboviruses), within-host viral dynamics, transportation, population structure), alone or taken together, to create complex but relatively intuitive epidemiological simulations.
+Description: The aim of 'nosoi' (pronounced no.si) is to provide a flexible agent-based stochastic transmission chain/epidemic simulator (Lequime et al. Methods in Ecology and Evolution 11:1002-1007). It is named after the daimones of plague, sickness and disease that escaped Pandora's jar in the Greek mythology. 'nosoi' is able to take into account the influence of multiple variable on the transmission process (e.g. dual-host systems (such as arboviruses), within-host viral dynamics, transportation, population structure), alone or taken together, to create complex but relatively intuitive epidemiological simulations.
 URL: https://github.com/slequime/nosoi
 Language: en-US
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.1.0
 biocViews:
 Depends: 

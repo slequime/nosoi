@@ -1,9 +1,10 @@
 ## This version 1.0.4
-In this version we fix typos in the documentation (following review of the manuscript).
+In this version we:
+- fix typos in the documentation (following review of the manuscript) and correct an internal function (getR0).
 
 ## Test environments
-* local OS X install, R 3.6.2
-* ubuntu 16.04.6 LTS (on travis-ci) (devel and release)
+* local OS X install, R 4.0.3
+* ubuntu 18.04 LTS (github action) (devel and release)
 * win-builder (devel and release)
 
 ## R CMD check results

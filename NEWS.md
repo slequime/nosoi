@@ -1,6 +1,7 @@
 # nosoi 1.0.3 (dev)
 * Fixing typos in the documentation (following review of the manuscript)
 * Updating website
+* Fixing an issue (wrong calculation for getR0) in the function `nosoi::getR0`
 
 # nosoi 1.0.3
 * Fixing error producing issue following `dplyr`'s update to 1.0.0
