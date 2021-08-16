@@ -371,6 +371,59 @@ getR0  <- function(nosoi.output) {
 
   if(nosoi.output$type == "single") {
     output.full <- nosoi.output$host.info.A$table.hosts[,c("hosts.ID", "inf.by","active")]
+    n.Inactive <- sum(output.full[["active"]] == 0)
+    Sec.cases.A <- NA
+    if(n.Inactive > 0) {
+      Sec.cases <- output.full[, .N, by = "inf.by"]                  # count occurences of each host in "inf.by"
+      Sec.cases <- Sec.cases[output.full, on = "inf.by == hosts.ID"] # re-order by hosts.ID
+      Sec.cases.A <- Sec.cases[active == FALSE, ][["N"]]             # Keep only non active, and column N
+      Sec.cases.A[is.na(Sec.cases.A)] <- 0                           # NAs to 0
+    }
+
+    return(list(N.inactive = n.Inactive,
+                R0.mean = mean(Sec.cases.A),
+                R0.dist = Sec.cases.A))
+  }
+
+  if(nosoi.output$type == "dual"){
+    outputA <- nosoi.output$host.info.A$table.hosts[,c("hosts.ID", "inf.by","active")]
+    outputA$host.type <- nosoi.output$host.info.A$prefix.host
+    outputB <- nosoi.output$host.info.B$table.hosts[,c("hosts.ID", "inf.by","active")]
+    outputB$host.type <- nosoi.output$host.info.B$prefix.host
+
+    output.full = rbindlist(list(outputA,outputB))
+
+    #number of hosts inactive (have done their full cycle)
+    N.inactive.A <- nrow(subset(nosoi.output$host.info.A$table.hosts,active==0))
+    N.inactive.B <- nrow(subset(nosoi.output$host.info.B$table.hosts,active==0))
+
+    Sec.cases <- output.full[, .N, by = "inf.by"]                  # count occurences of each host in "inf.by"
+    Sec.cases <- Sec.cases[output.full, on = "inf.by == hosts.ID"] # re-order by hosts.ID
+    Sec.cases.A <- Sec.cases[active == FALSE & host.type == nosoi.output$host.info.A$prefix.host, ][["N"]]             # Keep only non active, and column N
+    Sec.cases.A[is.na(Sec.cases.A)] <- 0                           # NAs to 0
+    Sec.cases.B <- Sec.cases[active == FALSE & host.type == nosoi.output$host.info.B$prefix.host, ][["N"]]             # Keep only non active, and column N
+    Sec.cases.B[is.na(Sec.cases.B)] <- 0                           # NAs to 0
+
+    return(list(N.inactive.A = N.inactive.A,
+                R0.hostA.mean = mean(Sec.cases.A),
+                R0.hostA.dist = Sec.cases.A,
+                N.inactive.B = N.inactive.B,
+                R0.hostB.mean = mean(Sec.cases.B),
+                R0.hostB.dist = Sec.cases.B))
+  }
+}
+
+# Old version, using data.table
+#' @keywords internal
+getR0Old2  <- function(nosoi.output) {
+  #To avoids notes (use of data.table functions)
+  inf.by.y <- NULL
+  host.type <- NULL
+  hosts.ID <- NULL
+  active <- NULL
+
+  if(nosoi.output$type == "single") {
+    output.full <- nosoi.output$host.info.A$table.hosts[,c("hosts.ID", "inf.by","active")]
     Inactive <- output.full[output.full[["active"]] == 0]  #get inactive hosts (have done their full cycle)
     n.Inactive <- nrow(Inactive)
     Sec.cases.A <- NA

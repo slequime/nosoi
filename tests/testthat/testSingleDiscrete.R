@@ -210,8 +210,12 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -282,8 +286,12 @@ test_that("Movement is coherent with single introduction, complex pMove", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -363,8 +371,12 @@ test_that("Movement is coherent with single introduction, constant but different
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -477,8 +489,12 @@ test_that("Movement is coherent with single introduction, complex and different 
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -659,8 +675,12 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -738,8 +758,12 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -816,8 +840,12 @@ test_that("Movement is coherent with single introduction, constant pMove, diff n
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -924,8 +952,12 @@ test_that("Movement is coherent with single introduction, all parameters are dif
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -984,8 +1016,12 @@ test_that("Epidemic dying out", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
@@ -1067,7 +1103,11 @@ test_that("Movement is coherent with single introduction, no pMove, no die, diff
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0Old2(test.nosoiA)
   expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
