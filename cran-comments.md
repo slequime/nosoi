@@ -4,7 +4,7 @@ In this version we:
 
 ## Test environments
 * local OS X install, R 4.0.3
-* ubuntu 18.04 LTS (github action) (devel and release)
+* ubuntu 20.04 LTS (github action) (devel and release)
 * win-builder (devel and release)
 
 ## R CMD check results
