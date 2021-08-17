@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summarizes the epidemiological features of a <code>nosoi</code> simulation — nosoiSummary • nosoi</title>
+<title>Summarizes the epidemiological features of a nosoi simulation — nosoiSummary • nosoi</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,10 +46,9 @@
 
 
 
-<meta property="og:title" content="Summarizes the epidemiological features of a <code>nosoi</code> simulation — nosoiSummary" />
+<meta property="og:title" content="Summarizes the epidemiological features of a nosoi simulation — nosoiSummary" />
 <meta property="og:description" content="This function provides summary information about the simulation (number of infected hosts, R0, etc.) as a list." />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -63,7 +66,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -85,20 +88,20 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="../articles/nosoi.html">
-    <span class="fas fa fas fa-play-circle"></span>
+    <span class="fas fa-play-circle"></span>
      
     Getting started
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa fas fa-book"></span>
+    <span class="fas fa-book"></span>
      
     Simulation set up
      
@@ -118,7 +121,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa fas fa-file"></span>
+    <span class="fas fa-file"></span>
      
     Visualise &amp; summarise
      
@@ -135,7 +138,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa fas fa-file"></span>
+    <span class="fas fa-file"></span>
      
     Pathogen examples
      
@@ -155,7 +158,7 @@
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     Reference
   </a>
@@ -200,7 +203,7 @@
 </li>
 <li>
   <a href="https://github.com/slequime/nosoi">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -226,10 +229,10 @@
     <p>This function provides summary information about the simulation (number of infected hosts, R0, etc.) as a list.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>nosoiSummary</span>(<span class='no'>object</span>)
+    <pre class="usage"><span class='fu'>nosoiSummary</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span>
 
 <span class='co'># S3 method for nosoiSim</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -246,7 +249,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>All computed data is provided in a list:</p><dl class='dl-horizontal'>
+    <p>All computed data is provided in a list:</p><dl>
    <dt>R0</dt><dd><p>Provides a sublist with number of inactive hosts at the end of the simulation <code>N.inactive</code>, mean R0 <code>R0.mean</code>, and R0 distribution <code>R0.dist</code>. For more details, see <code><a href='getR0.html'>getR0</a></code>.</p></dd>
    <dt>dynamics</dt><dd><p><code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></code> with the count of currently infected (i.e. active) hosts at each time step of the simulation (by state if the simulation was in a discrete structured host population). For more details, see <code><a href='getDynamic.html'>getDynamic</a></code>.</p></dd>
    <dt>cumulative</dt><dd><p><code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></code> with the cumulative count of infected hosts at each time step of the simulation. For more details, see <code><a href='getCumulative.html'>getCumulative</a></code>.</p></dd>
@@ -259,33 +262,35 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='no'>t_incub_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='no'>x</span>,<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>1</span>)}
-<span class='no'>p_max_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://rdrr.io/r/stats/Beta.html'>rbeta</a></span>(<span class='no'>x</span>,<span class='kw'>shape1</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>shape2</span><span class='kw'>=</span><span class='fl'>2</span>)}
-<span class='no'>p_Exit_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>0.08</span>)}
+<span class='va'>t_incub_fct</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='va'>x</span>,mean <span class='op'>=</span> <span class='fl'>5</span>,sd<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>}</span>
+<span class='va'>p_max_fct</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/stats/Beta.html'>rbeta</a></span><span class='op'>(</span><span class='va'>x</span>,shape1 <span class='op'>=</span> <span class='fl'>5</span>,shape2<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>}</span>
+<span class='va'>p_Exit_fct</span>  <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span><span class='op'>{</span><span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fl'>0.08</span><span class='op'>)</span><span class='op'>}</span>
 
-<span class='no'>proba</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>,<span class='no'>p_max</span>,<span class='no'>t_incub</span>){
- <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&lt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='fl'>0</span>}
- <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&gt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='no'>p_max</span>}
- <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>p</span>)
-}
+<span class='va'>proba</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>t</span>,<span class='va'>p_max</span>,<span class='va'>t_incub</span><span class='op'>)</span><span class='op'>{</span>
+ <span class='kw'>if</span><span class='op'>(</span><span class='va'>t</span> <span class='op'>&lt;=</span> <span class='va'>t_incub</span><span class='op'>)</span><span class='op'>{</span><span class='va'>p</span><span class='op'>=</span><span class='fl'>0</span><span class='op'>}</span>
+ <span class='kw'>if</span><span class='op'>(</span><span class='va'>t</span> <span class='op'>&gt;=</span> <span class='va'>t_incub</span><span class='op'>)</span><span class='op'>{</span><span class='va'>p</span><span class='op'>=</span><span class='va'>p_max</span><span class='op'>}</span>
+ <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>p</span><span class='op'>)</span>
+<span class='op'>}</span>
 
-<span class='no'>time_contact</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)}
+<span class='va'>time_contact</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span><span class='op'>)</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>}</span>
 
-<span class='no'>test.nosoi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"single"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"none"</span>,
-                      <span class='kw'>length</span><span class='kw'>=</span><span class='fl'>40</span>,
-                      <span class='kw'>max.infected</span><span class='kw'>=</span><span class='fl'>100</span>,
-                      <span class='kw'>init.individuals</span><span class='kw'>=</span><span class='fl'>1</span>,
-                      <span class='kw'>nContact</span><span class='kw'>=</span><span class='no'>time_contact</span>,
-                      <span class='kw'>param.nContact</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                      <span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='no'>proba</span>,
-                      <span class='kw'>param.pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
-                                          <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
-                      <span class='kw'>pExit</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
-                      <span class='kw'>param.pExit</span><span class='kw'>=</span><span class='fl'>NA</span>)</div><div class='output co'>#&gt; <span class='message'>Starting the simulation</span>
+<span class='va'>test.nosoi</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span><span class='op'>(</span>type<span class='op'>=</span><span class='st'>"single"</span>, popStructure<span class='op'>=</span><span class='st'>"none"</span>,
+                      length<span class='op'>=</span><span class='fl'>40</span>,
+                      max.infected<span class='op'>=</span><span class='fl'>100</span>,
+                      init.individuals<span class='op'>=</span><span class='fl'>1</span>,
+                      nContact<span class='op'>=</span><span class='va'>time_contact</span>,
+                      param.nContact<span class='op'>=</span><span class='cn'>NA</span>,
+                      pTrans <span class='op'>=</span> <span class='va'>proba</span>,
+                      param.pTrans <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>p_max<span class='op'>=</span><span class='va'>p_max_fct</span>,
+                                          t_incub<span class='op'>=</span><span class='va'>t_incub_fct</span><span class='op'>)</span>,
+                      pExit<span class='op'>=</span><span class='va'>p_Exit_fct</span>,
+                      param.pExit<span class='op'>=</span><span class='cn'>NA</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Starting the simulation</span>
 #&gt; <span class='message'>Initializing ...</span></div><div class='output co'>#&gt; <span class='message'> running ...</span></div><div class='output co'>#&gt; <span class='message'>done. </span>
 #&gt; <span class='message'>The simulation has run for 4 units of time and a total of 1 hosts have been infected.</span></div><div class='input'>
 
-<span class='fu'>nosoiSummary</span>(<span class='no'>test.nosoi</span>)</div><div class='output co'>#&gt; $R0
+<span class='fu'>nosoiSummary</span><span class='op'>(</span><span class='va'>test.nosoi</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $R0
 #&gt; $R0$N.inactive
 #&gt; [1] 1
 #&gt; 
@@ -313,19 +318,14 @@
 #&gt; 4: 3     1    H
 #&gt; 5: 4     1    H
 #&gt; 6: 5     1    H
-#&gt; </div><div class='input'># }
+#&gt; </div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -336,7 +336,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

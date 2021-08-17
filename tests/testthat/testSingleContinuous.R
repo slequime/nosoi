@@ -199,9 +199,6 @@ test_that("Diffusion in continuous space", {
   expect_equal(r_0$N.inactive,
                ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
 
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Epidemic dying out", {
@@ -263,9 +260,6 @@ test_that("Epidemic dying out", {
   expect_equal(r_0$N.inactive,
                ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
 
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Diffusion in continuous space with host count", {
@@ -344,8 +338,4 @@ test_that("Diffusion in continuous space with host count", {
   r_0 <- getR0(test.nosoiA)
   expect_equal(r_0$N.inactive,
                ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
-
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })

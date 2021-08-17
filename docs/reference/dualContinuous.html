@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -47,7 +51,6 @@
 The simulation stops either at the end of given time (specified by length.sim) or when the number of hosts infected threshold (max.infected)
 is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster." />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -65,7 +68,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -79,7 +82,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -87,20 +90,20 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="../articles/nosoi.html">
-    <span class="fas fa fas fa-play-circle"></span>
+    <span class="fas fa-play-circle"></span>
      
     Getting started
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa fas fa-book"></span>
+    <span class="fas fa-book"></span>
      
     Simulation set up
      
@@ -120,7 +123,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa fas fa-file"></span>
+    <span class="fas fa-file"></span>
      
     Visualise &amp; summarise
      
@@ -137,7 +140,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa fas fa-file"></span>
+    <span class="fas fa-file"></span>
      
     Pathogen examples
      
@@ -157,7 +160,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     Reference
   </a>
@@ -202,7 +205,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 </li>
 <li>
   <a href="https://github.com/slequime/nosoi">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -230,73 +233,73 @@ The simulation stops either at the end of given time (specified by length.sim) o
 is passed. The movement of hosts on the continuous space map is a random walk (Brownian motion) that can be modified towards a biased random walk where hosts tend to be attracted to higher values of the environmental variable defined by the raster.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dualContinuous</span>(
-  <span class='no'>length.sim</span>,
-  <span class='no'>max.infected.A</span>,
-  <span class='no'>max.infected.B</span>,
-  <span class='no'>init.individuals.A</span>,
-  <span class='no'>init.individuals.B</span>,
-  <span class='no'>init.structure.A</span>,
-  <span class='no'>init.structure.B</span>,
-  <span class='no'>structure.raster.A</span>,
-  <span class='no'>structure.raster.B</span>,
-  <span class='no'>pExit.A</span>,
-  <span class='no'>param.pExit.A</span>,
-  <span class='kw'>timeDep.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.pExit.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>pMove.A</span>,
-  <span class='no'>param.pMove.A</span>,
-  <span class='kw'>timeDep.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.pMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>sdMove.A</span>,
-  <span class='no'>param.sdMove.A</span>,
-  <span class='kw'>diff.sdMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.sdMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.sdMove.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>attracted.by.raster.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>nContact.A</span>,
-  <span class='no'>param.nContact.A</span>,
-  <span class='kw'>timeDep.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.nContact.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>pTrans.A</span>,
-  <span class='no'>param.pTrans.A</span>,
-  <span class='kw'>timeDep.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.pTrans.A</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>prefix.host.A</span> <span class='kw'>=</span> <span class='st'>"H"</span>,
-  <span class='no'>pExit.B</span>,
-  <span class='no'>param.pExit.B</span>,
-  <span class='kw'>timeDep.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.pExit.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>pMove.B</span>,
-  <span class='no'>param.pMove.B</span>,
-  <span class='kw'>timeDep.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.pMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>sdMove.B</span>,
-  <span class='no'>param.sdMove.B</span>,
-  <span class='kw'>diff.sdMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>timeDep.sdMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.sdMove.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>attracted.by.raster.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>nContact.B</span>,
-  <span class='no'>param.nContact.B</span>,
-  <span class='kw'>timeDep.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.nContact.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>pTrans.B</span>,
-  <span class='no'>param.pTrans.B</span>,
-  <span class='kw'>timeDep.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hostCount.pTrans.B</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>prefix.host.B</span> <span class='kw'>=</span> <span class='st'>"V"</span>,
-  <span class='kw'>print.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>print.step</span> <span class='kw'>=</span> <span class='fl'>10</span>
-)</pre>
+    <pre class="usage"><span class='fu'>dualContinuous</span><span class='op'>(</span>
+  <span class='va'>length.sim</span>,
+  <span class='va'>max.infected.A</span>,
+  <span class='va'>max.infected.B</span>,
+  <span class='va'>init.individuals.A</span>,
+  <span class='va'>init.individuals.B</span>,
+  <span class='va'>init.structure.A</span>,
+  <span class='va'>init.structure.B</span>,
+  <span class='va'>structure.raster.A</span>,
+  <span class='va'>structure.raster.B</span>,
+  <span class='va'>pExit.A</span>,
+  <span class='va'>param.pExit.A</span>,
+  timeDep.pExit.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  diff.pExit.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hostCount.pExit.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>pMove.A</span>,
+  <span class='va'>param.pMove.A</span>,
+  timeDep.pMove.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  diff.pMove.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hostCount.pMove.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>sdMove.A</span>,
+  <span class='va'>param.sdMove.A</span>,
+  diff.sdMove.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  timeDep.sdMove.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hostCount.sdMove.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  attracted.by.raster.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>nContact.A</span>,
+  <span class='va'>param.nContact.A</span>,
+  timeDep.nContact.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  diff.nContact.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hostCount.nContact.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>pTrans.A</span>,
+  <span class='va'>param.pTrans.A</span>,
+  timeDep.pTrans.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  diff.pTrans.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hostCount.pTrans.A <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  prefix.host.A <span class='op'>=</span> <span class='st'>"H"</span>,
+  <span class='va'>pExit.B</span>,
+  <span class='va'>param.pExit.B</span>,
+  timeDep.pExit.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  diff.pExit.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hostCount.pExit.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>pMove.B</span>,
+  <span class='va'>param.pMove.B</span>,
+  timeDep.pMove.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  diff.pMove.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hostCount.pMove.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>sdMove.B</span>,
+  <span class='va'>param.sdMove.B</span>,
+  diff.sdMove.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  timeDep.sdMove.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hostCount.sdMove.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  attracted.by.raster.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>nContact.B</span>,
+  <span class='va'>param.nContact.B</span>,
+  timeDep.nContact.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  diff.nContact.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hostCount.nContact.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>pTrans.B</span>,
+  <span class='va'>param.pTrans.B</span>,
+  timeDep.pTrans.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  diff.pTrans.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hostCount.pTrans.B <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  prefix.host.B <span class='op'>=</span> <span class='st'>"V"</span>,
+  print.progress <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  print.step <span class='op'>=</span> <span class='fl'>10</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -602,109 +605,104 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>raster</span>)
-
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/raster'>raster</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Loading required package: sp</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘raster’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:data.table’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    shift</span></div><div class='input'>
 <span class='co'>#Generating a raster for the movement</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>860</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>860</span><span class='op'>)</span>
 
-<span class='no'>test.raster</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/raster/man/raster.html'>raster</a></span>(<span class='kw'>nrows</span><span class='kw'>=</span><span class='fl'>100</span>, <span class='kw'>ncols</span><span class='kw'>=</span><span class='fl'>100</span>, <span class='kw'>xmn</span><span class='kw'>=</span>-<span class='fl'>50</span>, <span class='kw'>xmx</span><span class='kw'>=</span><span class='fl'>50</span>, <span class='kw'>ymn</span><span class='kw'>=</span>-<span class='fl'>50</span>,<span class='kw'>ymx</span><span class='kw'>=</span><span class='fl'>50</span>)
-<span class='no'>test.raster</span>[] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10000</span>, -<span class='fl'>80</span>, <span class='fl'>180</span>)
-<span class='no'>test.raster</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/raster/man/focal.html'>focal</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/raster/man/focal.html'>focal</a></span>(<span class='no'>test.raster</span>, <span class='kw'>w</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>5</span>), <span class='no'>mean</span>), <span class='kw'>w</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>5</span>), <span class='no'>mean</span>)
+<span class='va'>test.raster</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/raster/man/raster.html'>raster</a></span><span class='op'>(</span>nrows<span class='op'>=</span><span class='fl'>100</span>, ncols<span class='op'>=</span><span class='fl'>100</span>, xmn<span class='op'>=</span><span class='op'>-</span><span class='fl'>50</span>, xmx<span class='op'>=</span><span class='fl'>50</span>, ymn<span class='op'>=</span><span class='op'>-</span><span class='fl'>50</span>,ymx<span class='op'>=</span><span class='fl'>50</span><span class='op'>)</span>
+<span class='va'>test.raster</span><span class='op'>[</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>10000</span>, <span class='op'>-</span><span class='fl'>80</span>, <span class='fl'>180</span><span class='op'>)</span>
+<span class='va'>test.raster</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/raster/man/focal.html'>focal</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/raster/man/focal.html'>focal</a></span><span class='op'>(</span><span class='va'>test.raster</span>, w<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='va'>mean</span><span class='op'>)</span>, w<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='va'>mean</span><span class='op'>)</span>
 
-<span class='no'>t_incub_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='no'>x</span>,<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>1</span>)}
-<span class='no'>p_max_fct</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://rdrr.io/r/stats/Beta.html'>rbeta</a></span>(<span class='no'>x</span>,<span class='kw'>shape1</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>shape2</span><span class='kw'>=</span><span class='fl'>2</span>)}
-<span class='no'>p_Move_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>0.1</span>)}
+<span class='va'>t_incub_fct</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='va'>x</span>,mean <span class='op'>=</span> <span class='fl'>5</span>,sd<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>}</span>
+<span class='va'>p_max_fct</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/stats/Beta.html'>rbeta</a></span><span class='op'>(</span><span class='va'>x</span>,shape1 <span class='op'>=</span> <span class='fl'>5</span>,shape2<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>}</span>
+<span class='va'>p_Move_fct</span>  <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span><span class='op'>{</span><span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>}</span>
 
-<span class='no'>sdMove_fct</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>t</span>,<span class='no'>current.env.value</span>){<span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>100</span>/(<span class='no'>current.env.value</span>+<span class='fl'>1</span>))}
+<span class='va'>sdMove_fct</span> <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>t</span>,<span class='va'>current.env.value</span><span class='op'>)</span><span class='op'>{</span><span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>/</span><span class='op'>(</span><span class='va'>current.env.value</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>}</span>
 
-<span class='no'>p_Exit_fct</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>0.08</span>)}
+<span class='va'>p_Exit_fct</span>  <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span><span class='op'>{</span><span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fl'>0.08</span><span class='op'>)</span><span class='op'>}</span>
 
-<span class='no'>proba</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>t</span>,<span class='no'>p_max</span>,<span class='no'>t_incub</span>){
- <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&lt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='fl'>0</span>}
- <span class='kw'>if</span>(<span class='no'>t</span> <span class='kw'>&gt;=</span> <span class='no'>t_incub</span>){<span class='no'>p</span><span class='kw'>=</span><span class='no'>p_max</span>}
- <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>p</span>)
-}
+<span class='va'>proba</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>t</span>,<span class='va'>p_max</span>,<span class='va'>t_incub</span><span class='op'>)</span><span class='op'>{</span>
+ <span class='kw'>if</span><span class='op'>(</span><span class='va'>t</span> <span class='op'>&lt;=</span> <span class='va'>t_incub</span><span class='op'>)</span><span class='op'>{</span><span class='va'>p</span><span class='op'>=</span><span class='fl'>0</span><span class='op'>}</span>
+ <span class='kw'>if</span><span class='op'>(</span><span class='va'>t</span> <span class='op'>&gt;=</span> <span class='va'>t_incub</span><span class='op'>)</span><span class='op'>{</span><span class='va'>p</span><span class='op'>=</span><span class='va'>p_max</span><span class='op'>}</span>
+ <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>p</span><span class='op'>)</span>
+<span class='op'>}</span>
 
-<span class='no'>time_contact</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>t</span>){<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)}
+<span class='va'>time_contact</span> <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span><span class='op'>)</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>}</span>
 
-<span class='no'>start.pos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>0</span>)
+<span class='va'>start.pos</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>805</span>)
-<span class='no'>test.nosoi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span>(<span class='kw'>type</span><span class='kw'>=</span><span class='st'>"dual"</span>, <span class='kw'>popStructure</span><span class='kw'>=</span><span class='st'>"continuous"</span>,
-                      <span class='kw'>length.sim</span><span class='kw'>=</span><span class='fl'>200</span>,
-                      <span class='kw'>max.infected.A</span><span class='kw'>=</span><span class='fl'>500</span>,
-                      <span class='kw'>max.infected.B</span><span class='kw'>=</span><span class='fl'>500</span>,
-                      <span class='kw'>init.individuals.A</span><span class='kw'>=</span><span class='fl'>1</span>,
-                      <span class='kw'>init.individuals.B</span><span class='kw'>=</span><span class='fl'>0</span>,
-                      <span class='kw'>init.structure.A</span><span class='kw'>=</span><span class='no'>start.pos</span>,
-                      <span class='kw'>init.structure.B</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                      <span class='kw'>structure.raster.A</span><span class='kw'>=</span><span class='no'>test.raster</span>,
-                      <span class='kw'>structure.raster.B</span><span class='kw'>=</span><span class='no'>test.raster</span>,
-                      <span class='kw'>pExit.A</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
-                      <span class='kw'>param.pExit.A</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                      <span class='kw'>timeDep.pExit.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>diff.pExit.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>pMove.A</span><span class='kw'>=</span><span class='no'>p_Move_fct</span>,
-                      <span class='kw'>param.pMove.A</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                      <span class='kw'>timeDep.pMove.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>diff.pMove.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>diff.sdMove.A</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
-                      <span class='kw'>sdMove.A</span><span class='kw'>=</span><span class='no'>sdMove_fct</span>,
-                      <span class='kw'>param.sdMove.A</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                      <span class='kw'>attracted.by.raster.A</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
-                      <span class='kw'>nContact.A</span><span class='kw'>=</span><span class='no'>time_contact</span>,
-                      <span class='kw'>param.nContact.A</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                      <span class='kw'>timeDep.nContact.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>diff.nContact.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>pTrans.A</span><span class='kw'>=</span><span class='no'>proba</span>,
-                      <span class='kw'>param.pTrans.A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
-                                          <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
-                      <span class='kw'>timeDep.pTrans.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>diff.pTrans.A</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>prefix.host.A</span><span class='kw'>=</span><span class='st'>"H"</span>,
-                      <span class='kw'>pExit.B</span><span class='kw'>=</span><span class='no'>p_Exit_fct</span>,
-                      <span class='kw'>param.pExit.B</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                      <span class='kw'>timeDep.pExit.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>diff.pExit.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>pMove.B</span><span class='kw'>=</span><span class='no'>p_Move_fct</span>,
-                      <span class='kw'>param.pMove.B</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                      <span class='kw'>timeDep.pMove.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>diff.pMove.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>diff.sdMove.B</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
-                      <span class='kw'>sdMove.B</span><span class='kw'>=</span><span class='no'>sdMove_fct</span>,
-                      <span class='kw'>param.sdMove.B</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                      <span class='kw'>attracted.by.raster.B</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
-                      <span class='kw'>nContact.B</span><span class='kw'>=</span><span class='no'>time_contact</span>,
-                      <span class='kw'>param.nContact.B</span><span class='kw'>=</span><span class='fl'>NA</span>,
-                      <span class='kw'>timeDep.nContact.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>diff.nContact.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>pTrans.B</span><span class='kw'>=</span><span class='no'>proba</span>,
-                      <span class='kw'>param.pTrans.B</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>p_max</span><span class='kw'>=</span><span class='no'>p_max_fct</span>,
-                                          <span class='kw'>t_incub</span><span class='kw'>=</span><span class='no'>t_incub_fct</span>),
-                      <span class='kw'>timeDep.pTrans.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>diff.pTrans.B</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                      <span class='kw'>prefix.host.B</span><span class='kw'>=</span><span class='st'>"V"</span>)</div><div class='output co'>#&gt; <span class='message'>Starting the simulation</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>805</span><span class='op'>)</span>
+<span class='va'>test.nosoi</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nosoiSim.html'>nosoiSim</a></span><span class='op'>(</span>type<span class='op'>=</span><span class='st'>"dual"</span>, popStructure<span class='op'>=</span><span class='st'>"continuous"</span>,
+                      length.sim<span class='op'>=</span><span class='fl'>200</span>,
+                      max.infected.A<span class='op'>=</span><span class='fl'>500</span>,
+                      max.infected.B<span class='op'>=</span><span class='fl'>500</span>,
+                      init.individuals.A<span class='op'>=</span><span class='fl'>1</span>,
+                      init.individuals.B<span class='op'>=</span><span class='fl'>0</span>,
+                      init.structure.A<span class='op'>=</span><span class='va'>start.pos</span>,
+                      init.structure.B<span class='op'>=</span><span class='cn'>NA</span>,
+                      structure.raster.A<span class='op'>=</span><span class='va'>test.raster</span>,
+                      structure.raster.B<span class='op'>=</span><span class='va'>test.raster</span>,
+                      pExit.A<span class='op'>=</span><span class='va'>p_Exit_fct</span>,
+                      param.pExit.A<span class='op'>=</span><span class='cn'>NA</span>,
+                      timeDep.pExit.A<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      diff.pExit.A<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      pMove.A<span class='op'>=</span><span class='va'>p_Move_fct</span>,
+                      param.pMove.A<span class='op'>=</span><span class='cn'>NA</span>,
+                      timeDep.pMove.A<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      diff.pMove.A<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      diff.sdMove.A<span class='op'>=</span><span class='cn'>TRUE</span>,
+                      sdMove.A<span class='op'>=</span><span class='va'>sdMove_fct</span>,
+                      param.sdMove.A<span class='op'>=</span><span class='cn'>NA</span>,
+                      attracted.by.raster.A<span class='op'>=</span><span class='cn'>TRUE</span>,
+                      nContact.A<span class='op'>=</span><span class='va'>time_contact</span>,
+                      param.nContact.A<span class='op'>=</span><span class='cn'>NA</span>,
+                      timeDep.nContact.A<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      diff.nContact.A<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      pTrans.A<span class='op'>=</span><span class='va'>proba</span>,
+                      param.pTrans.A<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>p_max<span class='op'>=</span><span class='va'>p_max_fct</span>,
+                                          t_incub<span class='op'>=</span><span class='va'>t_incub_fct</span><span class='op'>)</span>,
+                      timeDep.pTrans.A<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      diff.pTrans.A<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      prefix.host.A<span class='op'>=</span><span class='st'>"H"</span>,
+                      pExit.B<span class='op'>=</span><span class='va'>p_Exit_fct</span>,
+                      param.pExit.B<span class='op'>=</span><span class='cn'>NA</span>,
+                      timeDep.pExit.B<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      diff.pExit.B<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      pMove.B<span class='op'>=</span><span class='va'>p_Move_fct</span>,
+                      param.pMove.B<span class='op'>=</span><span class='cn'>NA</span>,
+                      timeDep.pMove.B<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      diff.pMove.B<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      diff.sdMove.B<span class='op'>=</span><span class='cn'>TRUE</span>,
+                      sdMove.B<span class='op'>=</span><span class='va'>sdMove_fct</span>,
+                      param.sdMove.B<span class='op'>=</span><span class='cn'>NA</span>,
+                      attracted.by.raster.B<span class='op'>=</span><span class='cn'>TRUE</span>,
+                      nContact.B<span class='op'>=</span><span class='va'>time_contact</span>,
+                      param.nContact.B<span class='op'>=</span><span class='cn'>NA</span>,
+                      timeDep.nContact.B<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      diff.nContact.B<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      pTrans.B<span class='op'>=</span><span class='va'>proba</span>,
+                      param.pTrans.B<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>p_max<span class='op'>=</span><span class='va'>p_max_fct</span>,
+                                          t_incub<span class='op'>=</span><span class='va'>t_incub_fct</span><span class='op'>)</span>,
+                      timeDep.pTrans.B<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      diff.pTrans.B<span class='op'>=</span><span class='cn'>FALSE</span>,
+                      prefix.host.B<span class='op'>=</span><span class='st'>"V"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Starting the simulation</span>
 #&gt; <span class='message'>Initializing ...</span></div><div class='output co'>#&gt; <span class='message'> running ...</span></div><div class='output co'>#&gt; <span class='message'>Time: 10 (5% of maximum length). Hosts count: (A) 11 (2% of maximum infected hosts); (B) 11 (2% of maximum infected hosts).</span></div><div class='output co'>#&gt; <span class='message'>Time: 20 (10% of maximum length). Hosts count: (A) 204 (41% of maximum infected hosts); (B) 300 (60% of maximum infected hosts).</span></div><div class='output co'>#&gt; <span class='message'>done. </span>
-#&gt; <span class='message'>The simulation has run for 22 units of time and a total of 326 (A) and 579 (B) hosts have been infected.</span></div><div class='input'><span class='no'>test.nosoi</span></div><div class='output co'>#&gt; A nosoiSim object, representing a simulated epidemy for a dual host with a continuous structure.
+#&gt; <span class='message'>The simulation has run for 22 units of time and a total of 326 (A) and 579 (B) hosts have been infected.</span></div><div class='input'><span class='va'>test.nosoi</span>
+</div><div class='output co'>#&gt; A nosoiSim object, representing a simulated epidemy for a dual host with a continuous structure.
 #&gt; The simulation has run for 22 units of time and a total of 326 (A) and 326 (B) hosts have been infected.
-#&gt; Use function 'summary' for summary statistics, and functions 'getTableHosts' and 'getTableState' to extract the generated data.</div><div class='input'># }
+#&gt; Use function 'summary' for summary statistics, and functions 'getTableHosts' and 'getTableState' to extract the generated data.</div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#raster">Raster</a></li>
-      <li><a href="#order-of-arguments">Order of Arguments</a></li>
-      <li><a href="#structure-parameters">Structure Parameters</a></li>
-      <li><a href="#suffixes">Suffixes</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -715,7 +713,7 @@ is passed. The movement of hosts on the continuous space map is a random walk (B
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

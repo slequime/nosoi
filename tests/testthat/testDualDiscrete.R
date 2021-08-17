@@ -153,11 +153,6 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   expect_equal(r_0$N.inactive.B,
                ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
                       0, length(r_0$R0.hostB.dist)))
-
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
-  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter", {
@@ -301,11 +296,6 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(r_0$N.inactive.B,
                ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
                       0, length(r_0$R0.hostB.dist)))
-
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
-  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, A does not move", {
@@ -719,11 +709,6 @@ test_that("start with host B", {
   expect_equal(r_0$N.inactive.B,
                ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
                       0, length(r_0$R0.hostB.dist)))
-
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
-  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, A does not move", {
@@ -888,9 +873,4 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(r_0$N.inactive.B,
                ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
                       0, length(r_0$R0.hostB.dist)))
-
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
-  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
