@@ -1,7 +1,7 @@
-# nosoi 1.0.3 (dev)
+# nosoi 1.1.0
 * Fixing typos in the documentation (following review of the manuscript)
 * Updating website
-* Fixing an issue (wrong calculation for getR0) in the function `nosoi::getR0`
+* Fixing an issue (wrong calculation for getR0) in the function `nosoi::getR0` (linked to issue #14 on GitHub)
 
 # nosoi 1.0.3
 * Fixing error producing issue following `dplyr`'s update to 1.0.0
@@ -11,7 +11,7 @@
 * Updating website
 
 # nosoi 1.0.2
-* Fixing error producing issue following `tibble`'s update to 3.0.0 (also linked to issue #9 on Github)
+* Fixing error producing issue following `tibble`'s update to 3.0.0 (also linked to issue #9 on GitHub)
 * Minor fixes and corrections
 * Updating website
 
