@@ -131,11 +131,6 @@ test_that("Both hosts move", {
   expect_equal(r_0$N.inactive.B,
                ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
                       0, length(r_0$R0.hostB.dist)))
-
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
-  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 
@@ -274,11 +269,6 @@ test_that("One host (A) moves", {
   expect_equal(r_0$N.inactive.B,
                ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
                       0, length(r_0$R0.hostB.dist)))
-
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
-  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("One host (B) moves", {
@@ -415,11 +405,6 @@ test_that("One host (B) moves", {
   expect_equal(r_0$N.inactive.B,
                ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
                       0, length(r_0$R0.hostB.dist)))
-
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
-  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("Epidemic dies out", {
@@ -543,11 +528,6 @@ test_that("Epidemic dies out", {
   expect_equal(r_0$N.inactive.B,
                ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
                       0, length(r_0$R0.hostB.dist)))
-
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
-  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
 
 test_that("Error if no host move", {
@@ -790,9 +770,4 @@ test_that("One host (B) moves, host count", {
   expect_equal(r_0$N.inactive.B,
                ifelse(length(r_0$R0.hostB.dist) == 1 && is.na(r_0$R0.hostB.dist),
                       0, length(r_0$R0.hostB.dist)))
-
-  r_0_old <- getR0Old(test.nosoiA)
-  r_0 <- getR0Old2(test.nosoiA)
-  expect_equal(r_0_old$R0.hostA.mean, r_0$R0.hostA.mean)
-  expect_equal(r_0_old$R0.hostB.mean, r_0$R0.hostB.mean)
 })
