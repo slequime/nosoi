@@ -41,8 +41,8 @@ Suggests:
     gganimate,
     ape (>= 5.3),
     tidytree (>= 0.3.3),
-    treeio (>= 1.16.0),
-    ggtree (>= 3.0.0),
+    treeio (>= 1.14.0),
+    ggtree (>= 2.4.0),
     magrittr (>= 1.5),
     dplyr (>= 0.8.0),
     covr
