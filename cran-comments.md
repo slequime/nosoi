@@ -5,7 +5,7 @@ In this version we:
 ## Test environments
 * macOS-latest (Github Action, devel and release)
 * ubuntu 20.04 LTS (Github Action, devel and release)
-* windows-latest (Github Action, oldrel and release)
+* windows-latest (Github Action, oldrel, release and devel)
 
 ## R CMD check results
 
