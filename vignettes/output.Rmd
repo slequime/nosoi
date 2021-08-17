@@ -288,7 +288,7 @@ It can be extracted or visualized as such using the `table.hosts` table that lin
 It can also be extracted in a form mimicking a phylogenetic tree, 
 and visualized or saved as such using available tools for phylogenetic trees 
 such as [`ape`](https://CRAN.R-project.org/package=ape)
-and [`tidytree`](https://yulab-smu.github.io/treedata-book/).
+and [`tidytree`](https://yulab-smu.top/treedata-book/).
 To do so, you can use the `getTransmissionTree()` function,
 which arguments are the `nosoi` simulation output and which host type would be
 the tips of the tree ("A" by default, or "B" in case a dual-host simulation).
@@ -536,7 +536,7 @@ All the functions mentioned above produce a `tidytree::treedata` object.
 It is a phylogenetic tree, with nodes and tips annotated with all the characteristics
 of the epidemics, including the geographical location when applicable.
 This format is described in details by his developer in 
-this [ebook](https://yulab-smu.github.io/treedata-book/).
+this [ebook](https://yulab-smu.top/treedata-book/).
 
 This makes it easy to export the generated data to other software for downstream
 analyzes, thanks to the package [treeio](https://guangchuangyu.github.io/software/treeio/).
