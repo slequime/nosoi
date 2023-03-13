@@ -16,7 +16,7 @@ vignette: >
   %\VignetteDepends{igraph}
   %\VignetteDepends{viridis}
   %\VignetteDepends{ggnetwork}
-  %\VignetteDepends{tidyverse}
+  %\VignetteDepends{magrittr}
   %\VignetteDepends{gganimate}
   %\VignetteDepends{ggpubr}
 ---
@@ -206,7 +206,7 @@ library(ggplot2)
 library(viridis)
 library(igraph)
 library(ggnetwork)
-library(tidyverse)
+library(dplyr); library(magrittr)
 library(gganimate)
 
 #Getting the layout for the states

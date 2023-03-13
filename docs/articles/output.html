@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
       </span>
     </div>
 
@@ -46,7 +48,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -58,7 +60,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-book"></span>
      
     Simulation set up
@@ -78,7 +80,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-file"></span>
      
     Visualise &amp; summarise
@@ -95,7 +97,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-file"></span>
      
     Pathogen examples
@@ -116,43 +118,10 @@
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa-file-code-o"></span>
      
     Reference
   </a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/continuous.html">Spread of a pathogen in a continuous space</a>
-    </li>
-    <li>
-      <a href="../articles/discrete.html">Spread of a pathogen in a discrete structured population</a>
-    </li>
-    <li>
-      <a href="../articles/examples/dengue.html">Spread of a dengue-like virus in a discrete space</a>
-    </li>
-    <li>
-      <a href="../articles/examples/ebola.html">Spread of an Ebola-like virus in continuous space</a>
-    </li>
-    <li>
-      <a href="../articles/examples/vector-competence.html">Epidemiological impact of mosquito vector competence variation</a>
-    </li>
-    <li>
-      <a href="../articles/examples/viz.html">Visualization tips</a>
-    </li>
-    <li>
-      <a href="../articles/none.html">Spread of a pathogen in a homogeneous population</a>
-    </li>
-    <li>
-      <a href="../articles/output.html">Output and summarization</a>
-    </li>
-  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -160,8 +129,8 @@
   <a href="../news/index.html">Changelog</a>
 </li>
 <li>
-  <a href="https://github.com/slequime/nosoi">
-    <span class="fas fa-github fa-lg"></span>
+  <a href="https://github.com/slequime/nosoi" class="external-link">
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -175,404 +144,573 @@
 
       
 
-      </header><script src="output_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Output and summarization</h1>
-                        <h4 class="author">Sebastian Lequime</h4>
+                        <h4 data-toc-skip class="author">Sebastian
+Lequime</h4>
             
-            <h4 class="date">2021-08-17</h4>
+            <h4 data-toc-skip class="date">2023-03-13</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/master/vignettes/output.Rmd"><code>vignettes/output.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/HEAD/vignettes/output.Rmd" class="external-link"><code>vignettes/output.Rmd</code></a></small>
       <div class="hidden name"><code>output.Rmd</code></div>
 
     </div>
 
     
     
-<div id="nosoisim-object" class="section level1">
-<h1 class="hasAnchor">
-<a href="#nosoisim-object" class="anchor"></a><code>nosoiSim</code> object</h1>
-<p>The output of a <code>nosoi</code> simulation is an object of class <code>nosoiSim</code> that contains all the data generated during the simulation into the following slots:</p>
+<div class="section level2">
+<h2 id="nosoisim-object">
+<code>nosoiSim</code> object<a class="anchor" aria-label="anchor" href="#nosoisim-object"></a>
+</h2>
+<p>The output of a <code>nosoi</code> simulation is an object of class
+<code>nosoiSim</code> that contains all the data generated during the
+simulation into the following slots:</p>
 <ul>
 <li>
-<code>total.time</code> is the number of time steps (an integer) during which the simulation has run.</li>
+<code>total.time</code> is the number of time steps (an integer)
+during which the simulation has run.</li>
 <li>
-<code>type</code> is the simulation type that was ran (either “single” or “dual” host).</li>
+<code>type</code> is the simulation type that was ran (either
+“single” or “dual” host).</li>
 <li>
-<code>host.info.A</code> is an object of the class <code>nosoiSimOne</code>, itself a list of elements concerning host type A (or the unique host type in case of a single-host simulation), with the following slots:
+<code>host.info.A</code> is an object of the class
+<code>nosoiSimOne</code>, itself a list of elements concerning host type
+A (or the unique host type in case of a single-host simulation), with
+the following slots:
 <ul>
 <li>
-<code>N.infected</code> is the final number (an integer) of infected hosts.</li>
+<code>N.infected</code> is the final number (an integer) of infected
+hosts.</li>
 <li>
-<code>table.hosts</code> is a table containing the results of the simulations focusing on each individual host. For more details on its structure, see below.</li>
+<code>table.hosts</code> is a table containing the results of the
+simulations focusing on each individual host. For more details on its
+structure, see below.</li>
 <li>
-<code>table.state</code> is a table containing the results of the simulations concerning the movement history of the infected hosts. For more details on its structure, see below.</li>
+<code>table.state</code> is a table containing the results of the
+simulations concerning the movement history of the infected hosts. For
+more details on its structure, see below.</li>
 <li>
-<code>prefix.host</code> is the string containing the prefix used to name the hosts (user-defined <code>prefix.host</code> in the <code>nosoiSim</code> function).</li>
+<code>prefix.host</code> is the string containing the prefix used to
+name the hosts (user-defined <code>prefix.host</code> in the
+<code>nosoiSim</code> function).</li>
 <li>
-<code>popStructure</code> is the population structure used (either “none”, “discrete” or “continuous”).</li>
+<code>popStructure</code> is the population structure used (either
+“none”, “discrete” or “continuous”).</li>
 </ul>
 </li>
 <li>
-<code>host.info.B</code> is the same as above, but for host type B (but is set to <code>NA</code> if a single-host was run).</li>
+<code>host.info.B</code> is the same as above, but for host type B
+(but is set to <code>NA</code> if a single-host was run).</li>
 </ul>
-<p>Host-specific elements (i.e. in <code>host.info.A</code> or <code>host.info.B</code>) in this object can be easily extracted using the function <code>getHostData</code>:</p>
+<p>Host-specific elements (i.e. in <code>host.info.A</code> or
+<code>host.info.B</code>) in this object can be easily extracted using
+the function <code>getHostData</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getHostData.html">getHostData</a></span><span class="op">(</span><span class="va">nosoi.output</span>, <span class="va">what</span>, <span class="va">pop</span><span class="op">)</span></code></pre></div>
-<p>This function takes as its arguments your nosoi output object (of class <code>nosoiSim</code>), <code>what</code> you want to extract (either <code>N.infected</code>, <code>table.hosts</code>, <code>table.state</code> or <code>prefix.host</code>), and which host type (here <code>pop</code>) you are interested in (<code>A</code> by default, but can be <code>B</code> in case of dual-host simulations).</p>
-<div id="table-hosts" class="section level2">
-<h2 class="hasAnchor">
-<a href="#table-hosts" class="anchor"></a><code>table.hosts</code>
-</h2>
-<p><code>table.hosts</code>, a <code>data.table</code> object, contains information about each host that has been simulated. In this object, one row corresponds to one host. This object can be directly extracted using the function <code>getTableHosts</code>:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getHostData.html">getHostData</a></span><span class="op">(</span><span class="va">nosoi.output</span>, <span class="va">what</span>, <span class="va">pop</span><span class="op">)</span></span></code></pre></div>
+<p>This function takes as its arguments your nosoi output object (of
+class <code>nosoiSim</code>), <code>what</code> you want to extract
+(either <code>N.infected</code>, <code>table.hosts</code>,
+<code>table.state</code> or <code>prefix.host</code>), and which host
+type (here <code>pop</code>) you are interested in (<code>A</code> by
+default, but can be <code>B</code> in case of dual-host
+simulations).</p>
+<div class="section level3">
+<h3 id="table-hosts">
+<code>table.hosts</code><a class="anchor" aria-label="anchor" href="#table-hosts"></a>
+</h3>
+<p><code>table.hosts</code>, a <code>data.table</code> object, contains
+information about each host that has been simulated. In this object, one
+row corresponds to one host. This object can be directly extracted using
+the function <code>getTableHosts</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getTableHosts.html">getTableHosts</a></span><span class="op">(</span><span class="va">nosoi.output</span>, <span class="va">pop</span><span class="op">)</span></code></pre></div>
-<p>This function takes as its arguments your nosoi output object (of class <code>nosoiSim</code>) and which host type (here <code>pop</code>) you are interested in (<code>A</code> by default but can be <code>B</code> in case of dual-host simulations).</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getTableHosts.html">getTableHosts</a></span><span class="op">(</span><span class="va">nosoi.output</span>, <span class="va">pop</span><span class="op">)</span></span></code></pre></div>
+<p>This function takes as its arguments your nosoi output object (of
+class <code>nosoiSim</code>) and which host type (here <code>pop</code>)
+you are interested in (<code>A</code> by default but can be
+<code>B</code> in case of dual-host simulations).</p>
 <p>The structure of the table is the following:</p>
 <ul>
 <li>
-<code>hosts.ID</code> is the unique identifier for the host (a string of characters), based on a user-defined prefix and an integer.</li>
+<code>hosts.ID</code> is the unique identifier for the host (a
+string of characters), based on a user-defined prefix and an
+integer.</li>
 <li>
-<code>inf.by</code> is the unique identifier of the host that infected the current one (stands for “infected by”).</li>
+<code>inf.by</code> is the unique identifier of the host that
+infected the current one (stands for “infected by”).</li>
 <li>
-<code>inf.in</code> (only if structure is present) is the (discrete) location (e.g. province, country, …) or coordinates (in that case <code>inf.in.x</code> and <code>inf.in.y</code>) in which the host was initially infected (stands for “infected in”).</li>
+<code>inf.in</code> (only if structure is present) is the (discrete)
+location (e.g. province, country, …) or coordinates (in that case
+<code>inf.in.x</code> and <code>inf.in.y</code>) in which the host was
+initially infected (stands for “infected in”).</li>
 <li>
-<code>current.in</code> (only if structure is present) is the (discrete) location (e.g. province, country, …) or coordinates (in that case <code>current.in.x</code> and <code>current.in.y</code>) in which the host is at the end of the simulation (stands for “currently in”). A complete history of hosts movements is stored in the other table <code>table.state</code> (see following section).</li>
+<code>current.in</code> (only if structure is present) is the
+(discrete) location (e.g. province, country, …) or coordinates (in that
+case <code>current.in.x</code> and <code>current.in.y</code>) in which
+the host is at the end of the simulation (stands for “currently in”). A
+complete history of hosts movements is stored in the other table
+<code>table.state</code> (see following section).</li>
 <li>
-<code>current.env.value</code> (only if continuous structure is present) is the environmental value (i.e. raster cell value) in which the host is at the end of the simulation (stands for “current environmental value”). A complete history of the environmental value encountered by the host is stored in the other table <code>table.state</code> (see following section).</li>
+<code>current.env.value</code> (only if continuous structure is
+present) is the environmental value (i.e. raster cell value) in which
+the host is at the end of the simulation (stands for “current
+environmental value”). A complete history of the environmental value
+encountered by the host is stored in the other table
+<code>table.state</code> (see following section).</li>
 <li>
-<code>current.cell.raster</code> (only if continuous structure is present) is the raster cell numeric identifier in which the host is at the end of the simulation. Here also, a complete history of raster cell occupied during the simulation is stored in the other table <code>table.state</code> (see following section).</li>
+<code>current.cell.raster</code> (only if continuous structure is
+present) is the raster cell numeric identifier in which the host is at
+the end of the simulation. Here also, a complete history of raster cell
+occupied during the simulation is stored in the other table
+<code>table.state</code> (see following section).</li>
 <li>
-<code>host.count</code> (only if structure is present) is the host count in the current state or raster cell. This value is only updated if the host count is actually used as a parameter in the simulation.</li>
+<code>host.count</code> (only if structure is present) is the host
+count in the current state or raster cell. This value is only updated if
+the host count is actually used as a parameter in the simulation.</li>
 <li>
-<code>inf.time</code> is the time (in time steps) at which the host entered the simulation (i.e. got infected) (stands for “infection time”).</li>
+<code>inf.time</code> is the time (in time steps) at which the host
+entered the simulation (i.e. got infected) (stands for “infection
+time”).</li>
 <li>
-<code>out.time</code> is the time (in time steps) at which the host exited the simulation.</li>
+<code>out.time</code> is the time (in time steps) at which the host
+exited the simulation.</li>
 <li>
-<code>active</code> is a number (either 0 or 1) indicating if the host is still active at the end of the simulation (1 for yes, 0 for no).</li>
-<li>the rest stores the user-defined individual-specific parameters used by the functions (i.e. specified by the <code>param</code> arguments in the simulator’s functions).</li>
+<code>active</code> is a number (either 0 or 1) indicating if the
+host is still active at the end of the simulation (1 for yes, 0 for
+no).</li>
+<li>the rest stores the user-defined individual-specific parameters used
+by the functions (i.e. specified by the <code>param</code> arguments in
+the simulator’s functions).</li>
 </ul>
 </div>
-<div id="table-state" class="section level2">
-<h2 class="hasAnchor">
-<a href="#table-state" class="anchor"></a><code>table.state</code>
-</h2>
-<p><code>table.state</code>, a <code>data.table</code> object, contains information about the history of movement of each host that has been simulated. This table is available only if a structured population was simulated (either discrete or continuous). It can be directly extracted using the function <code>getTableState</code>:</p>
+<div class="section level3">
+<h3 id="table-state">
+<code>table.state</code><a class="anchor" aria-label="anchor" href="#table-state"></a>
+</h3>
+<p><code>table.state</code>, a <code>data.table</code> object, contains
+information about the history of movement of each host that has been
+simulated. This table is available only if a structured population was
+simulated (either discrete or continuous). It can be directly extracted
+using the function <code>getTableState</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getTableState.html">getTableState</a></span><span class="op">(</span><span class="va">nosoi.output</span>, <span class="va">pop</span><span class="op">)</span></code></pre></div>
-<p>This function takes as its arguments your nosoi output object (of class <code>nosoiSim</code>) and which host type (here <code>pop</code>) you are interested in (<code>A</code> by default but can be <code>B</code> in case of dual-host simulations).</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getTableState.html">getTableState</a></span><span class="op">(</span><span class="va">nosoi.output</span>, <span class="va">pop</span><span class="op">)</span></span></code></pre></div>
+<p>This function takes as its arguments your nosoi output object (of
+class <code>nosoiSim</code>) and which host type (here <code>pop</code>)
+you are interested in (<code>A</code> by default but can be
+<code>B</code> in case of dual-host simulations).</p>
 <p>The structure of the table is the following:</p>
 <ul>
 <li>
-<code>hosts.ID</code> is the unique identifier for the host (a string of characters), based on a user-defined prefix and an integer.</li>
+<code>hosts.ID</code> is the unique identifier for the host (a
+string of characters), based on a user-defined prefix and an
+integer.</li>
 <li>
-<code>state</code> is the (discrete) location (e.g. province, country, …) or coordinates (in that case <code>state.x</code> and <code>state.y</code>) in which the host is located during the time interval.</li>
+<code>state</code> is the (discrete) location (e.g. province,
+country, …) or coordinates (in that case <code>state.x</code> and
+<code>state.y</code>) in which the host is located during the time
+interval.</li>
 <li>
-<code>current.env.value</code> (only if continuous structure is present) is the environmental value (i.e. raster cell value) in which the host is at the end of the simulation (stands for “current environmental value”).</li>
+<code>current.env.value</code> (only if continuous structure is
+present) is the environmental value (i.e. raster cell value) in which
+the host is at the end of the simulation (stands for “current
+environmental value”).</li>
 <li>
-<code>current.cell.raster</code> (only if continuous structure is present) is the raster cell numeric identifier in which the host is at the end of the simulation.</li>
+<code>current.cell.raster</code> (only if continuous structure is
+present) is the raster cell numeric identifier in which the host is at
+the end of the simulation.</li>
 <li>
-<code>time.from</code> is the time (in time steps) at which the host entered (i.e. got infected or moved) into the state.</li>
+<code>time.from</code> is the time (in time steps) at which the host
+entered (i.e. got infected or moved) into the state.</li>
 <li>
-<code>time.to</code> is the time (in time steps) at which the host left (i.e. excited or moved) out of the state.</li>
+<code>time.to</code> is the time (in time steps) at which the host
+left (i.e. excited or moved) out of the state.</li>
 </ul>
 </div>
 </div>
-<div id="epidemiological-insights" class="section level1">
-<h1 class="hasAnchor">
-<a href="#epidemiological-insights" class="anchor"></a>Epidemiological insights</h1>
-<p>By simulating transmission chains, <code>nosoi</code> also simulates an epidemic process. <code>nosoi</code> provides some solutions to easily explore the dynamics of this epidemic process by following through time the number of active infected hosts as well as the cumulative number of infected hosts. It also allows to compute the exact basic reproduction number <span class="math inline">\(R_0\)</span>, defined as the average number of cases one case generates. Since all of the data generated are stored in the output <code>nosoiSim</code> object, more advanced exploration could also be done.</p>
-<div id="epidemiological-summary" class="section level2">
-<h2 class="hasAnchor">
-<a href="#epidemiological-summary" class="anchor"></a>Epidemiological summary</h2>
-<p><code>summary</code> is a turnkey solution that computes both the dynamics of the epidemic and <span class="math inline">\(R_0\)</span>. Its only argument is your nosoi output object (of class <code>nosoiSim</code>):</p>
+<div class="section level2">
+<h2 id="epidemiological-insights">Epidemiological insights<a class="anchor" aria-label="anchor" href="#epidemiological-insights"></a>
+</h2>
+<p>By simulating transmission chains, <code>nosoi</code> also simulates
+an epidemic process. <code>nosoi</code> provides some solutions to
+easily explore the dynamics of this epidemic process by following
+through time the number of active infected hosts as well as the
+cumulative number of infected hosts. It also allows to compute the exact
+basic reproduction number <span class="math inline">\(R_0\)</span>,
+defined as the average number of cases one case generates. Since all of
+the data generated are stored in the output <code>nosoiSim</code>
+object, more advanced exploration could also be done.</p>
+<div class="section level3">
+<h3 id="epidemiological-summary">Epidemiological summary<a class="anchor" aria-label="anchor" href="#epidemiological-summary"></a>
+</h3>
+<p><code>summary</code> is a turnkey solution that computes both the
+dynamics of the epidemic and <span class="math inline">\(R_0\)</span>.
+Its only argument is your nosoi output object (of class
+<code>nosoiSim</code>):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">nosoi.output</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">nosoi.output</span><span class="op">)</span></span></code></pre></div>
 <p>It returns a list containing the slots:</p>
 <ul>
 <li>
-<code>R0</code>, a sub-list with number of inactive hosts at the end of the simulation <code>N.inactive</code> on which the calculation is done, mean <span class="math inline">\(R_0\)</span> <code>R0.mean</code>, and <span class="math inline">\(R_0\)</span> distribution <code>R0.dist</code>. For more details on the computation behind, see below.</li>
+<code>R0</code>, a sub-list with number of inactive hosts at the end
+of the simulation <code>N.inactive</code> on which the calculation is
+done, mean <span class="math inline">\(R_0\)</span>
+<code>R0.mean</code>, and <span class="math inline">\(R_0\)</span>
+distribution <code>R0.dist</code>. For more details on the computation
+behind, see below.</li>
 <li>
-<code>dynamics</code> is a <code>data.table</code> object with the count of the sum of infected and active host at each time of the simulation (by location/state if this simulation has been done in a discrete structured host population). See below for more details.</li>
+<code>dynamics</code> is a <code>data.table</code> object with the
+count of the sum of infected and active host at each time of the
+simulation (by location/state if this simulation has been done in a
+discrete structured host population). See below for more details.</li>
 <li>
-<code>cumulative</code> is a <code>data.table</code> object with the cumulative sum of infected hosts at each time step of the simulation. See below for more details.</li>
+<code>cumulative</code> is a <code>data.table</code> object with the
+cumulative sum of infected hosts at each time step of the simulation.
+See below for more details.</li>
 </ul>
 </div>
-<div id="epidemiological-dynamics" class="section level2">
-<h2 class="hasAnchor">
-<a href="#epidemiological-dynamics" class="anchor"></a>Epidemiological dynamics</h2>
-<p>Both the <code>cumulative</code> and <code>dynamics</code> tables can be directly extracted using the functions <code>getCumulative</code> and <code>getDynamic</code> respectively. Both functions yield a <code>data.table</code> object, but their structures vary slightly. <code>cumulative</code> has the following structure:</p>
+<div class="section level3">
+<h3 id="epidemiological-dynamics">Epidemiological dynamics<a class="anchor" aria-label="anchor" href="#epidemiological-dynamics"></a>
+</h3>
+<p>Both the <code>cumulative</code> and <code>dynamics</code> tables can
+be directly extracted using the functions <code>getCumulative</code> and
+<code>getDynamic</code> respectively. Both functions yield a
+<code>data.table</code> object, but their structures vary slightly.
+<code>cumulative</code> has the following structure:</p>
 <ul>
 <li>
 <code>t</code> is the time step (an integer).</li>
 <li>
-<code>Count</code> is the cumulative number of infected hosts at given time step (an integer).</li>
+<code>Count</code> is the cumulative number of infected hosts at
+given time step (an integer).</li>
 <li>
-<code>type</code> is the host type, identified by its user-defined prefix (string of characters).</li>
+<code>type</code> is the host type, identified by its user-defined
+prefix (string of characters).</li>
 </ul>
 <p><code>dynamics</code> has the following structure:</p>
 <ul>
 <li>
-<code>state</code> (only in the case of a discrete structure) is the state (a string of characters, usually).</li>
+<code>state</code> (only in the case of a discrete structure) is the
+state (a string of characters, usually).</li>
 <li>
-<code>Count</code> is the number of active infected hosts at given time step (an integer) by state (in the case of a discrete structure).</li>
+<code>Count</code> is the number of active infected hosts at given
+time step (an integer) by state (in the case of a discrete
+structure).</li>
 <li>
-<code>type</code> is the host type, identified by its user-defined prefix (string of characters).</li>
+<code>type</code> is the host type, identified by its user-defined
+prefix (string of characters).</li>
 <li>
 <code>t</code> is the time step (an integer).</li>
 </ul>
-<p>These can be used to plot the epidemiological dynamics of the simulated transmission chain. Here for example, we simulate a single introduction of a single-host pathogen between 3 different locations/states (named “A”, “B”, and “C”), with constant exit and move probabilities as well as a number of contacts dependent on the location and host count in each location:</p>
+<p>These can be used to plot the epidemiological dynamics of the
+simulated transmission chain. Here for example, we simulate a single
+introduction of a single-host pathogen between 3 different
+locations/states (named “A”, “B”, and “C”), with constant exit and move
+probabilities as well as a number of contacts dependent on the location
+and host count in each location:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slequime/nosoi">nosoi</a></span><span class="op">)</span>
-  <span class="va">t_incub_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">x</span>,mean <span class="op">=</span> <span class="fl">5</span>,sd<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span>
-  <span class="va">p_max_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span><span class="op">(</span><span class="va">x</span>,shape1 <span class="op">=</span> <span class="fl">5</span>,shape2<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">}</span>
-  <span class="va">p_Move_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span><span class="op">}</span>
-
-  <span class="va">p_Exit_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span><span class="op">}</span>
-
-  <span class="va">proba</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">p_max</span>,<span class="va">t_incub</span><span class="op">)</span><span class="op">{</span>
-    <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&lt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="fl">0</span><span class="op">}</span>
-    <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&gt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="va">p_max</span><span class="op">}</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-  <span class="op">}</span>
-
-  <span class="va">time_contact</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">current.in</span>, <span class="va">host.count</span><span class="op">)</span><span class="op">{</span>
-
-    <span class="va">temp.val</span> <span class="op">=</span> <span class="fl">30</span> <span class="op">-</span> <span class="va">host.count</span>
-
-    <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&lt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
-      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>
-    <span class="op">}</span>
-    <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
-      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"A"</span><span class="op">)</span><span class="op">{</span>
-        <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>
-      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"B"</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">}</span>
-      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"C"</span><span class="op">)</span><span class="op">{</span>
-        <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>
-    <span class="op">}</span>
-  <span class="op">}</span>
-
-  <span class="va">transition.matrix</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="fl">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="fl">0</span><span class="op">)</span>,nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span>,dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1050</span><span class="op">)</span>
-  <span class="va">test.nosoiA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nosoiSim.html">nosoiSim</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"single"</span>, popStructure<span class="op">=</span><span class="st">"discrete"</span>,
-                          length<span class="op">=</span><span class="fl">100</span>,
-                          max.infected<span class="op">=</span><span class="fl">200</span>,
-                          init.individuals<span class="op">=</span><span class="fl">1</span>,
-                          init.structure<span class="op">=</span><span class="st">"A"</span>,
-                          structure.matrix<span class="op">=</span><span class="va">transition.matrix</span>,
-                          pMove<span class="op">=</span><span class="va">p_Move_fct</span>,
-                          param.pMove<span class="op">=</span><span class="cn">NA</span>,
-                          diff.nContact<span class="op">=</span><span class="cn">TRUE</span>,
-                          hostCount.nContact<span class="op">=</span><span class="cn">TRUE</span>,
-                          nContact<span class="op">=</span><span class="va">time_contact</span>,
-                          param.nContact<span class="op">=</span><span class="cn">NA</span>,
-                          pTrans <span class="op">=</span> <span class="va">proba</span>,
-                          param.pTrans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>p_max<span class="op">=</span><span class="va">p_max_fct</span>,
-                                              t_incub<span class="op">=</span><span class="va">t_incub_fct</span><span class="op">)</span>,
-                          pExit<span class="op">=</span><span class="va">p_Exit_fct</span>,
-                          param.pExit<span class="op">=</span><span class="cn">NA</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slequime/nosoi" class="external-link">nosoi</a></span><span class="op">)</span></span>
+<span>  <span class="va">t_incub_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">x</span>,mean <span class="op">=</span> <span class="fl">5</span>,sd<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span></span>
+<span>  <span class="va">p_max_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span><span class="va">x</span>,shape1 <span class="op">=</span> <span class="fl">5</span>,shape2<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">}</span></span>
+<span>  <span class="va">p_Move_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span><span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">p_Exit_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span><span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">proba</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">p_max</span>,<span class="va">t_incub</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&lt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="fl">0</span><span class="op">}</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&gt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="va">p_max</span><span class="op">}</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">time_contact</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">current.in</span>, <span class="va">host.count</span><span class="op">)</span><span class="op">{</span></span>
+<span></span>
+<span>    <span class="va">temp.val</span> <span class="op">=</span> <span class="fl">30</span> <span class="op">-</span> <span class="va">host.count</span></span>
+<span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&lt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"A"</span><span class="op">)</span><span class="op">{</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span></span>
+<span>      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"B"</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">}</span></span>
+<span>      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"C"</span><span class="op">)</span><span class="op">{</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">transition.matrix</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="fl">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="fl">0</span><span class="op">)</span>,nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span>,dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1050</span><span class="op">)</span></span>
+<span>  <span class="va">test.nosoiA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nosoiSim.html">nosoiSim</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"single"</span>, popStructure<span class="op">=</span><span class="st">"discrete"</span>,</span>
+<span>                          length<span class="op">=</span><span class="fl">100</span>,</span>
+<span>                          max.infected<span class="op">=</span><span class="fl">200</span>,</span>
+<span>                          init.individuals<span class="op">=</span><span class="fl">1</span>,</span>
+<span>                          init.structure<span class="op">=</span><span class="st">"A"</span>,</span>
+<span>                          structure.matrix<span class="op">=</span><span class="va">transition.matrix</span>,</span>
+<span>                          pMove<span class="op">=</span><span class="va">p_Move_fct</span>,</span>
+<span>                          param.pMove<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>                          diff.nContact<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>                          hostCount.nContact<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>                          nContact<span class="op">=</span><span class="va">time_contact</span>,</span>
+<span>                          param.nContact<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>                          pTrans <span class="op">=</span> <span class="va">proba</span>,</span>
+<span>                          param.pTrans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>p_max<span class="op">=</span><span class="va">p_max_fct</span>,</span>
+<span>                                              t_incub<span class="op">=</span><span class="va">t_incub_fct</span><span class="op">)</span>,</span>
+<span>                          pExit<span class="op">=</span><span class="va">p_Exit_fct</span>,</span>
+<span>                          param.pExit<span class="op">=</span><span class="cn">NA</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="va">cumulative.table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getCumulative.html">getCumulative</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span>
-<span class="va">dynamics.table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getDynamic.html">getDynamic</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span>
-
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">cumulative.table</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">t</span>, y<span class="op">=</span><span class="va">Count</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Time (t)"</span>,y<span class="op">=</span><span class="st">"Cumulative count of infected hosts"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="va">cumulative.table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getCumulative.html">getCumulative</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span></span>
+<span><span class="va">dynamics.table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getDynamic.html">getDynamic</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">cumulative.table</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">t</span>, y<span class="op">=</span><span class="va">Count</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Time (t)"</span>,y<span class="op">=</span><span class="st">"Cumulative count of infected hosts"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="output_files/figure-html/figureDynamics1_actual-1.png" width="700"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">dynamics.table</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">t</span>, y<span class="op">=</span><span class="va">Count</span>, color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Time (t)"</span>,y<span class="op">=</span><span class="st">"Number of active infected hosts"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">dynamics.table</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">t</span>, y<span class="op">=</span><span class="va">Count</span>, color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Time (t)"</span>,y<span class="op">=</span><span class="st">"Number of active infected hosts"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="output_files/figure-html/figureDynamics2_actual-1.png" width="700"></p>
 </div>
-<div id="r_0" class="section level2">
-<h2 class="hasAnchor">
-<a href="#r_0" class="anchor"></a><span class="math inline">\(R_0\)</span>
-</h2>
-<p>The output <code>nosoiSim</code> object can be used to compute the “real” <span class="math inline">\(R_0\)</span>, defined as the average number of cases one case generates, often estimated in epidemiological studies. The function <code>getRO</code> can be used directly, with the <code>nosoiSim</code> output as its unique argument, to generate a list containing:</p>
+<div class="section level3">
+<h3 id="r_0">
+<span class="math inline">\(R_0\)</span><a class="anchor" aria-label="anchor" href="#r_0"></a>
+</h3>
+<p>The output <code>nosoiSim</code> object can be used to compute the
+“real” <span class="math inline">\(R_0\)</span>, defined as the average
+number of cases one case generates, often estimated in epidemiological
+studies. The function <code>getRO</code> can be used directly, with the
+<code>nosoiSim</code> output as its unique argument, to generate a list
+containing:</p>
 <ul>
 <li>
-<code>N.inactive</code>, the number of inactive hosts at the end of the simulation on which the <span class="math inline">\(R_0\)</span> calculation is made. This is to avoid bias introduced by hosts that have not accomplished their full transmission potential (i.e. are still active).</li>
+<code>N.inactive</code>, the number of inactive hosts at the end of
+the simulation on which the <span class="math inline">\(R_0\)</span>
+calculation is made. This is to avoid bias introduced by hosts that have
+not accomplished their full transmission potential (i.e. are still
+active).</li>
 <li>
-<code>R0.mean</code> is the <span class="math inline">\(R_0\)</span> estimate, mean of the following <code>R0.dist</code>.</li>
+<code>R0.mean</code> is the <span class="math inline">\(R_0\)</span>
+estimate, mean of the following <code>R0.dist</code>.</li>
 <li>
-<code>R0.dist</code> is the full distribution (one number is one host) of <span class="math inline">\(R_0\)</span> estimates per host.</li>
+<code>R0.dist</code> is the full distribution (one number is one
+host) of <span class="math inline">\(R_0\)</span> estimates per
+host.</li>
 </ul>
-<p>Here for example, we simulate a single introduction of a single-host pathogen between 3 different states (named “A”, “B”, and “C”), with a constant exit and move probability as well as a number of contacts dependent of the location and host count in each location:</p>
+<p>Here for example, we simulate a single introduction of a single-host
+pathogen between 3 different states (named “A”, “B”, and “C”), with a
+constant exit and move probability as well as a number of contacts
+dependent of the location and host count in each location:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slequime/nosoi">nosoi</a></span><span class="op">)</span>
-  <span class="va">t_incub_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">x</span>,mean <span class="op">=</span> <span class="fl">5</span>,sd<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span>
-  <span class="va">p_max_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span><span class="op">(</span><span class="va">x</span>,shape1 <span class="op">=</span> <span class="fl">5</span>,shape2<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">}</span>
-  <span class="va">p_Move_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span><span class="op">}</span>
-
-  <span class="va">p_Exit_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span><span class="op">}</span>
-
-  <span class="va">proba</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">p_max</span>,<span class="va">t_incub</span><span class="op">)</span><span class="op">{</span>
-    <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&lt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="fl">0</span><span class="op">}</span>
-    <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&gt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="va">p_max</span><span class="op">}</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-  <span class="op">}</span>
-
-  <span class="va">time_contact</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">current.in</span>, <span class="va">host.count</span><span class="op">)</span><span class="op">{</span>
-
-    <span class="va">temp.val</span> <span class="op">=</span> <span class="fl">30</span> <span class="op">-</span> <span class="va">host.count</span>
-
-    <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&lt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
-      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>
-    <span class="op">}</span>
-    <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
-      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"A"</span><span class="op">)</span><span class="op">{</span>
-        <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>
-      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"B"</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">}</span>
-      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"C"</span><span class="op">)</span><span class="op">{</span>
-        <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>
-    <span class="op">}</span>
-  <span class="op">}</span>
-
-  <span class="va">transition.matrix</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="fl">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="fl">0</span><span class="op">)</span>,nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span>,dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1050</span><span class="op">)</span>
-  <span class="va">test.nosoiA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nosoiSim.html">nosoiSim</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"single"</span>, popStructure<span class="op">=</span><span class="st">"discrete"</span>,
-                          length<span class="op">=</span><span class="fl">100</span>,
-                          max.infected<span class="op">=</span><span class="fl">200</span>,
-                          init.individuals<span class="op">=</span><span class="fl">1</span>,
-                          init.structure<span class="op">=</span><span class="st">"A"</span>,
-                          structure.matrix<span class="op">=</span><span class="va">transition.matrix</span>,
-                          pMove<span class="op">=</span><span class="va">p_Move_fct</span>,
-                          param.pMove<span class="op">=</span><span class="cn">NA</span>,
-                          diff.nContact<span class="op">=</span><span class="cn">TRUE</span>,
-                          hostCount.nContact<span class="op">=</span><span class="cn">TRUE</span>,
-                          nContact<span class="op">=</span><span class="va">time_contact</span>,
-                          param.nContact<span class="op">=</span><span class="cn">NA</span>,
-                          pTrans <span class="op">=</span> <span class="va">proba</span>,
-                          param.pTrans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>p_max<span class="op">=</span><span class="va">p_max_fct</span>,
-                                              t_incub<span class="op">=</span><span class="va">t_incub_fct</span><span class="op">)</span>,
-                          pExit<span class="op">=</span><span class="va">p_Exit_fct</span>,
-                          param.pExit<span class="op">=</span><span class="cn">NA</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slequime/nosoi" class="external-link">nosoi</a></span><span class="op">)</span></span>
+<span>  <span class="va">t_incub_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">x</span>,mean <span class="op">=</span> <span class="fl">5</span>,sd<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span></span>
+<span>  <span class="va">p_max_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span><span class="va">x</span>,shape1 <span class="op">=</span> <span class="fl">5</span>,shape2<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">}</span></span>
+<span>  <span class="va">p_Move_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span><span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">p_Exit_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span><span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">proba</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">p_max</span>,<span class="va">t_incub</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&lt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="fl">0</span><span class="op">}</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&gt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="va">p_max</span><span class="op">}</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">time_contact</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">current.in</span>, <span class="va">host.count</span><span class="op">)</span><span class="op">{</span></span>
+<span></span>
+<span>    <span class="va">temp.val</span> <span class="op">=</span> <span class="fl">30</span> <span class="op">-</span> <span class="va">host.count</span></span>
+<span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&lt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"A"</span><span class="op">)</span><span class="op">{</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span></span>
+<span>      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"B"</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">}</span></span>
+<span>      <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"C"</span><span class="op">)</span><span class="op">{</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">transition.matrix</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="fl">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="fl">0</span><span class="op">)</span>,nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span>,dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1050</span><span class="op">)</span></span>
+<span>  <span class="va">test.nosoiA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nosoiSim.html">nosoiSim</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"single"</span>, popStructure<span class="op">=</span><span class="st">"discrete"</span>,</span>
+<span>                          length<span class="op">=</span><span class="fl">100</span>,</span>
+<span>                          max.infected<span class="op">=</span><span class="fl">200</span>,</span>
+<span>                          init.individuals<span class="op">=</span><span class="fl">1</span>,</span>
+<span>                          init.structure<span class="op">=</span><span class="st">"A"</span>,</span>
+<span>                          structure.matrix<span class="op">=</span><span class="va">transition.matrix</span>,</span>
+<span>                          pMove<span class="op">=</span><span class="va">p_Move_fct</span>,</span>
+<span>                          param.pMove<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>                          diff.nContact<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>                          hostCount.nContact<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>                          nContact<span class="op">=</span><span class="va">time_contact</span>,</span>
+<span>                          param.nContact<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>                          pTrans <span class="op">=</span> <span class="va">proba</span>,</span>
+<span>                          param.pTrans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>p_max<span class="op">=</span><span class="va">p_max_fct</span>,</span>
+<span>                                              t_incub<span class="op">=</span><span class="va">t_incub_fct</span><span class="op">)</span>,</span>
+<span>                          pExit<span class="op">=</span><span class="va">p_Exit_fct</span>,</span>
+<span>                          param.pExit<span class="op">=</span><span class="cn">NA</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getR0.html">getR0</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span>
-<span class="co">#&gt; $N.inactive</span>
-<span class="co">#&gt; [1] 117</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $R0.mean</span>
-<span class="co">#&gt; [1] 1.068376</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $R0.dist</span>
-<span class="co">#&gt;   [1] 18  4  0  0  0  0  0  0  6  0  0  0  0  0  0  0  0  0  0  6  0  0  0  0  0</span>
-<span class="co">#&gt;  [26]  4  0  0  0  0  9  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  3 10  0  2</span>
-<span class="co">#&gt;  [51]  1  4  5  0  0  0  1  2  1  0  3  2  0  0  0 11  0  0  0  0  1  0  8  0  1</span>
-<span class="co">#&gt;  [76]  0  1  1  0  0  0  1  0  0  0  0  0  0  0  1  2  0  3  0  0  1  0  3  0  3</span>
-<span class="co">#&gt; [101]  0  0  0  0  0  1  0  1  0  0  1  0  1  2  1  0  0</span></code></pre></div>
-<p>As you can see, out of the 117 inactive hosts, the mean <span class="math inline">\(R_0\)</span> is 1.068376. This does not of course reflect the distribution of <span class="math inline">\(R_0\)</span> where most hosts actually never transmitted the infection:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getR0.html">getR0</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $N.inactive</span></span>
+<span><span class="co">#&gt; [1] 117</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $R0.mean</span></span>
+<span><span class="co">#&gt; [1] 1.068376</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $R0.dist</span></span>
+<span><span class="co">#&gt;   [1] 18  4  0  0  0  0  0  0  6  0  0  0  0  0  0  0  0  0  0  6  0  0  0  0  0</span></span>
+<span><span class="co">#&gt;  [26]  4  0  0  0  0  9  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  3 10  0  2</span></span>
+<span><span class="co">#&gt;  [51]  1  4  5  0  0  0  1  2  1  0  3  2  0  0  0 11  0  0  0  0  1  0  8  0  1</span></span>
+<span><span class="co">#&gt;  [76]  0  1  1  0  0  0  1  0  0  0  0  0  0  0  1  2  0  3  0  0  1  0  3  0  3</span></span>
+<span><span class="co">#&gt; [101]  0  0  0  0  0  1  0  1  0  0  1  0  1  2  1  0  0</span></span></code></pre></div>
+<p>As you can see, out of the 117 inactive hosts, the mean <span class="math inline">\(R_0\)</span> is 1.068376. This does not of course
+reflect the distribution of <span class="math inline">\(R_0\)</span>
+where most hosts actually never transmitted the infection:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>R0<span class="op">=</span><span class="fu"><a href="../reference/getR0.html">getR0</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span><span class="op">$</span><span class="va">R0.dist</span><span class="op">)</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">R0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>R0<span class="op">=</span><span class="fu"><a href="../reference/getR0.html">getR0</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span><span class="op">$</span><span class="va">R0.dist</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">R0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="output_files/figure-html/figureR0_actual-1.png" width="700"></p>
 </div>
 </div>
-<div id="transmission-chains" class="section level1">
-<h1 class="hasAnchor">
-<a href="#transmission-chains" class="anchor"></a>Transmission chains</h1>
-<div id="full-transmission-chain" class="section level2">
-<h2 class="hasAnchor">
-<a href="#full-transmission-chain" class="anchor"></a>Full transmission chain</h2>
-<p>The transmission chain is the main product of a <code>nosoi</code> simulation. It can be extracted or visualized as such using the <code>table.hosts</code> table that links hosts in time. It can also be extracted in a form mimicking a phylogenetic tree, and visualized or saved as such using available tools for phylogenetic trees such as <a href="https://CRAN.R-project.org/package=ape"><code>ape</code></a> and <a href="https://yulab-smu.top/treedata-book/"><code>tidytree</code></a>. To do so, you can use the <code><a href="../reference/getTransmissionTree.html">getTransmissionTree()</a></code> function, which arguments are the <code>nosoi</code> simulation output and which host type would be the tips of the tree (“A” by default, or “B” in case a dual-host simulation).</p>
+<div class="section level2">
+<h2 id="transmission-chains">Transmission chains<a class="anchor" aria-label="anchor" href="#transmission-chains"></a>
+</h2>
+<div class="section level3">
+<h3 id="full-transmission-chain">Full transmission chain<a class="anchor" aria-label="anchor" href="#full-transmission-chain"></a>
+</h3>
+<p>The transmission chain is the main product of a <code>nosoi</code>
+simulation. It can be extracted or visualized as such using the
+<code>table.hosts</code> table that links hosts in time. It can also be
+extracted in a form mimicking a phylogenetic tree, and visualized or
+saved as such using available tools for phylogenetic trees such as <a href="https://CRAN.R-project.org/package=ape" class="external-link"><code>ape</code></a> and
+<a href="https://yulab-smu.top/treedata-book/" class="external-link"><code>tidytree</code></a>.
+To do so, you can use the <code><a href="../reference/getTransmissionTree.html">getTransmissionTree()</a></code> function,
+which arguments are the <code>nosoi</code> simulation output and which
+host type would be the tips of the tree (“A” by default, or “B” in case
+a dual-host simulation).</p>
 <!-- put here more info on how the transmission tree is actually reconstructed. Paul? -->
-<p>Formally, the transmission tree is extracted as a dated phylogenetic tree where:</p>
+<p>Formally, the transmission tree is extracted as a dated phylogenetic
+tree where:</p>
 <ul>
 <li>each branch represents the life span of an host;</li>
 <li>each internal node represents a transmission event;</li>
 <li>each tip represents the exiting point of an host;</li>
 <li>the root represents the entering point of the first host.</li>
 </ul>
-<!-- TODO: Figure with strait lines like here: https://xavierdidelot.github.io/TransPhylo/articles/TransPhylo.html --><!-- TODO: add reference to TransPhylo ? --><p>Such a tree is binary, and has as many tips as the total number of infected hosts, and as many nodes as the number of transmission events. It spans a time going from the first entry of the first host (usually, by convention, 0), to the exiting of the last host.</p>
-<p>It can be seen as a proxy to represent the molecular evolution of the pathogen infecting each of the hosts.</p>
+<!-- TODO: Figure with strait lines like here: https://xavierdidelot.github.io/TransPhylo/articles/TransPhylo.html --><!-- TODO: add reference to TransPhylo ? --><p>Such a tree is binary, and has as many tips as the total number of
+infected hosts, and as many nodes as the number of transmission events.
+It spans a time going from the first entry of the first host (usually,
+by convention, 0), to the exiting of the last host.</p>
+<p>It can be seen as a proxy to represent the molecular evolution of the
+pathogen infecting each of the hosts.</p>
 <blockquote>
-<p><code><a href="../reference/getTransmissionTree.html">getTransmissionTree()</a></code> extracts the full transmission tree. In case of a big simulated epidemic, this can take some time. It can also be very complicated to plot/visualize.</p>
+<p><code><a href="../reference/getTransmissionTree.html">getTransmissionTree()</a></code> extracts the full transmission
+tree. In case of a big simulated epidemic, this can take some time. It
+can also be very complicated to plot/visualize.</p>
 </blockquote>
-<p>As an example, we simulate a single introduction of a single-host pathogen between 3 different states (named “A”, “B”, and “C”), with a constant exit and move probability as well as a number of contacts dependent of the location and host count in each location:</p>
+<p>As an example, we simulate a single introduction of a single-host
+pathogen between 3 different states (named “A”, “B”, and “C”), with a
+constant exit and move probability as well as a number of contacts
+dependent of the location and host count in each location:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slequime/nosoi">nosoi</a></span><span class="op">)</span>
-<span class="va">t_incub_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">x</span>,mean <span class="op">=</span> <span class="fl">5</span>,sd<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span>
-<span class="va">p_max_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html">rbeta</a></span><span class="op">(</span><span class="va">x</span>,shape1 <span class="op">=</span> <span class="fl">5</span>,shape2<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">}</span>
-<span class="va">p_Move_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span><span class="op">}</span>
-
-<span class="va">p_Exit_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span><span class="op">}</span>
-
-<span class="va">proba</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">p_max</span>,<span class="va">t_incub</span><span class="op">)</span><span class="op">{</span>
-  <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&lt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="fl">0</span><span class="op">}</span>
-  <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&gt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="va">p_max</span><span class="op">}</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">time_contact</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">current.in</span>, <span class="va">host.count</span><span class="op">)</span><span class="op">{</span>
-  
-  <span class="va">temp.val</span> <span class="op">=</span> <span class="fl">30</span> <span class="op">-</span> <span class="va">host.count</span>
-  
-  <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&lt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>
-  <span class="op">}</span>
-  <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
-    <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"A"</span><span class="op">)</span><span class="op">{</span>
-      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>
-    <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"B"</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">}</span>
-    <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"C"</span><span class="op">)</span><span class="op">{</span>
-      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>
-  <span class="op">}</span>
-<span class="op">}</span>
-
-<span class="va">transition.matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="fl">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="fl">0</span><span class="op">)</span>,nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span>,dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1050</span><span class="op">)</span>
-<span class="va">test.nosoiA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nosoiSim.html">nosoiSim</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"single"</span>, popStructure<span class="op">=</span><span class="st">"discrete"</span>,
-                        length<span class="op">=</span><span class="fl">100</span>,
-                        max.infected<span class="op">=</span><span class="fl">200</span>,
-                        init.individuals<span class="op">=</span><span class="fl">1</span>,
-                        init.structure<span class="op">=</span><span class="st">"A"</span>,
-                        structure.matrix<span class="op">=</span><span class="va">transition.matrix</span>,
-                        pMove<span class="op">=</span><span class="va">p_Move_fct</span>,
-                        param.pMove<span class="op">=</span><span class="cn">NA</span>,
-                        diff.nContact<span class="op">=</span><span class="cn">TRUE</span>,
-                        hostCount.nContact<span class="op">=</span><span class="cn">TRUE</span>,
-                        nContact<span class="op">=</span><span class="va">time_contact</span>,
-                        param.nContact<span class="op">=</span><span class="cn">NA</span>,
-                        pTrans <span class="op">=</span> <span class="va">proba</span>,
-                        param.pTrans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>p_max<span class="op">=</span><span class="va">p_max_fct</span>,
-                                            t_incub<span class="op">=</span><span class="va">t_incub_fct</span><span class="op">)</span>,
-                        pExit<span class="op">=</span><span class="va">p_Exit_fct</span>,
-                        param.pExit<span class="op">=</span><span class="cn">NA</span>
-<span class="op">)</span></code></pre></div>
-<p>The simulation runs for 46 time steps and infected 204 hosts. The following transmission tree can thus be extracted (as a <code><a href="https://rdrr.io/pkg/tidytree/man/treedata.html">tidytree::treedata</a></code> object) and plotted using <a href="https://bioconductor.org/packages/release/bioc/html/ggtree.html"><code>ggtree</code></a>:</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slequime/nosoi" class="external-link">nosoi</a></span><span class="op">)</span></span>
+<span><span class="va">t_incub_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">x</span>,mean <span class="op">=</span> <span class="fl">5</span>,sd<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span></span>
+<span><span class="va">p_max_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span><span class="va">x</span>,shape1 <span class="op">=</span> <span class="fl">5</span>,shape2<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">}</span></span>
+<span><span class="va">p_Move_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">p_Exit_fct</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">proba</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">p_max</span>,<span class="va">t_incub</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&lt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="fl">0</span><span class="op">}</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&gt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="va">p_max</span><span class="op">}</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">time_contact</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">current.in</span>, <span class="va">host.count</span><span class="op">)</span><span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">temp.val</span> <span class="op">=</span> <span class="fl">30</span> <span class="op">-</span> <span class="va">host.count</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&lt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="va">temp.val</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"A"</span><span class="op">)</span><span class="op">{</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"B"</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">}</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">current.in</span><span class="op">==</span><span class="st">"C"</span><span class="op">)</span><span class="op">{</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">temp.val</span><span class="op">/</span><span class="fl">30</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">transition.matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="fl">0</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.8</span>,<span class="fl">0</span><span class="op">)</span>,nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span>,dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1050</span><span class="op">)</span></span>
+<span><span class="va">test.nosoiA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nosoiSim.html">nosoiSim</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"single"</span>, popStructure<span class="op">=</span><span class="st">"discrete"</span>,</span>
+<span>                        length<span class="op">=</span><span class="fl">100</span>,</span>
+<span>                        max.infected<span class="op">=</span><span class="fl">200</span>,</span>
+<span>                        init.individuals<span class="op">=</span><span class="fl">1</span>,</span>
+<span>                        init.structure<span class="op">=</span><span class="st">"A"</span>,</span>
+<span>                        structure.matrix<span class="op">=</span><span class="va">transition.matrix</span>,</span>
+<span>                        pMove<span class="op">=</span><span class="va">p_Move_fct</span>,</span>
+<span>                        param.pMove<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>                        diff.nContact<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>                        hostCount.nContact<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>                        nContact<span class="op">=</span><span class="va">time_contact</span>,</span>
+<span>                        param.nContact<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>                        pTrans <span class="op">=</span> <span class="va">proba</span>,</span>
+<span>                        param.pTrans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>p_max<span class="op">=</span><span class="va">p_max_fct</span>,</span>
+<span>                                            t_incub<span class="op">=</span><span class="va">t_incub_fct</span><span class="op">)</span>,</span>
+<span>                        pExit<span class="op">=</span><span class="va">p_Exit_fct</span>,</span>
+<span>                        param.pExit<span class="op">=</span><span class="cn">NA</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>The simulation runs for 46 time steps and infected 204 hosts. The
+following transmission tree can thus be extracted (as a
+<code><a href="https://rdrr.io/pkg/tidytree/man/treedata.html" class="external-link">tidytree::treedata</a></code> object) and plotted using <a href="https://bioconductor.org/packages/release/bioc/html/ggtree.html" class="external-link"><code>ggtree</code></a>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">test.nosoiA.tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getTransmissionTree.html">getTransmissionTree</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yulab-smu.top/treedata-book/">ggtree</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">test.nosoiA.tree</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, 
-                                           legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
-                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
-<pre><code>#&gt; Warning: `mutate_()` was deprecated in dplyr 0.7.0.
-#&gt; Please use `mutate()` instead.
-#&gt; See vignette('programming') for more help</code></pre>
-<p>Each color point represents the location/state, either at transmission (a node) or a host when it exits the simulation (or the end point of the simulation; a tip). This transmission tree is timed (time steps of the simulation). As you can see, no transmission ever occurs at location “B” (green); this is coherent with the chosen <code>nContact</code> function, where no infectious contact occurs when the host is in “B”.</p>
+<code class="sourceCode R"><span><span class="va">test.nosoiA.tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getTransmissionTree.html">getTransmissionTree</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.amazon.com/Integration-Manipulation-Visualization-Phylogenetic-Computational-ebook/dp/B0B5NLZR1Z/" class="external-link">ggtree</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html" class="external-link">ggtree</a></span><span class="op">(</span><span class="va">test.nosoiA.tree</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html" class="external-link">geom_nodepoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html" class="external-link">geom_tippoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html" class="external-link">theme_tree2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, </span>
+<span>                                           legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+<p><img src="output_files/figure-html/treeA_actual-1.png" width="700"></p>
+<p>Each color point represents the location/state, either at
+transmission (a node) or a host when it exits the simulation (or the end
+point of the simulation; a tip). This transmission tree is timed (time
+steps of the simulation). As you can see, no transmission ever occurs at
+location “B” (green); this is coherent with the chosen
+<code>nContact</code> function, where no infectious contact occurs when
+the host is in “B”.</p>
 </div>
-<div id="sampling-the-transmission-chain" class="section level2">
-<h2 class="hasAnchor">
-<a href="#sampling-the-transmission-chain" class="anchor"></a>Sampling the transmission chain</h2>
-<p>Usually, it is unlikely that the whole transmission chain (i.e. every host) will be sampled during surveillance of an epidemic outbreak or endemic transmission. The functions <code><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree()</a></code> and <code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code> can both be used to sample hosts from this transmission chain and construct the new tree based on the existing hosts (tips).</p>
-<p><code><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree()</a></code> needs the following arguments:</p>
+<div class="section level3">
+<h3 id="sampling-the-transmission-chain">Sampling the transmission chain<a class="anchor" aria-label="anchor" href="#sampling-the-transmission-chain"></a>
+</h3>
+<p>Usually, it is unlikely that the whole transmission chain (i.e. every
+host) will be sampled during surveillance of an epidemic outbreak or
+endemic transmission. The functions
+<code><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree()</a></code> and
+<code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code> can both be used to
+sample hosts from this transmission chain and construct the new tree
+based on the existing hosts (tips).</p>
+<p><code><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree()</a></code> needs the following
+arguments:</p>
 <ul>
 <li>
-<code>nosoiInf</code>, the output of simulation (<code>nosoiSim</code> object)</li>
+<code>nosoiInf</code>, the output of simulation
+(<code>nosoiSim</code> object)</li>
 <li>
-<code>tree</code>, a <code>treedata</code> object created by the function <code><a href="../reference/getTransmissionTree.html">getTransmissionTree()</a></code> (see above).</li>
+<code>tree</code>, a <code>treedata</code> object created by the
+function <code><a href="../reference/getTransmissionTree.html">getTransmissionTree()</a></code> (see above).</li>
 <li>
-<code>samples</code>, a <code>data.table</code> object with the following entries:
+<code>samples</code>, a <code>data.table</code> object with the
+following entries:
 <ul>
 <li>
-<code>hosts</code>, unique <code>Host.ID</code> of the individuals to be sampled.</li>
+<code>hosts</code>, unique <code>Host.ID</code> of the individuals
+to be sampled.</li>
 <li>
 <code>times</code>, time at which hosts are sampled.</li>
 <li>
@@ -581,66 +719,85 @@
 </li>
 </ul>
 <p>In the example above, we want to sample the following 20 hosts:</p>
-<pre><code>#&gt; # A tibble: 20 x 3
-#&gt; # Groups:   hosts [20]
-#&gt;    hosts times labels       
-#&gt;    &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;        
-#&gt;  1 H-7      14 H-7-sampled  
-#&gt;  2 H-120    33 H-120-sampled
-#&gt;  3 H-109    32 H-109-sampled
-#&gt;  4 H-191    44 H-191-sampled
-#&gt;  5 H-10     15 H-10-sampled 
-#&gt;  6 H-29     19 H-29-sampled 
-#&gt;  7 H-48     22 H-48-sampled 
-#&gt;  8 H-108    28 H-108-sampled
-#&gt;  9 H-99     26 H-99-sampled 
-#&gt; 10 H-61     26 H-61-sampled 
-#&gt; 11 H-110    40 H-110-sampled
-#&gt; 12 H-2      33 H-2-sampled  
-#&gt; 13 H-67     38 H-67-sampled 
-#&gt; 14 H-62     21 H-62-sampled 
-#&gt; 15 H-59     28 H-59-sampled 
-#&gt; 16 H-5      28 H-5-sampled  
-#&gt; 17 H-177    46 H-177-sampled
-#&gt; 18 H-51     25 H-51-sampled 
-#&gt; 19 H-164    40 H-164-sampled
-#&gt; 20 H-32     16 H-32-sampled</code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   hosts [20]</span></span></span>
+<span><span class="co">#&gt;    hosts times labels       </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> H-7      14 H-7-sampled  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> H-120    33 H-120-sampled</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> H-109    32 H-109-sampled</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> H-191    44 H-191-sampled</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> H-10     15 H-10-sampled </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> H-29     19 H-29-sampled </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> H-48     22 H-48-sampled </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> H-108    28 H-108-sampled</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> H-99     26 H-99-sampled </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> H-61     26 H-61-sampled </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> H-110    40 H-110-sampled</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> H-2      33 H-2-sampled  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> H-67     38 H-67-sampled </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> H-62     21 H-62-sampled </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> H-59     28 H-59-sampled </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> H-5      28 H-5-sampled  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> H-177    46 H-177-sampled</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> H-51     25 H-51-sampled </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> H-164    40 H-164-sampled</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> H-32     16 H-32-sampled</span></span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">test.nosoiA.tree.sampled</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree</a></span><span class="op">(</span><span class="va">test.nosoiA</span>, <span class="va">test.nosoiA.tree</span>, <span class="va">samples.data.table</span><span class="op">)</span></span></code></pre></div>
+<p>As before, the tree obtained is a <code>treedata</code> object, and
+can be plotted:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">test.nosoiA.tree.sampled</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree</a></span><span class="op">(</span><span class="va">test.nosoiA</span>, <span class="va">test.nosoiA.tree</span>, <span class="va">samples.data.table</span><span class="op">)</span></code></pre></div>
-<p>As before, the tree obtained is a <code>treedata</code> object, and can be plotted:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html">geom_tiplab</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">host</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, 
-                                           legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
-                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
-<p>Alternatively, you can sample among exited hosts (i.e. no longer active at the end of the simulation) using the function <code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code>, mimicking a sampling procedure that is destructive or cuts the hosts from the population. Be careful however, as it does not influence the epidemiological process: the hosts are only sampled when exiting the simulation.</p>
-<p><code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code> needs the following arguments:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html" class="external-link">ggtree</a></span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html" class="external-link">geom_nodepoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html" class="external-link">geom_tippoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html" class="external-link">geom_tiplab</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">host</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html" class="external-link">theme_tree2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, </span>
+<span>                                           legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+<p><img src="output_files/figure-html/treeB_actual-1.png" width="700"></p>
+<p>Alternatively, you can sample among exited hosts (i.e. no longer
+active at the end of the simulation) using the function
+<code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code>, mimicking a sampling
+procedure that is destructive or cuts the hosts from the population. Be
+careful however, as it does not influence the epidemiological process:
+the hosts are only sampled when exiting the simulation.</p>
+<p><code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code> needs the following
+arguments:</p>
 <ul>
 <li>
-<code>tree</code>, a <code>treedata</code> object created by the function <code><a href="../reference/getTransmissionTree.html">getTransmissionTree()</a></code> (see above).</li>
+<code>tree</code>, a <code>treedata</code> object created by the
+function <code><a href="../reference/getTransmissionTree.html">getTransmissionTree()</a></code> (see above).</li>
 <li>
-<code>hosts</code>, a vector with the hosts.ID of the exited hosts to sample.</li>
+<code>hosts</code>, a vector with the hosts.ID of the exited hosts
+to sample.</li>
 </ul>
 <p>In our example, we want to sample these samples:</p>
-<pre><code>#&gt;  [1] "H-151" "H-123" "H-50"  "H-64"  "H-73"  "H-118" "H-29"  "H-85"  "H-100"
-#&gt; [10] "H-95"  "H-82"  "H-93"  "H-111" "H-45"  "H-124" "H-165" "H-38"  "H-16" 
-#&gt; [19] "H-107" "H-155"</code></pre>
+<pre><code><span><span class="co">#&gt;  [1] "H-151" "H-123" "H-50"  "H-64"  "H-73"  "H-118" "H-29"  "H-85"  "H-100"</span></span>
+<span><span class="co">#&gt; [10] "H-95"  "H-82"  "H-93"  "H-111" "H-45"  "H-124" "H-165" "H-38"  "H-16" </span></span>
+<span><span class="co">#&gt; [19] "H-107" "H-155"</span></span></code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">test.nosoiA.tree.sampled.exiting</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting</a></span><span class="op">(</span><span class="va">test.nosoiA.tree</span>, <span class="va">sampled.hosts</span><span class="op">)</span></span></code></pre></div>
+<p>As before, the tree obtained is a <code>treedata</code> object, and
+can be plotted:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">test.nosoiA.tree.sampled.exiting</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting</a></span><span class="op">(</span><span class="va">test.nosoiA.tree</span>, <span class="va">sampled.hosts</span><span class="op">)</span></code></pre></div>
-<p>As before, the tree obtained is a <code>treedata</code> object, and can be plotted:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled.exiting</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html">geom_nodepoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html">geom_tippoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html">geom_tiplab</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">host</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, 
-                                           legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
-                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html" class="external-link">ggtree</a></span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled.exiting</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html" class="external-link">geom_nodepoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html" class="external-link">geom_tippoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html" class="external-link">geom_tiplab</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">host</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html" class="external-link">theme_tree2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, </span>
+<span>                                           legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+<p><img src="output_files/figure-html/treeC_actual-1.png" width="700"></p>
 </div>
-<div id="exporting-the-transmission-tree" class="section level2">
-<h2 class="hasAnchor">
-<a href="#exporting-the-transmission-tree" class="anchor"></a>Exporting the Transmission Tree</h2>
-<p>All the functions mentioned above produce a <code><a href="https://rdrr.io/pkg/tidytree/man/treedata.html">tidytree::treedata</a></code> object. It is a phylogenetic tree, with nodes and tips annotated with all the characteristics of the epidemics, including the geographical location when applicable. This format is described in details by his developer in this <a href="https://yulab-smu.top/treedata-book/">ebook</a>.</p>
-<p>This makes it easy to export the generated data to other software for downstream analyzes, thanks to the package <a href="https://guangchuangyu.github.io/software/treeio/">treeio</a>. For instance, the tree can be written in a <a href="http://beast.community/">BEAST</a> compatible format thanks to function <code><a href="https://docs.ropensci.org/treeio/reference/write.beast.html">treeio::write.beast()</a></code>:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">treeio</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/treeio/reference/write.beast.html">write.beast</a></span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled.exiting</span><span class="op">)</span></code></pre></div>
+<div class="section level3">
+<h3 id="exporting-the-transmission-tree">Exporting the Transmission Tree<a class="anchor" aria-label="anchor" href="#exporting-the-transmission-tree"></a>
+</h3>
+<p>All the functions mentioned above produce a
+<code><a href="https://rdrr.io/pkg/tidytree/man/treedata.html" class="external-link">tidytree::treedata</a></code> object. It is a phylogenetic tree, with
+nodes and tips annotated with all the characteristics of the epidemics,
+including the geographical location when applicable. This format is
+described in details by his developer in this <a href="https://yulab-smu.top/treedata-book/" class="external-link">ebook</a>.</p>
+<p>This makes it easy to export the generated data to other software for
+downstream analyzes, thanks to the package <a href="https://guangchuangyu.github.io/software/treeio/" class="external-link">treeio</a>. For
+instance, the tree can be written in a <a href="http://beast.community/" class="external-link">BEAST</a> compatible format thanks to
+function <code><a href="https://docs.ropensci.org/treeio/reference/write.beast.html" class="external-link">treeio::write.beast()</a></code>:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">treeio</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/treeio/reference/write.beast.html" class="external-link">write.beast</a></span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled.exiting</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -656,11 +813,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Sebastian Lequime, Paul Bastide, Simon Dellicour, Philippe Lemey, Guy Baele.</p>
+  <p></p>
+<p>Developed by Sebastian Lequime, Paul Bastide, Simon Dellicour, Philippe Lemey, Guy Baele.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -668,6 +827,8 @@
 
   
 
+
+  
 
   </body>
 </html>

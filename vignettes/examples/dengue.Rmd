@@ -13,7 +13,7 @@ vignette: >
   %\VignetteDepends{ggtree}
   %\VignetteDepends{ggplot2}
   %\VignetteDepends{dplyr}
-  %\VignetteDepends{tidyverse}
+  %\VignetteDepends{magrittr}
   %\VignetteDepends{rgdal}
   %\VignetteDepends{rgeos}
   %\VignetteDepends{readr}
@@ -280,7 +280,7 @@ ggplot() + worldmap + coord_cartesian(xlim=c(90, 125),ylim=c(5, 30)) +
 
 Then we extract the routes that link these airports together:
 ```{r air2, message = FALSE, error=FALSE, warning=FALSE}
-library(tidyverse)
+library(dplyr); library(magrittr); library(ggplot2)
 
 routes <- read_csv("~/Dropbox/C-Leuven Projects/Nosoi/Nosoi-Rpackage/Dengue Data/routes.dat", col_names = FALSE)
 colnames(routes) = c("Airline", "AirlineID", "SourceAirport", "SourceAirportID", "DestinationAirport", 
@@ -694,7 +694,7 @@ Our first step will be to visualize this epidemic on the map. We can use the fol
 ```{r visualisationMatrix, message=FALSE,warning=FALSE,collapse=TRUE}
 #Packages needed:
 library(ggplot2); library(gganimate)
-library(tidyverse)
+library(dplyr); library(magrittr)
 
 #melting the matrix go get from -> to in one line with probability
 # melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) 

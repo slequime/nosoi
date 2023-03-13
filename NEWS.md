@@ -1,7 +1,6 @@
-# nosoi 1.1.0
-* Fixing typos in the documentation (following review of the manuscript)
+# nosoi 1.1.1
+* `tidyverse` no longer in 'Suggests'.
 * Updating website
-* Fixing an issue (wrong calculation for getR0) in the function `nosoi::getR0` (linked to issue #14 on GitHub)
 
 # nosoi 1.0.3
 * Fixing error producing issue following `dplyr`'s update to 1.0.0
