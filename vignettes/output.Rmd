@@ -384,10 +384,14 @@ test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 
 library(ggplot2)
 library(ggtree)
+if (requireNamespace("ggtree")) {
 ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + 
   theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
                                            legend.title = element_blank(),
-                                           legend.key = element_blank()) 
+                                           legend.key = element_blank())
+} else {
+  message("Package 'ggtree' is needed for plotting")
+}
 ```
 ```{r treeA_actual, echo=FALSE, message=FALSE}
 if (!(requireNamespace("ape", quietly = TRUE) &&
@@ -472,10 +476,12 @@ if (!(requireNamespace("ape", quietly = TRUE) &&
 As before, the tree obtained is a `treedata` object, and can be plotted:
 
 ```{r treeB, eval = FALSE, message=FALSE}
+if (!requireNamespace("ggtree", quietly = TRUE)) {
 ggtree(test.nosoiA.tree.sampled, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
   theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
                                            legend.title = element_blank(),
                                            legend.key = element_blank()) 
+}
 ```
 ```{r treeB_actual, echo=FALSE, message=FALSE}
 if (!requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtree") < "3.1.3")) {
@@ -526,10 +532,15 @@ if (!(requireNamespace("ape", quietly = TRUE) &&
 As before, the tree obtained is a `treedata` object, and can be plotted:
 
 ```{r treeC, eval=FALSE, message=FALSE}
+if (requireNamespace("ggtree", quietly = 
+                     TRUE)) {
 ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
   theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8), 
                                            legend.title = element_blank(),
                                            legend.key = element_blank()) 
+} else {
+  message("Package 'ggtree' required for plotting")
+}
 ```
 ```{r treeC_actual, echo=FALSE, message=FALSE}
 if (!(requireNamespace("ape", quietly = TRUE) && 
