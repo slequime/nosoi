@@ -61,7 +61,6 @@
 #'test.nosoi
 #'}
 #' @export singleNone
-
 singleNone <- function(length.sim,
                        max.infected,
                        init.individuals,

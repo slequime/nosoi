@@ -4,7 +4,7 @@
 \alias{keep.tip.treedata}
 \title{Keep tips}
 \usage{
-\method{keep.tip}{treedata}(tree, tip)
+keep.tip.treedata(tree, tip)
 }
 \description{
 Keep the tips in the list. See \code{\link[ape:drop.tip]{keep.tip}}

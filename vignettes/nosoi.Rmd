@@ -43,7 +43,10 @@ Each of these probabilities and numbers are computed during the simulation. In a
 Time is discretized in `nosoi`. Each time step follows the same pattern for each host:
 
 ```{r setupMatrix, echo=FALSE, message=FALSE,warning=FALSE}
-if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis", quietly = TRUE) || !requireNamespace("igraph", quietly = TRUE) || !requireNamespace("ggnetwork", quietly = TRUE)) {
+if (!(requireNamespace("ggplot2", quietly = TRUE) &&
+      requireNamespace("viridis", quietly = TRUE) &&
+      requireNamespace("igraph", quietly = TRUE)  &&
+      requireNamespace("ggnetwork", quietly = TRUE))) {
   message("Packages 'ggplot2', 'viridis', 'igraph' and 'ggnetwork'  are needed for plotting this figure.")
 } else {
   library(ggplot2)
