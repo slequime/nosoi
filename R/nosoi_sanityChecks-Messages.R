@@ -15,7 +15,7 @@
 CoreSanityChecks <- function(length.sim, max.infected, init.individuals) {
   if (is.na(length.sim) || length.sim <= 1) stop("You must specify a length (in time units) for your simulation (bigger than 1).")
   if (is.na(max.infected) || max.infected <= 1) stop("You must specify a maximum number of infected hosts (bigger than 1).")
-  if (is.na(init.individuals) || init.individuals < 1 || !init.individuals%%1==0) stop("The transmission chain should be started by 1 or more (integer) individuals.")
+  if (is.na(init.individuals) || init.individuals < 1 || !init.individuals %%1 == 0) stop("The transmission chain should be started by 1 or more (integer) individuals.")
 }
 
 #' @title Checks if a function is properly formatted
@@ -29,7 +29,6 @@ CoreSanityChecks <- function(length.sim, max.infected, init.individuals) {
 #' @param timeDep is the function differential according to absolute time? (TRUE/FALSE)
 #' @param diff is the function differential according to state/env.variable? (TRUE/FALSE)
 #' @param hostCount is the function differential according to host count? (TRUE/FALSE)
-#' @param structure is the function to be used in a structured population? (TRUE/FALSE)
 #' @param continuous is the function to be used in a continuous space? (TRUE/FALSE)
 #' @param stateNames name of the states (vector) in case of discrete structure.
 #'
@@ -49,15 +48,15 @@ FunctionSanityChecks <- function(pFunc, name, param.pFunc, timeDep, diff, hostCo
       || (diff == TRUE && timeDep == FALSE && hostCount == FALSE && length(formalArgs(pFunc)) > 2)
       || (diff == TRUE && timeDep == FALSE && hostCount == TRUE && length(formalArgs(pFunc)) > 3)
       || (diff == FALSE && timeDep == TRUE && length(formalArgs(pFunc)) > 2)
-      || (diff == TRUE && timeDep==TRUE && hostCount == FALSE && length(formalArgs(pFunc)) > 3)
-      || (diff == TRUE && timeDep==TRUE && hostCount == TRUE && length(formalArgs(pFunc)) > 4)) {
+      || (diff == TRUE && timeDep == TRUE && hostCount == FALSE && length(formalArgs(pFunc)) > 3)
+      || (diff == TRUE && timeDep == TRUE && hostCount == TRUE && length(formalArgs(pFunc)) > 4)) {
     if (!is.list(param.pFunc) && is.na(param.pFunc)) {
       stop("There is a probleme with your function ", name, ": you should provide a parameter list named param.", name, ".")
     }
 
     if (is.list(param.pFunc)) {
       pFunc.param <- formalArgs(pFunc)[-1]
-      if(! all(names(param.pFunc) %in% pFunc.param)) stop("Parameter name in param.", name, " should match the name used in ", name, ".")
+      if(!all(names(param.pFunc) %in% pFunc.param)) stop("Parameter name in param.", name, " should match the name used in ", name, ".")
     }
   }
 
@@ -111,7 +110,7 @@ MatrixSanityChecks <- function(structure.matrix, init.structure, none.at.start=N
 ##
 
 RasterSanityChecks <- function(structure.raster, init.structure, none.at.start=NULL) {
-  if(!class(structure.raster) == "RasterLayer") stop("structure.raster must be a raster (class RasterLayer).")
+  if(!inherits(structure.raster, "RasterLayer")) stop("structure.raster must be a raster (class RasterLayer).")
 
   if(is.null(none.at.start)){
     start.env <- raster::extract(structure.raster,cbind(init.structure[1],init.structure[2]))

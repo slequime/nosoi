@@ -12,13 +12,13 @@ nosoiSimConstructor(
 )
 }
 \arguments{
+\item{total.time}{total time of the simulation}
+
 \item{type}{population structure (one of "single or "dual)}
 
 \item{pop.A}{an object of class \code{nosoiSimOne} for population A}
 
 \item{pop.B}{an object of class \code{nosoiSimOne} for population B}
-
-\item{pres.time}{current time of the simulation}
 }
 \value{
 An object of class \code{nosoiSim}

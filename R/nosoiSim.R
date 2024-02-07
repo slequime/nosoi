@@ -114,7 +114,7 @@ nosoiSim <- function(type="single", popStructure="none", ...){
 #' @description
 #' Creates a \code{nosoiSim} object.
 #'
-#' @param pres.time current time of the simulation
+#' @param total.time total time of the simulation
 #' @param type population structure (one of "single or "dual)
 #' @param pop.A an object of class \code{nosoiSimOne} for population A
 #' @param pop.B an object of class \code{nosoiSimOne} for population B
@@ -139,7 +139,6 @@ nosoiSimConstructor <- function(total.time,
   class(res) <- "nosoiSim"
 
   return(res)
-
 }
 
 ##

@@ -31,8 +31,6 @@ FunctionSanityChecks(
 \item{continuous}{is the function to be used in a continuous space? (TRUE/FALSE)}
 
 \item{stateNames}{name of the states (vector) in case of discrete structure.}
-
-\item{structure}{is the function to be used in a structured population? (TRUE/FALSE)}
 }
 \description{
 Checks if the function is properly formatted given the user's input and nosoi's requirements.

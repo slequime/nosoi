@@ -9,7 +9,6 @@
 #' @param hosts.ID unique ID for the new host
 #' @param infected.by unique ID of host that transmits to the new one
 #' @param infected.in state in which the host was infected
-#' @param current.in state in which the host currently is
 #' @param time.is time in the simulation, when the infection takes place
 #' @param ParamHost list of individual based parameters.
 #' @param current.environmental.value current environmental value
@@ -22,10 +21,14 @@
 #' @keywords internal
 
 newLine <- function(hosts.ID,
-                    infected.by, infected.in,
+                    infected.by,
+                    infected.in,
                     time.is,
-                    ParamHost, current.environmental.value = NULL, current.cell.number.raster = NULL,
-                    current.count.A = integer(0), current.count.B = integer(0)) {
+                    ParamHost,
+                    current.environmental.value = NULL,
+                    current.cell.number.raster = NULL,
+                    current.count.A = integer(0),
+                    current.count.B = integer(0)) {
 
   if (length(infected.in) == 1) {
     if (is.na(infected.in)) infected.in <- NULL

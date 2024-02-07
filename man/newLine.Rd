@@ -34,8 +34,6 @@ newLine(
 \item{current.count.A}{current count of host A}
 
 \item{current.count.B}{current count of host B}
-
-\item{current.in}{state in which the host currently is}
 }
 \value{
 a list with the new line to add.
