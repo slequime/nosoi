@@ -15,8 +15,8 @@
 #'
 #' @return list of parsed quantities:
 #' \itemize{
-#'  \item{"vect"}{Vectorized version of the function.}
-#'  \item{"vectArgs"}{Vector of arguments for the vectorized function.}
+#'  \item "vect" Vectorized version of the function.
+#'  \item "vectArgs" Vector of arguments for the vectorized function.
 #' }
 #'
 #' @keywords internal
