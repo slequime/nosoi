@@ -14,3 +14,5 @@
 ^README.md$
 ^CRAN-RELEASE$
 ^\.github$
+^doc$
+^Meta$
