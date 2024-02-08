@@ -57,7 +57,11 @@ if (!(requireNamespace("ggplot2", quietly = TRUE) &&
   library(igraph)
   library(ggnetwork)
   
-  transition.matrix <- matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0), nrow = 3, ncol = 3, dimnames=list(c("A","B","C"),c("A","B","C")))
+  transition.matrix <- matrix(c(0, 0.2, 0.4, 0.5, 0, 0.6, 0.5, 0.8, 0),
+                              nrow = 3,
+                              ncol = 3,
+                              dimnames=list(c("A", "B", "C"),
+                                            c("A", "B", "C")))
   
   # melting the matrix go get from -> to in one line with probability
   # melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"), value.name="prob", as.is = TRUE)
@@ -65,23 +69,43 @@ if (!(requireNamespace("ggplot2", quietly = TRUE) &&
                                                   stringsAsFactors = FALSE)
   colnames(melted.transition.matrix) <- c("from", "to", "prob")
   
-  melted.transition.matrix <- subset(melted.transition.matrix, prob!=0)
+  melted.transition.matrix <- subset(melted.transition.matrix,
+                                     melted.transition.matrix$prob != 0)
   
-  graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
+  graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,
+                                           directed = TRUE)
   
-graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
   graph.Matrix2 = igraph::layout_in_circle(graph.Matrix)
   
-  graph.matrix.network <- ggnetwork::ggnetwork(graph.Matrix, layout = graph.Matrix2, arrow.gap=0.18) #using ggnetwork to provide the layout
+  #using ggnetwork to provide the layout
+  graph.matrix.network <- ggnetwork::ggnetwork(graph.Matrix,
+                                               layout = graph.Matrix2,
+                                               arrow.gap = 0.18) 
   
-  graph.matrix.network2 <- subset(graph.matrix.network, ! is.na(prob))
+  graph.matrix.network2 <- subset(graph.matrix.network,
+                                  !is.na(graph.matrix.network$prob))
   
   #plotting the network
   ggplot(graph.matrix.network, aes(x = x, y = y, xend = xend, yend = yend)) +
-    geom_edges(color = "grey70", arrow = arrow(length = unit(1, "lines"), type = "closed"), curvature = 0.2) + geom_nodes(aes(color = name) , size = 30) +
-    geom_nodetext(aes(label = name), color="white", fontface = "bold",size=15) + scale_color_viridis(guide=FALSE, discrete=TRUE) +
-    theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2) +
-    geom_text(data=graph.matrix.network2,aes(x=(x+xend)/2,y=(y+yend)/2,label = prob,color=name), size = 6)
+    geom_edges(color = "grey70",
+               arrow = arrow(length = unit(1, "lines"),
+                             type = "closed"),
+               curvature = 0.2) +
+    geom_nodes(aes(color = name) , size = 30) +
+    geom_nodetext(aes(label = name),
+                  color = "white",
+                  fontface = "bold",
+                  size = 15) +
+    scale_color_viridis(guide = FALSE, discrete = TRUE) +
+    theme_blank() +
+    ylim(-0.5, 1.2) +
+    xlim(-0.5, 1.2) +
+    geom_text(data = graph.matrix.network2,
+              aes(x = (x + xend) / 2,
+                  y = (y + yend) / 2,
+                  label = prob, 
+                  color = name),
+              size = 6)
 }
 ```
 
