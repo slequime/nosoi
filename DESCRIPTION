@@ -1,7 +1,7 @@
 Package: nosoi
 Type: Package
 Title: A Forward Agent-Based Transmission Chain Simulator
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: c(person("Sebastian", "Lequime", email = "sebastian.lequime@gmail.com",
                   role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3140-0651")),
                   person("Paul", "Bastide", email = "paul.bastide@umontpellier.fr",

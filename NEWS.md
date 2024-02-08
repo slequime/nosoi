@@ -1,3 +1,6 @@
+# nosoi 1.1.2
+* Minor fixes and corrections (documentation, vignettes)
+
 # nosoi 1.1.1
 * `tidyverse` no longer in 'Suggests'.
 * Updating website

@@ -7,8 +7,8 @@ vignette: >
   %\VignetteIndexEntry{Spread of a pathogen in a discrete structured population}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{ggplot2}
   %\VignetteDepends{dplyr}
+  %\VignetteDepends{ggplot2}
   %\VignetteDepends{igraph}
   %\VignetteDepends{viridis}
   %\VignetteDepends{ggnetwork}
@@ -43,7 +43,7 @@ matrix(c(0, 0.2, 0.4,
        dimnames = list(c("A", "B", "C"), c("A", "B", "C")))
 ```
 
-It can graphically be represented as follow:
+It can graphically be represented as follows:
 
 ```{r setupMatrix, echo=FALSE, message=FALSE, warning=FALSE}
 if (!(requireNamespace("ggplot2", quietly = TRUE) &&
@@ -60,8 +60,8 @@ if (!(requireNamespace("ggplot2", quietly = TRUE) &&
   transition.matrix <- matrix(c(0, 0.2, 0.4, 0.5, 0, 0.6, 0.5, 0.8, 0),
                               nrow = 3,
                               ncol = 3,
-                              dimnames=list(c("A", "B", "C"),
-                                            c("A", "B", "C")))
+                              dimnames = list(c("A", "B", "C"),
+                                              c("A", "B", "C")))
   
   # melting the matrix go get from -> to in one line with probability
   # melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"), value.name="prob", as.is = TRUE)
