@@ -4,20 +4,20 @@ author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-%\VignetteIndexEntry{Spread of a pathogen in a discrete structured population}
+  %\VignetteIndexEntry{Spread of a pathogen in a discrete structured population}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{dplyr}
   %\VignetteDepends{ggplot2}
+  %\VignetteDepends{dplyr}
   %\VignetteDepends{igraph}
   %\VignetteDepends{viridis}
   %\VignetteDepends{ggnetwork}
-  ---
-  
-  ```{r setup, include=FALSE}
+---
+
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-collapse = TRUE,
-comment = "#>"
+  collapse = TRUE,
+  comment = "#>"
 )
 ```
 
