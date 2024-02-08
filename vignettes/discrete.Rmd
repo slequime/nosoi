@@ -45,7 +45,7 @@ matrix(c(0, 0.2, 0.4,
 
 It can graphically be represented as follow:
 
-```{r setupMatrix, echo=FALSE, message=FALSE,warning=FALSE}
+```{r setupMatrix, echo=FALSE, message=FALSE, warning=FALSE}
 if (!(requireNamespace("ggplot2", quietly = TRUE) &&
       requireNamespace("viridis", quietly = TRUE) &&
       requireNamespace("igraph", quietly = TRUE)  &&

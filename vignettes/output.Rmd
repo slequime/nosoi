@@ -488,8 +488,8 @@ ggtree(test.nosoiA.tree.sampled, color = "gray30") + geom_nodepoint(aes(color=st
 }
 ```
 ```{r treeB_actual, echo=FALSE, message=FALSE}
-if (!requireNamespace("ggtree", quietly = TRUE) ||
-    (utils::packageVersion("ggtree") < "3.1.3")) {
+if (!(requireNamespace("ggtree", quietly = TRUE) &&
+    (utils::packageVersion("ggtree") < "3.1.3"))) {
   message("Package 'ggtree' is needed for plotting this figure.")
 } else {
   ggtree(test.nosoiA.tree.sampled, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
