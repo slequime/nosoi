@@ -1,7 +1,7 @@
 nosoi <img src="man/figures/logo.png" align="right" alt="" width="120" />
 ===============
 <!-- badges: start -->
-[![R build status](https://github.com/slequime/nosoi/workflows/R-CMD-check/badge.svg)](https://github.com/slequime/nosoi/actions)
+[![R-CMD-check](https://github.com/slequime/nosoi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slequime/nosoi/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/slequime/nosoi/branch/master/graph/badge.svg)](https://codecov.io/gh/slequime/nosoi)
 [![](https://img.shields.io/github/license/slequime/nosoi)](http://slequime.github.io/nosoi/)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/nosoi)](https://cran.r-project.org/package=nosoi)
