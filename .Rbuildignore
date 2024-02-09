@@ -10,7 +10,6 @@
 ^.dockerignore$
 ^Dockerfile$
 ^cran-comments.md$
-^NEWS.md$
 ^README.md$
 ^CRAN-RELEASE$
 ^\.github$
