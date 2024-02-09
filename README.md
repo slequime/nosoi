@@ -1,7 +1,6 @@
 nosoi <img src="man/figures/logo.png" align="right" alt="" width="120" />
 ===============
 <!-- badges: start -->
-[![Travis-CI Build Status](https://api.travis-ci.org/slequime/nosoi.svg?branch=master)](https://travis-ci.org/slequime/nosoi)
 [![R build status](https://github.com/slequime/nosoi/workflows/R-CMD-check/badge.svg)](https://github.com/slequime/nosoi/actions)
 [![codecov](https://codecov.io/gh/slequime/nosoi/branch/master/graph/badge.svg)](https://codecov.io/gh/slequime/nosoi)
 [![](https://img.shields.io/github/license/slequime/nosoi)](http://slequime.github.io/nosoi/)
@@ -25,7 +24,3 @@ devtools::install_github(repo = "slequime/nosoi")
 ## Documentation
 
 You can find package documentation, with reference, tutorials and examples here: http://slequime.github.io/nosoi/ (built with [`pkgdown`](https://github.com/hadley/pkgdown)).
-
-## Help
-
-A Slack has been set up to help you get started or get some insight from other users. [Here is the link to join](https://join.slack.com/t/nosoi/shared_invite/zt-kk3mfk7m-d9vbb5Ze7amnR54eSvdoCw) (last updated 04/01/2021, if it does not work, just ask!).
