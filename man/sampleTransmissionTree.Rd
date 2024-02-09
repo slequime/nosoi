@@ -69,9 +69,9 @@ test.nosoi <- nosoiSim(type="single", popStructure="discrete",
 )
 
 ## Make sure all needed packages are here
-if (requireNamespace("ape", quietly = TRUE)
-    || requireNamespace("tidytree", quietly = TRUE)
-    || requireNamespace("treeio", quietly = TRUE)) {
+if (requireNamespace("ape", quietly = TRUE) &&
+    requireNamespace("tidytree", quietly = TRUE) &&
+    requireNamespace("treeio", quietly = TRUE)) {
   library(ape)
   library(tidytree)
   library(treeio)

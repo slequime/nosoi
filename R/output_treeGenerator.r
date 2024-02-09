@@ -50,9 +50,9 @@
 #' )
 #'
 #' ## Make sure all needed packages are here
-#' if (requireNamespace("ape", quietly = TRUE)
-#'     || requireNamespace("tidytree", quietly = TRUE)
-#'     || requireNamespace("treeio", quietly = TRUE)) {
+#' if (requireNamespace("ape", quietly = TRUE) &&
+#'     requireNamespace("tidytree", quietly = TRUE) &&
+#'     requireNamespace("treeio", quietly = TRUE)) {
 #'   library(ape)
 #'   library(tidytree)
 #'   library(treeio)
@@ -84,7 +84,9 @@
 #' @export getTransmissionTree
 
 getTransmissionTree <- function(nosoiInf) {
-  if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
+  if (!(requireNamespace("ape", quietly = TRUE) &&
+        requireNamespace("tidytree", quietly = TRUE) &&
+        requireNamespace("treeio", quietly = TRUE))) {
     stop("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.",
          call. = FALSE)
   }

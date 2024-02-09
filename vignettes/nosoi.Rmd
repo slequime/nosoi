@@ -4,7 +4,7 @@ author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting-started}
+  %\VignetteIndexEntry{Getting started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{ggplot2}
@@ -43,7 +43,10 @@ Each of these probabilities and numbers are computed during the simulation. In a
 Time is discretized in `nosoi`. Each time step follows the same pattern for each host:
 
 ```{r setupMatrix, echo=FALSE, message=FALSE,warning=FALSE}
-if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis", quietly = TRUE) || !requireNamespace("igraph", quietly = TRUE) || !requireNamespace("ggnetwork", quietly = TRUE)) {
+if (!(requireNamespace("ggplot2", quietly = TRUE) &&
+      requireNamespace("viridis", quietly = TRUE) &&
+      requireNamespace("igraph", quietly = TRUE)  &&
+      requireNamespace("ggnetwork", quietly = TRUE))) {
   message("Packages 'ggplot2', 'viridis', 'igraph' and 'ggnetwork'  are needed for plotting this figure.")
 } else {
   library(ggplot2)
@@ -70,13 +73,28 @@ if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis",
   graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
   graph.Matrix2 = igraph::layout_in_circle(graph.Matrix)
   
-  graph.simA.network <- ggnetwork::ggnetwork(graph.Matrix, layout = graph.Matrix2, arrow.gap=0.18) #using ggnetwork to provide the layout
+  if (utils::packageVersion("ggnetwork") > "0.5.12") {
+    # unfortunately, the update to igraph 2.0.0 has broken the connection
+    # between ggnetwork and igraph, see: 
+    # https://github.com/briatte/ggnetwork/issues/74
+    
+    #using ggnetwork to provide the layout
+    graph.simA.network <- ggnetwork::ggnetwork(graph.Matrix, layout = graph.Matrix2, arrow.gap=0.18) #using ggnetwork to provide the layout
   
   #plotting the network
   ggplot(graph.simA.network, aes(x = x, y = y, xend = xend, yend = yend)) +
     geom_edges(color = "grey70",arrow = arrow(length = unit(1, "lines"), type = "closed"),curvature = 0.2) + geom_nodes(aes(color = name) , size = 30) +
     geom_nodetext(aes(label = name),color="white", fontface = "bold",size=3) + scale_color_viridis(guide=FALSE,discrete=TRUE) +
     theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2)
+  } else {
+    plot(graph.Matrix,
+         vertex.shape = "none",
+         label.dist = 1,
+         layout = graph.Matrix2,
+         vertex.color = "white",
+         edge.curved = rep(-0.5, length = ecount(graph.Matrix)), 
+         edge.arrow.size = 0.5)
+  }
 }
 ```
 

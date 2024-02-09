@@ -54,7 +54,8 @@ test.raster <- focal(focal(test.raster, w=matrix(1, 5, 5), mean), w=matrix(1, 5,
 
 test.raster_df <- as.data.frame(test.raster, xy = TRUE) 
 
-if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis", quietly = TRUE)) {
+if (!(requireNamespace("ggplot2", quietly = TRUE) && 
+      requireNamespace("viridis", quietly = TRUE))) {
   message("Packages 'ggplot2' and 'viridis' are needed for plotting this figure.")
 } else {
   library(ggplot2)
@@ -189,7 +190,8 @@ move.test2$type = "Not attracted by raster"
 
 move.test.all = rbindlist(list(move.test,move.test2))
 
-if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis", quietly = TRUE)) {
+if (!(requireNamespace("ggplot2", quietly = TRUE) &&
+      requireNamespace("viridis", quietly = TRUE))) {
   message("Packages 'ggplot2' and 'viridis' are needed for plotting this figure.")
 } else {
   ggplot() +

@@ -28,9 +28,11 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 12)
 
-  dynOld <- getDynamicOld(test.nosoiA)
-  dynNew <- getDynamic(test.nosoiA)
-  expect_equal(dynOld, dynNew)
+  if (requireNamespace("dplyr")) {
+    dynOld <- getDynamicOld(test.nosoiA)
+    dynNew <- getDynamic(test.nosoiA)
+    expect_equal(dynOld, dynNew)
+  }
 
   ## Output
   expect_output(print(test.nosoiA), "a single host with no structure")
