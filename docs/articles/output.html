@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@
                         <h4 data-toc-skip class="author">Sebastian
 Lequime</h4>
             
-            <h4 data-toc-skip class="date">2023-03-13</h4>
+            <h4 data-toc-skip class="date">2024-02-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/HEAD/vignettes/output.Rmd" class="external-link"><code>vignettes/output.Rmd</code></a></small>
       <div class="hidden name"><code>output.Rmd</code></div>
@@ -666,17 +666,24 @@ dependent of the location and host count in each location:</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The simulation runs for 46 time steps and infected 204 hosts. The
 following transmission tree can thus be extracted (as a
-<code><a href="https://rdrr.io/pkg/tidytree/man/treedata.html" class="external-link">tidytree::treedata</a></code> object) and plotted using <a href="https://bioconductor.org/packages/release/bioc/html/ggtree.html" class="external-link"><code>ggtree</code></a>:</p>
+<code>tidytree::treedata</code> object) and plotted using <a href="https://bioconductor.org/packages/release/bioc/html/ggtree.html" class="external-link"><code>ggtree</code></a>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test.nosoiA.tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getTransmissionTree.html">getTransmissionTree</a></span><span class="op">(</span><span class="va">test.nosoiA</span><span class="op">)</span></span>
 <span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.amazon.com/Integration-Manipulation-Visualization-Phylogenetic-Computational-ebook/dp/B0B5NLZR1Z/" class="external-link">ggtree</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html" class="external-link">ggtree</a></span><span class="op">(</span><span class="va">test.nosoiA.tree</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html" class="external-link">geom_nodepoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html" class="external-link">geom_tippoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html" class="external-link">theme_tree2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, </span>
-<span>                                           legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="output_files/figure-html/treeA_actual-1.png" width="700"></p>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggtree"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggplot2"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">ggtree</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu">ggtree</span><span class="op">(</span><span class="va">test.nosoiA.tree</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_nodepoint</span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_tippoint</span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">theme_tree2</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, </span>
+<span>        legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Packages 'ggtree' and 'ggplot2' are needed for plotting"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Each color point represents the location/state, either at
 transmission (a node) or a host when it exits the simulation (or the end
 point of the simulation; a tip). This transmission tree is timed (time
@@ -719,40 +726,17 @@ to be sampled.</li>
 </li>
 </ul>
 <p>In the example above, we want to sample the following 20 hosts:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   hosts [20]</span></span></span>
-<span><span class="co">#&gt;    hosts times labels       </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> H-7      14 H-7-sampled  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> H-120    33 H-120-sampled</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> H-109    32 H-109-sampled</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> H-191    44 H-191-sampled</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> H-10     15 H-10-sampled </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> H-29     19 H-29-sampled </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> H-48     22 H-48-sampled </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> H-108    28 H-108-sampled</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> H-99     26 H-99-sampled </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> H-61     26 H-61-sampled </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> H-110    40 H-110-sampled</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> H-2      33 H-2-sampled  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> H-67     38 H-67-sampled </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> H-62     21 H-62-sampled </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> H-59     28 H-59-sampled </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> H-5      28 H-5-sampled  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> H-177    46 H-177-sampled</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> H-51     25 H-51-sampled </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> H-164    40 H-164-sampled</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> H-32     16 H-32-sampled</span></span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test.nosoiA.tree.sampled</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sampleTransmissionTree.html">sampleTransmissionTree</a></span><span class="op">(</span><span class="va">test.nosoiA</span>, <span class="va">test.nosoiA.tree</span>, <span class="va">samples.data.table</span><span class="op">)</span></span></code></pre></div>
 <p>As before, the tree obtained is a <code>treedata</code> object, and
 can be plotted:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html" class="external-link">ggtree</a></span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html" class="external-link">geom_nodepoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html" class="external-link">geom_tippoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html" class="external-link">geom_tiplab</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">host</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html" class="external-link">theme_tree2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, </span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggtree"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="fu">ggtree</span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_nodepoint</span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_tippoint</span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_tiplab</span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">host</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">theme_tree2</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, </span>
 <span>                                           legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="output_files/figure-html/treeB_actual-1.png" width="700"></p>
+<span>                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Alternatively, you can sample among exited hosts (i.e. no longer
 active at the end of the simulation) using the function
 <code><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting()</a></code>, mimicking a sampling
@@ -770,34 +754,34 @@ function <code><a href="../reference/getTransmissionTree.html">getTransmissionTr
 to sample.</li>
 </ul>
 <p>In our example, we want to sample these samples:</p>
-<pre><code><span><span class="co">#&gt;  [1] "H-151" "H-123" "H-50"  "H-64"  "H-73"  "H-118" "H-29"  "H-85"  "H-100"</span></span>
-<span><span class="co">#&gt; [10] "H-95"  "H-82"  "H-93"  "H-111" "H-45"  "H-124" "H-165" "H-38"  "H-16" </span></span>
-<span><span class="co">#&gt; [19] "H-107" "H-155"</span></span></code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test.nosoiA.tree.sampled.exiting</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sampleTransmissionTreeFromExiting.html">sampleTransmissionTreeFromExiting</a></span><span class="op">(</span><span class="va">test.nosoiA.tree</span>, <span class="va">sampled.hosts</span><span class="op">)</span></span></code></pre></div>
 <p>As before, the tree obtained is a <code>treedata</code> object, and
 can be plotted:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html" class="external-link">ggtree</a></span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled.exiting</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodepoint.html" class="external-link">geom_nodepoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tippoint.html" class="external-link">geom_tippoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html" class="external-link">geom_tiplab</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">host</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html" class="external-link">theme_tree2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, </span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggtree"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="fu">ggtree</span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled.exiting</span>, color <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_nodepoint</span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_tippoint</span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_tiplab</span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">host</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">theme_tree2</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Time (t)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>, </span>
 <span>                                           legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="output_files/figure-html/treeC_actual-1.png" width="700"></p>
+<span>                                           legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Package 'ggtree' required for plotting"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="exporting-the-transmission-tree">Exporting the Transmission Tree<a class="anchor" aria-label="anchor" href="#exporting-the-transmission-tree"></a>
 </h3>
 <p>All the functions mentioned above produce a
-<code><a href="https://rdrr.io/pkg/tidytree/man/treedata.html" class="external-link">tidytree::treedata</a></code> object. It is a phylogenetic tree, with
+<code>tidytree::treedata</code> object. It is a phylogenetic tree, with
 nodes and tips annotated with all the characteristics of the epidemics,
 including the geographical location when applicable. This format is
 described in details by his developer in this <a href="https://yulab-smu.top/treedata-book/" class="external-link">ebook</a>.</p>
 <p>This makes it easy to export the generated data to other software for
 downstream analyzes, thanks to the package <a href="https://guangchuangyu.github.io/software/treeio/" class="external-link">treeio</a>. For
 instance, the tree can be written in a <a href="http://beast.community/" class="external-link">BEAST</a> compatible format thanks to
-function <code><a href="https://docs.ropensci.org/treeio/reference/write.beast.html" class="external-link">treeio::write.beast()</a></code>:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">treeio</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/treeio/reference/write.beast.html" class="external-link">write.beast</a></span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled.exiting</span><span class="op">)</span></span></code></pre></div>
+function <code>treeio::write.beast()</code>:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">treeio</span><span class="fu">::</span><span class="fu">write.beast</span><span class="op">(</span><span class="va">test.nosoiA.tree.sampled.exiting</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>

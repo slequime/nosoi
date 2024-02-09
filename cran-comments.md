@@ -1,6 +1,9 @@
-## This version 1.1.0
+## This version 1.1.2
 In this version we:
-- fix typos in the documentation (following review of the manuscript) and correct an internal function (getR0).
+- fix errors on currant CRAN check result
+- added links in the description
+- fix typos in the documentation
+- provide updated citation
 
 ## Test environments
 * macOS-latest (Github Action, devel and release)

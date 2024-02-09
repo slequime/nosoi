@@ -1,0 +1,16 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "nosoi: A stochastic agent-based transmission chain simulation framework in R",
+  author   = c(
+            person("Sebastian", "Lequime", role = c("aut", "cre")),
+            person("Paul", "Bastide", role = "aut"),
+            person("Simon", "Dellicour", role = "aut"),
+            person("Philippe", "Lemey", role = "aut"),
+            person("Guy", "Baele", role = "aut")),
+  journal  = "Methods in Ecology and Evolution",
+  year     = "2020",
+  volume   = "11",
+  number   = "8",
+  pages    = "1002-1007",
+  doi      = "10.1111/2041-210X.13422"
+)

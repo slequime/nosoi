@@ -1,15 +1,15 @@
-pandoc: 2.11.2
-pkgdown: 1.6.1
+pandoc: 3.1.1
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   continuous: continuous.html
   discrete: discrete.html
-  examples/dengue: dengue.html
-  examples/ebola: ebola.html
-  examples/vector-competence: vector-competence.html
-  examples/viz: viz.html
+  dengue: examples/dengue.html
+  ebola: examples/ebola.html
+  vector-competence: examples/vector-competence.html
+  viz: examples/viz.html
   none: none.html
   nosoi: nosoi.html
   output: output.html
-last_built: 2021-08-17T15:30Z
+last_built: 2024-02-09T09:47Z
 

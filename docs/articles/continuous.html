@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@
                         <h4 data-toc-skip class="author">Sebastian
 Lequime</h4>
             
-            <h4 data-toc-skip class="date">2023-03-13</h4>
+            <h4 data-toc-skip class="date">2024-02-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/HEAD/vignettes/continuous.Rmd" class="external-link"><code>vignettes/continuous.Rmd</code></a></small>
       <div class="hidden name"><code>continuous.Rmd</code></div>
@@ -193,7 +193,7 @@ Code used to create the random raster used in this tutorial
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">860</span><span class="op">)</span></span>
 <span><span class="va">test.raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster</a></span><span class="op">(</span>nrows<span class="op">=</span><span class="fl">100</span>, ncols<span class="op">=</span><span class="fl">100</span>, xmn<span class="op">=</span><span class="op">-</span><span class="fl">50</span>, xmx<span class="op">=</span><span class="fl">50</span>, ymn<span class="op">=</span><span class="op">-</span><span class="fl">50</span>,ymx<span class="op">=</span><span class="fl">50</span><span class="op">)</span></span>
 <span><span class="va">test.raster</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="op">-</span><span class="fl">80</span>, <span class="fl">150</span><span class="op">)</span></span>
-<span><span class="va">test.raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/focal.html" class="external-link">focal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/focal.html" class="external-link">focal</a></span><span class="op">(</span><span class="va">test.raster</span>, w<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span>, w<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">test.raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/focal.html" class="external-link">focal</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/focal.html" class="external-link">focal</a></span><span class="op">(</span><span class="va">test.raster</span>, w<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span>, w<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span></span></code></pre></div>
 </details><p><img src="continuous_files/figure-html/RasterCode2-1.png" width="700"></p>
 </div>
 <div class="section level3">

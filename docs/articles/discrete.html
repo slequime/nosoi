@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nosoi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2</span>
       </span>
     </div>
 
@@ -152,7 +152,7 @@ population</h1>
                         <h4 data-toc-skip class="author">Sebastian
 Lequime</h4>
             
-            <h4 data-toc-skip class="date">2023-03-13</h4>
+            <h4 data-toc-skip class="date">2024-02-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/slequime/nosoi/blob/HEAD/vignettes/discrete.Rmd" class="external-link"><code>vignettes/discrete.Rmd</code></a></small>
       <div class="hidden name"><code>discrete.Rmd</code></div>
@@ -187,7 +187,7 @@ be:</p>
 <span><span class="co">#&gt; A 0.0 0.5 0.5</span></span>
 <span><span class="co">#&gt; B 0.2 0.0 0.8</span></span>
 <span><span class="co">#&gt; C 0.4 0.6 0.0</span></span></code></pre>
-<p>It can graphically be represented as follow:</p>
+<p>It can graphically be represented as follows:</p>
 <p><img src="discrete_files/figure-html/setupMatrix-1.png" width="700"></p>
 <p>For <code>structure.matrix</code> to be adequate, a few rules have to
 be followed:</p>
@@ -678,9 +678,9 @@ after that time, it will transmit with a certain (constant) probability
 time since the host’s infection <code>t</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_Trans_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">p_max</span>, <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&lt;</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="fl">0</span><span class="op">}</span></span>
-<span>    <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&gt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="va">p_max</span><span class="op">}</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&lt;</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="fl">0</span><span class="op">}</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="va">t</span> <span class="op">&gt;=</span> <span class="va">t_incub</span><span class="op">)</span><span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="va">p_max</span><span class="op">}</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Because each host is different (slightly different biotic and abiotic
 factors), you can expect each host to exhibit differences in the
@@ -945,7 +945,7 @@ tutorial).</p>
 <span><span class="va">p_Trans_fct.B</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">max.time</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">dnorm</a></span><span class="op">(</span><span class="va">t</span>, mean<span class="op">=</span><span class="va">max.time</span>, sd<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">*</span><span class="fl">5</span></span>
 <span><span class="op">}</span></span>
-<span> </span>
+<span></span>
 <span><span class="va">max.time_fct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">x</span>,mean <span class="op">=</span> <span class="fl">5</span>,sd<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">param_pTrans.B</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>max.time<span class="op">=</span><span class="va">max.time_fct</span><span class="op">)</span></span>
