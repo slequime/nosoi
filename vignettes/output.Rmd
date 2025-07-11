@@ -449,6 +449,7 @@ if (!(requireNamespace("ape", quietly = TRUE) &&
   message("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.")
 } else {
   library(dplyr)
+  library(data.table)
   
   table.hosts.testA <- getTableHosts(test.nosoiA)
   setkey(table.hosts.testA, "hosts.ID")
