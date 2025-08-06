@@ -75,6 +75,7 @@ if (requireNamespace("ape", quietly = TRUE) &&
   library(ape)
   library(tidytree)
   library(treeio)
+  library(data.table)
 
   #' ## Full transmission tree
   ttreedata <- getTransmissionTree(test.nosoi)

@@ -20,12 +20,12 @@ BugReports: https://github.com/slequime/nosoi/issues
 Language: en-US
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 biocViews:
 Depends: 
-    data.table (>= 1.12.0),
     R (>= 3.5.0)
 Imports:
+    data.table (>= 1.12.0),
     stats (>= 3.5.2),
     methods (>= 3.5.2),
     raster (>= 2.8-19)
